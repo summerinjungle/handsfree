@@ -1,0 +1,21 @@
+npm i nodemon -D
+
+Run `npm audit` for details.
+
+PS C:\Users\jimmy\Desktop\zoom> git init .
+PS C:\Users\jimmy\Desktop\zoom> npm i @babel/core @babel/cli @babel/node -D
+PS C:\Users\jimmy\Desktop\zoom> npm i @babel/preset-env -D
+PS C:\Users\jimmy\Desktop\zoom> npm i express
+PS C:\Users\jimmy\Desktop\zoom> npm i pug
+
+0.4 강
+nodemon 프로젝트를 살펴보고 변경사항이 있을 시 서버를 재시작해주는 프로그램
+
+1.1 강
+http stateless => backend가 유저를 기억하지 못한다.
+
+1.2강 
+npm i ws
+
+1.3강
+webSocket은 브라우저와 서버사이의 연결이다.
