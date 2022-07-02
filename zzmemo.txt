@@ -1,3 +1,6 @@
+참고 블로그 : https://ssocoit.tistory.com/195?category=966547
+
+
 npm i nodemon -D
 
 Run `npm audit` for details.
@@ -19,3 +22,10 @@ npm i ws
 
 1.3강
 webSocket은 브라우저와 서버사이의 연결이다.
+
+2.0강
+Socket IO는 프론트와 백엔드 간 실시간 통신을 가능하게 해주는 프로임 워크 또는 라이브러리
+
+2.1강
+Socket IO설치 npm i socket.io
+
