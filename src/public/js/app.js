@@ -24,9 +24,9 @@ let sockets =  {
   "end_time": 0
 };
 
- // 현재 시간 구하는함수
+
+// 현재 시간 구하는함수
 function timeConverter(t){
-  t = t
   var date = new Date(t);
   var year = date.getFullYear();
   var month = "0" + (date.getMonth()+1);
