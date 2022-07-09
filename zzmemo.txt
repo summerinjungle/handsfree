@@ -29,3 +29,53 @@ Socket IO는 프론트와 백엔드 간 실시간 통신을 가능하게 해주�
 2.1강
 Socket IO설치 npm i socket.io
 
+3.8강
+npm i -g localtunnel
+터미널두개키고
+npm run dev 
+lt --port 3000 
+
+
+// 마이크를 켠다
+  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognition = new SpeechRecognition();
+  recognition.interimResults = true;
+  recognition.lang = "ko-KR";
+  recognition.start();
+  console.log("asdsa");
+
+  // 음성인식 시작 로그 찍어야함
+  recognition.onstart = function () {
+    sound_detect_check= false;
+    // console.log("asd");
+    // makeNewTextContent(); // 음성 인식 시작시마다 새로운 문단을 추가한다
+  };
+
+  // 음성인식 감지 안되면 소켓에 종료시간과 메시지를 등록하고 초기화 => 녹음 다시 시작
+  recognition.onend = function () {
+  const date = new Date();
+  end_time = date.getTime();
+  if (texts !== "") {
+    // p.textContent = texts;
+    // sockets["message"] = texts;
+    // sockets["end_time"] = timeConverter(end_time);
+    // console.log(sockets);
+  }
+  texts = "";
+  recognition.start();
+  };
+
+  // 음성감지 된경우 시작시간을 등록한다
+  recognition.onresult = function (e) {
+  if (sound_detect_check !== true) {
+    // sockets = sockets_json;
+    const date = new Date();
+    start_time = date.getTime();
+    // sockets["start_time"] = timeConverter(start_time);
+    sound_detect_check = true;
+  }
+  texts = Array.from(e.results)
+    .map((results) => results[0].transcript)
+    .join("");
+  console.log(texts);
+  };
