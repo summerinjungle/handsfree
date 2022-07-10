@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HandsFree</title>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+  </head>
+  <body>
+
+      <h1 style="text-align: center;">HandsFree</h1>
+
+    <main>
+      <div id="welcome"> 
+        <form>
+          <input placeholder="방 번호" required type="text">
+          <button>입장하기</button>
+        </form>
+        <h4>방목록:</h4>
+        <ul></ul>
+      </div>
+      <div id="room">
+        <h3></h3>
+        <h2>기록중</h2>
+        <ul></ul>
+        <form id="name">
+          <input placeholder="닉네임" required type="text">
+          <button>닉네임바꾸기</button>
+        </form>
+      </div>
+    </main>
+    <script src="/socket.io/socket.io.js"> </script>
+    <script src="/public/js/app.js"> </script>
+  </body>
+</html>

@@ -48,16 +48,16 @@ function addMessage(message) {
 }
 
 
-function handleMessageSubmit(event) {
-  event.preventDefault();
-  const input = room.querySelector("#msg input");
-  const value = input.value;
-  // 새 이벤트 new_message. 백엔드로 보낸다.
-  socket.emit("new_message", input.value, roomName, ()=> {
-    addMessage(`You : ${value}`);
-  });
-  input.value = '';
-}
+// function handleMessageSubmit(event) {
+//   event.preventDefault();
+//   const input = room.querySelector("#msg input");
+//   const value = input.value;
+//   // 새 이벤트 new_message. 백엔드로 보낸다.
+//   socket.emit("new_message", input.value, roomName, ()=> {
+//     addMessage(`You : ${value}`);
+//   });
+//   input.value = '';
+// }
 
 
 function handleNicknameSubmit(event) {
@@ -75,9 +75,9 @@ function showRoom(){
   room.hidden = false;    // room 태그가 보인다.
   const h3 = room.querySelector("h3");  
   h3.innerText = `room ${roomName}`;
-  const msgForm = room.querySelector("#msg");
+  // const msgForm = room.querySelector("#msg");
   const nameForm = room.querySelector("#name");
-  msgForm.addEventListener("submit", handleMessageSubmit);
+  // msgForm.addEventListener("submit", handleMessageSubmit);
   nameForm.addEventListener("submit", handleNicknameSubmit);
 
 
@@ -107,6 +107,11 @@ recognition.onstart = function () {
   sound_detect_check= false;
 };
 
+function mak_doong(texts) {
+  if (texts === "") {
+
+  }
+}
 
 // 음성인식 감지 안되면 소켓에 종료시간과 메시지를 등록하고 초기화 => 녹음 다시 시작
 recognition.onend = function () {
@@ -119,7 +124,9 @@ recognition.onend = function () {
     // console.log(sockets);
     // 여기서 소켓으로 보내야함
     // 새 이벤트 new_message. 백엔드로 보낸다.
-    const h2 = room.querySelector("h2");  
+    const h2 = room.querySelector("h2");
+
+    // 막둥이 지능 올리기
     if (texts === "막둥아 기록 중지") {
       sockets["message"] = "기록중지";
       h2.innerText = `기록중지`;
