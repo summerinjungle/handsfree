@@ -36,6 +36,8 @@ npm run dev
 lt --port 3000 
 
 
+# 노드에서 현재시간 받아오려면 data-utils 필요
+
 // 마이크를 켠다
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   let recognition = new SpeechRecognition();

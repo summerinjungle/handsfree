@@ -15,13 +15,15 @@ room.hidden = true;
 let roomName;
 let texts = "";
 let sound_detect_check = false;
+let scribe = true;
 
 // 서버로 보낼 json
 let sockets =  {
+  "room": "",
   "id": "",
-  "start_time": 0,
+  "talking_begin_time": 0,
   "message": "",
-  "end_time": 0
+  "talking_end_time": 0
 };
 
 
@@ -77,13 +79,20 @@ function showRoom(){
   const nameForm = room.querySelector("#name");
   msgForm.addEventListener("submit", handleMessageSubmit);
   nameForm.addEventListener("submit", handleNicknameSubmit);
+
+
 }
 
 
 function handleRoomSubmit(event){
   event.preventDefault();  // form 태그에서 submit을 누른 후 바로 새로고침되지 않도록 한다.
   const input = form.querySelector("input");  // form 태그에서 input DOM 찾기
-  socket.emit("enter_room", input.value, showRoom);
+
+  // 회의 시간 받기
+  const date = new Date();
+  meeting_start_time = date.getTime();
+
+  socket.emit("enter_room", input.value, meeting_start_time, showRoom);
   roomName = input.value;  // 얘가 showroom보다 먼저 실행됨. showroom은 callback 함수이므로!!
   console.log(roomName);
   input.value = "";
@@ -102,18 +111,37 @@ recognition.onstart = function () {
 // 음성인식 감지 안되면 소켓에 종료시간과 메시지를 등록하고 초기화 => 녹음 다시 시작
 recognition.onend = function () {
   const date = new Date();
-  end_time = date.getTime();
+  
   if (texts !== "") {
     sockets["message"] = texts;
-    sockets["end_time"] = timeConverter(end_time);
-    console.log(sockets);
+    sockets["talking_end_time"] = date.getTime();
+    sockets["room"] = roomName;
+    // console.log(sockets);
     // 여기서 소켓으로 보내야함
     // 새 이벤트 new_message. 백엔드로 보낸다.
-    socket.emit("new_message", sockets["message"], roomName, ()=> {
-    addMessage(`You : ${sockets["message"]}`);
-  });
-    
-
+    const h2 = room.querySelector("h2");  
+    if (texts === "막둥아 기록 중지") {
+      sockets["message"] = "기록중지";
+      h2.innerText = `기록중지`;
+      socket.emit("new_message", sockets, roomName, ()=> {});
+      console.log("기록중지");
+    }
+    else if (texts === "막둥아 기록 시작") {
+      sockets["message"] = "기록시작";
+      h2.innerText = `기록시작`;
+      socket.emit("new_message", sockets, roomName, ()=> {});
+      console.log("다시시작");
+    }
+    else if (texts.includes("막둥아 별표")) {
+      socket.emit("new_message", sockets, roomName, ()=> {
+      addMessage(`You : ${sockets["message"]}`);
+      });
+      console.log("별표");
+    } else {
+      socket.emit("new_message", sockets, roomName, ()=> {
+      addMessage(`You : ${sockets["message"]}`);
+      });
+    }
   }
   texts = "";
   recognition.start();
@@ -125,8 +153,7 @@ recognition.onresult = function (e) {
   if (sound_detect_check !== true) {
     sockets["message"] = "";
     const date = new Date();
-    start_time = date.getTime();
-    sockets["start_time"] = timeConverter(start_time);
+    sockets["talking_begin_time"] = date.getTime();
     sound_detect_check = true;
   }
   texts = Array.from(e.results)
@@ -140,7 +167,7 @@ recognition.onresult = function (e) {
 form.addEventListener("submit", handleRoomSubmit);
 
 socket.on("welcome", (user, newCount) => {
-  const h3 = room.querySelector("h3");  
+  const h3 = room.querySelector("h3");
   h3.innerText = `room ${roomName} (${newCount})`;
   addMessage(`${user} 들어옴`);
 });

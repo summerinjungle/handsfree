@@ -45,12 +45,15 @@ function publicRooms() {
 }
 
 
-function countRoom(rooName) {
-  return wsServer.sockets.adapter.rooms.get(rooName)?.size;
+function countRoom(roomName) {
+  return wsServer.sockets.adapter.rooms.get(roomName)?.size;
 }
 
+// 방마다 시작시간을 등록하는 딕셔너리
+var room_to_start = {};
+// 방마다 기록여부를 저장하는 딕셔너리
+var room_to_scribe = {};
 
-// 백엔드에서 connection을 받을 준비
 wsServer.on("connection", (socket) => {
   socket["nickname"] = "Anon";
   // 모든 이벤트를 핸들링하는 리스너(이벤트 핸들러)를 정의함.
@@ -61,8 +64,16 @@ wsServer.on("connection", (socket) => {
   
 
   // 방에 들어옴
-  socket.on("enter_room", (roomName, done) => {
-    // 이름이 roomName인 room에 입장한다.
+  socket.on("enter_room", (roomName, time, done) => {
+
+    // 이름이 roomName인 room에 입장한다. 두번째 들어오는 애 시간을 못받음
+    if (!publicRooms().includes(roomName)) {
+      socket["roomName"] = roomName;
+      // 시작시간과 기록여부를 초기화
+      room_to_start[roomName] = time;
+      room_to_scribe[roomName] = true;
+      console.log(socket["roomName"], "번방 회의 시작시간 :", time);
+    }
     socket.join(roomName);
     // 인자로 받은 함수를 FE에서 실행
     done();
@@ -79,16 +90,35 @@ wsServer.on("connection", (socket) => {
 
   // 새로운 메시지 받았을때
   socket.on("new_message", (msg, room, done) => {
-    // 방에 있는 사람들에게 메시지를 뿌려줌
-    socket.to(room).emit("new_message", `${socket.nickname}: ${msg}`);
-    // 인자로 받은 함수FE에서 실행
-    done();
+    if (msg["message"] === "기록시작") {
+      room_to_scribe[room] = true;
+      console.log("기록시작");
+    }
+    if (msg["message"] === "기록중지") {
+      room_to_scribe[room] = false;
+      console.log("기록중지");
+    }
+    if (room_to_scribe[room]) {
+      msg["talking_begin_time"] = msg["talking_begin_time"] - room_to_start[room];
+      msg["talking_end_time"] = msg["talking_end_time"] - room_to_start[room];
+      console.log(msg);
+      // 방에 있는 사람들에게 메시지를 뿌려줌
+      socket.to(room).emit("new_message", `${socket.nickname}: ${msg["message"]}`);
+      // 인자로 받은 함수FE에서 실행
+      done();
+    }
   });
 
 
   // 연결종료시 각방의 사람들에게 메시지를 뿌림
   socket.on("disconnecting", () => {
-    console.log(socket.rooms);
+    // console.log(socket.rooms);
+    // 1명인데 종료하면 방폭
+    if (countRoom(socket["roomName"]) === 1) {
+      var end = new Date();
+      var end_time = end.getTime();
+      console.log(socket["roomName"],"번방 회의 진행시간 :", end_time - room_to_start[socket["roomName"]]);
+    }
     socket.rooms.forEach(room => socket.to(room).emit("bye", socket.nickname, countRoom(room) - 1)); // 각 방에 있는 모든 사람들에게
   });
 
