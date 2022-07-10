@@ -135,19 +135,33 @@ recognition.onresult = function (e) {
 };
 
 
-socket.on("welcome", (user) => {
-  addMessage(`${user} 들어옴`);
-});
-
-
 // form은 element로서 이벤트를 수신할 수 있는 eventTarget이다.
 // submit이라는 이벤트에 대한 콜백 함수를 지정한다.
 form.addEventListener("submit", handleRoomSubmit);
 
+socket.on("welcome", (user, newCount) => {
+  const h3 = room.querySelector("h3");  
+  h3.innerText = `room ${roomName} (${newCount})`;
+  addMessage(`${user} 들어옴`);
+});
 
-socket.on("bye", (left) =>{
+socket.on("bye", (left, newCount) =>{
+  const h3 = room.querySelector("h3");  
+  h3.innerText = `room ${roomName} (${newCount})`;
   addMessage(`${left} 나감`);
 });
 
 
 socket.on("new_message", addMessage);
+
+socket.on("room_change", (rooms) => {
+  const roomList = welcome.querySelector("ul");
+  roomList.innerHTML = "";
+
+  // rooms 데이터로 받아온 자료들을 li에 하나씩 뿌려준 후 roomList에 넣어서 출력시킨다. 
+  rooms.forEach(room => {
+    const li = document.createElement("li");
+    li.innerText = room;
+    roomList.append(li);
+  })
+});
