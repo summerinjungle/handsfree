@@ -12,9 +12,13 @@ recognition.interimResults = true;
 recognition.lang = "ko-KR";
 
 room.hidden = true;
+// 방번호
 let roomName;
+// 메시지 내용
 let texts = "";
+// 소리감지체크
 let sound_detect_check = false;
+// 기록중지 하면 False => 안써도 동작함
 let scribe = true;
 
 // 서버로 보낼 json
@@ -28,24 +32,17 @@ let sockets =  {
 
 
 // 현재 시간 구하는함수
-function timeConverter(t){
-  var date = new Date(t);
-  var year = date.getFullYear();
-  var month = "0" + (date.getMonth()+1);
-  var day = "0" + date.getDate();
-  var hour = "0" + date.getHours();
-  var minute = "0" + date.getMinutes();
-  var second = "0" + date.getSeconds();
-  var ms = "0" + date.getMilliseconds();
-  return year + "." + month.substr(-2) + "." + day.substr(-2) + " "+ hour.substr(-2) + ":" + minute.substr(-2) + ":" + second.substr(-2) + "." + ms.substr(-3);
-}
-
-function addMessage(message) {
-  const ul = room.querySelector("ul");
-  const li = document.createElement("li");
-  li.innerText = message;
-  ul.appendChild(li);
-}
+// function timeConverter(t){
+//   var date = new Date(t);
+//   var year = date.getFullYear();
+//   var month = "0" + (date.getMonth()+1);
+//   var day = "0" + date.getDate();
+//   var hour = "0" + date.getHours();
+//   var minute = "0" + date.getMinutes();
+//   var second = "0" + date.getSeconds();
+//   var ms = "0" + date.getMilliseconds();
+//   return year + "." + month.substr(-2) + "." + day.substr(-2) + " "+ hour.substr(-2) + ":" + minute.substr(-2) + ":" + second.substr(-2) + "." + ms.substr(-3);
+// }
 
 
 // function handleMessageSubmit(event) {
@@ -60,6 +57,16 @@ function addMessage(message) {
 // }
 
 
+// 메시지 등록하는 함수
+function addMessage(message) {
+  const ul = room.querySelector("ul");
+  const li = document.createElement("li");
+  li.innerText = message;
+  ul.appendChild(li);
+}
+
+
+// 닉네임 바꾸기
 function handleNicknameSubmit(event) {
   event.preventDefault();
   const input = room.querySelector("#name input");
@@ -75,12 +82,15 @@ function showRoom(){
   room.hidden = false;    // room 태그가 보인다.
   const h3 = room.querySelector("h3");  
   h3.innerText = `room ${roomName}`;
-  // const msgForm = room.querySelector("#msg");
   const nameForm = room.querySelector("#name");
-  // msgForm.addEventListener("submit", handleMessageSubmit);
   nameForm.addEventListener("submit", handleNicknameSubmit);
+}
 
 
+// 나가기 버튼 클릭
+function exit_room() {
+  socket.emit('forceDisconnect');
+  location.reload();
 }
 
 
@@ -107,6 +117,7 @@ recognition.onstart = function () {
   sound_detect_check= false;
 };
 
+// 막둥이 검사하는 함수
 function mak_doong(texts) {
   if (texts === "") {
 
@@ -121,30 +132,33 @@ recognition.onend = function () {
     sockets["message"] = texts;
     sockets["talking_end_time"] = date.getTime();
     sockets["room"] = roomName;
-    // console.log(sockets);
+
     // 여기서 소켓으로 보내야함
     // 새 이벤트 new_message. 백엔드로 보낸다.
     const h2 = room.querySelector("h2");
 
     // 막둥이 지능 올리기
     if (texts === "막둥아 기록 중지") {
-      sockets["message"] = "기록중지";
+      sockets["message"] = "기록중지@";
       h2.innerText = `기록중지`;
       socket.emit("new_message", sockets, roomName, ()=> {});
       console.log("기록중지");
-    }
-    else if (texts === "막둥아 기록 시작") {
-      sockets["message"] = "기록시작";
+    } else if (texts === "막둥아 기록 시작") {
+      sockets["message"] = "기록시작@";
       h2.innerText = `기록시작`;
       socket.emit("new_message", sockets, roomName, ()=> {});
       console.log("다시시작");
-    }
-    else if (texts.includes("막둥아 별표")) {
+    } else if (texts.includes("막둥아 별표") || texts.includes("막둥아 대표")) {
+      sockets["message"] = "막둥아 별표@";
       socket.emit("new_message", sockets, roomName, ()=> {
       addMessage(`You : ${sockets["message"]}`);
       });
       console.log("별표");
-    } else {
+    } else if (texts.includes("막둥아 종료")) {
+      socket.emit('forceDisconnect');
+      location.reload();
+    } 
+    else {
       socket.emit("new_message", sockets, roomName, ()=> {
       addMessage(`You : ${sockets["message"]}`);
       });
@@ -198,4 +212,23 @@ socket.on("room_change", (rooms) => {
     li.innerText = room;
     roomList.append(li);
   })
+});
+
+
+socket.on("scribe_start", msg => {
+  const h2 = room.querySelector("h2");
+  h2.innerText = `기록시작`;
+});
+
+
+socket.on("scribe_end", msg => {
+  const h2 = room.querySelector("h2");
+  h2.innerText = `기록중지`;
+});
+
+
+socket.on("finish_meeting", (stop_time, restart_time, star_time) => {
+  // alert(stop_time, restart_time, star_time);
+  // alert("d");
+  console.log(stop_time, restart_time, star_time);
 });
