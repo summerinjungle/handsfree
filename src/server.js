@@ -18,18 +18,13 @@ instrument(wsServer, {
   auth: false
 });
 
-///////////////////////////////////////////////////////////////////
-
-
-////////////////////////////////////////////////////////////////////
 
 app.set("views", __dirname + "/views");
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use("/public", express.static(__dirname + "/public"));
 app.get("/", (req, res) => res.render("index"));
-app.get("/*", (_, res) => res.redirect("/"));
-
+// app.get("/*", (_, res) => res.redirect("/"));
 
 // 연결이 되었을 때와 연결이 끊겼을 때 publicRooms 함수를 사용하면
 // 방이 존재하는지, 존재하지 않는지 확인할 수 있다.
@@ -70,7 +65,7 @@ var room_to_scribe_stop = {};
 
 
 wsServer.on("connection", (socket) => {
-  socket["nickname"] = "Anon";
+  socket["nickname"] = "익명이";
   // 모든 이벤트를 핸들링하는 리스너(이벤트 핸들러)를 정의함.
   socket.onAny((event) => {
     // console.log(wsServer.sockets.adapter);
@@ -153,9 +148,10 @@ wsServer.on("connection", (socket) => {
       var end = new Date();
       var end_time = end.getTime();
       console.log(socket["roomName"],"번방 회의 진행시간 :", end_time - room_to_start[socket["roomName"]]);
-      // 이거 실행 안되는 중 왜?
+      
+      // 이거 실행 안되는 중 왜? 클라로 
       // socket.to(socket["roomName"]).emit(
-      //   "finish_meeting",
+      //   "meeting",
       //   room_to_scribe_restart[socket["roomName"]],
       //   room_to_scribe_stop[socket["roomName"]],
       //   room_to_star[socket["roomName"]]
@@ -165,9 +161,9 @@ wsServer.on("connection", (socket) => {
       console.log("기록중지", room_to_scribe_stop[socket["roomName"]]);
       console.log("별표시간", room_to_star[socket["roomName"]]);
 
-      delete room_to_scribe_restart[socket["roomName"]];
-      delete room_to_star[socket["roomName"]];
-      delete room_to_scribe_stop[socket["roomName"]];
+      // delete room_to_scribe_restart[socket["roomName"]];
+      // delete room_to_star[socket["roomName"]];
+      // delete room_to_scribe_stop[socket["roomName"]];
     }
     socket.rooms.forEach(room => socket.to(room).emit("bye", socket.nickname, countRoom(room) - 1)); // 각 방에 있는 모든 사람들에게
   });

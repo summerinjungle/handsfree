@@ -6,10 +6,12 @@ const welcome = document.getElementById("welcome");
 const form = welcome.querySelector("form");
 const room = document.getElementById("room");
 
+
 window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = new SpeechRecognition();
 recognition.interimResults = true;
 recognition.lang = "ko-KR";
+
 
 room.hidden = true;
 // 방번호
@@ -21,6 +23,7 @@ let sound_detect_check = false;
 // 기록중지 하면 False => 안써도 동작함
 let scribe = true;
 
+
 // 서버로 보낼 json
 let sockets =  {
   "room": "",
@@ -29,32 +32,6 @@ let sockets =  {
   "message": "",
   "talking_end_time": 0
 };
-
-
-// 현재 시간 구하는함수
-// function timeConverter(t){
-//   var date = new Date(t);
-//   var year = date.getFullYear();
-//   var month = "0" + (date.getMonth()+1);
-//   var day = "0" + date.getDate();
-//   var hour = "0" + date.getHours();
-//   var minute = "0" + date.getMinutes();
-//   var second = "0" + date.getSeconds();
-//   var ms = "0" + date.getMilliseconds();
-//   return year + "." + month.substr(-2) + "." + day.substr(-2) + " "+ hour.substr(-2) + ":" + minute.substr(-2) + ":" + second.substr(-2) + "." + ms.substr(-3);
-// }
-
-
-// function handleMessageSubmit(event) {
-//   event.preventDefault();
-//   const input = room.querySelector("#msg input");
-//   const value = input.value;
-//   // 새 이벤트 new_message. 백엔드로 보낸다.
-//   socket.emit("new_message", input.value, roomName, ()=> {
-//     addMessage(`You : ${value}`);
-//   });
-//   input.value = '';
-// }
 
 
 // 메시지 등록하는 함수
@@ -94,6 +71,7 @@ function exit_room() {
 }
 
 
+// 입장하기버튼
 function handleRoomSubmit(event){
   event.preventDefault();  // form 태그에서 submit을 누른 후 바로 새로고침되지 않도록 한다.
   const input = form.querySelector("input");  // form 태그에서 input DOM 찾기
@@ -202,10 +180,10 @@ socket.on("bye", (left, newCount) =>{
 
 socket.on("new_message", addMessage);
 
+
 socket.on("room_change", (rooms) => {
   const roomList = welcome.querySelector("ul");
   roomList.innerHTML = "";
-
   // rooms 데이터로 받아온 자료들을 li에 하나씩 뿌려준 후 roomList에 넣어서 출력시킨다. 
   rooms.forEach(room => {
     const li = document.createElement("li");
@@ -227,8 +205,8 @@ socket.on("scribe_end", msg => {
 });
 
 
-socket.on("finish_meeting", (stop_time, restart_time, star_time) => {
-  // alert(stop_time, restart_time, star_time);
-  // alert("d");
-  console.log(stop_time, restart_time, star_time);
-});
+// socket.on("meeting", (stop_time) => {
+//   // alert(stop_time, restart_time, star_time);
+//   // alert("d");
+//   console.log(stop_time);
+// });

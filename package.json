@@ -23,5 +23,16 @@
     "pug": "^3.0.2",
     "socket.io": "^4.5.1",
     "ws": "^8.8.0"
-  }
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minsung37/clone_zoom.git"
+  },
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/minsung37/clone_zoom/issues"
+  },
+  "homepage": "https://github.com/minsung37/clone_zoom#readme"
 }

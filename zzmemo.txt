@@ -29,11 +29,15 @@ Socket IO는 프론트와 백엔드 간 실시간 통신을 가능하게 해주�
 2.1강
 Socket IO설치 npm i socket.io
 
+npm i @socket.io/admin-ui
+
 3.8강
 npm i -g localtunnel
 터미널두개키고
 npm run dev 
 lt --port 3000 
+
+
 
 # MongoDB
 
