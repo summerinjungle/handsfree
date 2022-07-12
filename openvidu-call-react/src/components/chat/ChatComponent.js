@@ -9,18 +9,11 @@ import { Tooltip } from "@material-ui/core";
 import Dictaphone from "../Dictaphone";
 
 export default class ChatComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      messageList: [],
-      message: "",
-    };
-    this.chatScroll = React.createRef();
-    this.handleChange = this.handleChange.bind(this);
-    this.handlePressKey = this.handlePressKey.bind(this);
-    this.close = this.close.bind(this);
-    this.sendMessage = this.sendMessage.bind(this);
-  }
+  state = {
+    messageList: [],
+    message: "",
+  };
+  chatScroll = React.createRef();
 
   componentDidMount() {
     this.props.user
@@ -48,17 +41,17 @@ export default class ChatComponent extends Component {
       });
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({ message: event.target.value });
-  }
+  };
 
-  handlePressKey(event) {
+  handlePressKey = (event) => {
     if (event.key === "Enter") {
       this.sendMessage();
     }
-  }
+  };
 
-  sendMessage() {
+  sendMessage = () => {
     console.log("send Message ", this.state.message);
     if (this.props.user && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
@@ -75,20 +68,20 @@ export default class ChatComponent extends Component {
       }
     }
     this.setState({ message: "" });
-  }
+  };
 
-  scrollToBottom() {
+  scrollToBottom = () => {
     setTimeout(() => {
       try {
         this.chatScroll.current.scrollTop =
           this.chatScroll.current.scrollHeight;
       } catch (err) {}
     }, 20);
-  }
+  };
 
-  close() {
+  close = () => {
     this.props.close(undefined);
-  }
+  };
 
   parentFunction = (data) => {
     console.log("parentFunction , data ", data);
