@@ -66,7 +66,7 @@ class VideoRoomSub extends Component {
   }
 
   componentDidMount() {
-    console.log(`localUser = ${JSON.stringify(localUser)}`);
+    // console.log(`localUser = ${JSON.stringify(localUser)}`);
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -124,12 +124,12 @@ class VideoRoomSub extends Component {
 
   connectToSession() {
     if (this.props.token !== undefined) {
-      console.log("token received: ", this.props.token);
+      // console.log("token received: ", this.props.token);
       this.connect(this.props.token);
     } else {
       this.getToken()
         .then((token) => {
-          console.log(token);
+          // console.log(token);
           this.connect(token);
         })
         .catch((error) => {
@@ -521,7 +521,7 @@ class VideoRoomSub extends Component {
 
   toggleChat(property) {
     let display = property;
-    console.log("chat event", display);
+    // console.log("chat event", display);
     if (display === undefined) {
       display = this.state.chatDisplay === "none" ? "block" : "none";
     }
@@ -529,7 +529,7 @@ class VideoRoomSub extends Component {
     if (display === "block") {
       this.setState({ chatDisplay: display, messageReceived: false });
     } else {
-      console.log("chat", display);
+      // console.log("chat", display);
       this.setState({ chatDisplay: display });
     }
     this.updateLayout();
@@ -697,7 +697,7 @@ class VideoRoomSub extends Component {
           },
         })
         .then((response) => {
-          console.log("CREATE SESION", response);
+          // console.log("CREATE SESION", response);
           resolve(response.data.id);
         })
         .catch((response) => {
@@ -705,7 +705,7 @@ class VideoRoomSub extends Component {
           if (error.response && error.response.status === 409) {
             resolve(sessionId);
           } else {
-            console.log(error);
+            // console.log(error);
             console.warn(
               "No connection to OpenVidu Server. This may be a certificate error at " +
                 this.OPENVIDU_SERVER_URL
@@ -748,7 +748,7 @@ class VideoRoomSub extends Component {
           }
         )
         .then((response) => {
-          console.log("TOKEN", response);
+          // console.log("TOKEN", response);
           resolve(response.data.token);
         })
         .catch((error) => reject(error));

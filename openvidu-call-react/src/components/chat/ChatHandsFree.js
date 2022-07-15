@@ -29,15 +29,15 @@ export default class ChatHandsFree extends Component {
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
-    console.log("22222222222222 cdm", this.props.localUser.getStreamManager());
+    // console.log("22222222222222 cdm", this.props.localUser.getStreamManager());
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
         // console.log("event = ", event);
         const data = JSON.parse(event.data);
         let messageList = this.state.messageList;
-        console.log("state record  =", this.state.isRecog);
-        console.log("data record  =", data.isRecord);
+        // console.log("state record  =", this.state.isRecog);
+        // console.log("data record  =", data.isRecord);
         if (data.isRecord === true) {
           messageList.push({
             connectionId: event.from.connectionId,
@@ -72,7 +72,7 @@ export default class ChatHandsFree extends Component {
   }
 
   sendMessage() {
-    console.log("111111 @@@ ", this.props.localUser);
+    // console.log("111111 @@@ ", this.props.localUser);
     if (this.props.localUser && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
       if (message !== "" && message !== " ") {
@@ -84,10 +84,10 @@ export default class ChatHandsFree extends Component {
           nickname: this.props.localUser.getNickname(),
           streamId: this.props.localUser.getStreamManager().stream.streamId,
         };
-        console.log(
-          "this.props.user ... session ?? ",
-          this.props.localUser.getStreamManager().stream.session
-        );
+        // console.log(
+        //   "this.props.user ... session ?? ",
+        //   this.props.localUser.getStreamManager().stream.session
+        // );
         this.props.localUser.getStreamManager().stream.session.signal({
           data: JSON.stringify(data),
           type: "chat",
@@ -112,7 +112,7 @@ export default class ChatHandsFree extends Component {
 
   parentFunction = (data) => {
     this.state.message = data;
-    console.log("!!!!! data", data);
+    // console.log("!!!!! data", data);
     if (
       (data === "기록 중지" || data === "기록중지") &&
       this.state.isRecog === true
