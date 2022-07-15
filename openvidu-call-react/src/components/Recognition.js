@@ -3,6 +3,9 @@ import React, { useEffect, useState, Component } from "react";
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
+const recognition = new SpeechRecognition();
+recognition.continuous = false;
+recognition.interimResults = true;
 class Recognition extends Component {
   constructor(props) {
     super(props);
@@ -12,20 +15,19 @@ class Recognition extends Component {
   }
 
   componentDidMount() {
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
     // recognition.interimResults = true;
     recognition.start();
     console.log("start .....");
 
-    recognition.onend = () => {
-      console.log("onend ... ");
-      recognition.start();
-    };
-
     recognition.onstart = () => {
       this.props.parentFunction(this.state.transcript);
       console.log("onstart ...");
+      this.setState({ transcript: "" });
+    };
+
+    recognition.onend = () => {
+      console.log("onend ... ");
+      recognition.start();
     };
 
     recognition.onresult = (event) => {

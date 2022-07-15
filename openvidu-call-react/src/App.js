@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import VideoRoomComponent from "./components/VideoRoomComponent";
-import SocketIo from "./SocketIo";
 import "./App.css";
-import Dictaphone from "./components/Dictaphone";
-import VideoRoomSub from "./components/VideoRoomSub";
+import VideoRoomHandsFree from "./components/VideoRoomHandsFree";
 
 const App = () => {
   const [showRoom, setShowRoom] = useState(false);
 
   const joinRoom = () => {
-    // socket.emit("join_room", room);
     setShowRoom(true);
   };
   return (
@@ -22,7 +18,7 @@ const App = () => {
         </div>
       ) : (
         <div>
-          <VideoRoomSub />
+          <VideoRoomHandsFree />
         </div>
       )}
     </div>

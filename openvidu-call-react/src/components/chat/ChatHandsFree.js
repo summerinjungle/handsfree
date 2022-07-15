@@ -203,10 +203,7 @@ export default class ChatHandsFree extends Component {
           parentFunction={this.parentFunction}
           rootFunction={this.props.rootFunction}
         /> */}
-        {/* <Stt
-          parentFunction={this.parentFunction}
-          rootFunction={this.props.rootFunction}
-        /> */}
+        {/* <Stt parentFunction={this.parentFunction} /> */}
         <Recognition
           parentFunction={this.parentFunction}
           rootFunction={this.props.rootFunction}
