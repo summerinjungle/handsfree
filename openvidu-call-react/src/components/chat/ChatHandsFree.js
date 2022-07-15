@@ -8,12 +8,14 @@ import "./ChatComponent.css";
 import { Tooltip } from "@material-ui/core";
 import Dictaphone from "../Dictaphone";
 
-export default class ChatComponent extends Component {
+export default class ChatHandsFree extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       messageList: [],
       message: "",
+      isRecog: true,
     };
     this.chatScroll = React.createRef();
     this.handleChange = this.handleChange.bind(this);
@@ -22,17 +24,29 @@ export default class ChatComponent extends Component {
     this.sendMessage = this.sendMessage.bind(this);
   }
 
+  // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
-    this.props.user
+    console.log("22222222222222 cdm", this.props.localUser.getStreamManager());
+    this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
+        // console.log("event = ", event);
         const data = JSON.parse(event.data);
         let messageList = this.state.messageList;
-        messageList.push({
-          connectionId: event.from.connectionId,
-          nickname: data.nickname,
-          message: data.message,
-        });
+        if (data.message == "기록 시작" || data.message == "기록시작") {
+          this.setState({ isRecog: true });
+        } else if (data.message == "기록 중지" || data.message == "기록중지") {
+          this.setState({ isRecog: false });
+        }
+
+        if (this.state.isRecog === true) {
+          messageList.push({
+            connectionId: event.from.connectionId,
+            nickname: data.nickname,
+            message: data.message,
+          });
+        }
+
         const document = window.document;
         setTimeout(() => {
           const userImg = document.getElementById(
@@ -59,16 +73,21 @@ export default class ChatComponent extends Component {
   }
 
   sendMessage() {
-    console.log("send Message ", this.state.message);
-    if (this.props.user && this.state.message) {
+    console.log("111111 ", this.props.localUser.getStreamManager());
+    console.log("111111 @@@ ", this.props.localUser);
+    if (this.props.localUser && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
       if (message !== "" && message !== " ") {
         const data = {
           message: message,
-          nickname: this.props.user.getNickname(),
-          streamId: this.props.user.getStreamManager().stream.streamId,
+          nickname: this.props.localUser.getNickname(),
+          streamId: this.props.localUser.getStreamManager().stream.streamId,
         };
-        this.props.user.getStreamManager().stream.session.signal({
+        console.log(
+          "this.props.user ... session ?? ",
+          this.props.localUser.getStreamManager().stream.session
+        );
+        this.props.localUser.getStreamManager().stream.session.signal({
           data: JSON.stringify(data),
           type: "chat",
         });
@@ -91,9 +110,23 @@ export default class ChatComponent extends Component {
   }
 
   parentFunction = (data) => {
-    console.log("parentFunction , data ", data);
     this.state.message = data;
-    this.sendMessage();
+    console.log("!!!!!~~!! data", data);
+    if (
+      (data === "기록 중지" || data === "기록중지") &&
+      this.state.isRecog === true
+    ) {
+      this.sendMessage();
+      this.setState({ isRecog: false });
+    } else if (
+      (data === "기록 시작" || data === "기록시작") &&
+      this.state.isRecog === false
+    ) {
+      this.setState({ isRecog: true });
+    }
+    if (this.state.isRecog === true) {
+      this.sendMessage();
+    }
   };
 
   render() {
@@ -103,8 +136,8 @@ export default class ChatComponent extends Component {
         <div id='chatComponent' style={styleChat}>
           <div id='chatToolbar'>
             <span>
-              {this.props.user.getStreamManager().stream.session.sessionId} -
-              CHAT
+              {this.props.localUser.getStreamManager().stream.session.sessionId}{" "}
+              - CHAT
             </span>
             <IconButton id='closeButton' onClick={this.close}>
               <HighlightOff color='secondary' />
@@ -117,7 +150,7 @@ export default class ChatComponent extends Component {
                 id='remoteUsers'
                 className={
                   "message" +
-                  (data.connectionId !== this.props.user.getConnectionId()
+                  (data.connectionId !== this.props.localUser.getConnectionId()
                     ? " left"
                     : " right")
                 }

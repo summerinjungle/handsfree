@@ -3,6 +3,7 @@ import VideoRoomComponent from "./components/VideoRoomComponent";
 import SocketIo from "./SocketIo";
 import "./App.css";
 import Dictaphone from "./components/Dictaphone";
+import VideoRoomSub from "./components/VideoRoomSub";
 
 const App = () => {
   const [showRoom, setShowRoom] = useState(false);
@@ -21,7 +22,7 @@ const App = () => {
         </div>
       ) : (
         <div>
-          <VideoRoomComponent />
+          <VideoRoomSub />
         </div>
       )}
     </div>

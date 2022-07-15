@@ -15,57 +15,15 @@ const ChatComponent = ({ chatDisplay, user, rootFunction, closeBtn }) => {
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const { transcript, resetTranscipt } = useSpeechRecognition();
-
   const chatScroll = useRef(null);
 
-  SpeechRecognition.startListening({
-    continuous: true,
-    // autoStart: false,
-    // interimResults: true,
-    language: "ko-KR",
-  });
-
-  // useEffect(() => {
-  //   setMessage(transcript);
-  //   sendMessage();
-  // }, []);
-
-  // const parentFunction = (data) => {
-  //   console.log("parentFunction , data ", data);
-  //   setMessage(data);
-  //   sendMessage();
-  // };
-  let datas;
-
-  const toRootFunction = (data) => rootFunction(data);
-
-  const commands = [
-    {
-      command: [
-        "마이크 켜",
-        "마이크 꺼",
-        "카메라 켜",
-        "카메라 꺼",
-        "채팅 켜",
-        "채팅 꺼",
-        "채팅 창 켜",
-        "채팅 창 꺼",
-        "채팅창 켜",
-        "채팅창 꺼",
-      ],
-      callback: (command) => {
-        console.lop(`command =  ${command}`);
-        toRootFunction(command);
-        resetTranscript();
-      },
-    },
-  ];
-
-  const { resetTranscript } = useSpeechRecognition({ commands });
-
+  // componentDidMount와 componentDidUpdate, componentWillUnmount가 합쳐진 것
+  // componentDidMount : 컴포넌트가 웹 브라우저 상에 나타난 후 호출 하는 메서드
+  // componentDidUpdate : 컴포넌트의 업데이트 작업이 끝난 후 호출하는 메서드
+  // componentWillUnmount : 컴포넌트가 웹 브라우저상에 사라지기 전에 호출하는 메서드
   useEffect(() => {
-    setMessage(transcript);
-    sendMessage();
+    // setMessage(transcript);
+    // sendMessage();
     user.getStreamManager().stream.session.on("signal:chat", (event) => {
       console.log("event ===== >", event);
       const data = JSON.parse(event.data);
@@ -212,7 +170,7 @@ const ChatComponent = ({ chatDisplay, user, rootFunction, closeBtn }) => {
             rootFunction={this.props.rootFunction}
           />
         )} */}
-      {/* <Dictaphone parentFunction={parentFunction} rootFunction={rootFunction} /> */}
+      <Dictaphone parentFunction={parentFunction} rootFunction={rootFunction} />
     </div>
   );
 };
