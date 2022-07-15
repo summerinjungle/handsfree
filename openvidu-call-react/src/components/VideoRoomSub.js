@@ -676,7 +676,18 @@ class VideoRoomSub extends Component {
 
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
-      var data = JSON.stringify({ customSessionId: sessionId });
+      var data = JSON.stringify({
+        customSessionId: sessionId,
+        recordingMode: "ALWAYS", // 녹화를 위한 BODY 추가 추가
+        defaultRecordingProperties: {
+          name: "ownweapon",
+          hasAudio: true,
+          hasVideo: false,
+          outputMode: "COMPOSED",
+          resolution: "640x480",
+          frameRate: 24,
+        },
+      });
       axios
         .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {

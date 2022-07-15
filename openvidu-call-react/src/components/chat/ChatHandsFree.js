@@ -7,6 +7,8 @@ import Send from "@material-ui/icons/Send";
 import "./ChatComponent.css";
 import { Tooltip } from "@material-ui/core";
 import Dictaphone from "../Dictaphone";
+import Recognition from "../Recognition";
+import Stt from "../Stt";
 
 export default class ChatHandsFree extends Component {
   constructor(props) {
@@ -197,7 +199,15 @@ export default class ChatHandsFree extends Component {
             rootFunction={this.props.rootFunction}
           />
         )} */}
-        <Dictaphone
+        {/* <Dictaphone
+          parentFunction={this.parentFunction}
+          rootFunction={this.props.rootFunction}
+        /> */}
+        {/* <Stt
+          parentFunction={this.parentFunction}
+          rootFunction={this.props.rootFunction}
+        /> */}
+        <Recognition
           parentFunction={this.parentFunction}
           rootFunction={this.props.rootFunction}
         />
