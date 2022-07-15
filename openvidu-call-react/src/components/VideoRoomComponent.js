@@ -17,10 +17,15 @@ class VideoRoomComponent extends Component {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
-      : "https://" + window.location.hostname + ":4443";
+      : 'https://openvidu.shop:443';
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
+
+
+    // this.OPENVIDU_SERVER_URL = 'https://metamong.shop:4443';
+    // this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret ? this.props.openviduSecret : 'MY_SECRET';
+
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
     let sessionName = this.props.sessionName
@@ -29,9 +34,11 @@ class VideoRoomComponent extends Component {
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
+
     // this.type = this.props.match.params.type
     //   ? this.props.match.params.type
     //   : "stt";
+
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -675,7 +682,18 @@ class VideoRoomComponent extends Component {
 
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
-      var data = JSON.stringify({ customSessionId: sessionId });
+      var data = JSON.stringify({
+        customSessionId: sessionId,
+        recordingMode: "ALWAYS", // 녹화를 위한 BODY 추가 추가
+        defaultRecordingProperties: {
+            "name": "OwnWeapon",
+            "hasAudio": true,
+            "hasVideo": false,
+            "outputMode": "COMPOSED",
+            "resolution": "640x480",
+            "frameRate": 24
+        }
+    });
       axios
         .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
@@ -686,6 +704,7 @@ class VideoRoomComponent extends Component {
         })
         .then((response) => {
           console.log("CREATE SESION", response);
+          console.log("@@@@@@@@@@@@@@@@@@@@@", response.data.sessionId);
           resolve(response.data.id);
         })
         .catch((response) => {
