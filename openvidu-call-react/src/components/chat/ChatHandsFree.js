@@ -16,6 +16,7 @@ export default class ChatHandsFree extends Component {
       messageList: [],
       message: "",
       isRecog: true,
+      time: "",
     };
     this.chatScroll = React.createRef();
     this.handleChange = this.handleChange.bind(this);
@@ -33,32 +34,28 @@ export default class ChatHandsFree extends Component {
         // console.log("event = ", event);
         const data = JSON.parse(event.data);
         let messageList = this.state.messageList;
-        if (data.message == "기록 시작" || data.message == "기록시작") {
-          this.setState({ isRecog: true });
-        } else if (data.message == "기록 중지" || data.message == "기록중지") {
-          this.setState({ isRecog: false });
-        }
-
-        if (this.state.isRecog === true) {
+        console.log("state record  =", this.state.isRecog);
+        console.log("data record  =", data.isRecord);
+        if (data.isRecord === true) {
           messageList.push({
             connectionId: event.from.connectionId,
             nickname: data.nickname,
             message: data.message,
+            time: data.time,
           });
+          const document = window.document;
+          setTimeout(() => {
+            const userImg = document.getElementById(
+              "userImg-" + (this.state.messageList.length - 1)
+            );
+            const video = document.getElementById("video-" + data.streamId);
+            const avatar = userImg.getContext("2d");
+            avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
+            // this.props.messageReceived();
+          }, 50);
+          this.setState({ messageList: messageList });
+          this.scrollToBottom();
         }
-
-        const document = window.document;
-        setTimeout(() => {
-          const userImg = document.getElementById(
-            "userImg-" + (this.state.messageList.length - 1)
-          );
-          const video = document.getElementById("video-" + data.streamId);
-          const avatar = userImg.getContext("2d");
-          avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
-          // this.props.messageReceived();
-        }, 50);
-        this.setState({ messageList: messageList });
-        this.scrollToBottom();
       });
   }
 
@@ -73,12 +70,14 @@ export default class ChatHandsFree extends Component {
   }
 
   sendMessage() {
-    console.log("111111 ", this.props.localUser.getStreamManager());
     console.log("111111 @@@ ", this.props.localUser);
     if (this.props.localUser && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
       if (message !== "" && message !== " ") {
+        const date = new Date();
         const data = {
+          isRecord: this.state.isRecog,
+          time: date.getHours() + ":" + date.getMinutes(),
           message: message,
           nickname: this.props.localUser.getNickname(),
           streamId: this.props.localUser.getStreamManager().stream.streamId,
@@ -111,12 +110,11 @@ export default class ChatHandsFree extends Component {
 
   parentFunction = (data) => {
     this.state.message = data;
-    console.log("!!!!!~~!! data", data);
+    console.log("!!!!! data", data);
     if (
       (data === "기록 중지" || data === "기록중지") &&
       this.state.isRecog === true
     ) {
-      this.sendMessage();
       this.setState({ isRecog: false });
     } else if (
       (data === "기록 시작" || data === "기록시작") &&
@@ -124,9 +122,12 @@ export default class ChatHandsFree extends Component {
     ) {
       this.setState({ isRecog: true });
     }
-    if (this.state.isRecog === true) {
-      this.sendMessage();
-    }
+
+    setTimeout(() => {
+      if (this.state.isRecog === true) {
+        this.sendMessage();
+      }
+    }, 500);
   };
 
   render() {
@@ -164,6 +165,7 @@ export default class ChatHandsFree extends Component {
                 <div className='msg-detail'>
                   <div className='msg-info'>
                     <p> {data.nickname}</p>
+                    <p className='text'>{data.time}</p>
                   </div>
                   <div className='msg-content'>
                     <span className='triangle' />
