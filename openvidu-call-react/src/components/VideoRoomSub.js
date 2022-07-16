@@ -729,7 +729,7 @@ class VideoRoomSub extends Component {
           },
         })
         .then((response) => {
-          console.log("CREATE SESION", response);
+          console.log("-------- CREATE SESION ------ Doyoung", response);
           resolve(response.data.id);
         })
         .catch((response) => {
