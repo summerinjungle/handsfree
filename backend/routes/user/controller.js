@@ -1,6 +1,5 @@
 const { OK, CREATED, BAD_REQUEST } = require('../../config/statusCode').statusCode;
 const userServices = require('../../services/user');
-const { User } = require('../../models/User');
 
 /*
     POST /api/users/

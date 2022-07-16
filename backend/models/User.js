@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
-
-const { Schema } = mongoose;
+const { model, Schema } = require('mongoose');
 
 const userSchema = new Schema({
     name: {
@@ -20,7 +18,8 @@ const userSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = model('User', userSchema);
+
 
 // // -- https://github.com/boostcampwm-2021/bookathon_B/blob/main/backend/src/models/user.js
 // // const mongoose = require('mongoose');
