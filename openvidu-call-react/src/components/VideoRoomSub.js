@@ -310,14 +310,11 @@ class VideoRoomSub extends Component {
 
     //방장이(Publisher) 나갈때만 호출되어야 함 아직 그건 안됨.
     this.stopRecording(this.state.mySessionId);
-    
-    console.log("FORCE_DISCONNECT",this.state.mySessionId, this.state.subscribers.connectionId, this.state, this.state.localUser);
+  
 
     // 방장(Publisher)일 경우에는 모든 Subscriber 강제 종료
-    let remoteUsers = this.state.subscribers;
-      remoteUsers.forEach((user) => {
-        this.forceDisconnect(this.state.mySessionId, user.getConnectionId());  
-      });
+    this.forceDisconnect(this.state.mySessionId, this.state.localUser.connectionId);  
+
 
   }
 
