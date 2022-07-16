@@ -1,13 +1,14 @@
 import React, { useEffect, useState, Component } from "react";
 
-
 // 소리감지체크
 let sound_detect_check = false;
 
-
-
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
+
+const recognition = new SpeechRecognition();
+recognition.continuous = false;
+recognition.interimResults = true;
 
 class Recognition extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class Recognition extends Component {
   componentDidMount() {
     const recognition = new SpeechRecognition();
     recognition.interimResults = true;
+
     recognition.start();
     const date = new Date();
     const meeting_start_time = date.getTime();
@@ -27,7 +29,7 @@ class Recognition extends Component {
 
     // 음성인식 시작 로그 찍어야함
     recognition.onstart = () => {
-      sound_detect_check= false;
+      sound_detect_check = false;
     };
 
     recognition.onend = () => {
@@ -41,7 +43,6 @@ class Recognition extends Component {
       this.setState({ transcript: "" });
       recognition.start();
     };
-
 
     // 음성감지 된경우 시작시간을 등록한다
     recognition.onresult = (event) => {
