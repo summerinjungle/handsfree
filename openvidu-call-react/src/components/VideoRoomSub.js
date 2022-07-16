@@ -319,7 +319,7 @@ class VideoRoomSub extends Component {
         }
       });
 
-    console.log("FORCE_DISCONNECT",this.state.mySessionId, this.state.subscribers.connectionId);
+    console.log("FORCE_DISCONNECT",this.state.mySessionId, this.state.subscribers.connectionId, this.state, this.state.localUser);
     this.forceDisconnect(this.state.mySessionId, this.state.subscribers.connectionId);
 
   }
