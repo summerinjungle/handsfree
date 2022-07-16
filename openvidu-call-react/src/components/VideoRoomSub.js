@@ -292,6 +292,7 @@ class VideoRoomSub extends Component {
   // *********************************************************
 
   leaveSession() {
+    console.log("@@@@@@@@@@@@ NO way @@@@@@@@@@@");
     if (
         window.confirm(
             "회의를 종료하시겠습니까?"
