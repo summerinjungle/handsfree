@@ -288,49 +288,47 @@ class VideoRoomSub extends Component {
   }
 
   leaveSession() {
-    const mySession = this.state.session;
-
-    if (mySession) {
-      mySession.disconnect();
-    }
-
-    // Empty all properties...
-    this.OV = null;
-    this.setState({
-      session: undefined,
-      subscribers: [],
-      mySessionId: "SessionA",
-      myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
-      localUser: undefined,
-    });
-
-    if (this.props.leaveSession) {
-      this.props.leaveSession();
-    }
-
     if (
-      window.confirm(
-        "No connection to OpenVidu Server. This may be a certificate error at:"
-      )
+        window.confirm(
+            "회의를 종료하시겠습니까?"
+        )
     ) {
-      // window.location.assign(OPENVIDU_SERVER_URL + "/accept-certificate");
-      console.log("@@@@@@@ I m here @@@@@@@");
+        const mySession = this.state.session;
+
+        if (mySession) {
+            mySession.disconnect();
+        }
+
+        // Empty all properties...
+        this.OV = null;
+        this.setState({
+            session: undefined,
+            subscribers: [],
+            mySessionId: 'SessionA',
+            myUserName: 'OpenVidu_User' + Math.floor(Math.random() * 100),
+            localUser: undefined,
+        });
+        if (this.props.leaveSession) {
+            this.props.leaveSession();
+        }
+
+
+        // window.location.assign(OPENVIDU_SERVER_URL + "/accept-certificate");
+        // console.log("@@@@@@@ I m here @@@@@@@");
+        console.log("@@@@@@@@@@@ Here @@@@@@@@");
+        console.log("FORCE_DISCONNECT", this.state.mySessionId);
+        console.log(this.state.subscribers.connectionId); // undefined
+        console.log(this.state, this.state.subscribers);
+        console.log(this.state.localUser.connectionId);
+
+        // 방장(Publisher)이 나갈때만 호출...
+        this.stopRecording(this.state.mySessionId);
+
+        this.forceDisconnect(this.state.mySessionId, this.state.localUser.connectionId);
     }
 
-    //방장이(Publisher) 나갈때만 호출되어야 함 아직 그건 안됨.
-    console.log("@@@@ TEST @@@@");
-    console.log(this.state.mySessionId);
-    console.log(this.state.localUser.connectionId);
-    console.log(this.state.localUser);
-    this.stopRecording(this.state.mySessionId);
 
-
-    // 방장(Publisher)일 경우에는 모든 Subscriber 강제 종료
-    this.forceDisconnect(this.state.mySessionId, this.state.localUser.connectionId);
-
-
-  }
-
+}
 
 
   camStatusChanged() {
