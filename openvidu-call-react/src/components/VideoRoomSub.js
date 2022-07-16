@@ -303,22 +303,35 @@ class VideoRoomSub extends Component {
       myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
       localUser: undefined,
     });
-    
+
     if (this.props.leaveSession) {
       this.props.leaveSession();
     }
 
+    if (
+      window.confirm(
+        "No connection to OpenVidu Server. This may be a certificate error at:"
+      )
+    ) {
+      // window.location.assign(OPENVIDU_SERVER_URL + "/accept-certificate");
+      console.log("@@@@@@@ I m here @@@@@@@");
+    }
+
     //방장이(Publisher) 나갈때만 호출되어야 함 아직 그건 안됨.
+    console.log("@@@@ TEST @@@@");
+    console.log(this.state.mySessionId);
+    console.log(this.state.localUser.connectionId);
+    console.log(this.state.localUser);
     this.stopRecording(this.state.mySessionId);
-  
+
 
     // 방장(Publisher)일 경우에는 모든 Subscriber 강제 종료
-    this.forceDisconnect(this.state.mySessionId, this.state.localUser.connectionId);  
+    this.forceDisconnect(this.state.mySessionId, this.state.localUser.connectionId);
 
 
   }
 
-  
+
 
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
@@ -697,14 +710,14 @@ class VideoRoomSub extends Component {
         customSessionId: sessionId,
         recordingMode: "ALWAYS", // 녹화를 위한 BODY 추가 추가 
         defaultRecordingProperties: {
-            "name": "ownweapon",
-            "hasAudio": true,
-            "hasVideo": false,
-            "outputMode": "COMPOSED",
-            "resolution": "640x480",
-            "frameRate": 24
+          "name": "ownweapon",
+          "hasAudio": true,
+          "hasVideo": false,
+          "outputMode": "COMPOSED",
+          "resolution": "640x480",
+          "frameRate": 24
         }
-    });
+      });
       axios
         .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
@@ -725,16 +738,16 @@ class VideoRoomSub extends Component {
             console.log(error);
             console.warn(
               "No connection to OpenVidu Server. This may be a certificate error at " +
-                this.OPENVIDU_SERVER_URL
+              this.OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                  this.OPENVIDU_SERVER_URL +
-                  '"\n\nClick OK to navigate and accept it. ' +
-                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                  this.OPENVIDU_SERVER_URL +
-                  '"'
+                this.OPENVIDU_SERVER_URL +
+                '"\n\nClick OK to navigate and accept it. ' +
+                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                this.OPENVIDU_SERVER_URL +
+                '"'
               )
             ) {
               window.location.assign(
@@ -752,9 +765,9 @@ class VideoRoomSub extends Component {
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
-            "/openvidu/api/sessions/" +
-            sessionId +
-            "/connection",
+          "/openvidu/api/sessions/" +
+          sessionId +
+          "/connection",
           data,
           {
             headers: {
@@ -775,48 +788,73 @@ class VideoRoomSub extends Component {
   //방장이(Publisher) 나갈때만 호출..
   stopRecording(sessionId) {
     return new Promise((resolve, reject) => {
-        var data = JSON.stringify({});
-        axios
-            .post(
-                this.OPENVIDU_SERVER_URL + '/openvidu/api/recordings/stop/' + sessionId, //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
-                data, 
-                {
-                    headers: {
-                        Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
-                        'Content-Type': 'application/json',
-                    },
-                }
-            )
-            .then((response) => {
-                console.log('STOP_RECORDING', response);
-                // resolve(response.data.token);
-            })
-            .catch((error) => reject(error));
+      var data = JSON.stringify({});
+      axios
+        .post(
+          this.OPENVIDU_SERVER_URL + '/openvidu/api/recordings/stop/' + sessionId, //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
+          data,
+          {
+            headers: {
+              Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+        .then((response) => {
+          console.log('STOP_RECORDING', response);
+          // resolve(response.data.token);
+        })
+        .catch((error) => reject(error));
     });
   }
 
   // 강제로 나가기
   forceDisconnect(sessionId, connectionId) {
     return new Promise((resolve, reject) => {
-        var data = JSON.stringify({});
-        axios
-            .delete(
-                this.OPENVIDU_SERVER_URL + '/openvidu/api/sessions/' + sessionId + '/connection/' + connectionId,
-                data,
-                {
-                    headers: {
-                        Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
-                        'Content-Type': 'application/json',
-                    },
-                }
-            )
-            .then((response) => {
-                console.log('FORCE_DISCONNECT', response);
-                // resolve(response.data.token);
-            })
-            .catch((error) => reject(error));
+      var data = JSON.stringify({});
+      axios
+        .delete(
+          this.OPENVIDU_SERVER_URL + '/openvidu/api/sessions/' + sessionId + '/connection/' + connectionId,
+          {
+            headers: {
+              Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+        .then((response) => {
+          console.log('FORCE_DISCONNECT', response);
+          // resolve(response.data.token);
+        })
+        .catch((error) => reject(error));
     });
   }
+
+  // forceDisconnect(sessionId, connectionId) {
+  //   return new Promise((resolve, reject) => {
+  //     var data = JSON.stringify({
+  //       sessionName: sessionId,
+	// 		  connectionId: connectionId
+  //     });
+  //     axios
+  //       .post(
+  //         this.OPENVIDU_SERVER_URL + "/openvidu/api/force-disconnect",
+  //         data,
+  //         {
+  //           headers: {
+  //             Authorization:
+  //               "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       )
+  //       .then((response) => {
+  //         console.log("TOKEN", response);
+  //         resolve(response.data.token);
+  //       })
+  //       .catch((error) => reject(error));
+  //   });
+  // }
 
 }
 
