@@ -312,12 +312,12 @@ class VideoRoomSub extends Component {
     this.stopRecording(this.state.mySessionId);
     
     // 방장(Publisher)일 경우에는 모든 Subscriber 강제 종료
-    let remoteUsers = this.state.subscribers;
-      remoteUsers.forEach((user) => {
-        if (user.getConnectionId() === event.from.connectionId) {
-          this.leaveSession();
-        }
-      });
+    // let remoteUsers = this.state.subscribers;
+    //   remoteUsers.forEach((user) => {
+    //     if (user.getConnectionId() === event.from.connectionId) {
+    //       this.leaveSession();
+    //     }
+    //   });
 
     console.log("FORCE_DISCONNECT",this.state.mySessionId, this.state.subscribers.connectionId, this.state, this.state.localUser);
     this.forceDisconnect(this.state.mySessionId, this.state.subscribers.connectionId);
