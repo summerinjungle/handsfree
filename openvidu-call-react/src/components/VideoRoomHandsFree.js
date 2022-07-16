@@ -28,6 +28,7 @@ class VideoRoomHandsFree extends Component {
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
+
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -43,6 +44,7 @@ class VideoRoomHandsFree extends Component {
 
   componentDidMount() {
     console.log(`localUser = ${JSON.stringify(localUser)}`);
+    console.log("video room , info = ", this.props.user);
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -497,30 +499,6 @@ class VideoRoomHandsFree extends Component {
     }
   };
 
-  rootFunction = ({ command }) => {
-    if (command === "막둥아 마이크 꺼" && localUser.isAudioActive()) {
-      this.micStatusChanged();
-    } else if (command === "막둥아 마이크 켜" && !localUser.isAudioActive()) {
-      this.micStatusChanged();
-    } else if (command === "막둥아 카메라 켜" && !localUser.isVideoActive()) {
-      this.camStatusChanged();
-    } else if (command === "막둥아 카메라 꺼" && localUser.isVideoActive()) {
-      this.camStatusChanged();
-    } else if (
-      command === "막둥아 채팅 켜" ||
-      command === "막둥아 채팅 창 켜" ||
-      command === "막둥아 채팅창 켜"
-    ) {
-      this.toggleChat("");
-    } else if (
-      command === "막둥아 채팅 꺼" ||
-      command === "막둥아 채팅 창 꺼" ||
-      command === "막둥아 채팅창 꺼"
-    ) {
-      this.toggleChat("none");
-    }
-  };
-
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -577,7 +555,6 @@ class VideoRoomHandsFree extends Component {
                   localUser={localUser}
                   chatDisplay={this.state.chatDisplay}
                   closeBtn={this.toggleChat}
-                  rootFunction={this.rootFunction}
                 />
               </div>
             )}
@@ -585,18 +562,6 @@ class VideoRoomHandsFree extends Component {
       </div>
     );
   }
-
-  /**
-   * --------------------------
-   * SERVER-SIDE RESPONSIBILITY
-   * --------------------------
-   * These methods retrieve the mandatory user token from OpenVidu Server.
-   * This behaviour MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
-   * the API REST, openvidu-java-client or openvidu-node-client):
-   *   1) Initialize a session in OpenVidu Server	(POST /api/sessions)
-   *   2) Generate a token in OpenVidu Server		(POST /api/tokens)
-   *   3) The token must be consumed in Session.connect() method
-   */
 
   getToken() {
     return this.createSession(this.state.mySessionId).then((sessionId) =>

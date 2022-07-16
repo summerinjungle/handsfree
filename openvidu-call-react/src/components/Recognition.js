@@ -9,6 +9,7 @@ const SpeechRecognition =
 const recognition = new SpeechRecognition();
 recognition.continuous = false;
 recognition.interimResults = true;
+
 class Recognition extends Component {
   constructor(props) {
     super(props);
