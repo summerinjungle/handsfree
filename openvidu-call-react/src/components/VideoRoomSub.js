@@ -287,6 +287,10 @@ class VideoRoomSub extends Component {
     );
   }
 
+  // ************************* 서버 ***************************
+  // *********************************************************
+  // *********************************************************
+
   leaveSession() {
     if (
         window.confirm(
@@ -294,7 +298,7 @@ class VideoRoomSub extends Component {
         )
     ) {
         const mySession = this.state.session;
-
+        console.log(mySession);
         if (mySession) {
             mySession.disconnect();
         }
@@ -323,7 +327,6 @@ class VideoRoomSub extends Component {
 
         // 방장(Publisher)이 나갈때만 호출...
         this.stopRecording(this.state.mySessionId);
-
         this.forceDisconnect(this.state.mySessionId, this.state.localUser.connectionId);
     }
 
