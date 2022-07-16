@@ -10,10 +10,8 @@ const Dictaphone = ({ parentFunction, rootFunction }) => {
     language: "ko-KR",
   });
 
-  const [message, setMessage] = useState("");
-
   const childFunction = (transcript) => {
-    console.log("dictaphone ! child function", transcript);
+    console.log("dictaphone !", transcript);
     parentFunction(transcript);
   };
 
@@ -53,6 +51,7 @@ const Dictaphone = ({ parentFunction, rootFunction }) => {
       commands[0].command.filter((obj) => finalTranscript === obj).length == 0
     ) {
       childFunction(finalTranscript);
+      // console.log(`finalTranscript =  ${finalTranscript}`);
       resetTranscript();
     }
   }
