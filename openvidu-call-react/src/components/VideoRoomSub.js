@@ -308,8 +308,11 @@ class VideoRoomSub extends Component {
       this.props.leaveSession();
     }
 
-    //방장이(Publisher) 나갈때만 호출...
+    //방장이(Publisher) 나갈때만 호출되어야 함 아직 그건 안됨.
     this.stopRecording(this.state.mySessionId);
+    
+    // 방장(Publisher)일 경우에는 모든 Subscriber 강제 종료
+    this.forceDisconnect(this.state.mySessionId, user.getConnectionId())
 
   }
 
@@ -791,6 +794,29 @@ class VideoRoomSub extends Component {
             )
             .then((response) => {
                 console.log('STOP_RECORDING', response);
+                // resolve(response.data.token);
+            })
+            .catch((error) => reject(error));
+    });
+  }
+
+  // 강제로 나가기
+  forceDisconnect(sessionId, connectionId) {
+    return new Promise((resolve, reject) => {
+        var data = JSON.stringify({});
+        axios
+            .delete(
+                this.OPENVIDU_SERVER_URL + '/openvidu/api/sessions/' + sessionId + '/connection/' + connectionId,
+                data,
+                {
+                    headers: {
+                        Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+                        'Content-Type': 'application/json',
+                    },
+                }
+            )
+            .then((response) => {
+                console.log('FORCE_DISCONNECT', response);
                 // resolve(response.data.token);
             })
             .catch((error) => reject(error));
