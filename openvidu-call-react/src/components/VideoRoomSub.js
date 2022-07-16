@@ -328,7 +328,7 @@ class VideoRoomSub extends Component {
 
         // 방장(Publisher)이 나갈때만 호출...
         this.stopRecording(this.state.mySessionId);
-        this.forceDisconnect(this.state.mySessionId, this.state.localUser.connectionId);
+        this.forceDisconnect(this.state.mySessionId); // connectionId : this.state.localUser.connectionId
     }
 
 
@@ -815,8 +815,7 @@ class VideoRoomSub extends Component {
       var data = JSON.stringify({});
       axios
         .delete(
-          this.OPENVIDU_SERVER_URL + '/openvidu/api/sessions/' + sessionId, //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
-          data,
+          this.OPENVIDU_SERVER_URL + '/api/sessions/' + sessionId,
           {
             headers: {
               Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
