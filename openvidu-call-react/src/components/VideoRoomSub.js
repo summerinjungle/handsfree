@@ -811,52 +811,52 @@ class VideoRoomSub extends Component {
   }
 
   // 강제로 나가기
-  forceDisconnect(sessionId, connectionId) {
-    return new Promise((resolve, reject) => {
-      var data = JSON.stringify({});
-      axios
-        .delete(
-          this.OPENVIDU_SERVER_URL + '/openvidu/api/sessions/' + sessionId + '/connection/' + connectionId,
-          {
-            headers: {
-              Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-        .then((response) => {
-          console.log('FORCE_DISCONNECT', response);
-          // resolve(response.data.token);
-        })
-        .catch((error) => reject(error));
-    });
-  }
-
   // forceDisconnect(sessionId, connectionId) {
   //   return new Promise((resolve, reject) => {
-  //     var data = JSON.stringify({
-  //       sessionName: sessionId,
-	// 		  connectionId: connectionId
-  //     });
+  //     var data = JSON.stringify({});
   //     axios
-  //       .post(
-  //         this.OPENVIDU_SERVER_URL + "/openvidu/api/force-disconnect",
-  //         data,
+  //       .delete(
+  //         this.OPENVIDU_SERVER_URL + '/openvidu/api/sessions/' + sessionId + '/connection/' + connectionId,
   //         {
   //           headers: {
-  //             Authorization:
-  //               "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-  //             "Content-Type": "application/json",
+  //             Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+  //             'Content-Type': 'application/json',
   //           },
   //         }
   //       )
   //       .then((response) => {
-  //         console.log("TOKEN", response);
-  //         resolve(response.data.token);
+  //         console.log('FORCE_DISCONNECT', response);
+  //         // resolve(response.data.token);
   //       })
   //       .catch((error) => reject(error));
   //   });
   // }
+
+  forceDisconnect(sessionId, connectionId) {
+    return new Promise((resolve, reject) => {
+      var data = JSON.stringify({
+        sessionName: sessionId,
+			  connectionId: connectionId
+      });
+      axios
+        .post(
+          this.OPENVIDU_SERVER_URL + "/openvidu/api/force-disconnect",
+          data,
+          {
+            headers: {
+              Authorization:
+                "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log("TOKEN", response);
+          resolve(response.data.token);
+        })
+        .catch((error) => reject(error));
+    });
+  }
 
 }
 
