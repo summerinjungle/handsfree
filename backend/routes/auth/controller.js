@@ -19,7 +19,9 @@ exports.googleLogin = async (req, res, next) => {
             idToken: credential,
             audience: process.env.NODE_APP_GOOGLE_LOGIN_CLIENT_ID
         });
-        const { name, email} = ticket.getPayload();
+        const {name, email} = ticket.getPayload();
+        
+        
         const login_user = await userServices.upsert({
             filter: {email: email},
             update: {
@@ -28,28 +30,11 @@ exports.googleLogin = async (req, res, next) => {
             }
         })
 
-        res.status(OK).json(login_user);
-
-        
-        
-        // const user = await userServices.findByEmail(email);
-
-
-        // if(user) {
-        //     const token = jwt.sign({data:user.email}, process.env.NODE_APP_JWT_SECRET, {expiresIn: '10m'});
-        //     const {_id, name, email} = user;
-        //     console.log(_id, name, email);
-        //     res.json({
-        //         token,
-        //         user: {_id, name, email}
-        //     })
-        // } else {
-        //     let newUser = new User(name, email);
-
-
-        // }
-
-
+        const token = jwt.sign({_id: login_user.id}, process.env.NODE_APP_JWT_SECRET, {expiresIn: '20d'});
+        res.status(OK).json({
+            token: token,
+            user: name
+        });
     } catch (error) {
         res.status(BAD_REQUEST).json({
             message: '구글 로그인 실패',

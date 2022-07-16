@@ -15,10 +15,10 @@ const GoogleLoginButton = () => {
         "Content-Type": "application/json"
       }
     }).then(response => response.json())
-    // .then(({token}) => {
-    //   console.log("token : ", token);
-    //   localStorage.setItem('token', token);
-    // })
+    .then(({token}) => {
+      // console.log("token : ", token);
+      localStorage.setItem('token', token);
+    })
     alert("구글 로그인에 성공하였습니다");
   }
 
