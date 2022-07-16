@@ -312,7 +312,7 @@ class VideoRoomSub extends Component {
     this.stopRecording(this.state.mySessionId);
     
     // 방장(Publisher)일 경우에는 모든 Subscriber 강제 종료
-    this.forceDisconnect(this.state.mySessionId, user.getConnectionId())
+    this.forceDisconnect(this.state.mySessionId, this.state.session.connection.connectionId)
 
   }
 
