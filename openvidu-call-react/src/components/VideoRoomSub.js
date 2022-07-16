@@ -28,10 +28,10 @@ class VideoRoomSub extends Component {
       : "MY_SECRET";
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
-    let sessionName = this.props.sessionName
-      ? this.props.sessionName
-      : "SessionA";
-    // let sessionName = "session1"
+    // let sessionName = this.props.sessionName
+    //   ? this.props.sessionName
+    //   : "SessionA";
+    let sessionName = "sessionA"
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
