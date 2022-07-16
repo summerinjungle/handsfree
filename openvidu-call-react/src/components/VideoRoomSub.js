@@ -810,13 +810,35 @@ class VideoRoomSub extends Component {
     });
   }
 
-  // 강제로 나가기
+  forceDisconnect(sessionId) {
+    return new Promise((resolve, reject) => {
+      var data = JSON.stringify({});
+      axios
+        .delete(
+          this.OPENVIDU_SERVER_URL + '/openvidu/api/sessions/' + sessionId, //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
+          data,
+          {
+            headers: {
+              Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+        .then((response) => {
+          console.log('FORCE_DISCONNECT', response);
+          // resolve(response.data.token);
+        })
+        .catch((error) => reject(error));
+    });
+  }
+
+  // // 강제로 나가기
   // forceDisconnect(sessionId, connectionId) {
   //   return new Promise((resolve, reject) => {
   //     var data = JSON.stringify({});
   //     axios
   //       .delete(
-  //         this.OPENVIDU_SERVER_URL + '/openvidu/api/sessions/' + sessionId + '/connection/' + connectionId,
+  //         this.OPENVIDU_SERVER_URL + '/openvidu/api/sessions/' + sessionId,
   //         {
   //           headers: {
   //             Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
@@ -832,31 +854,31 @@ class VideoRoomSub extends Component {
   //   });
   // }
 
-  forceDisconnect(sessionId, connectionId) {
-    return new Promise((resolve, reject) => {
-      var data = JSON.stringify({
-        sessionName: sessionId,
-			  connectionId: connectionId
-      });
-      axios
-        .post(
-          this.OPENVIDU_SERVER_URL + "/openvidu/api/force-disconnect",
-          data,
-          {
-            headers: {
-              Authorization:
-                "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          console.log("TOKEN", response);
-          resolve(response.data.token);
-        })
-        .catch((error) => reject(error));
-    });
-  }
+  // forceDisconnect(sessionId, connectionId) {
+  //   return new Promise((resolve, reject) => {
+  //     var data = JSON.stringify({
+  //       sessionName: sessionId,
+	// 		  connectionId: connectionId
+  //     });
+  //     axios
+  //       .post(
+  //         this.OPENVIDU_SERVER_URL + "/openvidu/api/force-disconnect",
+  //         data,
+  //         {
+  //           headers: {
+  //             Authorization:
+  //               "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       )
+  //       .then((response) => {
+  //         console.log("TOKEN", response);
+  //         resolve(response.data.token);
+  //       })
+  //       .catch((error) => reject(error));
+  //   });
+  // }
 
 }
 
