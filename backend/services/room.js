@@ -1,30 +1,25 @@
 const express = require('express');
-const RoomModel = require('../models/Room');         //모델의 룸
-// const { findByEmail } = require('../database/user');
-const { user } = require('../routes');
+const RoomModel = require('../models/Room');         //모델의 룸인데 이거 database쪽에서 작업할거임
+const { createRoom } = require('../database/room');
+// const { user } = require('../routes');
 const { to } = require('await-to-js');
 
 
+exports.createRoom = async ({roomId, timeString}) => {
 
-
-exports.setRoom = async ({roomId, timeString}) => {
-    
-}
-
-
-exports.findByEmail = async ({email}) => {
-    const [err, user] = await to(findByEmail(email));
+    const [err, roomdId] = await to(createRoom(roomdId, timeString));
     if (err) {
-        throw new Error('Wrong Input');
-    }
-    return user;
-
-    if (!user) {
-        console.log("hello!!");
+        throw new Error('Wrong RoomdId');
     }
 
-    else {
-        console.log(user);
-    }
+    // return roomId;
 
+    // if (!user) {
+    //     console.log("hello!!");
+    // }
+
+    // else {
+    //     console.log(user);
+    // }
 };
+

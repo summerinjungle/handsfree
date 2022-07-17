@@ -1,38 +1,23 @@
 const RoomInfo = require('../models/Room');
 
-// async function getUserById(id) {
-//   return await UserModel.findById(id).exec();
-// };
 
-const roomInfo = new RoomInfo({
-  roomid : 1,
-  isrecording : true,
-  createAt : "123123",
-  chatinglist : [],
-  email_list : [],
-});
 
-// exports.findByEmail = async (email) => {
-//   return await User.findOne({ 'email': email }).exec();
-// };
-
-exports.insert = async () => {
+exports.createRoom = async (roomdId, timeString) => {
       try {
         const roomInfo = new RoomInfo({
-          roomid : 1,
+          roomid : roomId,
           isrecording : true,
-          createAt : "123123",
+          recordingURL : "",
+          createAt : timeString,
           chatinglist : [],
           email_list : [],
         });
-        let saveRoom = await user.save();
-        console.log("saved : ", saveUser);
+        let saveRoom = await roomInfo.save();
+        console.log("saved : ", saveRoom);
     } catch(err) {
         throw err;
     }
-   
-    console.log(user);
-  
+     
 };
 
 

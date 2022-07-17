@@ -11,6 +11,10 @@ const roomInfoSchema = new Schema({
         equired: true
         
     },
+    recordingurl: {       //방 생성시간
+        type: String,
+        unique: 1
+    },
     createAt: {       //방 생성시간
         type: String,
         trim: true,
@@ -26,12 +30,7 @@ const roomInfoSchema = new Schema({
         trim: true,
         unique: 1
     },
-    token: {
-        type: String
-    },
-    tokenExp: {
-        type: Number
-    }
+ 
 });
 
 module.exports = model('RoomInfo', roomInfoSchema);
