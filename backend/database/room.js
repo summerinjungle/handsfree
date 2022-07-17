@@ -2,19 +2,27 @@ const express = require('express');
 const Room = require('../models/Room');
 
 exports.createRoom = async ({roomId, publisher, timeString}) => {
+        // const roomInfo = {
+        //   roomId : roomId,
+        //   publisher : publisher,
+        //   isRecording : true,
+        //   recordingUrl : "",
+        //   createdAt : timeString,
+        //   chatingList : [],
+        //   emailList : [],
+        // };
         const roomInfo = {
           roomId : roomId,
-          publisher : publisher,
-          isRecording : true,
-          recordingUrl : "",
-          createdAt : timeString,
-          chatingList : [],
-          emailList : [],
         };
         const room = new Room(roomInfo);
-        const newRoom = await room.save();
-        console.log("ddddddd");
-        return newRoom;
+        console.log(room);
+        await room.save()
+        .then(() => {
+          console.log("저장성공");
+        }).catch((err) => {
+          console.log("저장실패")
+          throw err;
+        })
 };
 
 // 방 이름 중복 검사

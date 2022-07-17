@@ -5,12 +5,12 @@ const { to } = require('await-to-js');
 
 exports.createRoom = async ({roomId, publisher, timeString}) => {
 
-    const [err, room] = await to(createRoom({roomId, publisher, timeString}));
-    // console.log(room);
-    if (err) {
-        throw new Error('Wrong RoomdId');
-    }
-    return room;
+    await createRoom({roomId, publisher, timeString});
+    console.log("success");
+    // if (err) {
+    //     console.log("hello!!!");
+    //     throw new Error('Wrong RoomdId');
+    // }
 };
 
 exports.validateRoomId = async(roomId) => {

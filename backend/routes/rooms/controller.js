@@ -14,29 +14,29 @@ var minutes = ('0' + today.getMinutes()).slice(-2);
 var seconds = ('0' + today.getSeconds()).slice(-2); 
 
 
-var roomId = Math.random().toString(36).slice(-8);
+
 var timeString = hours + ':' + minutes  + ':' + seconds;
 
 
 exports.createRoom = async (req, res, next) => {
   try {
     // publisher = req.user.id;
+    var roomId = Math.random().toString(36).slice(-8);
     publisher = "A";  //임의
     const isVaild = await roomServices.validateRoomId(roomId);   // 같은 이름의 방이 있는지 검증하는 로직
     console.log("isVaild!!!", isVaild);
    
     if (isVaild == true){
-      const room = await roomServices.createRoom({roomId, publisher, timeString});
-      console.log("hello");
-
+      await roomServices.createRoom({roomId, publisher, timeString});
+      // res.status(CREATED);
       res.status(CREATED).json({
         message: '방생성 성공',
-        roomId: room.id,
-        timeString: room.createdAt,
+        roomId: roomId
       });
 
     }
     else{
+      console.log("방이름이 중복됩니다.");
       res.status(BAD_REQUEST).json({
         message: '방생성 실패',
       });
