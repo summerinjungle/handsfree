@@ -1,26 +1,33 @@
 const RoomInfo = require('../models/Room');
 
 
+exports.createRoom = async ({roomId, publisher, timeString}) => {
 
-exports.createRoom = async (roomId, publisher, timeString) => {
-      try {
-        const roomInfo = new RoomInfo({
-          roomid : roomId,
-          publisher : publisher,
-          isrecording : true,
-          recordingURL : "",
-          createAt : timeString,
-          chatinglist : [],
-          email_list : [],
-        });
-        let saveRoom = await roomInfo.save();
-        console.log("saved : ", saveRoom);
-    } catch(err) {
-        throw err;
-    }
+  console.log("1", roomId);
+  console.log("2", publisher);
+  console.log("3", timeString);
+
+  try {
+    const roomInfo = new RoomInfo({
+      roomid : roomId,
+      publisher : publisher,
+      isrecording : true,
+      // recordingURL : "",
+      // createAt : timeString,
+      // chatinglist : [],
+      // email_list : [],
+    });
+    
+    let saveRoom = await roomInfo.save()
+      .then(() => console.log('Saved successfully'));
+
+  } catch(err) {
+
+  console.log(" don't saved : ", saveRoom);
+    throw err;
+  }
      
 };
-
 
 
 // exports.setUser = async ({name, email}) => {
