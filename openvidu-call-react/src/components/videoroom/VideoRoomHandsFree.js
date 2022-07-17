@@ -268,24 +268,48 @@ class VideoRoomHandsFree extends Component {
   }
 
   leaveSession = () => {
-    const mySession = this.state.session;
+    if ( // [예] 눌렀을 때
+      window.confirm(
+        "회의를 종료하시겠습니까?"
+      )
+    ) {
+      const mySession = this.state.session;
 
-    if (mySession) {
-      mySession.disconnect();
+      if (mySession) {
+        mySession.disconnect();
+      }
+
+      // Empty all properties...
+      this.OV = null;
+      this.setState({
+        session: undefined,
+        subscribers: [],
+        mySessionId: "SessionA",
+        myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
+        localUser: undefined,
+      });
+      if (this.props.leaveSession) {
+        this.props.leaveSession();
+      }
+
+      // 방장만 실행하는 함수 (회의 강제 종료)
+      this.forceDisconnect(this.state.mySessionId);
+
+    } else { // [아니오] 눌렀을 때
+      console.log(this.state);
+      console.log(this.state.session);
+      console.log(this.state.session.capabilities);
+      console.log(this.state.session.capabilities.publish); // true
+      console.log(this.state.localUser.streamManager); // publisher 객체
+      console.log(this.state.session.openvidu.role); // "PUBLISHER"
+      // console.log(this.session.connection.role);
+      // console.log("WHO ARE YOU", this.props.user.streamManager);// undefined
+      console.log("TEST_PUBLISHER--3", this.state.session.streamManagers)
+      console.log("TEST_PUBLISHER--4", this.state.session.streamManagers.length)
+      console.log("CONNIE", localUser);
+      console.log("CONNIE", this.state.subscribers);
     }
 
-    // Empty all properties...
-    this.OV = null;
-    this.setState({
-      session: undefined,
-      subscribers: [],
-      mySessionId: "SessionA",
-      myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
-      localUser: undefined,
-    });
-    if (this.props.leaveSession) {
-      this.props.leaveSession();
-    }
   };
 
   camStatusChanged = () => {
@@ -611,16 +635,16 @@ class VideoRoomHandsFree extends Component {
             console.log(error);
             console.warn(
               "No connection to OpenVidu Server. This may be a certificate error at " +
-                this.OPENVIDU_SERVER_URL
+              this.OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                  this.OPENVIDU_SERVER_URL +
-                  '"\n\nClick OK to navigate and accept it. ' +
-                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                  this.OPENVIDU_SERVER_URL +
-                  '"'
+                this.OPENVIDU_SERVER_URL +
+                '"\n\nClick OK to navigate and accept it. ' +
+                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                this.OPENVIDU_SERVER_URL +
+                '"'
               )
             ) {
               window.location.assign(
@@ -638,9 +662,9 @@ class VideoRoomHandsFree extends Component {
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
-            "/openvidu/api/sessions/" +
-            sessionId +
-            "/connection",
+          "/openvidu/api/sessions/" +
+          sessionId +
+          "/connection",
           data,
           {
             headers: {
@@ -657,5 +681,60 @@ class VideoRoomHandsFree extends Component {
         .catch((error) => reject(error));
     });
   }
+
+  /**
+   * 회의 Recording 종료 함수 
+   *  (현재 사용 안 함)
+   * 
+   * @param {*} sessionId 
+   */
+  stopRecording(sessionId) {
+    return new Promise((resolve, reject) => {
+      var data = JSON.stringify({});
+      axios
+        .post(
+          this.OPENVIDU_SERVER_URL + '/openvidu/api/recordings/stop/' + sessionId, //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
+          data,
+          {
+            headers: {
+              Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+        .then((response) => {
+          console.log('STOP_RECORDING', response);
+          // resolve(response.data.token);
+        })
+        .catch((error) => reject(error));
+    });
+  }
+
+  /**
+   * * 방장(Publisher)이 회의 종료 시, 모든 Subscribers 회의 강제 종료
+   * 
+   * @param {*} sessionId 
+   */
+  forceDisconnect(sessionId) {
+    return new Promise((resolve, reject) => {
+      var data = JSON.stringify({});
+      axios
+        .delete(
+          this.OPENVIDU_SERVER_URL + '/api/sessions/' + sessionId,
+          {
+            headers: {
+              Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+        .then((response) => {
+          console.log('FORCE_DISCONNECT', response);
+          // resolve(response.data.token);
+        })
+        .catch((error) => reject(error));
+    });
+  }
+
 }
 export default VideoRoomHandsFree;
