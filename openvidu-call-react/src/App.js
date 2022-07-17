@@ -1,28 +1,24 @@
 import React, { useState } from "react";
 import "./App.css";
 import VideoRoomHandsFree from "./components/VideoRoomHandsFree";
+import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
+import Main from './main/main';
+import { useSelector } from "react-redux"
+
 
 const App = () => {
-  const [showRoom, setShowRoom] = useState(false);
-
-  const joinRoom = () => {
-    setShowRoom(true);
-  };
+  let roomId = useSelector((state) => state.user.sessionId);
+  
   return (
     <div className='App'>
-      {!showRoom ? (
-        <div className='joinChatContainer'>
-          <h3>핸즈 프리 </h3>
-
-          <button onClick={joinRoom}>회의실 입장</button>
-        </div>
-      ) : (
-        <div>
-          <VideoRoomHandsFree />
-        </div>
-      )}
+      <Routes>
+        <Route path="/" element={ <Main /> }/>
+        <Route path="/meeting" element={ <VideoRoomHandsFree sessionName={roomId}/> }/>
+        <Route path="/edit" element={ <div>{ roomId }</div>} />
+      </Routes>
     </div>
   );
 };
+
 
 export default App;

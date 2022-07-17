@@ -1,12 +1,14 @@
 #header {
     color: #ffffff;
     height: 40px;
-    background-color: #333333;
+    /* background-color: #333333; */
     padding: 0 14px 0 0;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 94%;
+    left: 15px;
+    width:77%;
     z-index: 999999;
+    border-radius: 20px;
     min-width: 400px !important;
   }
   .toolbar{

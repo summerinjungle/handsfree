@@ -29,17 +29,15 @@ export default class ChatHandsFree extends Component {
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
-    console.log("22222222222222 cdm", this.props.localUser.getStreamManager());
+    // console.log("22222222222222 cdm", this.props.localUser.getStreamManager());
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
         // console.log("event = ", event);
         const data = JSON.parse(event.data);
         let messageList = this.state.messageList;
-        console.log("state record  =", this.state.isRecog);
-        console.log("data record  =", data.isRecord);
-
-        if (data.message == "기록 중지" || data.message == "기록중지") return;
+        // console.log("state record  =", this.state.isRecog);
+        // console.log("data record  =", data.isRecord);
         if (data.isRecord === true) {
           messageList.push({
             connectionId: event.from.connectionId,
@@ -74,7 +72,7 @@ export default class ChatHandsFree extends Component {
   }
 
   sendMessage() {
-    console.log("111111 @@@ ", this.props.localUser);
+    // console.log("111111 @@@ ", this.props.localUser);
     if (this.props.localUser && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
       if (message !== "" && message !== " ") {
@@ -86,10 +84,10 @@ export default class ChatHandsFree extends Component {
           nickname: this.props.localUser.getNickname(),
           streamId: this.props.localUser.getStreamManager().stream.streamId,
         };
-        console.log(
-          "this.props.user ... session ?? ",
-          this.props.localUser.getStreamManager().stream.session
-        );
+        // console.log(
+        //   "this.props.user ... session ?? ",
+        //   this.props.localUser.getStreamManager().stream.session
+        // );
         this.props.localUser.getStreamManager().stream.session.signal({
           data: JSON.stringify(data),
           type: "chat",
@@ -108,9 +106,9 @@ export default class ChatHandsFree extends Component {
     }, 20);
   }
 
-  close = () => {
-    this.props.closeBtn(undefined);
-  };
+  close() {
+    this.props.close(undefined);
+  }
 
   parentFunction = (data) => {
     this.state.message = data;
@@ -119,7 +117,6 @@ export default class ChatHandsFree extends Component {
       (data === "기록 중지" || data === "기록중지") &&
       this.state.isRecog === true
     ) {
-      this.sendMessage();
       this.setState({ isRecog: false });
     } else if (
       (data === "기록 시작" || data === "기록시작") &&
@@ -127,12 +124,8 @@ export default class ChatHandsFree extends Component {
     ) {
       this.setState({ isRecog: true });
     }
+    this.sendMessage();
 
-    setTimeout(() => {
-      if (this.state.isRecog === true) {
-        this.sendMessage();
-      }
-    }, 500);
   };
 
   render() {
@@ -180,9 +173,8 @@ export default class ChatHandsFree extends Component {
               </div>
             ))}
           </div>
-        </div>
 
-        {/* <div id='messageInput'>
+          <div id='messageInput'>
             <input
               placeholder='Send a messge'
               id='chatInput'
@@ -195,14 +187,26 @@ export default class ChatHandsFree extends Component {
                 <Send />
               </Fab>
             </Tooltip>
-          </div> */}
+          </div>
+        </div>
         {/* {this.props.type == "stt" && (
           <Dictaphone
             parentFunction={this.parentFunction}
             rootFunction={this.props.rootFunction}
           />
         )} */}
-        <Recognition parentFunction={this.parentFunction} />
+        {/* <Dictaphone
+          parentFunction={this.parentFunction}
+          rootFunction={this.props.rootFunction}
+        /> */}
+        {/* <Stt
+          parentFunction={this.parentFunction}
+          rootFunction={this.props.rootFunction}
+        /> */}
+        <Recognition
+          parentFunction={this.parentFunction}
+          rootFunction={this.props.rootFunction}
+        />
       </div>
     );
   }

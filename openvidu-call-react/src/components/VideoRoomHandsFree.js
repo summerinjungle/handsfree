@@ -7,11 +7,18 @@ import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatHandsFree from "./chat/ChatHandsFree";
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
+import LeftSide from './Leftside';
+
+import { useSelector } from "react-redux"
+import store from '../store';
 
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 var localUser = new UserModel();
+// let roomId = useSelector((state) => state.user);
 
 class VideoRoomHandsFree extends Component {
+  
+
   constructor(props) {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
@@ -42,7 +49,9 @@ class VideoRoomHandsFree extends Component {
     };
   }
 
+
   componentDidMount() {
+    
     console.log(`localUser = ${JSON.stringify(localUser)}`);
     console.log("video room , info = ", this.props.user);
     const openViduLayoutOptions = {
@@ -506,17 +515,7 @@ class VideoRoomHandsFree extends Component {
 
     return (
       <div className='container' id='container'>
-        <ToolbarComponent
-          sessionId={mySessionId}
-          user={localUser}
-          camStatusChanged={this.camStatusChanged}
-          micStatusChanged={this.micStatusChanged}
-          screenShare={this.screenShare}
-          stopScreenShare={this.stopScreenShare}
-          toggleFullscreen={this.toggleFullscreen}
-          leaveSession={this.leaveSession}
-          toggleChat={this.toggleChat}
-        />
+
 
         <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}
@@ -559,11 +558,29 @@ class VideoRoomHandsFree extends Component {
               </div>
             )}
         </div>
+        <div className='soundScribe'>
+          <LeftSide/>
+        </div>
+
+
+
+        <ToolbarComponent
+          sessionId={mySessionId}
+          user={localUser}
+          camStatusChanged={this.camStatusChanged}
+          micStatusChanged={this.micStatusChanged}
+          screenShare={this.screenShare}
+          stopScreenShare={this.stopScreenShare}
+          toggleFullscreen={this.toggleFullscreen}
+          leaveSession={this.leaveSession}
+          toggleChat={this.toggleChat}
+        />
       </div>
     );
   }
 
   getToken() {
+    
     return this.createSession(this.state.mySessionId).then((sessionId) =>
       this.createToken(sessionId)
     );

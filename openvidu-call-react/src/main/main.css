@@ -1,0 +1,11 @@
+.main-bg {
+  background-color: #eeeee4;
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+}
+
+.main-logo { 
+  margin-top: 12%;
+  width: 500px;
+} 
