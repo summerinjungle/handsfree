@@ -25,9 +25,16 @@ exports.createRoom = async ({roomId, publisher, timeString}) => {
 // 방 이름 중복 검사
 exports.findByRoomId = async (roomId) => {
   return await Room.find({ 'roomId': roomId }).lean();
+<<<<<<< HEAD
 }
 
 exports.findoneByRoomId = async (roomId) => {
   return await Room.findOne({ 'roomId': roomId }).lean();
 }
+=======
+  
+  // return findRoom.roomId;
+  // return await Room.findOne({ 'roomId': roomId }).exec();
+};
+>>>>>>> 20c99b8f142e746e95e67fc0a00dbbfdee1d9f28
 
