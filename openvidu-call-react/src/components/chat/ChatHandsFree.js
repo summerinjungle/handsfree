@@ -1,14 +1,9 @@
 import React, { Component } from "react";
 import IconButton from "@material-ui/core/IconButton";
-import Fab from "@material-ui/core/Fab";
 import HighlightOff from "@material-ui/icons/HighlightOff";
-import Send from "@material-ui/icons/Send";
 
 import "./ChatComponent.css";
-import { Tooltip } from "@material-ui/core";
-import Dictaphone from "../Dictaphone";
 import Recognition from "../Recognition";
-import Stt from "../Stt";
 
 export default class ChatHandsFree extends Component {
   constructor(props) {
@@ -36,8 +31,11 @@ export default class ChatHandsFree extends Component {
         // console.log("event = ", event);
         const data = JSON.parse(event.data);
         let messageList = this.state.messageList;
-        // console.log("state record  =", this.state.isRecog);
-        // console.log("data record  =", data.isRecord);
+
+        console.log("state record  =", this.state.isRecog);
+        console.log("data record  =", data.isRecord);
+
+        if (data.message === "기록 중지" || data.message === "기록중지") return;
         if (data.isRecord === true) {
           messageList.push({
             connectionId: event.from.connectionId,
@@ -72,7 +70,6 @@ export default class ChatHandsFree extends Component {
   }
 
   sendMessage() {
-    // console.log("111111 @@@ ", this.props.localUser);
     if (this.props.localUser && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
       if (message !== "" && message !== " ") {
@@ -84,10 +81,6 @@ export default class ChatHandsFree extends Component {
           nickname: this.props.localUser.getNickname(),
           streamId: this.props.localUser.getStreamManager().stream.streamId,
         };
-        // console.log(
-        //   "this.props.user ... session ?? ",
-        //   this.props.localUser.getStreamManager().stream.session
-        // );
         this.props.localUser.getStreamManager().stream.session.signal({
           data: JSON.stringify(data),
           type: "chat",
@@ -125,8 +118,7 @@ export default class ChatHandsFree extends Component {
       this.setState({ isRecog: true });
     }
     this.sendMessage();
-
-  };
+};
 
   render() {
     const styleChat = { display: this.props.chatDisplay };
@@ -173,40 +165,8 @@ export default class ChatHandsFree extends Component {
               </div>
             ))}
           </div>
-
-          <div id='messageInput'>
-            <input
-              placeholder='Send a messge'
-              id='chatInput'
-              value={this.state.message}
-              onChange={this.handleChange}
-              onKeyPress={this.handlePressKey}
-            />
-            <Tooltip title='Send message'>
-              <Fab size='small' id='sendButton' onClick={this.sendMessage}>
-                <Send />
-              </Fab>
-            </Tooltip>
-          </div>
         </div>
-        {/* {this.props.type == "stt" && (
-          <Dictaphone
-            parentFunction={this.parentFunction}
-            rootFunction={this.props.rootFunction}
-          />
-        )} */}
-        {/* <Dictaphone
-          parentFunction={this.parentFunction}
-          rootFunction={this.props.rootFunction}
-        /> */}
-        {/* <Stt
-          parentFunction={this.parentFunction}
-          rootFunction={this.props.rootFunction}
-        /> */}
-        <Recognition
-          parentFunction={this.parentFunction}
-          rootFunction={this.props.rootFunction}
-        />
+        <Recognition parentFunction={this.parentFunction} />
       </div>
     );
   }
