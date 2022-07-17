@@ -14,7 +14,7 @@ var minutes = ('0' + today.getMinutes()).slice(-2);
 var seconds = ('0' + today.getSeconds()).slice(-2); 
 
 
-var roomId = "A"; //Math.random().toString(36).slice(-8);
+var roomId = Math.random().toString(36).slice(-8);
 var timeString = hours + ':' + minutes  + ':' + seconds;
 
 
@@ -22,7 +22,7 @@ exports.createRoom = async (req, res, next) => {
   try {
     // publisher = req.user.id;
     publisher = "A";  //임의
-    const isVaild = await roomServices.validateRoomId("A");   // 같은 이름의 방이 있는지 검증하는 로직
+    const isVaild = await roomServices.validateRoomId(roomId);   // 같은 이름의 방이 있는지 검증하는 로직
     console.log("isVaild!!!", isVaild);
    
     if (isVaild == true){
@@ -35,6 +35,11 @@ exports.createRoom = async (req, res, next) => {
         timeString: room.createdAt,
       });
 
+    }
+    else{
+      res.status(BAD_REQUEST).json({
+        message: '방생성 실패',
+      });
     }
 
   } catch (error) {
