@@ -10,7 +10,6 @@ import Videocam from "@material-ui/icons/Videocam";
 import VideocamOff from "@material-ui/icons/VideocamOff";
 import Fullscreen from "@material-ui/icons/Fullscreen";
 import FullscreenExit from "@material-ui/icons/FullscreenExit";
-import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
 import PictureInPicture from "@material-ui/icons/PictureInPicture";
 import ScreenShare from "@material-ui/icons/ScreenShare";
 import StopScreenShare from "@material-ui/icons/StopScreenShare";
@@ -18,14 +17,15 @@ import Tooltip from "@material-ui/core/Tooltip";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
 import red from "@material-ui/core/colors/red";
-
 import IconButton from "@material-ui/core/IconButton";
-
+import { Modal } from "@material-ui/core";
+import ModalComponent from "./ModalComponent";
 const logo = require("../../assets/images/zoom.jpg");
 
 export default class ToolbarComponent extends Component {
   state = {
     fullscreen: false,
+    openModal: true,
   };
 
   micStatusChanged = () => {
@@ -57,7 +57,21 @@ export default class ToolbarComponent extends Component {
     this.props.toggleChat();
   };
 
+  closeModal = () => {
+    this.setState({ openModal: false });
+  };
+
   render() {
+    const customStyles = {
+      content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+      },
+    };
     const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
     return (
@@ -116,14 +130,6 @@ export default class ToolbarComponent extends Component {
                 <StopScreenShare color='secondary' />
               </IconButton>
             )}
-
-            {/* <IconButton
-              color='inherit'
-              className='navButton'
-              onClick={this.switchCamera}
-            >
-              <SwitchVideoIcon />
-            </IconButton> */}
             <IconButton
               color='inherit'
               className='navButton'

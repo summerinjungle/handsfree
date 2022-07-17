@@ -9,6 +9,7 @@ const SpeechRecognition =
 const recognition = new SpeechRecognition();
 recognition.continuous = false;
 recognition.interimResults = true;
+recognition.lang = "ko-KR";
 
 class Recognition extends Component {
   constructor(props) {

@@ -283,6 +283,7 @@ class VideoRoomHandsFree extends Component {
       this.props.leaveSession();
     }
   };
+
   camStatusChanged = () => {
     localUser.setVideoActive(!localUser.isVideoActive());
     localUser.getStreamManager().publishVideo(localUser.isVideoActive());
