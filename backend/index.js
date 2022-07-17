@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const connect = require('./database/connection');
+const cookieParser = require('cookie-parser');
 
 const apiRouter = require('./routes');
 
@@ -12,12 +13,9 @@ connect();
 app.use(bodyParser.urlencoded({extended: true}));
 //application/json
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use('/api', apiRouter);
-
-// app.get('/', (req, res) => {
-//   res.send('Hello World!')
-// });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
