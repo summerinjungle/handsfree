@@ -59,6 +59,10 @@ export default class ChatHandsFree extends Component {
       });
   }
 
+  componentWillUnmount() {
+    this.parentFunction();
+  }
+
   handleChange(event) {
     this.setState({ message: event.target.value });
   }
@@ -100,7 +104,7 @@ export default class ChatHandsFree extends Component {
   }
 
   close() {
-    this.props.close(undefined);
+    this.props.closeBtn(undefined);
   }
 
   parentFunction = (data) => {
