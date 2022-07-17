@@ -8,5 +8,5 @@ exports.findByEmail = async (email) => {
   return await User.findOne({ 'email': email }).exec();
 };
 
-exports.upsert = async ()
+// exports.upsert = async ()
 
