@@ -8,4 +8,10 @@
 .main-logo { 
   margin-top: 12%;
   width: 500px;
-} 
+}
+
+.LogInBtnStyle{
+  position: absolute;
+  left: 44%;
+  width: 200px;
+}
