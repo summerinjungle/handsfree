@@ -1,46 +1,38 @@
-const RoomInfo = require('../models/Room');
-
+const express = require('express');
+const Room = require('../models/Room');
 
 exports.createRoom = async ({roomId, publisher, timeString}) => {
-
-  console.log("1", roomId);
-  console.log("2", publisher);
-  console.log("3", timeString);
-
-  try {
-    const roomInfo = new RoomInfo({
-      roomid : roomId,
-      publisher : publisher,
-      isrecording : true,
-      // recordingURL : "",
-      // createAt : timeString,
-      // chatinglist : [],
-      // email_list : [],
-    });
-    
-    let saveRoom = await roomInfo.save()
-      .then(() => console.log('Saved successfully'));
-
-  } catch(err) {
-
-  console.log(" don't saved : ", saveRoom);
-    throw err;
-  }
-     
+        const roomInfo = {
+          roomId : roomId,
+          publisher : publisher,
+          isRecording : true,
+          recordingUrl : "",
+          createdAt : timeString,
+          chatingList : [],
+          emailList : [],
+        };
+        const room = new Room(roomInfo);
+        console.log(room);
+        const newRoom = await room.save();
+        return newRoom;
 };
 
+// 방 이름 중복 검사
+exports.findByRoomId = async (roomId) => {
+  const findRoom = await Room.findOne({ 'roomId': roomId }).exec();
+  console.log("DB3", findRoom.roomId);
 
-// exports.setUser = async ({name, email}) => {
-//     try {
-//         const user = new User({
-//             name: name,
-//             email: email,
-//         });
-//         let saveUser = await user.save();
-//         console.log("saved : ", saveUser);
-//     } catch(err) {
-//         throw err;
-//     }
-   
-//     // console.log(user);
-// };
+  if (findRoom.roomId == roomId ){
+    //console.log("존재하는 방");
+    return false; //존재하는방이면
+  }
+  else{
+    //console.log("존재하지 않는 방");
+    return true;
+  }
+  
+  
+  // return findRoom.roomId;
+  // return await Room.findOne({ 'roomId': roomId }).exec();
+};
+
