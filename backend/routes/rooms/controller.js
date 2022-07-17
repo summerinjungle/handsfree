@@ -17,18 +17,19 @@ var seconds = ('0' + today.getSeconds()).slice(-2);
 
 var timeString = hours + ':' + minutes  + ':' + seconds;
 
-
+//방 생성 API
 exports.createRoom = async (req, res, next) => {
   try {
-    // publisher = req.user.id;
+
     var roomId = Math.random().toString(36).slice(-8);
     publisher = "A";  //임의
     const isVaild = await roomServices.validateRoomId(roomId);   // 같은 이름의 방이 있는지 검증하는 로직
     console.log("isVaild!!!", isVaild);
    
     if (isVaild == true){
+
       await roomServices.createRoom({roomId, publisher, timeString});
-      // res.status(CREATED);
+      
       res.status(CREATED).json({
         message: '방생성 성공',
         roomId: roomId
@@ -49,6 +50,45 @@ exports.createRoom = async (req, res, next) => {
   }
 };
 
+//방 입장 API
+exports.joinRoom = async (req, res, next) => {
+  try {
+ 
+
+    const { roomId } = req.params;
+    const isVaild = await roomServices.validateRoomId(roomId);   // 같은 이름의 방이 있는지 검증하는 로직
+    console.log("isVaild!!!", isVaild);
+   
+    if (isVaild != true){     // 같은 방이 있으면
+      
+      //방 시작시간을 알려주는 로직이 들어가야 함
+      const createTime = await roomServices.findRoomResponseTime(roomId);
+      // console.log(createTime);
+
+      res.status(CREATED).json({
+        message: '방입장 성공',
+        roomId: roomId,
+        createdAt : createTime,
+        isValidRoom : true
+      });
+
+    }
+    else{
+      console.log("방이름이 중복되지않습니다.");
+      res.status(BAD_REQUEST).json({
+        message: '방입장 실패',
+        isValidRoom : false
+      });
+    }
+
+  } catch (error) {
+    res.status(BAD_REQUEST).json({
+      message: '방입장 실패',
+      isValidRoom : false
+    });
+
+  }
+}
 
 
 
