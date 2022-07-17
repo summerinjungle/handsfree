@@ -2,10 +2,11 @@ const RoomInfo = require('../models/Room');
 
 
 
-exports.createRoom = async (roomdId, timeString) => {
+exports.createRoom = async (roomId, publisher, timeString) => {
       try {
         const roomInfo = new RoomInfo({
           roomid : roomId,
+          publisher : publisher,
           isrecording : true,
           recordingURL : "",
           createAt : timeString,

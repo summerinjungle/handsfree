@@ -23,9 +23,9 @@ var timeString = hours + ':' + minutes  + ':' + seconds;
 
 exports.createRoom = async (req, res, next) => {
   try {
-    // console.log(req.room);
-    const token = req.cookies;
-    await roomServices.createRoom({roomId, timeString});
+    
+    publisher = req.user.id;
+    await roomServices.createRoom({roomId, publisher, timeString});
 
     res.status(CREATED).json({
       message: '사용자 가입 성공',

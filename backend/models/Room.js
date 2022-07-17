@@ -6,6 +6,11 @@ const roomInfoSchema = new Schema({
         required: true,
         maxlength: 50
     },
+    publiser: {         //방 id
+        type: String,
+        required: true,
+        maxlength: 50
+    },
     isrecording: {    //기록 중지 여부
         type: Boolean,
         equired: true

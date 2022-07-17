@@ -5,9 +5,9 @@ const { createRoom } = require('../database/room');
 const { to } = require('await-to-js');
 
 
-exports.createRoom = async ({roomId, timeString}) => {
+exports.createRoom = async ({roomId, publisher, timeString}) => {
 
-    const [err, roomdId] = await to(createRoom(roomdId, timeString));
+    const [err, roomdId] = await to(createRoom(roomId, publisher, timeString));
     if (err) {
         throw new Error('Wrong RoomdId');
     }
