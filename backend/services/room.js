@@ -1,4 +1,4 @@
-const { createRoom, findByRoomId } = require('../database/room');
+const { createRoom, findByRoomId, findRoomAndUpdate } = require('../database/room');
 // const { user } = require('../routes');
 const { to } = require('await-to-js');
 
@@ -39,31 +39,42 @@ exports.validateRoomId = async(roomId) => {
     return temp[1];
 }
 
-exports.toEditingRoom = async ({roomId}) => {
-
+exports.toEditingRoom = async (roomId) => {
+    console.log(roomId);
     const foundRoom = await findByRoomId(roomId);
-    // console.log(res);
-    // console.log(res);
-    // if (err) {
-    //     console.log("hello!!!");
-    //     throw new Error('Wrong RoomdId');
-    // }
-    if(foundRoom.length) {
+    console.log(foundRoom);
+    if(!foundRoom.length) {
       console.log("no room");
       return null;
     }
+    return (foundRoom.chatList, foundRoom.highlightList, foundRoom.recordStopList);
+};
 
 
-  return foundRoom.chatList;
+exports.createChat = async (roomId, chatList, highlightList, recordingStopList) => {
+  const foundRoom = await findByRoomId(roomId);
+  if(!foundRoom) {
+    return false;
+  }
+
+  const filter = { roomId: roomId};
+  const update = {
+    chatList: chatList,
+    highlightList: highlightList,
+    recordingStopList: recordingStopList
+  };
+
+  const room = await findRoomAndUpdate(filter, update);
+  return room;
+};
 
 
-
-  // await createRoom({roomId, publisher, timeString});
-  // console.log("success");
-  // if (err) {
-  //     console.log("hello!!!");
-  //     throw new Error('Wrong RoomdId');
-  // }
+exports.findByRoomId = async ({roomId, chatList, highlightList, recordStopList}) => {
+  const res = await findByRoomId(roomId);
+  if(res.length) {
+    return res[0];
+  }
+  return null;
 };
 
 
