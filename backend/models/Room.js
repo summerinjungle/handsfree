@@ -1,36 +1,41 @@
 const { model, Schema } = require('mongoose');
 
-const roomInfoSchema = new Schema({
-    roomid: {         //방 id
+// const roomSchema = new Schema({
+//     roomName: {         //방 id
+//         type: String
+//     }
+// });
+
+const roomSchema = new Schema({
+    roomId: {         //방 id
         type: String,
         required: true,
         maxlength: 50
     },
-    publiser: {         //방 id
+    publisher: {         //방 id
         type: String,
         required: true,
         maxlength: 50
     },
-    isrecording: {    //기록 중지 여부
+    isRecording: {    //기록 중지 여부
         type: Boolean,
-        equired: true
-        
+        required: true
     },
-    recordingurl: {       //방 생성시간
+    recordingUrl: {       //방 생성시간
         type: String,
         unique: 1
     },
-    createAt: {       //방 생성시간
+    createdAt: {       //방 생성시간
         type: String,
         trim: true,
         unique: 1
     },
-    chatinglist: {    //채팅 리스트
+    chatingList: {    //채팅 리스트
         type: Array,
         trim: true,
         unique: 1
     },
-    email_list: {     //이메일 리스트
+    emailList: {     //이메일 리스트
         type: Array,
         trim: true,
         unique: 1
@@ -38,5 +43,5 @@ const roomInfoSchema = new Schema({
  
 });
 
-module.exports = model('RoomInfo', roomInfoSchema);
+module.exports = model('Room', roomSchema);
 // module.exports = model('User', timeInfoSchema);

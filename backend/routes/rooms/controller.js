@@ -16,28 +16,23 @@ var seconds = ('0' + today.getSeconds()).slice(-2);
 
 //중복이 있는지 DB에서
 var roomId = Math.random().toString(36).slice(-8);
-
-
 var timeString = hours + ':' + minutes  + ':' + seconds;
 
 
 exports.createRoom = async (req, res, next) => {
   try {
-    
     // publisher = req.user.id;
     publisher = "A";
-    await roomServices.createRoom({roomId, publisher, timeString});
-
+    const room = await roomServices.createRoom({roomId, publisher, timeString});
+    console.log("hello");
     res.status(CREATED).json({
       message: '방생성 성공',
-      roomId,
-      timeString,
-
+      roomId: room.id,
+      timeString: room.createdAt,
     });
   } catch (error) {
     res.status(BAD_REQUEST).json({
       message: '방생성 실패',
-      
     });
   }
 };
