@@ -375,6 +375,22 @@ class VideoRoomHandsFree extends Component {
   subscribeToStreamDestroyed() {
     // On every Stream destroyed...
     this.state.session.on("streamDestroyed", (event) => {
+
+      console.log("Destroyed", this.state.localUser.connectionId);
+
+      // 회의 종료 알림창 확인창 
+      if (
+          window.confirm(
+              "방장이 회의를 종료하였습니다.\n" +
+              "편집실로 아동하시겠습니까?\n" +
+              "[취소]를 누르시면 메인 페이지로 이동합니다."
+          )
+      ) {
+          // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
+      } else {
+          // [취소] 클릭 -> Lobby로 이동
+      }
+      
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
       setTimeout(() => {
