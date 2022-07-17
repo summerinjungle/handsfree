@@ -49,7 +49,32 @@ exports.createRoom = async (req, res, next) => {
   }
 };
 
+exports.getEditingRoom = async (req, res, next) => {
+  const roomId = req.params.roomId;
+  const editingRoom = await roomServices.toEditingRoom(roomId);
+  if(!editingRoom) {
+    console.log("nono room");
+    res.status(BAD_REQUEST).json({
+      message: '잘못된 접근입니다'
+    });
+    return;
+  }
+};
 
+
+exports.createChat = async (req, res, next) => {
+  console.log(req.body);
+  console.log(req.body.chatList);
+  // const roomId = req.params.roomId;
+  // const editingRoom = await roomServices.toEditingRoom(roomId);
+  // if(!editingRoom) {
+  //   console.log("nono room");
+  //   res.status(BAD_REQUEST).json({
+  //     message: '잘못된 접근입니다'
+  //   });
+  //   return;
+  // }
+};
 
 
 
