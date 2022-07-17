@@ -1,6 +1,8 @@
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import React, {Component} from 'react';
+import { getTokenInCookie, getUserNameInCookie } from '../utils/cookie';
+
 const GoogleLoginButton = () => {
   const clientId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
   
@@ -15,10 +17,9 @@ const GoogleLoginButton = () => {
         "Content-Type": "application/json"
       }
     }).then(response => response.json())
-    // .then(({token}) => {
-    //   console.log("token : ", token);
-    //   localStorage.setItem('token', token);
-    // })
+    .then(({success}) => {
+      console.log("success", success);
+    });
     alert("구글 로그인에 성공하였습니다");
   }
 

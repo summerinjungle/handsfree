@@ -9,12 +9,6 @@ const userSchema = new Schema({
         type: String,
         trim: true,
         unique: 1
-    },
-    token: {
-        type: String
-    },
-    tokenExp: {
-        type: Number
     }
 });
 
