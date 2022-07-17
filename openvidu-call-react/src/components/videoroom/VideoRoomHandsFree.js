@@ -2,23 +2,20 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./VideoRoomComponent.css";
 import { OpenVidu } from "openvidu-browser";
-import StreamHandFree from "./stream/StreamHandFree";
-import DialogExtensionComponent from "./dialog-extension/DialogExtension";
-import ChatHandsFree from "./chat/ChatHandsFree";
-import OpenViduLayout from "../layout/openvidu-layout";
-import UserModel from "../models/user-model";
-import LeftSide from './Leftside';
+import StreamHandFree from "./../stream/StreamHandFree";
+import DialogExtensionComponent from "./../dialog-extension/DialogExtension";
+import ChatHandsFree from "./../chat/ChatHandsFree";
+import OpenViduLayout from "../../layout/openvidu-layout";
+import UserModel from "../../models/user-model";
+import LeftSide from "./../chat/Leftside";
+import ToolbarComponent from "./../toolbar/ToolbarComponent";
 
-import { useSelector } from "react-redux"
-import store from '../store';
+import { useSelector } from "react-redux";
 
-import ToolbarComponent from "./toolbar/ToolbarComponent";
 var localUser = new UserModel();
 // let roomId = useSelector((state) => state.user);
 
 class VideoRoomHandsFree extends Component {
-  
-
   constructor(props) {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
@@ -49,9 +46,7 @@ class VideoRoomHandsFree extends Component {
     };
   }
 
-
   componentDidMount() {
-    
     console.log(`localUser = ${JSON.stringify(localUser)}`);
     console.log("video room , info = ", this.props.user);
     const openViduLayoutOptions = {
@@ -516,8 +511,6 @@ class VideoRoomHandsFree extends Component {
 
     return (
       <div className='container' id='container'>
-
-
         <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
@@ -560,10 +553,8 @@ class VideoRoomHandsFree extends Component {
             )}
         </div>
         <div className='soundScribe'>
-          <LeftSide/>
+          <LeftSide />
         </div>
-
-
 
         <ToolbarComponent
           sessionId={mySessionId}
@@ -581,7 +572,6 @@ class VideoRoomHandsFree extends Component {
   }
 
   getToken() {
-    
     return this.createSession(this.state.mySessionId).then((sessionId) =>
       this.createToken(sessionId)
     );

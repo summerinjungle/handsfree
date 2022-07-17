@@ -3,7 +3,7 @@ import IconButton from "@material-ui/core/IconButton";
 import HighlightOff from "@material-ui/icons/HighlightOff";
 
 import "./ChatComponent.css";
-import Recognition from "../Recognition";
+import Recognition from "../recognition/Recognition";
 
 export default class ChatHandsFree extends Component {
   constructor(props) {
@@ -118,7 +118,7 @@ export default class ChatHandsFree extends Component {
       this.setState({ isRecog: true });
     }
     this.sendMessage();
-};
+  };
 
   render() {
     const styleChat = { display: this.props.chatDisplay };
