@@ -23,12 +23,14 @@ exports.createRoom = async ({roomId, publisher, timeString}) => {
 // 방 이름 중복 검사
 exports.findByRoomId = async (roomId) => {
   return await Room.find({ 'roomId': roomId }).lean();
+
+}
+
+exports.findoneByRoomId = async (roomId) => {
+  return await Room.findOne({ 'roomId': roomId }).lean();
+}
+
   
-  // return findRoom.roomId;
-  // return await Room.findOne({ 'roomId': roomId }).exec();
-};
-
-
 exports.findRoomAndUpdate = async (filter, update) => {
   return await Room.findOneAndUpdate(filter, update).lean();
   

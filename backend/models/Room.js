@@ -38,4 +38,3 @@ const roomSchema = new Schema({
 });
 
 module.exports = model('Room', roomSchema);
-// module.exports = model('User', timeInfoSchema);
