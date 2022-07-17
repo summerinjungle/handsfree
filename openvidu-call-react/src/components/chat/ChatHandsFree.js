@@ -24,7 +24,6 @@ export default class ChatHandsFree extends Component {
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
-    // console.log("22222222222222 cdm", this.props.localUser.getStreamManager());
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
