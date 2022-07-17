@@ -12,7 +12,7 @@ import ToolbarComponent from "./../toolbar/ToolbarComponent";
 
 var localUser = new UserModel();
 
-class VideoRoomHandsFree extends Component {
+class VideoRoomMakdoong extends Component {
   constructor(props) {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
@@ -291,7 +291,7 @@ class VideoRoomHandsFree extends Component {
       // }
       // 방장만 실행하는 함수 (회의 강제 종료)
       // this.forceDisconnect(this.state.mySessionId);
-      this.props.navigate("edit");
+      // this.props.navigation.navigate("edit");
     } else {
       // [아니오] 눌렀을 때
       console.log(this.state);
@@ -386,10 +386,10 @@ class VideoRoomHandsFree extends Component {
         )
       ) {
         // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-        this.props.navigate("edit");
+        // this.props.navigation.navigate("edit");
       } else {
         // [취소] 클릭 -> Lobby로 이동
-        this.props.navigate("");
+        // this.props.navigation.navigate("");
       }
 
       // Remove the stream from 'subscribers' array
@@ -754,4 +754,4 @@ class VideoRoomHandsFree extends Component {
     });
   }
 }
-export default VideoRoomHandsFree;
+export default VideoRoomMakdoong;
