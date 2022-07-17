@@ -24,18 +24,19 @@ var timeString = hours + ':' + minutes  + ':' + seconds;
 exports.createRoom = async (req, res, next) => {
   try {
     
-    publisher = req.user.id;
+    // publisher = req.user.id;
+    publisher = "A";
     await roomServices.createRoom({roomId, publisher, timeString});
 
     res.status(CREATED).json({
-      message: '사용자 가입 성공',
+      message: '방생성 성공',
       roomId,
       timeString,
 
     });
   } catch (error) {
     res.status(BAD_REQUEST).json({
-      message: '사용자 가입 실패',
+      message: '방생성 실패',
       
     });
   }

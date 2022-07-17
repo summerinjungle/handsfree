@@ -9,7 +9,8 @@ const room = require('./rooms');
 
 router.use('/auth', auth);
 router.use('/users', user);
-router.use('/rooms', authCheck, room);
+// router.use('/rooms', authCheck, room);
+router.use('/rooms', room);
 
 // router.use('/room', user);
 
