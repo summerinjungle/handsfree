@@ -34,7 +34,7 @@ export default class ChatHandsFree extends Component {
 
         console.log("state record  =", this.state.isRecog);
         console.log("data record  =", data.isRecord);
-
+        this.setState({ isRecog: data.isRecord });
         if (data.message === "기록 중지" || data.message === "기록중지") return;
         if (data.isRecord === true) {
           messageList.push({
@@ -106,17 +106,12 @@ export default class ChatHandsFree extends Component {
   parentFunction = (data) => {
     this.state.message = data;
     console.log("!!!!! data", data);
-    if (
-      (data === "기록 중지" || data === "기록중지") &&
-      this.state.isRecog === true
-    ) {
+    if (data === "기록 중지" || data === "기록중지") {
       this.setState({ isRecog: false });
-    } else if (
-      (data === "기록 시작" || data === "기록시작") &&
-      this.state.isRecog === false
-    ) {
+    } else if (data === "기록 시작" || data === "기록시작") {
       this.setState({ isRecog: true });
     }
+
     this.sendMessage();
   };
 
