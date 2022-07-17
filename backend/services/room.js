@@ -4,22 +4,7 @@ const { to } = require('await-to-js');
 
 
 exports.createRoom = async ({roomId, publisher, timeString}) => {
-
     await createRoom({roomId, publisher, timeString});
-
-    // console.log("success");
-    // const res = await findByRoomId(roomId);
-    // console.log(res);
-    // if(res.length) {
-    //   console.log(res[0].createdAt);
-    //   console.log("hell");
-    //   return;
-    // }
-    // console.log(res);
-    // if (err) {
-    //     console.log("hello!!!");
-    //     throw new Error('Wrong RoomdId');
-    // }
 };
 
 exports.validateRoomId = async(roomId) => {
@@ -34,20 +19,18 @@ exports.validateRoomId = async(roomId) => {
         console.log("존재하지 않는 방");
         return true;
       }
-
-    console.log("temp", temp[1]);
-    return temp[1];
 }
 
 exports.toEditingRoom = async (roomId) => {
-    console.log(roomId);
-    const foundRoom = await findByRoomId(roomId);
-    console.log(foundRoom);
-    if(!foundRoom.length) {
-      console.log("no room");
+    const foundRoomRet = await findByRoomId(roomId);
+    if(!foundRoomRet.length) {
       return null;
     }
-    return (foundRoom.chatList, foundRoom.highlightList, foundRoom.recordStopList);
+    const foundRoom = foundRoomRet[0];
+    const chatList = JSON.parse(foundRoom.chatList);
+    const highlightList =  JSON.parse(foundRoom.highlightList);
+    const recordingStopList = JSON.parse(foundRoom.recordingStopList);
+    return ({chatList, highlightList, recordingStopList});
 };
 
 
@@ -57,11 +40,14 @@ exports.createChat = async (roomId, chatList, highlightList, recordingStopList) 
     return false;
   }
 
+  const chatListStr = JSON.stringify(chatList);
+  const highlightListStr = JSON.stringify(highlightList);
+  const recordingStopListStr = JSON.stringify(recordingStopList);
   const filter = { roomId: roomId};
   const update = {
-    chatList: chatList,
-    highlightList: highlightList,
-    recordingStopList: recordingStopList
+    chatList: chatListStr,
+    highlightList: highlightListStr,
+    recordingStopList: recordingStopListStr
   };
 
   const room = await findRoomAndUpdate(filter, update);
@@ -69,13 +55,6 @@ exports.createChat = async (roomId, chatList, highlightList, recordingStopList) 
 };
 
 
-exports.findByRoomId = async ({roomId, chatList, highlightList, recordStopList}) => {
-  const res = await findByRoomId(roomId);
-  if(res.length) {
-    return res[0];
-  }
-  return null;
-};
 
 
 

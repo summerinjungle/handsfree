@@ -12,11 +12,7 @@ var today = new Date();
 var hours = ('0' + today.getHours()).slice(-2); 
 var minutes = ('0' + today.getMinutes()).slice(-2);
 var seconds = ('0' + today.getSeconds()).slice(-2); 
-
-
-
 var timeString = hours + ':' + minutes  + ':' + seconds;
-
 
 exports.createRoom = async (req, res, next) => {
   try {
@@ -51,7 +47,6 @@ exports.createRoom = async (req, res, next) => {
 
 exports.getEditingRoom = async (req, res, next) => {
   const roomId = req.params.roomId;
-  console.log(roomId);
   const editingRoom = await roomServices.toEditingRoom(roomId);
   console.log(editingRoom);
   if(!editingRoom) {
@@ -61,7 +56,9 @@ exports.getEditingRoom = async (req, res, next) => {
     });
     return;
   }
-  console.log(editingRoom);
+  res.status(OK).json({
+    editingRoom
+  });
 };
 
 
