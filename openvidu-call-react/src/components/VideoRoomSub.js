@@ -327,8 +327,11 @@ class VideoRoomSub extends Component {
         console.log(this.state.localUser.connectionId);
 
         // 방장(Publisher)이 나갈때만 호출...
-        this.stopRecording(this.state.mySessionId);
-        this.forceDisconnect(this.state.mySessionId); // connectionId : this.state.localUser.connectionId
+        if (this.state.session.openvidu.role == "PUBLISHER") {
+          this.forceDisconnect(this.state.mySessionId); // connectionId : this.state.localUser.connectionId
+        }
+        
+        // this.stopRecording(this.state.mySessionId); // 이제 필요없음.
     }
 
 
@@ -729,7 +732,10 @@ class VideoRoomSub extends Component {
           },
         })
         .then((response) => {
-          console.log("-------- CREATE SESION ------ Doyoung", response);
+          // ******************** Log ******************************
+          console.log(this.state.localUser.streamManager); // publisher 객체
+          console.log(this.state.session.openvidu.role); // "PUBLISHER"
+          //************************************************************
           resolve(response.data.id);
         })
         .catch((response) => {
