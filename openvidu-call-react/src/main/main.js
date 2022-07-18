@@ -3,7 +3,7 @@ import "./main.css";
 import mainLogo from "../assets/images/mainLogo.png";
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from "react-redux"
-import { changeSession } from "../store.js"
+import { changeSession, changeDuringTime, changeIsPublisher, changeMeetingStartTime, changeEnterTime, changeUserName } from "../store.js"
 import GoogleLoginButton from './GoogleLoginButton';
 import { getTokenInCookie } from './cookie';
 import axios from 'axios';
@@ -18,6 +18,7 @@ function Main() {
   const [isLogin, setIsLogin] = useState(false);
   const cookie = getTokenInCookie();
   let reduxCheck = useSelector((state) => { return state } )
+  const date = new Date();
 
   useEffect(() => {
     if (cookie) {
@@ -31,11 +32,13 @@ function Main() {
     await axios.post('/api/rooms/')
     .then(function (response) {
       console.log(response.data);
-      // sessionId값 수정 => createdAt:  “00:00:00” / isRecording : true
+      // sessionId값, 방장권한, 진행시간 0, 입장시간
       dispatch(changeSession(response.data.roomId));
-      navigate("/meeting");
-      // 방장여부 시간설정
-
+      dispatch(changeIsPublisher(true));
+      dispatch(changeDuringTime(0))
+      dispatch(changeEnterTime(date.getTime()))
+      dispatch(changeUserName(getUserNameInCookie()))
+      navigate("/meeting"
     })
     .catch(function (error) {
       console.log(error);
@@ -49,12 +52,17 @@ function Main() {
       // 입장가능한 방일때
       if (response.data.isValidRoom) {
         dispatch(changeSession(enterCode))
-        
-        navigate('/meeting');  
-        // 입장하기(시간받기) => 리덕스에 넣어줌
-        // 라우터 바꾸고 불러야하나?
+        dispatch(changeIsPublisher(false));
+        let duringTime = response.data.enteredAt - Number(response.data.createdAt)
+        // console.log(response.data.enteredAt)
+        // console.log(duringTime)
+        // console.log(Number(response.data.createdAt))
+        dispatch(changeDuringTime(duringTime))
+        dispatch(changeUserName(getUserNameInCookie()))
+        dispatch(changeEnterTime(date.getTime()))
+        navigate('/meeting');
       } 
-      if (!response.data.isValidRoom) {
+      else {
         alert("입장코드를 다시 입력해주세요")
       }
     })
