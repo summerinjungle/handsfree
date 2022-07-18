@@ -3,7 +3,8 @@ import React, { Component } from "react";
 // 소리감지체크
 let sound_detect_check = false;
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const recognition = new SpeechRecognition();
 recognition.continuous = false;
@@ -35,7 +36,6 @@ class Recognition extends Component {
 
     recognition.onend = () => {
       if (this.state.transcript !== "") {
-        const date = new Date();
         const sttData = {
           text: this.state.transcript,
           startTime: this.state.start_time,
@@ -43,8 +43,6 @@ class Recognition extends Component {
         // 막둥이 로직추가
         this.props.parentFunction(sttData);
         console.log(this.state.transcript);
-
-        console.log("end_time :", date.getTime() - meeting_start_time);
       }
       this.setState({ transcript: "" });
       recognition.start();
@@ -54,12 +52,8 @@ class Recognition extends Component {
     recognition.onresult = (event) => {
       if (sound_detect_check !== true) {
         texts = "";
-        const date = new Date();
-        this.state.start_time = date.getTime() - meeting_start_time;
-        console.log(
-          "recog comp start_time",
-          date.getTime() - meeting_start_time
-        );
+        this.state.start_time =
+          this.props.duringTime + (new Date().getTime() - this.props.enterTime);
         sound_detect_check = true;
       }
       let texts = Array.from(event.results)

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import "./edit.css";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
@@ -20,7 +20,6 @@ const Wave = () => {
     if (wavesurfer.current.isPlaying()) {
       setIsPlay(true);
     } else {
-
       setIsPlay(false);
     }
   };
@@ -29,14 +28,13 @@ const Wave = () => {
     setIsPlay(false);
   };
 
-  let roomId = this.props.roomId
-  const chatList = []
-  const starList = []
-  const recordMuteList = []
-
+  const changeVolume = (event) => {
+    setVolume(event.target.valueAsNumber);
+    wavesurfer.current.setVolume(volume);
+  };
 
   useEffect(() => {
-    loadAllRecord(); // 회의에서 저장된 기록들 가져오기
+    // loadAllRecord(); // 회의에서 저장된 기록들 가져오기
 
     wavesurfer.current = WaveSurfer.create({
       container: ".audio",
@@ -109,25 +107,25 @@ const Wave = () => {
     }
   }, []);
 
-  async function loadAllRecord() {
-    await axios
-      .get('/api/rooms/' + roomId + '/editingroom')
-      .then(function (response) {
-        console.log(response.data);
-        chatList = response.data.chatList;
-        starList = response.data.starList;
-        recordMuteList = response.data.recordMuteList;
-        // chatList, starList, recordMuteList 저장
+  //   async function loadAllRecord() {
+  //     await axios
+  //       .get("/api/rooms/" + roomId + "/editingroom")
+  //       .then(function (response) {
+  //         console.log(response.data);
+  //         chatList = response.data.chatList;
+  //         starList = response.data.starList;
+  //         recordMuteList = response.data.recordMuteList;
+  //         // chatList, starList, recordMuteList 저장
 
-        // dispatch(changeSession(response.data.roomId));
-        // dispatch(changeIsPublisher(true));
-        // dispatch(changeUserName(getUserNameInCookie()))
-        // navigate("/meeting");
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-  }
+  //         // dispatch(changeSession(response.data.roomId));
+  //         // dispatch(changeIsPublisher(true));
+  //         // dispatch(changeUserName(getUserNameInCookie()))
+  //         // navigate("/meeting");
+  //       })
+  //       .catch(function (error) {
+  //         console.log(error);
+  //       });
+  //   }
 
   return (
     <div>
