@@ -1,0 +1,10 @@
+.left-side-bg {
+  background-color: #eeeee4;
+  height: 87vh;
+  border-radius: 10px;
+  border: 4px solid slateblue;
+
+  /* width: 23%; */
+  /* float: right; */
+  /* text-align: right; */
+}
