@@ -8,6 +8,7 @@ import GoogleLoginButton from './GoogleLoginButton';
 import { getTokenInCookie } from './cookie';
 import axios from 'axios';
 import { getUserNameInCookie } from './cookie';
+import { useSelector } from "react-redux";
 
 
 function Main() {
@@ -16,6 +17,7 @@ function Main() {
   let [enterCode, setEnterCode] = useState("");
   const [isLogin, setIsLogin] = useState(false);
   const cookie = getTokenInCookie();
+  let reduxCheck = useSelector((state) => { return state } )
 
   useEffect(() => {
     if (cookie) {
@@ -74,7 +76,7 @@ function Main() {
             <button onClick={() => { enterCode === ''? alert("참여코드를 입력하세요") : enterMeeting() }}>회의 참여하기</button> 
           </p>
           <p>
-            <button onClick={() => console.log(a) }>
+            <button onClick={() => console.log(reduxCheck) }>
               리덕스 보기
             </button>
           </p>
