@@ -18,11 +18,14 @@
         "react": "16.13.1",
         "react-dom": "16.13.1",
         "react-google-login": "^5.2.2",
+        "react-quill": "^1.3.5",
         "react-redux": "^8.0.2",
         "react-router-dom": "^6.3.0",
         "react-scripts": "^3.4.3",
         "react-scroll-to-bottom": "^4.2.0",
-        "react-speech-recognition": "^3.9.1"
+        "react-speech-recognition": "^3.9.1",
+        "y-webrtc": "^10.2.3",
+        "yjs": "^13.5.39"
     },
     "name": "openvidu-call-react",
     "proxy": "http://127.0.0.1:5000/",

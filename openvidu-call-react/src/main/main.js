@@ -9,6 +9,7 @@ import { getTokenInCookie } from './cookie';
 import { axios } from 'axios';
 import { useSelector } from "react-redux"
 import { getUserNameInCookie } from './cookie';
+import TextEditor from '../components/text-editor/TextEditor'; 
 
 function Main() {
   let navigate = useNavigate();
@@ -27,7 +28,8 @@ function Main() {
 
   return (
     <div className='main-bg'>
-      <img className='main-logo' src={ mainLogo }/>
+      <TextEditor/>
+      {/* <img className='main-logo' src={ mainLogo }/>
       {isLogin ? (
         <p>
           <div>
@@ -93,7 +95,7 @@ function Main() {
         </p>
       ) : (
         <p className='LogInBtnStyle'><GoogleLoginButton /></p>
-      )}  
+      )}   */}
     </div>
   );
 }
