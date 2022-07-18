@@ -30,6 +30,10 @@ class VideoRoomHandsFree extends Component {
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
 
+    let isPublisher = this.props.isPublisher
+    let duringTime = this.props.duringTime
+    let enterTime = this.props.enterTime
+    
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -561,6 +565,10 @@ class VideoRoomHandsFree extends Component {
     const localUser = this.state.localUser;
     var chatDisplay = { display: this.state.chatDisplay };
     console.log("!!!@!@!@!!!", this.state.hightList);
+
+    // 방장여부 확인
+    console.log(this.props.isPublisher)
+
     return (
       <div className='container' id='container'>
         <DialogExtensionComponent
@@ -601,6 +609,8 @@ class VideoRoomHandsFree extends Component {
                   chatDisplay={this.state.chatDisplay}
                   closeBtn={this.toggleChat}
                   rootFunction={this.rootFunction}
+                  duringTime={this.props.duringTime}
+                  enterTime={this.props.enterTime}
                 />
               </div>
             )}

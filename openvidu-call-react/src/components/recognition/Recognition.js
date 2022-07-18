@@ -1,10 +1,9 @@
-import React, { useEffect, useState, Component } from "react";
+import React, { Component } from "react";
 
 // 소리감지체크
 let sound_detect_check = false;
 
-const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const recognition = new SpeechRecognition();
 recognition.continuous = false;

@@ -3,12 +3,13 @@ import "./main.css";
 import mainLogo from "../assets/images/mainLogo.png";
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from "react-redux"
-import { changeSession, changeDuringTime, changeIsPublisher, changeMeetingStartTime, changeEnterTime, changeUserName } from "../store.js"
+import { changeSession, changeDuringTime, changeIsPublisher, changeEnterTime, changeUserName } from "../store.js"
 import GoogleLoginButton from './GoogleLoginButton';
 import { getTokenInCookie } from './cookie';
 import axios from 'axios';
 import { getUserNameInCookie } from './cookie';
 import { useSelector } from "react-redux";
+import { removeTokenInCookie } from './cookie';
 
 
 function Main() {
@@ -54,9 +55,9 @@ function Main() {
         dispatch(changeSession(enterCode))
         dispatch(changeIsPublisher(false));
         let duringTime = response.data.enteredAt - Number(response.data.createdAt)
-        // console.log(response.data.enteredAt)
-        // console.log(duringTime)
-        // console.log(Number(response.data.createdAt))
+        console.log(response.data.enteredAt)
+        console.log(duringTime)
+        console.log(Number(response.data.createdAt))
         dispatch(changeDuringTime(duringTime))
         dispatch(changeUserName(getUserNameInCookie()))
         dispatch(changeEnterTime(date.getTime()))
@@ -96,6 +97,11 @@ function Main() {
           <p>
             <button onClick={() => navigate('/meeting') }>
               그냥 입장하기
+            </button>
+          </p>
+          <p>
+          <button onClick={() => removeTokenInCookie() }>
+              로그아웃
             </button>
           </p>
         </div>

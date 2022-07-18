@@ -17,6 +17,10 @@ export default class ChatHandsFree extends Component {
       isHightlight: false,
       time: "",
       startTime: "",
+      
+      duringTime: this.props.duringTime,
+      enterTime: this.props.enterTime,
+
     };
     this.chatScroll = React.createRef();
     this.handleChange = this.handleChange.bind(this);
@@ -36,6 +40,15 @@ export default class ChatHandsFree extends Component {
         this.setState({ isRecog: data.isRecord });
         if (data.message === "기록 중지" || data.message === "기록중지") return;
         if (data.isRecord === true) {
+          const duringTime = this.state.duringTime;
+          const enterTime = this.state.enterTime;
+          
+          // console.log("기존회의 진행시간 :", this.stste.duringTime)
+          // console.log("입장시간 :", this.stste.enterTime)
+
+          console.log("기존회의 진행시간 :", duringTime)
+          console.log("입장시간 :", enterTime)
+
           console.log("그 전 데이터  = ", messageList[length - 1]);
           console.log("막둥아 별표22 = ", data.isHightlight);
           if (this.state.isHightlight) {
