@@ -29,6 +29,11 @@ const Wave = () => {
     setIsPlay(false);
   };
 
+  const changeVolume = (event) => {
+    setVolume(event.target.valueAsNumber);
+    wavesurfer.current.setVolume(volume);
+  };
+
   let roomId = this.props.roomId
   const chatList = []
   const starList = []

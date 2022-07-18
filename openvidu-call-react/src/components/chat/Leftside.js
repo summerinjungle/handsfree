@@ -9,7 +9,9 @@ function LeftSide({ hightlight }) {
   console.log("ghhhh", hightlight);
   return (
     <div className='left-side-bg' style={sty}>
+      
       <h2>음성기록</h2>
+
       <div>
         {/* {{ hightlight }} */}
         {hightlight &&

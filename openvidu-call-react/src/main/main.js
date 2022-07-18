@@ -16,7 +16,7 @@ function Main() {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [enterCode, setEnterCode] = useState("");
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const cookie = getTokenInCookie();
   let reduxCheck = useSelector((state) => { return state } )
   const date = new Date();
@@ -100,7 +100,7 @@ function Main() {
             </button>
           </p>
           <p>
-          <button onClick={() => removeTokenInCookie() }>
+          <button onClick={() => {removeTokenInCookie(); window.location.reload()}}>
               로그아웃
             </button>
           </p>

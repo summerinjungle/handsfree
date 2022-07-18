@@ -594,27 +594,25 @@ class VideoRoomHandsFree extends Component {
               />
             </div>
           ))}
-          {localUser !== undefined &&
+        </div>
+
+        <div className='soundScribe'>
+          <LeftSide highlight={this.state.hightList} />
+    
+        </div>
+        {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div
                 className='OT_root OT_publisher custom-class'
-                style={chatDisplay}
               >
                 <ChatHandsFree
                   localUser={localUser}
-                  chatDisplay={this.state.chatDisplay}
-                  closeBtn={this.toggleChat}
                   rootFunction={this.rootFunction}
                   duringTime={this.props.duringTime}
                   enterTime={this.props.enterTime}
                 />
               </div>
             )}
-        </div>
-        <div className='soundScribe'>
-          <LeftSide highlight={this.state.hightList} />
-        </div>
-
         <ToolbarComponent
           sessionId={mySessionId}
           user={localUser}

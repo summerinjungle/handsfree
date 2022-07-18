@@ -150,7 +150,8 @@ export default class ToolbarComponent extends Component {
             >
               <PowerSettingsNew />
             </IconButton>
-            <IconButton
+
+            {/* <IconButton
               color='inherit'
               onClick={this.toggleChat}
               id='navChatButton'
@@ -159,7 +160,8 @@ export default class ToolbarComponent extends Component {
               <Tooltip title='Chat'>
                 <QuestionAnswer />
               </Tooltip>
-            </IconButton>
+            </IconButton> */}
+            
           </div>
         </Toolbar>
       </AppBar>
