@@ -8,13 +8,18 @@ const roomServices = require('../../services/room');
 */
 
 // 시간, 랜덤 방이름 생성
-var today = new Date();
-var hours = ('0' + today.getHours()).slice(-2); 
-var minutes = ('0' + today.getMinutes()).slice(-2);
-var seconds = ('0' + today.getSeconds()).slice(-2); 
 
+function getTime(){
 
-var timeString = today.getTime();
+  var today = new Date();
+  var hours = ('0' + today.getHours()).slice(-2); 
+  var minutes = ('0' + today.getMinutes()).slice(-2);
+  var seconds = ('0' + today.getSeconds()).slice(-2); 
+  var timeString = today.getTime();
+
+  return timeString;
+}
+
 
 //방 생성 API
 exports.createRoom = async (req, res, next) => {
@@ -27,6 +32,7 @@ exports.createRoom = async (req, res, next) => {
    
     if (isVaild == true){
 
+      timeString = getTime();
       await roomServices.createRoom({roomId, publisher, timeString});
       
       res.status(CREATED).json({
@@ -65,6 +71,8 @@ exports.joinRoom = async (req, res, next) => {
       console.log("hello!");
       const createTime = await roomServices.findRoomResponseTime(roomId);
       // console.log(createTime);
+
+      timeString = getTime();
 
       res.status(CREATED).json({
         message: '방입장 성공',
