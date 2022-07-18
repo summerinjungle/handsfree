@@ -73,16 +73,16 @@ class VideoRoomHandsFree extends Component {
     window.removeEventListener("beforeunload", this.onbeforeunload);
     window.removeEventListener("resize", this.updateLayout);
     window.removeEventListener("resize", this.checkSize);
-    this.leaveSession();
+    // this.leaveSession();
     this.connectToSession();
     this.connect();
     this.connectWebCam();
     this.camStatusChanged();
   }
 
-  onbeforeunload = (event) => {
-    this.leaveSession();
-  };
+  // onbeforeunload = (event) => {
+  //   this.leaveSession();
+  // };
 
   joinSession = () => {
     this.OV = new OpenVidu();
@@ -268,49 +268,49 @@ class VideoRoomHandsFree extends Component {
     );
   }
 
-  leaveSession = () => {
-    if (
-      // [예] 눌렀을 때
-      window.confirm("회의를 종료하시겠습니까?")
-    ) {
-      // const mySession = this.state.session;
-      // if (mySession) {
-      //   mySession.disconnect();
-      // }
-      // // Empty all properties...
-      // this.OV = null;
-      // this.setState({
-      //   session: undefined,
-      //   subscribers: [],
-      //   mySessionId: "SessionA",
-      //   myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
-      //   localUser: undefined,
-      // });
-      // if (this.props.leaveSession) {
-      //   this.props.leaveSession();
-      // }
-      // 방장만 실행하는 함수 (회의 강제 종료)
-      // this.forceDisconnect(this.state.mySessionId);
-      this.props.navigate("edit");
-    } else {
-      // [아니오] 눌렀을 때
-      console.log(this.state);
-      console.log(this.state.session);
-      console.log(this.state.session.capabilities);
-      console.log(this.state.session.capabilities.publish); // true
-      console.log(this.state.localUser.streamManager); // publisher 객체
-      console.log(this.state.session.openvidu.role); // "PUBLISHER"
-      // console.log(this.session.connection.role);
-      // console.log("WHO ARE YOU", this.props.user.streamManager);// undefined
-      console.log("TEST_PUBLISHER--3", this.state.session.streamManagers);
-      console.log(
-        "TEST_PUBLISHER--4",
-        this.state.session.streamManagers.length
-      );
-      console.log("CONNIE", localUser);
-      console.log("CONNIE", this.state.subscribers);
-    }
-  };
+  // leaveSession = () => {
+  //   if (
+  //     // [예] 눌렀을 때
+  //     window.confirm("회의를 종료하시겠습니까?")
+  //   ) {
+  //     // const mySession = this.state.session;
+  //     // if (mySession) {
+  //     //   mySession.disconnect();
+  //     // }
+  //     // // Empty all properties...
+  //     // this.OV = null;
+  //     // this.setState({
+  //     //   session: undefined,
+  //     //   subscribers: [],
+  //     //   mySessionId: "SessionA",
+  //     //   myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
+  //     //   localUser: undefined,
+  //     // });
+  //     // if (this.props.leaveSession) {
+  //     //   this.props.leaveSession();
+  //     // }
+  //     // 방장만 실행하는 함수 (회의 강제 종료)
+  //     // this.forceDisconnect(this.state.mySessionId);
+  //     this.props.navigate("edit");
+  //   } else {
+  //     // [아니오] 눌렀을 때
+  //     console.log(this.state);
+  //     console.log(this.state.session);
+  //     console.log(this.state.session.capabilities);
+  //     console.log(this.state.session.capabilities.publish); // true
+  //     console.log(this.state.localUser.streamManager); // publisher 객체
+  //     console.log(this.state.session.openvidu.role); // "PUBLISHER"
+  //     // console.log(this.session.connection.role);
+  //     // console.log("WHO ARE YOU", this.props.user.streamManager);// undefined
+  //     console.log("TEST_PUBLISHER--3", this.state.session.streamManagers);
+  //     console.log(
+  //       "TEST_PUBLISHER--4",
+  //       this.state.session.streamManagers.length
+  //     );
+  //     console.log("CONNIE", localUser);
+  //     console.log("CONNIE", this.state.subscribers);
+  //   }
+  // };
 
   camStatusChanged = () => {
     localUser.setVideoActive(!localUser.isVideoActive());
@@ -605,7 +605,7 @@ class VideoRoomHandsFree extends Component {
           screenShare={this.screenShare}
           stopScreenShare={this.stopScreenShare}
           toggleFullscreen={this.toggleFullscreen}
-          leaveSession={this.leaveSession}
+          // leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
         />
       </div>
