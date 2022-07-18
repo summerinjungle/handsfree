@@ -70,6 +70,7 @@ exports.joinRoom = async (req, res, next) => {
         message: '방입장 성공',
         roomId: roomId,
         createdAt : createTime,
+        enteredAt : timeString,
         isValidRoom : true
       });
 
