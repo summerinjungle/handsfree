@@ -1,12 +1,15 @@
+import React  from "react";
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { getTokenInCookie, getUserNameInCookie } from '../utils/cookie';
+import { useDispatch } from "react-redux"
+require("dotenv").config();
+
 
 const GoogleLoginButton = () => {
+
   const clientId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
   
   async function onSuccess(res) {
-    
     const code = await fetch("/api/auth/google", {
       method: "POST",
       body: JSON.stringify({
@@ -20,6 +23,7 @@ const GoogleLoginButton = () => {
       console.log("success", success);
     });
     alert("구글 로그인에 성공하였습니다");
+    window.location.reload();
   }
 
   const onError = (res) => {
@@ -28,14 +32,12 @@ const GoogleLoginButton = () => {
   };
 
   return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <GoogleLogin
-        onSuccess={onSuccess}
-        onError={onError}
-      />
-    </GoogleOAuthProvider>
+      <GoogleOAuthProvider clientId={clientId}>
+        <GoogleLogin
+          onSuccess={onSuccess}
+          onError={onError}/>
+      </GoogleOAuthProvider>
   );
 };
 
 export default GoogleLoginButton;
-

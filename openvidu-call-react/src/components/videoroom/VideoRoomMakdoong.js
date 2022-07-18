@@ -12,7 +12,7 @@ import ToolbarComponent from "./../toolbar/ToolbarComponent";
 
 var localUser = new UserModel();
 
-class VideoRoomHandsFree extends Component {
+class VideoRoomMakdoong extends Component {
   constructor(props) {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
@@ -40,7 +40,6 @@ class VideoRoomHandsFree extends Component {
       subscribers: [],
       chatDisplay: "none",
       currentVideoDevice: undefined,
-      hightList: [],
       // history: this.props,
     };
   }
@@ -274,28 +273,25 @@ class VideoRoomHandsFree extends Component {
       // [예] 눌렀을 때
       window.confirm("회의를 종료하시겠습니까?")
     ) {
-      const mySession = this.state.session;
-
-      if (mySession) {
-        mySession.disconnect();
-      }
-
-      // Empty all properties...
-      this.OV = null;
-      this.setState({
-        session: undefined,
-        subscribers: [],
-        mySessionId: "SessionA",
-        myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
-        localUser: undefined,
-      });
-      if (this.props.leaveSession) {
-        this.props.leaveSession();
-      }
+      // const mySession = this.state.session;
+      // if (mySession) {
+      //   mySession.disconnect();
+      // }
+      // // Empty all properties...
+      // this.OV = null;
+      // this.setState({
+      //   session: undefined,
+      //   subscribers: [],
+      //   mySessionId: "SessionA",
+      //   myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
+      //   localUser: undefined,
+      // });
+      // if (this.props.leaveSession) {
+      //   this.props.leaveSession();
+      // }
       // 방장만 실행하는 함수 (회의 강제 종료)
-      this.forceDisconnect(this.state.mySessionId);
-
-      history.push("/edit");
+      // this.forceDisconnect(this.state.mySessionId);
+      // this.props.navigation.navigate("edit");
     } else {
       // [아니오] 눌렀을 때
       console.log(this.state);
@@ -381,14 +377,6 @@ class VideoRoomHandsFree extends Component {
     this.state.session.on("streamDestroyed", (event) => {
       console.log("Destroyed", this.state.localUser.connectionId);
 
-      
-      // Remove the stream from 'subscribers' array
-      this.deleteSubscriber(event.stream);
-      setTimeout(() => {
-        this.checkSomeoneShareScreen();
-      }, 20);
-      event.preventDefault();
-      this.updateLayout();
       // 회의 종료 알림창 확인창
       if (
         window.confirm(
@@ -398,11 +386,19 @@ class VideoRoomHandsFree extends Component {
         )
       ) {
         // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-        // this.props.navigate("edit");
+        // this.props.navigation.navigate("edit");
       } else {
         // [취소] 클릭 -> Lobby로 이동
-        // this.props.navigate("");
+        // this.props.navigation.navigate("");
       }
+
+      // Remove the stream from 'subscribers' array
+      this.deleteSubscriber(event.stream);
+      setTimeout(() => {
+        this.checkSomeoneShareScreen();
+      }, 20);
+      event.preventDefault();
+      this.updateLayout();
     });
   }
 
@@ -549,18 +545,11 @@ class VideoRoomHandsFree extends Component {
     }
   };
 
-  rootFunction = (data) => {
-    // this.setState({
-    //   hightList: data,
-    // });
-    this.state.hightList.push(data);
-  };
-
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
     var chatDisplay = { display: this.state.chatDisplay };
-    console.log("!!!@!@!@!!!", this.state.hightList);
+
     return (
       <div className='container' id='container'>
         <DialogExtensionComponent
@@ -600,13 +589,12 @@ class VideoRoomHandsFree extends Component {
                   localUser={localUser}
                   chatDisplay={this.state.chatDisplay}
                   closeBtn={this.toggleChat}
-                  rootFunction={this.rootFunction}
                 />
               </div>
             )}
         </div>
         <div className='soundScribe'>
-          <LeftSide highlight={this.state.hightList} />
+          <LeftSide />
         </div>
 
         <ToolbarComponent
@@ -766,4 +754,4 @@ class VideoRoomHandsFree extends Component {
     });
   }
 }
-export default VideoRoomHandsFree;
+export default VideoRoomMakdoong;
