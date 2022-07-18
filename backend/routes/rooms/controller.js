@@ -8,11 +8,18 @@ const roomServices = require('../../services/room');
 */
 
 // 시간, 랜덤 방이름 생성
-var today = new Date();
-var hours = ('0' + today.getHours()).slice(-2); 
-var minutes = ('0' + today.getMinutes()).slice(-2);
-var seconds = ('0' + today.getSeconds()).slice(-2); 
-var timeString = hours + ':' + minutes  + ':' + seconds;
+
+function getTime(){
+
+  var today = new Date();
+  var hours = ('0' + today.getHours()).slice(-2); 
+  var minutes = ('0' + today.getMinutes()).slice(-2);
+  var seconds = ('0' + today.getSeconds()).slice(-2); 
+  var timeString = today.getTime();
+
+  return timeString;
+}
+
 
 //방 생성 API
 exports.createRoom = async (req, res, next) => {
@@ -25,6 +32,7 @@ exports.createRoom = async (req, res, next) => {
    
     if (isVaild == true){
 
+      timeString = getTime();
       await roomServices.createRoom({roomId, publisher, timeString});
       
       res.status(CREATED).json({
@@ -35,7 +43,7 @@ exports.createRoom = async (req, res, next) => {
     }
     else{
       console.log("방이름이 중복됩니다.");
-      res.status(BAD_REQUEST).json({
+      res.status(CREATED).json({
         message: '방생성 실패',
       });
     }
@@ -52,7 +60,6 @@ exports.createRoom = async (req, res, next) => {
 //방 입장 API
 exports.joinRoom = async (req, res, next) => {
   try {
- 
 
     const { roomId } = req.params;
     const isVaild = await roomServices.validateRoomId(roomId);   // 같은 이름의 방이 있는지 검증하는 로직
@@ -65,17 +72,20 @@ exports.joinRoom = async (req, res, next) => {
       const createTime = await roomServices.findRoomResponseTime(roomId);
       // console.log(createTime);
 
+      timeString = getTime();
+
       res.status(CREATED).json({
         message: '방입장 성공',
         roomId: roomId,
         createdAt : createTime,
+        enteredAt : timeString,
         isValidRoom : true
       });
 
     }
     else{
       console.log("방이름이 중복되지않습니다.");
-      res.status(BAD_REQUEST).json({
+      res.status(CREATED).json({
         message: '방입장 실패',
         isValidRoom : false
       });
