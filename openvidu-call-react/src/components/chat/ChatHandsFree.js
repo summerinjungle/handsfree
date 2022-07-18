@@ -11,16 +11,18 @@ export default class ChatHandsFree extends Component {
 
     this.state = {
       messageList: [],
-      highlighList: [],
+      starList: [],
+      recordMuteList: [],
       message: "",
       isRecog: true,
-      isHightlight: false,
+      isStar: false,
+      isRecordMute: false,
       time: "",
       startTime: "",
-      
       duringTime: this.props.duringTime,
       enterTime: this.props.enterTime,
-
+      left: "",
+      right: "",
     };
     this.chatScroll = React.createRef();
     this.handleChange = this.handleChange.bind(this);
@@ -38,27 +40,38 @@ export default class ChatHandsFree extends Component {
         let messageList = this.state.messageList;
         let length = messageList.length;
         this.setState({ isRecog: data.isRecord });
+        console.log("잡담구간 체크 = ", this.state.isRecordMute);
+
+        if (this.state.isRecordMute === true) {
+          this.state.recordMuteList.push({
+            left: this.state.left,
+            right: this.state.right,
+          });
+          this.setState({
+            isRecordMute: false,
+          });
+        }
+        console.log("잡담구간 확인", this.state.isRecordMute);
+
         if (data.message === "기록 중지" || data.message === "기록중지") return;
         if (data.isRecord === true) {
           const duringTime = this.state.duringTime;
           const enterTime = this.state.enterTime;
-          
-          // console.log("기존회의 진행시간 :", this.stste.duringTime)
-          // console.log("입장시간 :", this.stste.enterTime)
+          console.log("기존회의 진행시간 :", duringTime);
+          console.log("입장시간 :", enterTime);
 
-          console.log("기존회의 진행시간 :", duringTime)
-          console.log("입장시간 :", enterTime)
+          // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
 
           console.log("그 전 데이터  = ", messageList[length - 1]);
-          console.log("막둥아 별표22 = ", data.isHightlight);
-          if (this.state.isHightlight) {
-            const highlight = {
+          console.log("막둥아 별표22 = ", data.isStar);
+          if (this.state.isStar) {
+            const stars = {
               message: messageList[length - 1].message,
               startTime: messageList[length - 1].startTime,
             };
-            this.state.highlighList.push(highlight);
-            this.setState({ isHightlight: false });
-            this.props.rootFunction(highlight);
+            this.state.starList.push(stars);
+            this.setState({ isStar: false });
+            this.props.rootFunction(stars);
             console.log("root f", this.props.rootFunction);
           }
 
@@ -106,7 +119,7 @@ export default class ChatHandsFree extends Component {
         const date = new Date();
         const data = {
           isRecord: this.state.isRecog,
-          isHightlight: this.state.isHightlight,
+          isStar: this.state.isStar,
           time: date.getHours() + ":" + date.getMinutes(),
           message: message,
           nickname: this.props.localUser.getNickname(),
@@ -141,11 +154,22 @@ export default class ChatHandsFree extends Component {
     console.log("text = ", data.text);
     console.log("chat_comp startTime = ", data.startTime);
     if (data.text === "기록 중지" || data.text === "기록중지") {
+      if (this.state.isRecog === true) {
+        this.setState({
+          left: data.startTime,
+        });
+      }
       this.setState({ isRecog: false });
     } else if (data.text === "기록 시작" || data.text === "기록시작") {
+      if (this.state.isRecog === false) {
+        this.setState({
+          right: data.startTime,
+          isRecordMute: true,
+        });
+      }
       this.setState({ isRecog: true });
     } else if (data.text === "막둥아 별표") {
-      this.setState({ isHightlight: true });
+      this.setState({ isStar: true });
     }
 
     this.sendMessage();
@@ -197,7 +221,11 @@ export default class ChatHandsFree extends Component {
             ))}
           </div>
         </div>
-        <Recognition parentFunction={this.parentFunction} />
+        <Recognition
+          parentFunction={this.parentFunction}
+          duringTime={this.state.duringTime}
+          enterTime={this.state.enterTime}
+        />
       </div>
     );
   }
