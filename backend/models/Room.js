@@ -27,13 +27,13 @@ const roomSchema = new Schema({
         trim: true,
     },
     chatList: {
-        type: String,
+        type: Array,
     },
-    highlightList: {
-        type: String,
+    starList: {
+        type: Array,
     },
-    recordingStopList: {
-        type: String
+    recordMuteList: {
+        type: Array
     }
 });
 
