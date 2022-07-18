@@ -29,10 +29,10 @@ const roomSchema = new Schema({
     chatList: {
         type: String,
     },
-    highlightList: {
+    starList: {
         type: String,
     },
-    recordingStopList: {
+    recordMuteList: {
         type: String
     }
 });

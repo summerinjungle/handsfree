@@ -11,8 +11,8 @@ exports.createRoom = async ({roomId, publisher, timeString}) => {
             createdAt: timeString,
             emailList: [],
             chatList: "",
-            highlightList: "",
-            recordingStopList: ""
+            starList: "",
+            recordMuteList: ""
           });
         } catch (err) {
           console.log(err);
