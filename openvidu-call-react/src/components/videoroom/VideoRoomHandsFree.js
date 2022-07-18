@@ -73,16 +73,16 @@ class VideoRoomHandsFree extends Component {
     window.removeEventListener("beforeunload", this.onbeforeunload);
     window.removeEventListener("resize", this.updateLayout);
     window.removeEventListener("resize", this.checkSize);
-    this.leaveSession();
+    // this.leaveSession();
     this.connectToSession();
     this.connect();
     this.connectWebCam();
     this.camStatusChanged();
   }
 
-  onbeforeunload = (event) => {
-    this.leaveSession();
-  };
+  // onbeforeunload = (event) => {
+  //   this.leaveSession();
+  // };
 
   joinSession = () => {
     this.OV = new OpenVidu();
@@ -293,6 +293,11 @@ class VideoRoomHandsFree extends Component {
       }
       // 방장만 실행하는 함수 (회의 강제 종료)
       this.forceDisconnect(this.state.mySessionId);
+<<<<<<< HEAD
+=======
+
+      // history.push("/edit");
+>>>>>>> fa7d9e48c3286ca866d7523dfeae0ae7ebb3f8ae
     } else {
       // [아니오] 눌렀을 때
       console.log(this.state);
@@ -613,7 +618,7 @@ class VideoRoomHandsFree extends Component {
           screenShare={this.screenShare}
           stopScreenShare={this.stopScreenShare}
           toggleFullscreen={this.toggleFullscreen}
-          leaveSession={this.leaveSession}
+          // leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
         />
       </div>

@@ -1,5 +1,6 @@
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import React, {Component} from 'react';
 import { getTokenInCookie, getUserNameInCookie } from '../utils/cookie';
 
 const GoogleLoginButton = () => {
