@@ -1,4 +1,5 @@
 import { getTokenInCookie } from '../utils/cookie';
+import React, {Component} from 'react';
 
 const OnlyLoggedInUserBtn = () => {
   var ret = "";
