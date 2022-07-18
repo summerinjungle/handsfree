@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import Main from "./main/main";
-import { useSelector } from "react-redux";
 import VideoRoomHandsFree from "./components/videoroom/VideoRoomHandsFree";
 import Edit from "./components/edit/Edit";
-import { getUserNameInCookie } from './main/cookie';
-
+import Main from "./main/main";
+import Wave from "./components/edit/Wave";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { getUserNameInCookie } from "./main/cookie";
+import { useSelector } from "react-redux";
+import Surfer from "./components/edit/Surfer";
 
 const App = () => {
 
@@ -33,6 +34,10 @@ const App = () => {
           />}
         />
         <Route path='/edit' element={<Edit />} />
+        <Route path='/wave' element={<Wave 
+          roomId={roomId}
+        />} />
+        <Route path='/surfer' element={<Surfer />} />
       </Routes>
     </div>
   );

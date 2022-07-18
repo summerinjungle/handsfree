@@ -9,6 +9,8 @@
     "dependencies": {
         "@material-ui/core": "4.9.10",
         "@material-ui/icons": "4.9.1",
+        "@mui/icons-material": "^5.8.4",
+        "@mui/material": "^5.9.0",
         "@react-oauth/google": "^0.2.6",
         "@reduxjs/toolkit": "^1.8.3",
         "axios": "^0.19.2",
@@ -24,7 +26,11 @@
         "react-router-dom": "^6.3.0",
         "react-scripts": "^3.4.3",
         "react-scroll-to-bottom": "^4.2.0",
-        "react-speech-recognition": "^3.9.1"
+        "react-speech-recognition": "^3.9.1",
+        "react-wavesurfer": "^0.8.6",
+        "styled-components": "^5.3.5",
+        "wavesurfer-react": "^2.2.2",
+        "wavesurfer.js": "^6.2.0"
     },
     "name": "openvidu-call-react",
     "private": true,

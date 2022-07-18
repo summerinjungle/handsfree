@@ -6,7 +6,7 @@
     color: #212121;
     font-family: "Open Sans", sans-serif;
     display: grid;
-    place-items: center;
+    /* place-items: center; */
 }
 
 body {
