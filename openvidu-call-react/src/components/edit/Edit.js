@@ -11,7 +11,6 @@ import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
 import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 
 const Edit = () => {
-  // const wavesurfer = useRef(null);
   const [waveSurfer, setWaveSurfer] = useState(null);
   const [isPlay, setIsPlay] = useState(false);
   const playButton = () => {
@@ -83,7 +82,7 @@ const Edit = () => {
     if (waveSurfer) {
       console.log(" ㅡㅡ ", waveSurfer);
       waveSurfer.load(
-        "https://openvidu.shop/openvidu/recordings/SessionA/ownweapon.webm"
+        "https://openvidu.shop/openvidu/recordings/SessionB/ownweapon.webm"
       );
     }
   }, []);
@@ -95,7 +94,6 @@ const Edit = () => {
         {/* <div className='track-name'>The name of the track</div> */}
 
         <div className='audio'></div>
-
         <div className='buttons'>
           <span
             className={"play-btn btn" + (isPlay === true ? " playing" : "")}

@@ -13,13 +13,24 @@ import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 const Wave = () => {
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
+  const [volume, setVolume] = useState(1);
   const playButton = () => {
     wavesurfer.current.playPause();
-    setIsPlay((current) => !current);
+    if (wavesurfer.current.isPlaying()) {
+      setIsPlay(true);
+    } else {
+      setIsPlay(false);
+    }
   };
 
   const stopButton = () => {
+    wavesurfer.current.stop();
     setIsPlay(false);
+  };
+
+  const changeVolume = (event) => {
+    setVolume(event.target.valueAsNumber);
+    wavesurfer.current.setVolume(volume);
   };
 
   useEffect(() => {
@@ -29,6 +40,21 @@ const Wave = () => {
       progressColor: "red",
       barWidth: 0.05,
       plugins: [
+        RegionsPlugin.create({
+          regionsMinLength: 2,
+          regions: [
+            {
+              id: "selected",
+              start: 13,
+              end: 156,
+              loop: false,
+              color: "hsla(400, 100%, 30%, 0.5)",
+            },
+          ],
+          dragSelection: {
+            slop: 5,
+          },
+        }),
         CursorPlugin.create({
           showTime: true,
           opacity: 1,
@@ -47,25 +73,19 @@ const Wave = () => {
               color: "#ff990a",
             },
             {
-              time: 40,
+              time: 60,
               label: "V2",
               color: "#00ffcc",
               position: "top",
             },
             {
-              time: 50,
+              time: 950,
               label: "V2",
               color: "red",
               position: "bottom",
             },
             {
               time: 120,
-              label: "V3",
-              color: "#00fdcc",
-              position: "top",
-            },
-            {
-              time: 220,
               label: "V3",
               color: "#00fdcc",
               position: "top",
@@ -79,9 +99,6 @@ const Wave = () => {
   useEffect(() => {
     if (wavesurfer) {
       console.log(" ㅡㅡ ", wavesurfer.current);
-      //   wavesurfer.current.load(
-      //     "\\C:\\study\\openvidu-call-react\\openvidu-call-react\\src\\components\\edit\\track1.mp3"
-      //   );
       wavesurfer.current.load(
         "https://openvidu.shop/openvidu/recordings/SessionB/ownweapon.webm"
       );
@@ -107,18 +124,19 @@ const Wave = () => {
             <Stop className='fas fa-stop' />
           </span>
 
-          <span className='mute-btn btn'>
+          <span className={"mute-btn btn" + (!volume ? " muted" : "")}>
             <VolumeUp className='fas fa-volume-up' />
             <VolumeOff className='fas fa-volume-mute' />
           </span>
 
           <input
             type='range'
-            min='0'
-            max='1'
-            step='0.1'
-            value='0.5'
+            min={0}
+            max={20}
+            step={1}
+            value={volume}
             className='volume-slider'
+            onChange={changeVolume}
             readOnly
           />
         </div>
