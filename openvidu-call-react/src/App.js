@@ -28,7 +28,9 @@ const App = () => {
           }
         />
         <Route path='/edit' element={<Edit />} />
-        <Route path='/wave' element={<Wave />} />
+        <Route path='/wave' element={<Wave 
+          roomId={roomId}
+        />} />
         <Route path='/surfer' element={<Surfer />} />
       </Routes>
     </div>
