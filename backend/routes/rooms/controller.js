@@ -14,8 +14,7 @@ var minutes = ('0' + today.getMinutes()).slice(-2);
 var seconds = ('0' + today.getSeconds()).slice(-2); 
 
 
-
-var timeString = hours + ':' + minutes  + ':' + seconds;
+var timeString = today.getTime();
 
 //방 생성 API
 exports.createRoom = async (req, res, next) => {
@@ -38,7 +37,7 @@ exports.createRoom = async (req, res, next) => {
     }
     else{
       console.log("방이름이 중복됩니다.");
-      res.status(BAD_REQUEST).json({
+      res.status(CREATED).json({
         message: '방생성 실패',
       });
     }
@@ -50,10 +49,11 @@ exports.createRoom = async (req, res, next) => {
   }
 };
 
+
+
 //방 입장 API
 exports.joinRoom = async (req, res, next) => {
   try {
- 
 
     const { roomId } = req.params;
     const isVaild = await roomServices.validateRoomId(roomId);   // 같은 이름의 방이 있는지 검증하는 로직
@@ -62,6 +62,7 @@ exports.joinRoom = async (req, res, next) => {
     if (isVaild != true){     // 같은 방이 있으면
       
       //방 시작시간을 알려주는 로직이 들어가야 함
+      console.log("hello!");
       const createTime = await roomServices.findRoomResponseTime(roomId);
       // console.log(createTime);
 
@@ -75,7 +76,7 @@ exports.joinRoom = async (req, res, next) => {
     }
     else{
       console.log("방이름이 중복되지않습니다.");
-      res.status(BAD_REQUEST).json({
+      res.status(CREATED).json({
         message: '방입장 실패',
         isValidRoom : false
       });
@@ -92,7 +93,6 @@ exports.joinRoom = async (req, res, next) => {
 
 exports.getEditingRoom = async (req, res, next) => {
   const roomId = req.params.roomId;
-  console.log(roomId);
   const editingRoom = await roomServices.toEditingRoom(roomId);
   console.log(editingRoom);
   if(!editingRoom) {
@@ -102,14 +102,14 @@ exports.getEditingRoom = async (req, res, next) => {
     });
     return;
   }
-  console.log(editingRoom);
+  res.status(OK).json({
+    editingRoom
+  });
 };
 
 
 exports.createChat = async (req, res, next) => {
   const roomId = req.params.roomId;
-  console.log(req.body);
-  console.log(req.body.chatList);
 
   const room = await roomServices.createChat(roomId, req.body.chatList, req.body.highlightList, req.body.recordingStopList);
   if(!room) {

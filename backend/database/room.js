@@ -2,10 +2,6 @@ const express = require('express');
 const Room = require('../models/Room');
 
 exports.createRoom = async ({roomId, publisher, timeString}) => {
-        // const roomInfo = {
-        //   roomId : roomId,
-        // };
-        console.log(roomId, publisher, timeString);
         try {
           const room = await Room.create({
             roomId: roomId,
@@ -18,32 +14,10 @@ exports.createRoom = async ({roomId, publisher, timeString}) => {
             highlightList: "",
             recordingStopList: ""
           });
-          console.log(room);
-        } catch (error) {
-          console.log(error);
+        } catch (err) {
+          console.log(err);
         }
-          
-        
-        // const roomInfo = {
-        //   roomId: roomId,
-        //   publisher: publisher,
-        //   isRecording: true,
-        //   recordingUrl: "",
-        //   createdAt: timeString,
-        //   emailList: [],
-        //   chatList: "",
-        //   highlightList: "",
-        //   recordingStopList: ""
-        // };
-        // const room = new Room(roomInfo);
-        // console.log(room);
-        // await room.save()
-        // .then(() => {
-        //   console.log("저장성공");
-        // }).catch((err) => {
-        //   console.log("저장실패")
-        //   throw err;
-        // })
+  
 };
 
 // 방 이름 중복 검사
