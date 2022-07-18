@@ -7,18 +7,15 @@ import { changeSession } from "../store.js"
 import GoogleLoginButton from './GoogleLoginButton';
 import { getTokenInCookie } from './cookie';
 import axios from 'axios';
-import { useSelector } from "react-redux"
 import { getUserNameInCookie } from './cookie';
 
 
 function Main() {
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  let [enterCode, setEnterCode] = useState(""); 
+  let [enterCode, setEnterCode] = useState("");
   const [isLogin, setIsLogin] = useState(false);
   const cookie = getTokenInCookie();
-  let a = useSelector((state) => { return state } )
-  const axios = require('axios');
 
   useEffect(() => {
     if (cookie) {
@@ -66,7 +63,7 @@ function Main() {
 
   return (
     <div className='main-bg'>
-      <img className='main-logo' src={ mainLogo }/>
+      <img className='main-logo' src={mainLogo} />
       {isLogin ? (
         <div>
           <p>
@@ -92,14 +89,13 @@ function Main() {
             </button>
           </p>
         </div>
-
       ) : (
-        <p className='LogInBtnStyle'><GoogleLoginButton /></p>
-      )}  
+        <p className='LogInBtnStyle'>
+          <GoogleLoginButton />
+        </p>
+      )}
     </div>
   );
 }
-
-
 
 export default Main;

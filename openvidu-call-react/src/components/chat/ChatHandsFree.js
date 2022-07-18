@@ -11,9 +11,12 @@ export default class ChatHandsFree extends Component {
 
     this.state = {
       messageList: [],
+      highlighList: [],
       message: "",
       isRecog: true,
+      isHightlight: false,
       time: "",
+      startTime: "",
     };
     this.chatScroll = React.createRef();
     this.handleChange = this.handleChange.bind(this);
@@ -27,20 +30,31 @@ export default class ChatHandsFree extends Component {
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
-        // console.log("event = ", event);
         const data = JSON.parse(event.data);
         let messageList = this.state.messageList;
-
-        console.log("state record  =", this.state.isRecog);
-        console.log("data record  =", data.isRecord);
+        let length = messageList.length;
         this.setState({ isRecog: data.isRecord });
         if (data.message === "기록 중지" || data.message === "기록중지") return;
         if (data.isRecord === true) {
+          console.log("그 전 데이터  = ", messageList[length - 1]);
+          console.log("막둥아 별표22 = ", data.isHightlight);
+          if (this.state.isHightlight) {
+            const highlight = {
+              message: messageList[length - 1].message,
+              startTime: messageList[length - 1].startTime,
+            };
+            this.state.highlighList.push(highlight);
+            this.setState({ isHightlight: false });
+            this.props.rootFunction(highlight);
+            console.log("root f", this.props.rootFunction);
+          }
+
           messageList.push({
             connectionId: event.from.connectionId,
             nickname: data.nickname,
             message: data.message,
             time: data.time,
+            startTime: data.startTime,
           });
           const document = window.document;
           setTimeout(() => {
@@ -79,10 +93,12 @@ export default class ChatHandsFree extends Component {
         const date = new Date();
         const data = {
           isRecord: this.state.isRecog,
+          isHightlight: this.state.isHightlight,
           time: date.getHours() + ":" + date.getMinutes(),
           message: message,
           nickname: this.props.localUser.getNickname(),
           streamId: this.props.localUser.getStreamManager().stream.streamId,
+          startTime: this.state.startTime,
         };
         this.props.localUser.getStreamManager().stream.session.signal({
           data: JSON.stringify(data),
@@ -107,12 +123,16 @@ export default class ChatHandsFree extends Component {
   }
 
   parentFunction = (data) => {
-    this.state.message = data;
-    console.log("!!!!! data", data);
-    if (data === "기록 중지" || data === "기록중지") {
+    this.state.message = data.text;
+    this.state.startTime = data.startTime;
+    console.log("text = ", data.text);
+    console.log("chat_comp startTime = ", data.startTime);
+    if (data.text === "기록 중지" || data.text === "기록중지") {
       this.setState({ isRecog: false });
-    } else if (data === "기록 시작" || data === "기록시작") {
+    } else if (data.text === "기록 시작" || data.text === "기록시작") {
       this.setState({ isRecog: true });
+    } else if (data.text === "막둥아 별표") {
+      this.setState({ isHightlight: true });
     }
 
     this.sendMessage();
@@ -164,7 +184,7 @@ export default class ChatHandsFree extends Component {
             ))}
           </div>
         </div>
-        {/* <Recognition parentFunction={this.parentFunction} /> */}
+        <Recognition parentFunction={this.parentFunction} />
       </div>
     );
   }

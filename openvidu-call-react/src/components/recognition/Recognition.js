@@ -16,6 +16,7 @@ class Recognition extends Component {
     super(props);
     this.state = {
       transcript: "",
+      start_time: "",
     };
   }
 
@@ -36,9 +37,14 @@ class Recognition extends Component {
     recognition.onend = () => {
       if (this.state.transcript !== "") {
         const date = new Date();
+        const sttData = {
+          text: this.state.transcript,
+          startTime: this.state.start_time,
+        };
         // 막둥이 로직추가
-        this.props.parentFunction(this.state.transcript);
+        this.props.parentFunction(sttData);
         console.log(this.state.transcript);
+
         console.log("end_time :", date.getTime() - meeting_start_time);
       }
       this.setState({ transcript: "" });
@@ -50,7 +56,11 @@ class Recognition extends Component {
       if (sound_detect_check !== true) {
         texts = "";
         const date = new Date();
-        console.log("start_time", date.getTime() - meeting_start_time);
+        this.state.start_time = date.getTime() - meeting_start_time;
+        console.log(
+          "recog comp start_time",
+          date.getTime() - meeting_start_time
+        );
         sound_detect_check = true;
       }
       let texts = Array.from(event.results)
