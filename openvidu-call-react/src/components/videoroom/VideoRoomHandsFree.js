@@ -298,7 +298,7 @@ class VideoRoomHandsFree extends Component {
         this.props.leaveSession();
       }
       // 방장만 실행하는 함수 (회의 강제 종료)
-      // this.forceDisconnect(this.state.mySessionId);
+      this.forceDisconnect(this.state.mySessionId);
 
       history.push("/edit");
     } else {
@@ -386,6 +386,14 @@ class VideoRoomHandsFree extends Component {
     this.state.session.on("streamDestroyed", (event) => {
       console.log("Destroyed", this.state.localUser.connectionId);
 
+      
+      // Remove the stream from 'subscribers' array
+      this.deleteSubscriber(event.stream);
+      setTimeout(() => {
+        this.checkSomeoneShareScreen();
+      }, 20);
+      event.preventDefault();
+      this.updateLayout();
       // 회의 종료 알림창 확인창
       if (
         window.confirm(
@@ -400,14 +408,6 @@ class VideoRoomHandsFree extends Component {
         // [취소] 클릭 -> Lobby로 이동
         history.push("/");
       }
-
-      // Remove the stream from 'subscribers' array
-      this.deleteSubscriber(event.stream);
-      setTimeout(() => {
-        this.checkSomeoneShareScreen();
-      }, 20);
-      event.preventDefault();
-      this.updateLayout();
     });
   }
 
