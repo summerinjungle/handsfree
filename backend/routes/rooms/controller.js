@@ -110,7 +110,7 @@ exports.getEditingRoom = async (req, res, next) => {
 exports.createChat = async (req, res, next) => {
   const roomId = req.params.roomId;
 
-  const room = await roomServices.createChat(roomId, req.body.chatList, req.body.highlightList, req.body.recordingStopList);
+  const room = await roomServices.createChat(roomId, req.body.chatList, req.body.starList, req.body.recordMuteList);
   if(!room) {
     res.status(BAD_REQUEST).json({
       message: '잘못된 접근입니다'

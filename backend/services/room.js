@@ -31,26 +31,26 @@ exports.toEditingRoom = async (roomId) => {
     }
     const foundRoom = foundRoomRet[0];
     const chatList = JSON.parse(foundRoom.chatList);
-    const highlightList =  JSON.parse(foundRoom.highlightList);
-    const recordingStopList = JSON.parse(foundRoom.recordingStopList);
-    return ({chatList, highlightList, recordingStopList});
+    const highlightList =  JSON.parse(foundRoom.starList);
+    const recordingStopList = JSON.parse(foundRoom.recordMuteList);
+    return ({chatList, starList, recordMuteList});
 };
 
 
-exports.createChat = async (roomId, chatList, highlightList, recordingStopList) => {
+exports.createChat = async (roomId, chatList, starList, recordMuteList) => {
   const foundRoom = await findByRoomId(roomId);
   if(!foundRoom) {
     return false;
   }
 
   const chatListStr = JSON.stringify(chatList);
-  const highlightListStr = JSON.stringify(highlightList);
-  const recordingStopListStr = JSON.stringify(recordingStopList);
+  const highlightListStr = JSON.stringify(starList);
+  const recordingStopListStr = JSON.stringify(recordMuteList);
   const filter = { roomId: roomId};
   const update = {
-    chatList: chatListStr,
-    highlightList: highlightListStr,
-    recordingStopList: recordingStopListStr
+    chatList: chatList,
+    highlightList: starList,
+    recordingStopList: recordMuteList
   };
 
   const room = await findRoomAndUpdate(filter, update);
