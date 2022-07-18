@@ -53,7 +53,6 @@ exports.createRoom = async (req, res, next) => {
 //방 입장 API
 exports.joinRoom = async (req, res, next) => {
   try {
- 
 
     const { roomId } = req.params;
     const isVaild = await roomServices.validateRoomId(roomId);   // 같은 이름의 방이 있는지 검증하는 로직
@@ -75,7 +74,7 @@ exports.joinRoom = async (req, res, next) => {
     }
     else{
       console.log("방이름이 중복되지않습니다.");
-      res.status(BAD_REQUEST).json({
+      res.status(CREATED).json({
         message: '방입장 실패',
         isValidRoom : false
       });
