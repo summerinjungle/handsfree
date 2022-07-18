@@ -14,7 +14,7 @@ function Main() {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [enterCode, setEnterCode] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const cookie = getTokenInCookie();
   let a = useSelector((state) => {
     return state;

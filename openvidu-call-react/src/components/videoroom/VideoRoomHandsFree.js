@@ -46,7 +46,6 @@ class VideoRoomHandsFree extends Component {
   }
 
   componentDidMount() {
-    console.log("sdsdsdsd ]  = ", this.props.history);
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -106,7 +105,7 @@ class VideoRoomHandsFree extends Component {
     );
   };
 
-  connectToSession() {
+  connectToSession = () => {
     if (this.props.token !== undefined) {
       console.log("token received: ", this.props.token);
       this.connect(this.props.token);
@@ -133,7 +132,7 @@ class VideoRoomHandsFree extends Component {
           alert("There was an error getting the token:", error.message);
         });
     }
-  }
+  };
 
   connect(token) {
     this.state.session
@@ -294,8 +293,6 @@ class VideoRoomHandsFree extends Component {
       }
       // 방장만 실행하는 함수 (회의 강제 종료)
       this.forceDisconnect(this.state.mySessionId);
-
-      history.push("/edit");
     } else {
       // [아니오] 눌렀을 때
       console.log(this.state);
@@ -381,7 +378,6 @@ class VideoRoomHandsFree extends Component {
     this.state.session.on("streamDestroyed", (event) => {
       console.log("Destroyed", this.state.localUser.connectionId);
 
-      
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
       setTimeout(() => {
