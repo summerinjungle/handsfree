@@ -2,6 +2,7 @@ const { OK, CREATED, BAD_REQUEST } = require('../config/statusCode').statusCode;
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const secretKey = process.env.NODE_APP_JWT_SECRET;
+require('dotenv')
 
 exports.authCheck = async (req, res, next) => {
   const { token } = req.cookies;

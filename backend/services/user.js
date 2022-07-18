@@ -1,4 +1,3 @@
-const express = require('express');
 const User = require('../models/User');
 const { findByEmail, upsert } = require('../database/user');
 const { use } = require('../routes');

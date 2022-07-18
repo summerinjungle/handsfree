@@ -10,6 +10,7 @@ exports.setUser = async (req, res, next) => {
   try {
     console.log(req.body);
     const { name, email } = req.body;
+    
     await userServices.setUser({name, email});
     console.log("done set");
     res.status(CREATED).json({
