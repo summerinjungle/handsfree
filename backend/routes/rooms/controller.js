@@ -37,7 +37,7 @@ exports.createRoom = async (req, res, next) => {
     }
     else{
       console.log("방이름이 중복됩니다.");
-      res.status(BAD_REQUEST).json({
+      res.status(CREATED).json({
         message: '방생성 실패',
       });
     }
