@@ -11,12 +11,10 @@ import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
 import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 
 const Edit = () => {
-  const wavesurfer = useRef(null);
+  // const wavesurfer = useRef(null);
   const [waveSurfer, setWaveSurfer] = useState(null);
   const [isPlay, setIsPlay] = useState(false);
-  const playBtn = document.querySelector(".play-btn");
   const playButton = () => {
-    console.log("SDSDADASDSADADAD ", isPlay);
     waveSurfer.playPause();
     setIsPlay((current) => !current);
   };
@@ -79,8 +77,15 @@ const Edit = () => {
         ],
       })
     );
-    console.log("시;발 ㅡㅡ ", waveSurfer);
-    // waveSurfer.current.load("./track1.mp3");
+  }, []);
+
+  useEffect(() => {
+    if (waveSurfer) {
+      console.log(" ㅡㅡ ", waveSurfer);
+      waveSurfer.load(
+        "https://openvidu.shop/openvidu/recordings/SessionA/ownweapon.webm"
+      );
+    }
   }, []);
 
   return (

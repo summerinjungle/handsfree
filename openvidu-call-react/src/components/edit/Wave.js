@@ -1,53 +1,130 @@
-// import React, { Component } from "react";
-// import WaveSurfer from "wavesurfer.js";
-// import "./wave.css";
+import React, { useEffect, useRef, useState } from "react";
+import "./edit.css";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import PauseIcon from "@material-ui/icons/Pause";
+import VolumeUp from "@material-ui/icons/VolumeUp";
+import VolumeOff from "@material-ui/icons/VolumeOff";
+import Stop from "@material-ui/icons/Stop";
+import WaveSurfer from "wavesurfer.js";
+import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
+import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
+import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 
-// class Wave extends Component {
-//   state = {
-//     playing: false,
-//   };
+const Wave = () => {
+  const wavesurfer = useRef(null);
+  const [isPlay, setIsPlay] = useState(false);
+  const playButton = () => {
+    wavesurfer.current.playPause();
+    setIsPlay((current) => !current);
+  };
 
-//   componentDidMount() {
-//     const track = document.querySelector("#track");
+  const stopButton = () => {
+    setIsPlay(false);
+  };
 
-//     this.waveform = WaveSurfer.create({
-//       barWidth: 3,
-//       barRadius: 3,
-//       barGap: 2,
-//       barMinHeight: 1,
-//       cursorWidth: 1,
-//       container: "#waveform",
-//       backend: "WebAudio",
-//       height: 80,
-//       progressColor: "#FE6E00",
-//       responsive: true,
-//       waveColor: "#C4C4C4",
-//       cursorColor: "transparent",
-//     });
+  useEffect(() => {
+    wavesurfer.current = WaveSurfer.create({
+      container: ".audio",
+      waveColor: "#eee",
+      progressColor: "red",
+      barWidth: 0.05,
+      plugins: [
+        CursorPlugin.create({
+          showTime: true,
+          opacity: 1,
+          customShowTimeStyle: {
+            "background-color": "red",
+            color: "#fff",
+            padding: "6px",
+            "font-size": "15px",
+          },
+        }),
+        MarkersPlugin.create({
+          markers: [
+            {
+              time: 5.5,
+              label: "V1",
+              color: "#ff990a",
+            },
+            {
+              time: 40,
+              label: "V2",
+              color: "#00ffcc",
+              position: "top",
+            },
+            {
+              time: 50,
+              label: "V2",
+              color: "red",
+              position: "bottom",
+            },
+            {
+              time: 120,
+              label: "V3",
+              color: "#00fdcc",
+              position: "top",
+            },
+            {
+              time: 220,
+              label: "V3",
+              color: "#00fdcc",
+              position: "top",
+            },
+          ],
+        }),
+      ],
+    });
+  }, []);
 
-//     this.waveform.load(track);
-//   }
+  useEffect(() => {
+    if (wavesurfer) {
+      console.log(" ㅡㅡ ", wavesurfer.current);
+      //   wavesurfer.current.load(
+      //     "\\C:\\study\\openvidu-call-react\\openvidu-call-react\\src\\components\\edit\\track1.mp3"
+      //   );
+      wavesurfer.current.load(
+        "https://openvidu.shop/openvidu/recordings/SessionB/ownweapon.webm"
+      );
+    }
+  }, []);
 
-//   handlePlay = () => {
-//     this.setState({ playing: !this.state.playing });
-//     this.waveform.playPause();
-//   };
+  return (
+    <div>
+      <h1>편집실</h1>
+      <div className='audio-container'>
+        {/* <div className='track-name'>The name of the track</div> */}
+        <div className='audio'></div>
+        <div className='buttons'>
+          <span
+            className={"play-btn btn" + (isPlay === true ? " playing" : "")}
+            onClick={playButton}
+          >
+            <PlayArrowIcon className='fas fa-play' />
+            <PauseIcon className='fas fa-pause' />
+          </span>
 
-//   render() {
-//     const url =
-//       "https://api.twilio.com//2010-04-01/Accounts/AC25aa00521bfac6d667f13fec086072df/Recordings/RE6d44bc34911342ce03d6ad290b66580c.mp3";
+          <span className='stop-btn btn' onClick={stopButton}>
+            <Stop className='fas fa-stop' />
+          </span>
 
-//     return (
-//       <div className='wave-container'>
-//         <button onClick={this.handlePlay}>
-//           {!this.state.playing ? "Play" : "Pause"}
-//         </button>
-//         <div class='wave' />
-//         <audio id='track' src={url} />
-//         <div>0.52</div>
-//       </div>
-//     );
-//   }
-// }
+          <span className='mute-btn btn'>
+            <VolumeUp className='fas fa-volume-up' />
+            <VolumeOff className='fas fa-volume-mute' />
+          </span>
 
-// export default Wave;
+          <input
+            type='range'
+            min='0'
+            max='1'
+            step='0.1'
+            value='0.5'
+            className='volume-slider'
+            readOnly
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Wave;
