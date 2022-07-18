@@ -38,7 +38,7 @@ function Main() {
       dispatch(changeDuringTime(0))
       dispatch(changeEnterTime(date.getTime()))
       dispatch(changeUserName(getUserNameInCookie()))
-      navigate("/meeting"
+      navigate("/meeting");
     })
     .catch(function (error) {
       console.log(error);
