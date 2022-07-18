@@ -72,6 +72,8 @@ var wavesurfer = WaveSurfer.create({
 //     ]
 // });
 
+console.log("wavesurfer ===== ", wavesurfer);
+
 wavesurfer.load("./track1.mp3");
 
 const playBtn = document.querySelector(".play-btn");

@@ -149,7 +149,9 @@ function Surfer() {
       wavesurferRef.current = waveSurfer;
 
       if (wavesurferRef.current) {
-        wavesurferRef.current.load("../src/components/edit/track1.mp3");
+        wavesurferRef.current.load(
+          "https://openvidu.shop/openvidu/recordings/SessionA/ownweapon.webm"
+        );
 
         wavesurferRef.current.on("region-created", regionCreatedHandler);
 
