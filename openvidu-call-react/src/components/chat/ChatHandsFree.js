@@ -1,36 +1,25 @@
 import React, { Component } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import HighlightOff from "@material-ui/icons/HighlightOff";
 import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 
-
 export default class ChatHandsFree extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      messageList: [],
-      starList: [],
-      recordMuteList: [],
-      message: "",
-      isRecog: true,
-      isStar: false,
-      isRecordMute: false,
-      startTime: "",
-      duringTime: this.props.duringTime,
-      enterTime: this.props.enterTime,
-      left: "",
-      right: "",
-    };
-    this.chatScroll = React.createRef();
-    this.handleChange = this.handleChange.bind(this);
-    this.handlePressKey = this.handlePressKey.bind(this);
-    this.close = this.close.bind(this);
-    this.sendMessage = this.sendMessage.bind(this);
-  }
+  state = {
+    messageList: [],
+    starList: [],
+    recordMuteList: [],
+    message: "",
+    isRecog: true,
+    isStar: false,
+    isRecordMute: false,
+    startTime: "",
+    duringTime: this.props.duringTime,
+    enterTime: this.props.enterTime,
+    left: "",
+    right: "",
+  };
+  chatScroll = React.createRef();
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
@@ -110,17 +99,7 @@ export default class ChatHandsFree extends Component {
     this.parentFunction();
   }
 
-  handleChange(event) {
-    this.setState({ message: event.target.value });
-  }
-
-  handlePressKey(event) {
-    if (event.key === "Enter") {
-      this.sendMessage();
-    }
-  }
-
-  sendMessage() {
+  sendMessage = () => {
     if (this.props.localUser && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
       if (message !== "" && message !== " ") {
@@ -141,7 +120,7 @@ export default class ChatHandsFree extends Component {
       }
     }
     this.setState({ message: "" });
-  }
+  };
 
   scrollToBottom() {
     setTimeout(() => {
@@ -152,9 +131,9 @@ export default class ChatHandsFree extends Component {
     }, 20);
   }
 
-  close() {
+  close = () => {
     this.props.closeBtn(undefined);
-  }
+  };
 
   parentFunction = (data) => {
     this.state.message = data.text;
@@ -184,23 +163,30 @@ export default class ChatHandsFree extends Component {
   };
 
   render() {
-
-
     return (
       <div>
-      <div className='isRecog'>
-        {
-          this.state.isRecog ?(
-            <h1 style={{color:"skyblue", fontSize:"25px",textAlign:"center"}}>🔵 기록중 🔵</h1>
-          ):(
-            <h1 style={{color:"pink", fontSize:"25px",textAlign:"center"}}>❌ 기록중지 ❌</h1>
-          )
-        }
-      </div>
-      <div id='chatContainer'>
- 
-        <div id='chatComponent'>
-          {/* <div id='chatToolbar'>
+        <div className='isRecog'>
+          {this.state.isRecog ? (
+            <h1
+              style={{
+                color: "skyblue",
+                fontSize: "25px",
+                textAlign: "center",
+              }}
+            >
+              🔵 기록중 🔵
+            </h1>
+          ) : (
+            <h1
+              style={{ color: "pink", fontSize: "25px", textAlign: "center" }}
+            >
+              ❌ 기록중지 ❌
+            </h1>
+          )}
+        </div>
+        <div id='chatContainer'>
+          <div id='chatComponent'>
+            {/* <div id='chatToolbar'>
             <span>
               {this.props.localUser.getStreamManager().stream.session.sessionId}{" "}
               - CHAT
@@ -209,50 +195,51 @@ export default class ChatHandsFree extends Component {
               <HighlightOff color='secondary' />
             </IconButton>
           </div> */}
-          <div className='message-wrap' ref={this.chatScroll}>
-            {this.state.messageList.map((data, i) => (
-              <div
-                key={i}
-                id='remoteUsers'
-                className={
-                  "message" +
-                  (data.connectionId !== this.props.localUser.getConnectionId()
-                    ? " left"
-                    : " right")
-                }
-              >
-                <canvas
-                  id={"userImg-" + i}
-                  width='60'
-                  height='60'
-                  className='user-img'
-                />
-                <div className='msg-detail'>
-                  <div className='msg-info'>
-                    <p> {data.nickname}</p>
-                    <p className='text'>
-                      {data.marker ? (
-                        <Star style={{ color: yellow[800] }} />
-                      ) : null}
-                      {data.time}
-                    </p>
-                  </div>
+            <div className='message-wrap' ref={this.chatScroll}>
+              {this.state.messageList.map((data, i) => (
+                <div
+                  key={i}
+                  id='remoteUsers'
+                  className={
+                    "message" +
+                    (data.connectionId !==
+                    this.props.localUser.getConnectionId()
+                      ? " left"
+                      : " right")
+                  }
+                >
+                  <canvas
+                    id={"userImg-" + i}
+                    width='60'
+                    height='60'
+                    className='user-img'
+                  />
+                  <div className='msg-detail'>
+                    <div className='msg-info'>
+                      <p> {data.nickname}</p>
+                      <p className='text'>
+                        {data.marker ? (
+                          <Star style={{ color: yellow[800] }} />
+                        ) : null}
+                        {data.time}
+                      </p>
+                    </div>
 
-                  <div className='msg-content'>
-                    <span className='triangle' />
-                    <p className='text'>{data.message}</p>
+                    <div className='msg-content'>
+                      <span className='triangle' />
+                      <p className='text'>{data.message}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+          <Recognition
+            parentFunction={this.parentFunction}
+            duringTime={this.state.duringTime}
+            enterTime={this.state.enterTime}
+          />
         </div>
-        <Recognition
-          parentFunction={this.parentFunction}
-          duringTime={this.state.duringTime}
-          enterTime={this.state.enterTime}
-        />
-      </div>
       </div>
     );
   }
