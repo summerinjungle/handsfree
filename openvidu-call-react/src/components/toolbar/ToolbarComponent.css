@@ -1,12 +1,14 @@
 #header {
     color: #ffffff;
     height: 40px;
-    background-color: #333333;
+    /* background-color: #333333; */
     padding: 0 14px 0 0;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 93%;
+    left: 15px;
+    width:77%;
     z-index: 999999;
+    border-radius: 20px;
     min-width: 400px !important;
   }
   .toolbar{
@@ -37,13 +39,19 @@
   #titleContent{
     max-width: 100px;
     background-color: #494949;
-    margin: 5px -18px;
+    /* margin: 5px -18px; */
     padding: 0px 15px;
     font-size: 16px;
     overflow: hidden;
     text-overflow: ellipsis;
     float: right;
-    margin-top: 20px;
+    position: absolute;
+    bottom: 86.9vh;
+    left: 6.1vh
+    /* margin-bottom: 2292%; */
+    /* position: absolute; */
+    /* top: 90%; */
+    /* margin-top: 20px; */
   }
   
   .titleContentLight{
