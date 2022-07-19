@@ -8,10 +8,27 @@ import ChatHandsFree from "./../chat/ChatHandsFree";
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "./../toolbar/ToolbarComponent";
+import { connect } from "react-redux";
 
 var localUser = new UserModel();
 
 class VideoRoomHandsFree extends Component {
+  state = {
+    mySessionId: this.props.sessionId ? this.props.sessionId : "SessionA",
+    myUserName: this.props.user
+      ? this.props.user
+      : "OpenVidu_User" + Math.floor(Math.random() * 100),
+    session: undefined,
+    localUser: undefined,
+    subscribers: [],
+    currentVideoDevice: undefined,
+    isPublisher: this.props.isPublisher,
+  };
+  remotes = [];
+  layout = new OpenViduLayout();
+  hasBeenUpdated = false;
+  localUserAccessAllowed = false;
+
   constructor(props) {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
@@ -20,29 +37,6 @@ class VideoRoomHandsFree extends Component {
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
-    this.hasBeenUpdated = false;
-    this.layout = new OpenViduLayout();
-    let sessionName = this.props.sessionName
-      ? this.props.sessionName
-      : "SessionA";
-    let userName = this.props.user
-      ? this.props.user
-      : "OpenVidu_User" + Math.floor(Math.random() * 100);
-
-    let isPublisher = this.props.isPublisher;
-    let duringTime = this.props.duringTime;
-    let enterTime = this.props.enterTime;
-
-    this.remotes = [];
-    this.localUserAccessAllowed = false;
-    this.state = {
-      mySessionId: sessionName,
-      myUserName: userName,
-      session: undefined,
-      localUser: undefined,
-      subscribers: [],
-      currentVideoDevice: undefined,
-    };
   }
 
   componentDidMount() {
@@ -526,8 +520,8 @@ class VideoRoomHandsFree extends Component {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
     // 방장여부 확인
-    console.log(this.props.isPublisher);
-    
+    console.log("방장여부 ", this.state.isPublisher);
+
     return (
       <div className='container' id='container'>
         <DialogExtensionComponent
@@ -545,18 +539,21 @@ class VideoRoomHandsFree extends Component {
                 />
               </div>
             )}
-          {this.state.subscribers.map((sub, i) => (
-            <div
-              key={i}
-              className='OT_root OT_publisher custom-class'
-              id='remoteUsers'
-            >
-              <StreamHandFree
-                user={sub}
-                streamId={sub.streamManager.stream.streamId}
-              />
-            </div>
-          ))}
+
+          {this.state.subscribers
+            ? this.state.subscribers.map((sub, i) => (
+                <div
+                  key={i}
+                  className='OT_root OT_publisher custom-class'
+                  id='remoteUsers'
+                >
+                  <StreamHandFree
+                    user={sub}
+                    streamId={sub.streamManager.stream.streamId}
+                  />
+                </div>
+              ))
+            : null}
         </div>
 
         <div className='soundScribe'></div>
@@ -725,4 +722,11 @@ class VideoRoomHandsFree extends Component {
     });
   }
 }
-export default VideoRoomHandsFree;
+const mapStateToProps = (state) => {
+  return {
+    sessionId: state.user.sessionId,
+    isPublisher: state.user.isPublisher,
+  };
+};
+
+export default connect(mapStateToProps)(VideoRoomHandsFree);

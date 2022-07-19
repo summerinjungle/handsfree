@@ -14,8 +14,6 @@ export default class ChatHandsFree extends Component {
     isStar: false,
     isRecordMute: false,
     startTime: "",
-    duringTime: this.props.duringTime,
-    enterTime: this.props.enterTime,
     left: "",
     right: "",
   };
@@ -47,11 +45,6 @@ export default class ChatHandsFree extends Component {
         if (data.message === "기록 중지" || data.message === "기록중지") return;
         if (data.message === "기록 시작" || data.message === "기록시작") return;
         if (data.isRecord === true) {
-          const duringTime = this.state.duringTime;
-          const enterTime = this.state.enterTime;
-          console.log("기존회의 진행시간 :", duringTime);
-          console.log("입장시간 :", enterTime);
-
           // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
           console.log("그 전 데이터  = ", messageList[length - 1]);
           console.log("막둥아 별표 = ", data.isStar);
@@ -186,15 +179,6 @@ export default class ChatHandsFree extends Component {
         </div>
         <div id='chatContainer'>
           <div id='chatComponent'>
-            {/* <div id='chatToolbar'>
-            <span>
-              {this.props.localUser.getStreamManager().stream.session.sessionId}{" "}
-              - CHAT
-            </span>
-            <IconButton id='closeButton' onClick={this.close}>
-              <HighlightOff color='secondary' />
-            </IconButton>
-          </div> */}
             <div className='message-wrap' ref={this.chatScroll}>
               {this.state.messageList.map((data, i) => (
                 <div
@@ -234,11 +218,7 @@ export default class ChatHandsFree extends Component {
               ))}
             </div>
           </div>
-          <Recognition
-            parentFunction={this.parentFunction}
-            duringTime={this.state.duringTime}
-            enterTime={this.state.enterTime}
-          />
+          {/* <Recognition parentFunction={this.parentFunction} /> */}
         </div>
       </div>
     );

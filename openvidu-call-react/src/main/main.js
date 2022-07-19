@@ -17,7 +17,7 @@ import { getUserNameInCookie } from "./cookie";
 import { useSelector } from "react-redux";
 import { removeTokenInCookie } from "./cookie";
 
-function Main() {
+const Main = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [enterCode, setEnterCode] = useState("");
@@ -121,7 +121,12 @@ function Main() {
             <button onClick={() => navigate("/meeting")}>그냥 입장하기</button>
           </p>
           <p>
-          <button onClick={() => {removeTokenInCookie(); window.location.reload()}}>
+            <button
+              onClick={() => {
+                removeTokenInCookie();
+                window.location.reload();
+              }}
+            >
               로그아웃
             </button>
           </p>
@@ -133,6 +138,6 @@ function Main() {
       )}
     </div>
   );
-}
+};
 
 export default Main;

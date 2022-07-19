@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 // 소리감지체크
 let sound_detect_check = false;
@@ -17,6 +18,8 @@ class Recognition extends Component {
     this.state = {
       transcript: "",
       start_time: "",
+      duringTime: props.duringTime,
+      enterTime: props.enterTime,
     };
   }
 
@@ -53,7 +56,7 @@ class Recognition extends Component {
       if (sound_detect_check !== true) {
         texts = "";
         this.state.start_time =
-          this.props.duringTime + (new Date().getTime() - this.props.enterTime);
+          this.state.duringTime + (new Date().getTime() - this.state.enterTime);
         sound_detect_check = true;
       }
       let texts = Array.from(event.results)
@@ -71,4 +74,11 @@ class Recognition extends Component {
   }
 }
 
-export default Recognition;
+const mapStateToProps = (state) => {
+  return {
+    duringTime: state.user.duringTime,
+    enterTime: state.user.enterTime,
+  };
+};
+
+export default connect(mapStateToProps)(Recognition);
