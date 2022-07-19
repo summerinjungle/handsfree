@@ -1,9 +1,7 @@
 import React from "react";
 import "./App.css";
 import VideoRoomHandsFree from "./components/videoroom/VideoRoomHandsFree";
-import Edit from "./components/edit/Edit";
 import Main from "./main/main";
-import Wave from "./components/edit/Wave";
 import EditingRoom from "./components/edit/EditingRoom.jsx";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "./main/cookie";
@@ -34,7 +32,7 @@ const App = () => {
             />
           }
         />
-        <Route path='/edit' element={<Edit />} />
+        <Route path='/edit' element={<EditingRoom roomId={roomId} />} />
         <Route path='/wave' element={<EditingRoom roomId={roomId} />} />
       </Routes>
     </div>

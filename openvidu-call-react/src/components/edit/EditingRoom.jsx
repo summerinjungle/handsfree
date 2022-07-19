@@ -12,7 +12,7 @@ import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
 import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
 import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 
-const Wave = (roomId) => {
+const EditingRoom = (roomId) => {
     const wavesurfer = useRef(null);
     const [isPlay, setIsPlay] = useState(false);
     const [volume, setVolume] = useState(1);
@@ -241,4 +241,4 @@ const Wave = (roomId) => {
     );
 };
 
-export default Wave;
+export default EditingRoom;
