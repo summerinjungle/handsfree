@@ -46,7 +46,7 @@ const Main = () => {
         dispatch(changeDuringTime(0));
         dispatch(changeEnterTime(date.getTime()));
         dispatch(changeUserName(getUserNameInCookie()));
-        navigate("/meeting");
+        navigate("/meeting/" + response.data.roomId);
       })
       .catch(function (error) {
         console.log(error);
@@ -70,7 +70,7 @@ const Main = () => {
           dispatch(changeDuringTime(duringTime));
           dispatch(changeUserName(getUserNameInCookie()));
           dispatch(changeEnterTime(date.getTime()));
-          navigate("/meeting");
+          navigate("/meeting/" + enterCode);
         } else {
           alert("입장코드를 다시 입력해주세요");
         }

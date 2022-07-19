@@ -10,15 +10,17 @@ import { useSelector } from "react-redux";
 const App = () => {
   const navigate = useNavigate();
   let user = getUserNameInCookie();
+  let reduxCheck = useSelector((state) => { return state; });
+  let sessionId = reduxCheck.user.sessionId
   return (
     <div className='App'>
       <Routes>
         <Route path='/' element={<Main />} />
         <Route
           path='/meeting'
-          element={<VideoRoomHandsFree user={user} navigate={navigate} />}
-        />
-
+          element={<VideoRoomHandsFree user={user} navigate={navigate} />}>
+          <Route path={sessionId} element={<VideoRoomHandsFree user={user} navigate={navigate}/>}/>
+        </Route>
         <Route path='/edit' element={<EditingRoom />} />
       </Routes>
     </div>
