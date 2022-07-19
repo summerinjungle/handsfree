@@ -179,8 +179,16 @@ export default class ChatHandsFree extends Component {
     const styleChat = { display: this.props.chatDisplay };
     return (
       <div id='chatContainer'>
+        {
+          this.state.isRecog ?(
+            <h1>기록중</h1>
+          ):(
+            <h1>기록중지</h1>
+          )
+        }
+
         <div id='chatComponent' style={styleChat}>
-          <div id='chatToolbar'>
+          {/* <div id='chatToolbar'>
             <span>
               {this.props.localUser.getStreamManager().stream.session.sessionId}{" "}
               - CHAT
@@ -188,7 +196,7 @@ export default class ChatHandsFree extends Component {
             <IconButton id='closeButton' onClick={this.close}>
               <HighlightOff color='secondary' />
             </IconButton>
-          </div>
+          </div> */}
           <div className='message-wrap' ref={this.chatScroll}>
             {this.state.messageList.map((data, i) => (
               <div

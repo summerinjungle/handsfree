@@ -77,16 +77,16 @@ class VideoRoomHandsFree extends Component {
     window.removeEventListener("beforeunload", this.onbeforeunload);
     window.removeEventListener("resize", this.updateLayout);
     window.removeEventListener("resize", this.checkSize);
-    // this.leaveSession();
+    this.leaveSession();
     this.connectToSession();
     this.connect();
     this.connectWebCam();
     this.camStatusChanged();
   }
 
-  // onbeforeunload = (event) => {
-  //   this.leaveSession();
-  // };
+  onbeforeunload = (event) => {
+    this.leaveSession();
+  };
 
   joinSession = () => {
     this.OV = new OpenVidu();
@@ -398,10 +398,10 @@ class VideoRoomHandsFree extends Component {
         )
       ) {
         // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-        // this.props.navigate("edit");
+        this.props.navigate("edit");
       } else {
         // [취소] 클릭 -> Lobby로 이동
-        // this.props.navigate("");
+        this.props.navigate("");
       }
     });
   }
@@ -597,7 +597,7 @@ class VideoRoomHandsFree extends Component {
         </div>
 
         <div className='soundScribe'>
-          <LeftSide highlight={this.state.hightList} />
+ 
     
         </div>
         {localUser !== undefined &&
@@ -621,7 +621,7 @@ class VideoRoomHandsFree extends Component {
           screenShare={this.screenShare}
           stopScreenShare={this.stopScreenShare}
           toggleFullscreen={this.toggleFullscreen}
-          // leaveSession={this.leaveSession}
+          leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
         />
       </div>

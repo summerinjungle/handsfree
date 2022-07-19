@@ -7,7 +7,6 @@ import Wave from "./components/edit/Wave";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "./main/cookie";
 import { useSelector } from "react-redux";
-import Surfer from "./components/edit/Surfer";
 
 const App = () => {
 
@@ -37,7 +36,6 @@ const App = () => {
         <Route path='/wave' element={<Wave 
           roomId={roomId}
         />} />
-        <Route path='/surfer' element={<Surfer />} />
       </Routes>
     </div>
   );
