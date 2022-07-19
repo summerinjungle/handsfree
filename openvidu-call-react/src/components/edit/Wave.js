@@ -11,7 +11,7 @@ import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
 import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
 import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 
-const Wave = () => {
+const Wave = (roomId) => {
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
   const [volume, setVolume] = useState(1);
@@ -33,8 +33,14 @@ const Wave = () => {
     wavesurfer.current.setVolume(volume);
   };
 
+
+  const [chatList, setChatList] = useState([]);
+  const [starList, setStarList] = useState([]);
+  const [recordMuteList, setRecordMuteList] = useState([]);
+
+
   useEffect(() => {
-    // loadAllRecord(); // 회의에서 저장된 기록들 가져오기
+    loadAllRecord(); // 회의에서 저장된 기록들 가져오기
 
     wavesurfer.current = WaveSurfer.create({
       container: ".audio",
@@ -43,19 +49,19 @@ const Wave = () => {
       barWidth: 0.05,
       plugins: [
         RegionsPlugin.create({
-          regionsMinLength: 2,
-          regions: [
-            {
-              id: "selected",
-              start: 13,
-              end: 156,
-              loop: false,
-              color: "hsla(400, 100%, 30%, 0.5)",
-            },
-          ],
-          dragSelection: {
-            slop: 5,
-          },
+          // regionsMinLength: 2,
+          // regions: [
+          //   {
+          //     id: "selected",
+          //     start: 13,
+          //     end: 156,
+          //     loop: false,
+          //     color: "hsla(400, 100%, 30%, 0.5)",
+          //   },
+          // ],
+          // dragSelection: {
+          //   slop: 5,
+          // },
         }),
         CursorPlugin.create({
           showTime: true,
@@ -68,31 +74,31 @@ const Wave = () => {
           },
         }),
         MarkersPlugin.create({
-          markers: [
-            {
-              time: 5.5,
-              label: "V1",
-              color: "#ff990a",
-            },
-            {
-              time: 60,
-              label: "V2",
-              color: "#00ffcc",
-              position: "top",
-            },
-            {
-              time: 950,
-              label: "V2",
-              color: "red",
-              position: "bottom",
-            },
-            {
-              time: 120,
-              label: "V3",
-              color: "#00fdcc",
-              position: "top",
-            },
-          ],
+          // markers: [
+          //   {
+          //     time: 5.5,
+          //     label: "V1",
+          //     color: "#ff990a",
+          //   },
+          //   {
+          //     time: 60,
+          //     label: "V2",
+          //     color: "#00ffcc",
+          //     position: "top",
+          //   },
+          //   {
+          //     time: 950,
+          //     label: "V2",
+          //     color: "red",
+          //     position: "bottom",
+          //   },
+          //   {
+          //     time: 120,
+          //     label: "V3",
+          //     color: "#00fdcc",
+          //     position: "top",
+          //   },
+          // ],
         }),
       ],
     });
@@ -107,25 +113,59 @@ const Wave = () => {
     }
   }, []);
 
-  //   async function loadAllRecord() {
-  //     await axios
-  //       .get("/api/rooms/" + roomId + "/editingroom")
-  //       .then(function (response) {
-  //         console.log(response.data);
-  //         chatList = response.data.chatList;
-  //         starList = response.data.starList;
-  //         recordMuteList = response.data.recordMuteList;
-  //         // chatList, starList, recordMuteList 저장
+  /**
+   * [GET] http://{BASE_URL}/api/rooms/{roomId}/editingroom 
+   * 
+   * 잡담구간, 별표표시, 음성기록에 필요한 정보들 받아와 
+   * WaveSurfer에 뿌려줌
+   * 
+   * TODO: 아래 for 반복문 2개 함수로 분리
+   */
+  async function loadAllRecord() {
+    await axios
+      .get('/api/rooms/' + "onwlt8ng" + '/editingroom') // 테스트를 위해 roomId : onwlt8ng 넣어 놓음
+      .then(function (response) {
+        chatList.push(response.data.editingRoom.chatList);
+        starList.push(response.data.editingRoom.starList);
+        recordMuteList.push(response.data.editingRoom.recordMuteList);
+        console.log("TEST_chatList", chatList[0], starList[0], recordMuteList[0]);
 
-  //         // dispatch(changeSession(response.data.roomId));
-  //         // dispatch(changeIsPublisher(true));
-  //         // dispatch(changeUserName(getUserNameInCookie()))
-  //         // navigate("/meeting");
-  //       })
-  //       .catch(function (error) {
-  //         console.log(error);
-  //       });
-  //   }
+        // [잡담 구간] 표시
+        for (let i = 0; i < recordMuteList[0].length; i++) {
+          if (Object.keys(recordMuteList[0][i]).includes('right')) { // 'right' 키 값이 있는 경우
+            console.log("IS_RIGHT", recordMuteList[0][i].left, recordMuteList[0][i].right);
+            wavesurfer.current.regions.add({
+              start: recordMuteList[0][i].left,
+              end: recordMuteList[0][i].right,
+              color: "hsla(200, 50%, 70%, 0.3)"
+            })
+          } else {
+            console.log("NO_RIGHT", recordMuteList[0][i].left, recordMuteList[0][i].right);
+            wavesurfer.current.regions.add({ // 'right' 키 값이 있는 경우
+              start: recordMuteList[0][i].left,
+              end: recordMuteList[0][i].left + 10000,
+              color: "hsla(400, 100%, 30%, 0.5)"
+            })
+          }
+        }
+
+        // [막둥아 별표] 표시 
+        for (let i = 0; i < starList[0].length; i++) {
+          wavesurfer.current.addMarker({
+            time: starList[0][i].time,
+            // time: 120,
+            label: "V1",
+            color: "#ff990a",
+          });
+        }
+
+
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  }
+
 
   return (
     <div>
