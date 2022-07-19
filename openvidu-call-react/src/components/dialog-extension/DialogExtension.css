@@ -5,7 +5,7 @@
     height: 99%;
 }
 
-#dialogExtension #card{
+#dialogExtension #card {
     position: absolute;
     z-index: 99999999999999;
     top: 0;

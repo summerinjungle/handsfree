@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import IconButton from "@material-ui/core/IconButton";
 import HighlightOff from "@material-ui/icons/HighlightOff";
-
 import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
 
@@ -17,7 +16,6 @@ export default class ChatHandsFree extends Component {
       isRecog: true,
       isStar: false,
       isRecordMute: false,
-      time: "",
       startTime: "",
       duringTime: this.props.duringTime,
       enterTime: this.props.enterTime,
@@ -61,9 +59,8 @@ export default class ChatHandsFree extends Component {
           console.log("입장시간 :", enterTime);
 
           // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
-
           console.log("그 전 데이터  = ", messageList[length - 1]);
-          console.log("막둥아 별표22 = ", data.isStar);
+          console.log("막둥아 별표 = ", data.isStar);
           if (this.state.isStar) {
             const stars = {
               message: messageList[length - 1].message,
@@ -71,9 +68,8 @@ export default class ChatHandsFree extends Component {
             };
             this.state.starList.push(stars);
             this.setState({ isStar: false });
-            this.props.rootFunction(stars);
-            console.log("root f", this.props.rootFunction);
           }
+          console.log("마커 리스트", this.state.starList);
 
           messageList.push({
             connectionId: event.from.connectionId,
@@ -90,7 +86,6 @@ export default class ChatHandsFree extends Component {
             const video = document.getElementById("video-" + data.streamId);
             const avatar = userImg.getContext("2d");
             avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
-            // this.props.messageReceived();
           }, 50);
           this.setState({ messageList: messageList });
           this.scrollToBottom();
@@ -176,10 +171,9 @@ export default class ChatHandsFree extends Component {
   };
 
   render() {
-    const styleChat = { display: this.props.chatDisplay };
     return (
       <div id='chatContainer'>
-        <div id='chatComponent' style={styleChat}>
+        <div id='chatComponent'>
           <div id='chatToolbar'>
             <span>
               {this.props.localUser.getStreamManager().stream.session.sessionId}{" "}

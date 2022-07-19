@@ -7,7 +7,6 @@ import DialogExtensionComponent from "./../dialog-extension/DialogExtension";
 import ChatHandsFree from "./../chat/ChatHandsFree";
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
-import LeftSide from "./../chat/Leftside";
 import ToolbarComponent from "./../toolbar/ToolbarComponent";
 
 var localUser = new UserModel();
@@ -30,10 +29,10 @@ class VideoRoomHandsFree extends Component {
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
 
-    let isPublisher = this.props.isPublisher
-    let duringTime = this.props.duringTime
-    let enterTime = this.props.enterTime
-    
+    let isPublisher = this.props.isPublisher;
+    let duringTime = this.props.duringTime;
+    let enterTime = this.props.enterTime;
+
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -42,10 +41,7 @@ class VideoRoomHandsFree extends Component {
       session: undefined,
       localUser: undefined,
       subscribers: [],
-      chatDisplay: "none",
       currentVideoDevice: undefined,
-      hightList: [],
-      // history: this.props,
     };
   }
 
@@ -77,16 +73,16 @@ class VideoRoomHandsFree extends Component {
     window.removeEventListener("beforeunload", this.onbeforeunload);
     window.removeEventListener("resize", this.updateLayout);
     window.removeEventListener("resize", this.checkSize);
-    // this.leaveSession();
+    this.leaveSession();
     this.connectToSession();
     this.connect();
     this.connectWebCam();
     this.camStatusChanged();
   }
 
-  // onbeforeunload = (event) => {
-  //   this.leaveSession();
-  // };
+  onbeforeunload = (event) => {
+    this.leaveSession();
+  };
 
   joinSession = () => {
     this.OV = new OpenVidu();
@@ -283,7 +279,6 @@ class VideoRoomHandsFree extends Component {
         mySession.disconnect();
       }
 
-      // Empty all properties...
       this.OV = null;
       this.setState({
         session: undefined,
@@ -398,10 +393,10 @@ class VideoRoomHandsFree extends Component {
         )
       ) {
         // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-        // this.props.navigate("edit");
+        this.props.navigate("edit");
       } else {
         // [취소] 클릭 -> Lobby로 이동
-        // this.props.navigate("");
+        this.props.navigate("");
       }
     });
   }
@@ -512,33 +507,11 @@ class VideoRoomHandsFree extends Component {
     this.updateLayout();
   };
 
-  toggleChat = (property) => {
-    let display = property;
-    console.log("chat event", display);
-    if (display === undefined) {
-      display = this.state.chatDisplay === "none" ? "block" : "none";
-    }
-
-    if (display === "block") {
-      this.setState({ chatDisplay: display, messageReceived: false });
-    } else {
-      console.log("chat", display);
-      this.setState({ chatDisplay: display });
-    }
-    this.updateLayout();
-  };
-
-  checkNotification = (event) => {
-    this.setState({
-      messageReceived: this.state.chatDisplay === "none",
-    });
-  };
   checkSize = () => {
     if (
       document.getElementById("layout").offsetWidth <= 700 &&
       !this.hasBeenUpdated
     ) {
-      this.toggleChat("none");
       this.hasBeenUpdated = true;
     }
     if (
@@ -549,21 +522,11 @@ class VideoRoomHandsFree extends Component {
     }
   };
 
-  rootFunction = (data) => {
-    // this.setState({
-    //   hightList: data,
-    // });
-    this.state.hightList.push(data);
-  };
-
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
-    var chatDisplay = { display: this.state.chatDisplay };
-    console.log("!!!@!@!@!!!", this.state.hightList);
-
     // 방장여부 확인
-    console.log(this.props.isPublisher)
+    console.log(this.props.isPublisher);
 
     return (
       <div className='container' id='container'>
@@ -596,23 +559,16 @@ class VideoRoomHandsFree extends Component {
           ))}
         </div>
 
-        <div className='soundScribe'>
-          <LeftSide highlight={this.state.hightList} />
-    
-        </div>
-        {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div
-                className='OT_root OT_publisher custom-class'
-              >
-                <ChatHandsFree
-                  localUser={localUser}
-                  rootFunction={this.rootFunction}
-                  duringTime={this.props.duringTime}
-                  enterTime={this.props.enterTime}
-                />
-              </div>
-            )}
+        <div className='soundScribe'></div>
+        {localUser !== undefined && localUser.getStreamManager() !== undefined && (
+          <div className='OT_root OT_publisher custom-class'>
+            <ChatHandsFree
+              localUser={localUser}
+              duringTime={this.props.duringTime}
+              enterTime={this.props.enterTime}
+            />
+          </div>
+        )}
         <ToolbarComponent
           sessionId={mySessionId}
           user={localUser}
@@ -621,8 +577,7 @@ class VideoRoomHandsFree extends Component {
           screenShare={this.screenShare}
           stopScreenShare={this.stopScreenShare}
           toggleFullscreen={this.toggleFullscreen}
-          // leaveSession={this.leaveSession}
-          toggleChat={this.toggleChat}
+          leaveSession={this.leaveSession}
         />
       </div>
     );
