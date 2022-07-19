@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import "./main.css";
 import mainLogo from "../assets/images/mainLogo.png";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +28,7 @@ function Main() {
   });
   const date = new Date();
 
-  useEffect(() => {
+  useMemo(() => {
     if (cookie) {
       setIsLogin(true);
       // removeTokenInCookie(); //테스트를 위한 코드//
@@ -86,50 +86,34 @@ function Main() {
       {isLogin ? (
         <div>
           <p>
-            <button
+            <button className='myButton'
               onClick={() => {
                 createMeeting();
-              }}
-            >
-              회의 만들기
-            </button>
+              }} >회의 만들기</button>
           </p>
           <p>
             <input
-              placeholder='참여코드를 입력하세요'
+              placeholder='참여코드를 입력하세요.'
               onChange={(event) => setEnterCode(event.target.value)}
             ></input>
-            <button
+            <button className='myButton2'
               onClick={() => {
                 enterCode === ""
-                  ? alert("참여코드를 입력하세요")
+                  ? alert("올바른 참여코드를 입력하세요")
                   : enterMeeting();
-              }}
-            >
-              회의 참여하기
-            </button>
+              }}> 회의 참여하기</button>
+
           </p>
-          <p>
-            <button onClick={() => console.log(reduxCheck)}>리덕스 보기</button>
-          </p>
-          <p>
-            <button onClick={() => console.log(getUserNameInCookie())}>
-              이름 보기
-            </button>
-          </p>
-          <p>
-            <button onClick={() => navigate("/meeting")}>그냥 입장하기</button>
-          </p>
-          <p>
-          <button onClick={() => {removeTokenInCookie(); window.location.reload()}}>
-              로그아웃
-            </button>
+            <p><button onClick={() => console.log(reduxCheck)}>리덕스 보기</button></p>
+            <p><button onClick={() => console.log(getUserNameInCookie())}>이름 보기</button></p>
+            <p><button onClick={() => navigate("/meeting")}>그냥 입장하기</button></p>
+            <p><button onClick={() => {removeTokenInCookie(); window.location.reload()}}>로그아웃</button>
           </p>
         </div>
       ) : (
-        <p className='LogInBtnStyle'>
+        <div className='LogInBtnStyle'>
           <GoogleLoginButton />
-        </p>
+        </div>
       )}
     </div>
   );

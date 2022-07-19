@@ -15,3 +15,67 @@
   left: 44%;
   width: 200px;
 }
+
+.myButton {
+	box-shadow:inset 0px 1px 0px 0px #efdcfb;
+	background-color:#dfaffa;
+	border-radius:6px;
+	border:1px solid #c584f3;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #9752cc;
+}
+.myButton:hover {
+	background-color:#bc80ea;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+
+.myButton2 {
+	/* box-shadow:inset 0px 1px 0px 0px #1564ad; */
+  /* margin-top: 6px; */
+	background-color:#79bbff;
+	border-radius:6px;
+	border:1px solid #337bc4;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:7px 24px;
+	text-decoration:none;
+  height: 37px;
+	text-shadow:0px 1px 0px #528ecc;
+}
+.myButton2:hover {
+	background-color:#378de5;
+}
+.myButton2:active {
+	position:relative;
+	top:1px;
+}
+
+
+input {
+
+  width: 200px;
+  height: 36px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 5px;
+  outline: none;
+  margin-right: 5px;
+  padding-left: 10px;
+  background-color: gainsboro;
+}
+    

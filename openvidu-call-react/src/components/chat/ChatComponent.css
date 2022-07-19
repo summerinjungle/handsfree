@@ -34,17 +34,19 @@
     left: 0;
     right: 0;
     bottom: 0;
-    margin: auto;
-    margin-top: -4vh;
-    height: 103.3%;
-    width: calc(100% - 25px);
+    /* margin: auto; */
+    margin-left: 3.7%;
+    margin-top: -3.2vh;
+    height: 105.1%;
+    width: 92.6%;
+    /* width: calc(100% - 25px); */
     border-radius: 20px;
   }
 
 
   .isRecog{
     position:absolute;
-    top:-12%;
+    top:-12.2%;
     left: 3.7%;
     text-align: center;
     width: 92.6%;
@@ -52,7 +54,7 @@
     /* margin-right: 3.3%; */
     /* padding-right: 5px; */
     height: 6.4%;
-    border-radius: 10px;
+    border-radius: 15px;
     background-color: #4b6b6b;
 
     /* margin-bottom: 20px; */
