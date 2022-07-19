@@ -73,11 +73,11 @@ class VideoRoomHandsFree extends Component {
     window.removeEventListener("beforeunload", this.onbeforeunload);
     window.removeEventListener("resize", this.updateLayout);
     window.removeEventListener("resize", this.checkSize);
-    this.leaveSession();
-    this.connectToSession();
-    this.connect();
-    this.connectWebCam();
-    this.camStatusChanged();
+    // this.leaveSession();
+    // this.connectToSession();
+    // this.connect();
+    // this.connectWebCam();
+    // this.camStatusChanged();
   }
 
   onbeforeunload = (event) => {
