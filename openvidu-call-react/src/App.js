@@ -9,12 +9,11 @@ import { getUserNameInCookie } from "./main/cookie";
 import { useSelector } from "react-redux";
 
 const App = () => {
-
   let roomId = useSelector((state) => state.user.sessionId);
   let isPublisher = useSelector((state) => state.user.isPublisher);
   let duringTime = useSelector((state) => state.user.duringTime);
   let enterTime = useSelector((state) => state.user.enterTime);
-  
+
   const navigate = useNavigate();
   let user = getUserNameInCookie();
   return (
@@ -23,19 +22,19 @@ const App = () => {
         <Route path='/' element={<Main />} />
         <Route
           path='/meeting'
-          element={<VideoRoomHandsFree 
-            sessionName={roomId}
-            user={user}
-            navigate={navigate} 
-            isPublisher = {isPublisher}
-            duringTime = {duringTime}
-            enterTime = {enterTime}
-          />}
+          element={
+            <VideoRoomHandsFree
+              sessionName={roomId}
+              user={user}
+              navigate={navigate}
+              isPublisher={isPublisher}
+              duringTime={duringTime}
+              enterTime={enterTime}
+            />
+          }
         />
         <Route path='/edit' element={<Edit />} />
-        <Route path='/wave' element={<Wave 
-          roomId={roomId}
-        />} />
+        <Route path='/wave' element={<Wave roomId={roomId} />} />
       </Routes>
     </div>
   );

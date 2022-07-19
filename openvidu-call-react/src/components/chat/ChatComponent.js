@@ -6,10 +6,8 @@ import Send from "@material-ui/icons/Send";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-
 import "./ChatComponent.css";
 import { Tooltip } from "@material-ui/core";
-import Dictaphone from "../Dictaphone";
 
 const ChatComponent = ({ chatDisplay, user, rootFunction, closeBtn }) => {
   const [message, setMessage] = useState("");

@@ -53,10 +53,6 @@ export default class ToolbarComponent extends Component {
     this.props.leaveSession();
   };
 
-  toggleChat = () => {
-    this.props.toggleChat();
-  };
-
   closeModal = () => {
     this.setState({ openModal: false });
   };
@@ -150,18 +146,6 @@ export default class ToolbarComponent extends Component {
             >
               <PowerSettingsNew />
             </IconButton>
-
-            {/* <IconButton
-              color='inherit'
-              onClick={this.toggleChat}
-              id='navChatButton'
-            >
-              {this.props.showNotification && <div id='point' className='' />}
-              <Tooltip title='Chat'>
-                <QuestionAnswer />
-              </Tooltip>
-            </IconButton> */}
-            
           </div>
         </Toolbar>
       </AppBar>
