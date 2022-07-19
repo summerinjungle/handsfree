@@ -19,8 +19,7 @@ const App = () => {
           element={<VideoRoomHandsFree user={user} navigate={navigate} />}
         />
 
-        <Route path='/edit' element={<EditingRoom roomId={roomId} />} />
-        <Route path='/wave' element={<EditingRoom roomId={roomId} />} />
+        <Route path='/edit' element={<EditingRoom />} />
       </Routes>
     </div>
   );
