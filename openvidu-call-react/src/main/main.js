@@ -17,7 +17,7 @@ import { getUserNameInCookie } from "./cookie";
 import { useSelector } from "react-redux";
 import { removeTokenInCookie } from "./cookie";
 
-function Main() {
+const Main = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [enterCode, setEnterCode] = useState("");
@@ -117,6 +117,6 @@ function Main() {
       )}
     </div>
   );
-}
+};
 
 export default Main;
