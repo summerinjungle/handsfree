@@ -39,14 +39,14 @@
 
 
 .audio-container {
-	width: 80%;
+	width: 100%;
 	box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.3);
 	font-family: "Roboto", sans-serif;
 	position: relative;
 	border-radius: 10px;
 	overflow: hidden;
 	margin: 0px auto;
-	padding-bottom : 0px;
+	padding : 20px 0px;
   }
   
   .audio-container .audio {
@@ -78,6 +78,10 @@
 	width: 200px;
   }
   
+  .audio-container .buttons {
+	  text-align: center;
+  }
+  
   .audio-container .buttons .play-btn .fa-pause {
 	display: none;
   }
@@ -101,3 +105,109 @@
   .audio-container .buttons .mute-btn.muted .fa-volume-up {
 	display: none;
   }
+
+
+
+
+
+
+/* 공통 */
+.absolute {
+	position: absolute;
+}
+
+.relative {
+	position: relative;
+}
+
+.inline-block {
+	display: inline-block;
+}
+
+.t-40{
+	top: 30px;
+}
+
+.mx-10 {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.my-0 {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+.pl-20 {
+	padding-left: 20px;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.text-right {
+	text-align: right;
+}
+
+
+#editingroom-container {
+	width: 100%;
+	max-height: 100%;
+	max-width: 100%;
+}
+
+#editingroom-container .header {
+	padding: 6px;
+	width: 100%;
+}
+
+#editingroom-container .header .header-contents {
+	display: inline-block;
+	width: 50%;
+}
+
+#editingroom-container .contents {
+	display: flex;
+	padding: 0px 6px;
+	width: 100%;
+}
+
+#editingroom-container .contents-label {
+	display: inline-block;
+	margin-top: 20px;
+	margin-bottom: 37px;
+	font-weight: 700;
+	font-size: 20px;
+}
+
+#editingroom-container .contents-left {
+	display: inline-block;
+	margin-bottom: 10px;
+	padding: 6px 75px;
+	width: 57%;
+	border-right: 2px solid #000000;
+
+}
+#editingroom-container .contents-left .textarea{
+	width: 100%;
+	height: 500px;
+}
+
+
+#editingroom-container .contents-right {
+	display: inline-block;
+	padding: 6px 75px 6px 70px;
+	width: 40%;
+}
+
+#editingroom-container .contents-right .recorditems{
+	max-height: 500px;
+	overflow: scroll;
+}
+
+
