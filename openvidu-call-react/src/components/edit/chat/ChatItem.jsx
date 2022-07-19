@@ -5,7 +5,7 @@ const ChatItem = ({ key, userName, time, message }) => {
         <div key={key} className="relative mb-20">
             <div>
                 <div className="absolute t-40">
-                    북
+                    *
                 </div>
             </div>
             <div className="pl-20">
@@ -28,7 +28,7 @@ const ChatItem = ({ key, userName, time, message }) => {
                 </div>
                 <div className="relative">
                     <div className="message">
-                        그거 할 때 아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다.아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다.그거 할 때 아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다.아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다.그거 할 때 아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다.아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다.아 늦어서 죄송합니다. 아 늦어서 죄송합니다. 아 늦어서 죄송합니다.
+                        {message}
                     </div>
                 </div>
             </div>
