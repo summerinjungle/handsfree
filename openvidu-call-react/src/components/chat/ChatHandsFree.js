@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import IconButton from "@material-ui/core/IconButton";
 import HighlightOff from "@material-ui/icons/HighlightOff";
+import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
+import yellow from "@material-ui/core/colors/yellow";
 
 
 export default class ChatHandsFree extends Component {
@@ -51,8 +53,10 @@ export default class ChatHandsFree extends Component {
           });
         }
         console.log("잡담구간 확인", this.state.isRecordMute);
+        console.log("잡담구간 ==", this.state.recordMuteList);
 
         if (data.message === "기록 중지" || data.message === "기록중지") return;
+        if (data.message === "기록 시작" || data.message === "기록시작") return;
         if (data.isRecord === true) {
           const duringTime = this.state.duringTime;
           const enterTime = this.state.enterTime;
@@ -62,6 +66,7 @@ export default class ChatHandsFree extends Component {
           // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
           console.log("그 전 데이터  = ", messageList[length - 1]);
           console.log("막둥아 별표 = ", data.isStar);
+
           if (this.state.isStar) {
             const stars = {
               message: messageList[length - 1].message,
@@ -69,8 +74,10 @@ export default class ChatHandsFree extends Component {
             };
             this.state.starList.push(stars);
             this.setState({ isStar: false });
+            messageList[length - 1].marker = true;
+            this.forceUpdate();
+            return;
           }
-          console.log("마커 리스트", this.state.starList);
 
           messageList.push({
             connectionId: event.from.connectionId,
@@ -78,7 +85,12 @@ export default class ChatHandsFree extends Component {
             message: data.message,
             time: data.time,
             startTime: data.startTime,
+            marker: this.state.isStar,
           });
+
+          console.log("마커 리스트", this.state.starList);
+          console.log("메세지 리스트", this.state.messageList);
+
           const document = window.document;
           setTimeout(() => {
             const userImg = document.getElementById(
@@ -218,8 +230,14 @@ export default class ChatHandsFree extends Component {
                 <div className='msg-detail'>
                   <div className='msg-info'>
                     <p> {data.nickname}</p>
-                    <p className='text'>{data.time}</p>
+                    <p className='text'>
+                      {data.marker ? (
+                        <Star style={{ color: yellow[800] }} />
+                      ) : null}
+                      {data.time}
+                    </p>
                   </div>
+
                   <div className='msg-content'>
                     <span className='triangle' />
                     <p className='text'>{data.message}</p>

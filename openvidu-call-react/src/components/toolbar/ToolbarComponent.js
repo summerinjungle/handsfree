@@ -13,13 +13,9 @@ import FullscreenExit from "@material-ui/icons/FullscreenExit";
 import PictureInPicture from "@material-ui/icons/PictureInPicture";
 import ScreenShare from "@material-ui/icons/ScreenShare";
 import StopScreenShare from "@material-ui/icons/StopScreenShare";
-import Tooltip from "@material-ui/core/Tooltip";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
-import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
 import red from "@material-ui/core/colors/red";
 import IconButton from "@material-ui/core/IconButton";
-import { Modal } from "@material-ui/core";
-import ModalComponent from "./ModalComponent";
 const logo = require("../../assets/images/zoom.jpg");
 
 export default class ToolbarComponent extends Component {
