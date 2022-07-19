@@ -285,7 +285,9 @@ class VideoRoomHandsFree extends Component {
         this.props.leaveSession();
       }
       // 방장만 실행하는 함수 (회의 강제 종료)
-      this.forceDisconnect(this.state.mySessionId);
+      if(this.props.isPublisher) {
+        this.forceDisconnect(this.state.mySessionId);
+      }
     } else {
       // [아니오] 눌렀을 때
       console.log(this.state);
