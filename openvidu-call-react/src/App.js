@@ -19,16 +19,19 @@ import {
 const App = () => {
   const navigate = useNavigate();
   let user = getUserNameInCookie();
-
   let dispatch = useDispatch();
   let data = JSON.parse(localStorage.getItem('redux'))
-  let sessionId = data.sessionId
-
-  dispatch(changeSession(sessionId));
-  dispatch(changeIsPublisher(data.isPublisher));
-  dispatch(changeDuringTime(data.duringTime));
-  dispatch(changeEnterTime(data.enterTime));
-  dispatch(changeUserName(getUserNameInCookie()));
+  let sessionId
+  if (data === null) {
+    sessionId = "sessionB"
+  } else {
+    sessionId = data.sessionId
+    dispatch(changeSession(sessionId));
+    dispatch(changeIsPublisher(data.isPublisher));
+    dispatch(changeDuringTime(data.duringTime));
+    dispatch(changeEnterTime(data.enterTime));
+    dispatch(changeUserName(getUserNameInCookie()));
+  }
 
   return (
     <div className='App'>

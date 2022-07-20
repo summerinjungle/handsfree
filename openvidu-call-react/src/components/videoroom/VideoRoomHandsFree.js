@@ -285,10 +285,27 @@ class VideoRoomHandsFree extends Component {
         this.props.leaveSession();
       }
       // 방장만 실행하는 함수 (회의 강제 종료)
-      if(this.props.isPublisher) {
-        this.forceDisconnect(this.state.mySessionId);
+      if (this.props.isPublisher) {
+        console.log("onlyPublisher");
+        // this.forceDisconnect(this.state.mySessionId);
+        this.props.navigate('edit')
+      } else {
+        if (
+          window.confirm(
+            "방장이 회의를 종료하였습니다.\n" +
+              "편집실로 이동하시겠습니까?\n" +
+              "[취소]를 누르시면 메인 페이지로 이동합니다."
+          )
+        ) {
+          this.forceDisconnect(this.state.mySessionId);
+          this.props.navigate("edit");
+        } else {
+          this.forceDisconnect(this.state.mySessionId);
+          this.props.navigate("");
+        }
+        this.props.navigate('/')
       }
-      this.props.navigate('edit')
+
     } else {
       // [아니오] 눌렀을 때
       console.log(this.state);
@@ -382,19 +399,27 @@ class VideoRoomHandsFree extends Component {
       event.preventDefault();
       this.updateLayout();
       // 회의 종료 알림창 확인창
-      if (
-        window.confirm(
-          "방장이 회의를 종료하였습니다.\n" +
-            "편집실로 아동하시겠습니까?\n" +
-            "[취소]를 누르시면 메인 페이지로 이동합니다."
-        )
-      ) {
-        // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-        this.props.navigate("edit");
+      if (!this.props.isPublisher) {
+        if (
+          window.confirm(
+            "방장이 회의를 종료하였습니다.\n" +
+              "편집실로 이동하시겠습니까?\n" +
+              "[취소]를 누르시면 메인 페이지로 이동합니다."
+          )
+        ) {
+          // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
+          this.forceDisconnect(this.state.mySessionId);
+          this.props.navigate("edit");
+        } else {
+          // [취소] 클릭 -> Lobby로 이동
+          this.forceDisconnect(this.state.mySessionId);
+          this.props.navigate("");
+        }
       } else {
-        // [취소] 클릭 -> Lobby로 이동
-        this.props.navigate("");
+        
       }
+
+
     });
   }
 
