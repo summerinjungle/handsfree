@@ -125,7 +125,7 @@
 }
 
 .t-40{
-	top: 30px;
+	top: 33px;
 }
 
 .mx-10 {
@@ -136,6 +136,7 @@
 .my-0 {
 	margin-top: 0px;
 	margin-bottom: 0px;
+	border: 1px solid #F5F0E8;;
 }
 
 .mb-20 {
@@ -197,6 +198,7 @@
 	padding: 6px 75px;
 	width: 57%;
 	border-right: 2px solid #000000;
+	border-color: #F5F0E8;
 
 }
 #editingroom-container .contents-left .textarea{
