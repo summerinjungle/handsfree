@@ -3,8 +3,10 @@ import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
+import { connect } from "react-redux";
+import { changeMessageList } from "../../store.js";
 
-export default class ChatHandsFree extends Component {
+class ChatHandsFree extends Component {
   state = {
     messageList: [],
     starList: [],
@@ -21,6 +23,12 @@ export default class ChatHandsFree extends Component {
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
+    const chatInfo = {
+      messageList: this.state.messageList,
+      starList: this.state.starList,
+      recordMuteList: this.state.recordMuteList,
+    };
+    this.props.rootFunction(chatInfo);
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
@@ -224,3 +232,10 @@ export default class ChatHandsFree extends Component {
     );
   }
 }
+function mapReduxDispatchToReactProps(dispatch) {
+  return {
+    dispatch: () => changeMessageList(this.state.messageList),
+  };
+}
+
+export default connect(mapReduxDispatchToReactProps)(ChatHandsFree);

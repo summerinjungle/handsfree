@@ -54,16 +54,6 @@ export default class ToolbarComponent extends Component {
   };
 
   render() {
-    // const customStyles = {
-    //   content: {
-    //     top: "50%",
-    //     left: "50%",
-    //     right: "auto",
-    //     bottom: "auto",
-    //     marginRight: "-50%",
-    //     transform: "translate(-50%, -50%)",
-    //   },
-    // };
     const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
     return (

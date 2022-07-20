@@ -14,9 +14,6 @@
 }
 
 
-
-
-
 #titleContent{
   max-width: 100px;
   background-color: #494949;
@@ -57,7 +54,7 @@
   right: 0;
   top: 10px;
   bottom: 120px;
-  height: 90.1%;
+  height: 87.9%;
   /* min-width: 400px !important; */
   /* width: inherit; */
 }
@@ -414,7 +411,7 @@
   -webkit-animation-iteration-count: infinite;
 }
 
-/* @-webkit-keyframes OT_pulse {
+@-webkit-keyframes OT_pulse {
   0% {
     -webkit-box-shadow: 0 0 0px 0px #c70019;
     box-shadow: 0 0 0px 0px #c70019;
@@ -466,7 +463,7 @@
     -webkit-box-shadow: 0 0 0px 0px #c70019;
     box-shadow: 0 0 0px 0px #c70019;
   }
-} */
+}
 
 .OT_mini .OT_bar,
 .OT_bar.OT_mode-mini,
