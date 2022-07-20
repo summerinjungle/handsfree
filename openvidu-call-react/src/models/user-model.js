@@ -10,7 +10,7 @@ class UserModel {
     constructor() {
         this.connectionId = '';
         this.audioActive = true;
-        this.videoActive = true;
+        this.videoActive = false;
         this.screenShareActive = false;
         this.nickname = '';
         this.streamManager = null;

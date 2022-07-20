@@ -8,24 +8,26 @@ export default class OvVideoComponent extends Component {
     }
 
     componentDidMount() {
-        if (this.props && this.props.user.streamManager && !!this.videoRef) {
+        if (this.props && this.props.user.streamManager ) {
             console.log('PROPS: ', this.props);
+    
             this.props.user.getStreamManager().addVideoElement(this.videoRef.current);
         }
 
-        if (this.props && this.props.user.streamManager.session && this.props.user && !!this.videoRef) {
+        if (this.props && this.props.user.streamManager.session && this.props.user ) {
             this.props.user.streamManager.session.on('signal:userChanged', (event) => {
                 const data = JSON.parse(event.data);
-                if (data.isScreenShareActive !== undefined) {
-                    this.props.user.getStreamManager().addVideoElement(this.videoRef.current);
-                }
+                // if (data.isScreenShareActive !== undefined) {
+                //     this.props.user.getStreamManager().addVideoElement(this.videoRef.current);
+                // }
             });
         }
     }
 
     componentDidUpdate(props) {
-        if (props && !!this.videoRef) {
+        if (props ) {
             this.props.user.getStreamManager().addVideoElement(this.videoRef.current);
+            console.log("HIHIHIHIHIHII");
         }
     }
 
@@ -33,7 +35,7 @@ export default class OvVideoComponent extends Component {
         return (
             <video
                 autoPlay={true}
-                id={'video-' + this.props.user.getStreamManager().stream.streamId}
+                d={'video-' + this.props.user.getStreamManager().stream.streamId}
                 ref={this.videoRef}
                 muted={this.props.mutedSound}
             />

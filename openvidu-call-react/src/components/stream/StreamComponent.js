@@ -90,11 +90,11 @@ export default class StreamComponent extends Component {
                     <div className="streamComponent">
                         <OvVideoComponent user={this.props.user} mutedSound={this.state.mutedSound} />
                         <div id="statusIcons">
-                            {!this.props.user.isVideoActive() ? (
+                            {/* {!this.props.user.isVideoActive() ? (
                                 <div id="camIcon">
                                     <VideocamOff id="statusCam" />
                                 </div>
-                            ) : null}
+                            ) : null} */}
 
                             {!this.props.user.isAudioActive() ? (
                                 <div id="micIcon">
