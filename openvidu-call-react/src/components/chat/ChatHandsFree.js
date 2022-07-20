@@ -1,29 +1,23 @@
 import React, { Component } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import HighlightOff from "@material-ui/icons/HighlightOff";
-
+import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
+import yellow from "@material-ui/core/colors/yellow";
 
 export default class ChatHandsFree extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      messageList: [],
-      highlighList: [],
-      message: "",
-      isRecog: true,
-      isHightlight: false,
-      time: "",
-      startTime: "",
-    };
-    this.chatScroll = React.createRef();
-    this.handleChange = this.handleChange.bind(this);
-    this.handlePressKey = this.handlePressKey.bind(this);
-    this.close = this.close.bind(this);
-    this.sendMessage = this.sendMessage.bind(this);
-  }
+  state = {
+    messageList: [],
+    starList: [],
+    recordMuteList: [],
+    message: "",
+    isRecog: true,
+    isStar: false,
+    isRecordMute: false,
+    startTime: "",
+    left: "",
+    right: "",
+  };
+  chatScroll = React.createRef();
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
@@ -34,19 +28,37 @@ export default class ChatHandsFree extends Component {
         let messageList = this.state.messageList;
         let length = messageList.length;
         this.setState({ isRecog: data.isRecord });
+        console.log("잡담구간 체크 = ", this.state.isRecordMute);
+
+        if (this.state.isRecordMute === true) {
+          this.state.recordMuteList.push({
+            left: this.state.left,
+            right: this.state.right,
+          });
+          this.setState({
+            isRecordMute: false,
+          });
+        }
+        console.log("잡담구간 확인", this.state.isRecordMute);
+        console.log("잡담구간 ==", this.state.recordMuteList);
+
         if (data.message === "기록 중지" || data.message === "기록중지") return;
+        if (data.message === "기록 시작" || data.message === "기록시작") return;
         if (data.isRecord === true) {
+          // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
           console.log("그 전 데이터  = ", messageList[length - 1]);
-          console.log("막둥아 별표22 = ", data.isHightlight);
-          if (this.state.isHightlight) {
-            const highlight = {
+          console.log("막둥아 별표 = ", data.isStar);
+
+          if (this.state.isStar) {
+            const stars = {
               message: messageList[length - 1].message,
               startTime: messageList[length - 1].startTime,
             };
-            this.state.highlighList.push(highlight);
-            this.setState({ isHightlight: false });
-            this.props.rootFunction(highlight);
-            console.log("root f", this.props.rootFunction);
+            this.state.starList.push(stars);
+            this.setState({ isStar: false });
+            messageList[length - 1].marker = true;
+            this.forceUpdate();
+            return;
           }
 
           messageList.push({
@@ -55,7 +67,12 @@ export default class ChatHandsFree extends Component {
             message: data.message,
             time: data.time,
             startTime: data.startTime,
+            marker: this.state.isStar,
           });
+
+          console.log("마커 리스트", this.state.starList);
+          console.log("메세지 리스트", this.state.messageList);
+
           const document = window.document;
           setTimeout(() => {
             const userImg = document.getElementById(
@@ -64,7 +81,6 @@ export default class ChatHandsFree extends Component {
             const video = document.getElementById("video-" + data.streamId);
             const avatar = userImg.getContext("2d");
             avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
-            // this.props.messageReceived();
           }, 50);
           this.setState({ messageList: messageList });
           this.scrollToBottom();
@@ -76,24 +92,14 @@ export default class ChatHandsFree extends Component {
     this.parentFunction();
   }
 
-  handleChange(event) {
-    this.setState({ message: event.target.value });
-  }
-
-  handlePressKey(event) {
-    if (event.key === "Enter") {
-      this.sendMessage();
-    }
-  }
-
-  sendMessage() {
+  sendMessage = () => {
     if (this.props.localUser && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
       if (message !== "" && message !== " ") {
         const date = new Date();
         const data = {
           isRecord: this.state.isRecog,
-          isHightlight: this.state.isHightlight,
+          isStar: this.state.isStar,
           time: date.getHours() + ":" + date.getMinutes(),
           message: message,
           nickname: this.props.localUser.getNickname(),
@@ -107,7 +113,7 @@ export default class ChatHandsFree extends Component {
       }
     }
     this.setState({ message: "" });
-  }
+  };
 
   scrollToBottom() {
     setTimeout(() => {
@@ -118,9 +124,9 @@ export default class ChatHandsFree extends Component {
     }, 20);
   }
 
-  close() {
+  close = () => {
     this.props.closeBtn(undefined);
-  }
+  };
 
   parentFunction = (data) => {
     this.state.message = data.text;
@@ -128,63 +134,92 @@ export default class ChatHandsFree extends Component {
     console.log("text = ", data.text);
     console.log("chat_comp startTime = ", data.startTime);
     if (data.text === "기록 중지" || data.text === "기록중지") {
+      if (this.state.isRecog === true) {
+        this.setState({
+          left: data.startTime,
+        });
+      }
       this.setState({ isRecog: false });
     } else if (data.text === "기록 시작" || data.text === "기록시작") {
+      if (this.state.isRecog === false) {
+        this.setState({
+          right: data.startTime,
+          isRecordMute: true,
+        });
+      }
       this.setState({ isRecog: true });
     } else if (data.text === "막둥아 별표") {
-      this.setState({ isHightlight: true });
+      this.setState({ isStar: true });
     }
 
     this.sendMessage();
   };
 
   render() {
-    const styleChat = { display: this.props.chatDisplay };
     return (
-      <div id='chatContainer'>
-        <div id='chatComponent' style={styleChat}>
-          <div id='chatToolbar'>
-            <span>
-              {this.props.localUser.getStreamManager().stream.session.sessionId}{" "}
-              - CHAT
-            </span>
-            <IconButton id='closeButton' onClick={this.close}>
-              <HighlightOff color='secondary' />
-            </IconButton>
-          </div>
-          <div className='message-wrap' ref={this.chatScroll}>
-            {this.state.messageList.map((data, i) => (
-              <div
-                key={i}
-                id='remoteUsers'
-                className={
-                  "message" +
-                  (data.connectionId !== this.props.localUser.getConnectionId()
-                    ? " left"
-                    : " right")
-                }
-              >
-                <canvas
-                  id={"userImg-" + i}
-                  width='60'
-                  height='60'
-                  className='user-img'
-                />
-                <div className='msg-detail'>
-                  <div className='msg-info'>
-                    <p> {data.nickname}</p>
-                    <p className='text'>{data.time}</p>
-                  </div>
-                  <div className='msg-content'>
-                    <span className='triangle' />
-                    <p className='text'>{data.message}</p>
+      <div>
+        <div className='isRecog'>
+          {this.state.isRecog ? (
+            <h1
+              style={{
+                color: "skyblue",
+                fontSize: "25px",
+                textAlign: "center",
+              }}
+            >
+              🔵 기록중 🔵
+            </h1>
+          ) : (
+            <h1
+              style={{ color: "pink", fontSize: "25px", textAlign: "center" }}
+            >
+              ❌ 기록중지 ❌
+            </h1>
+          )}
+        </div>
+        <div id='chatContainer'>
+          <div id='chatComponent'>
+            <div className='message-wrap' ref={this.chatScroll}>
+              {this.state.messageList.map((data, i) => (
+                <div
+                  key={i}
+                  id='remoteUsers'
+                  className={
+                    "message" +
+                    (data.connectionId !==
+                    this.props.localUser.getConnectionId()
+                      ? " left"
+                      : " right")
+                  }
+                >
+                  <canvas
+                    id={"userImg-" + i}
+                    width='60'
+                    height='60'
+                    className='user-img'
+                  />
+                  <div className='msg-detail'>
+                    <div className='msg-info'>
+                      <p> {data.nickname}</p>
+                      <p className='text'>
+                        {data.marker ? (
+                          <Star style={{ color: yellow[800] }} />
+                        ) : null}
+                        {data.time}
+                      </p>
+                    </div>
+
+                    <div className='msg-content'>
+                      <span className='triangle' />
+                      <p className='text'>{data.message}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+          {/* <Recognition parentFunction={this.parentFunction} /> */}
         </div>
-        <Recognition parentFunction={this.parentFunction} />
       </div>
     );
   }

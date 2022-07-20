@@ -1,35 +1,27 @@
 import React from "react";
 import "./App.css";
 import VideoRoomHandsFree from "./components/videoroom/VideoRoomHandsFree";
-import Edit from "./components/edit/Edit";
 import Main from "./main/main";
-import Wave from "./components/edit/Wave";
+import EditingRoom from "./components/edit/EditingRoom.jsx";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "./main/cookie";
 import { useSelector } from "react-redux";
-import Surfer from "./components/edit/Surfer";
 
 const App = () => {
-  let roomId = useSelector((state) => state.user.sessionId);
   const navigate = useNavigate();
   let user = getUserNameInCookie();
+  let reduxCheck = useSelector((state) => { return state; });
+  let sessionId = reduxCheck.user.sessionId
   return (
     <div className='App'>
       <Routes>
         <Route path='/' element={<Main />} />
         <Route
           path='/meeting'
-          element={
-            <VideoRoomHandsFree
-              sessionName={roomId}
-              user={user}
-              navigate={navigate}
-            />
-          }
-        />
-        <Route path='/edit' element={<Edit />} />
-        <Route path='/wave' element={<Wave />} />
-        <Route path='/surfer' element={<Surfer />} />
+          element={<VideoRoomHandsFree user={user} navigate={navigate} />}>
+          <Route path={sessionId} element={<VideoRoomHandsFree user={user} navigate={navigate}/>}/>
+        </Route>
+        <Route path='/edit' element={<EditingRoom />} />
       </Routes>
     </div>
   );

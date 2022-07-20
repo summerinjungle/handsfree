@@ -6,7 +6,8 @@
   }
   
   #chatToolbar {
-    height: 30px;
+    /* height: 0px; */
+    display: none;
     background-color: #3d3d3d;
     box-sizing: border-box;
     font-weight: bold;
@@ -25,22 +26,49 @@
   }
   
   #chatComponent {
-    background-color: #b8b8b8;
+    background-color: #3d3d3d;
     position: absolute;
     z-index: 99999;
+    /* display: none; */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    margin: auto;
-    height: calc(100% - 30px);
-    width: calc(100% - 30px);
+    /* margin: auto; */
+    margin-left: 3.7%;
+    margin-top: -3.2vh;
+    height: 105.1%;
+    width: 92.6%;
+    /* width: calc(100% - 25px); */
     border-radius: 20px;
   }
-  
+
+
+  .isRecog{
+    position:absolute;
+    top:-12.2%;
+    left: 3.7%;
+    text-align: center;
+    width: 92.6%;
+    /* margin-left: 1%; */
+    /* margin-right: 3.3%; */
+    /* padding-right: 5px; */
+    height: 6.4%;
+    border-radius: 15px;
+    background-color: #4b6b6b;
+
+    /* margin-bottom: 20px; */
+    /* size: 30%; */
+    /* margin-top: 10px; */
+  }
+
+
   .message-wrap {
+    border-radius: 20px;
+    background-color: #f0f0f094;
+    /* background-color: #81e9b0; */
     padding: 0 15px;
-    height: calc(100% - 80px);
+    height: calc(100%);
     overflow: auto;
   }
   

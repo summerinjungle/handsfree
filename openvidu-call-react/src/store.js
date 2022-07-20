@@ -1,37 +1,43 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 let user = createSlice({
-  name : 'user', 
-  initialState : {sessionId : 'SessionB', duringTime: 0, enterTime: 0, userName: '', isPublisher: ''},
-  reducers : {
+  name: "user",
+  initialState: {
+    sessionId: "SessionB",
+    duringTime: 0,
+    enterTime: 0,
+    userName: "",
+    isPublisher: "",
+  },
+  reducers: {
     changeSession(state, roomId) {
-      state.sessionId = roomId.payload
+      state.sessionId = roomId.payload;
     },
     changeDuringTime(state, duringTime) {
-      state.duringTime = duringTime.payload
+      state.duringTime = duringTime.payload;
     },
     changeEnterTime(state, time) {
-      state.enterTime = time.payload
+      state.enterTime = time.payload;
     },
     changeUserName(state, name) {
-      state.userName = name.payload
+      state.userName = name.payload;
     },
     changeIsPublisher(state, bool) {
-      state.isPublisher = bool.payload
-    }
-  }
-})
+      state.isPublisher = bool.payload;
+    },
+  },
+});
 
 export default configureStore({
   reducer: {
-    user : user.reducer
-  }
-}) 
+    user: user.reducer,
+  },
+});
 
 export let {
   changeSession,
   changeDuringTime,
   changeEnterTime,
   changeUserName,
-  changeIsPublisher
-} = user.actions 
+  changeIsPublisher,
+} = user.actions;

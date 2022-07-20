@@ -13,14 +13,10 @@ import FullscreenExit from "@material-ui/icons/FullscreenExit";
 import PictureInPicture from "@material-ui/icons/PictureInPicture";
 import ScreenShare from "@material-ui/icons/ScreenShare";
 import StopScreenShare from "@material-ui/icons/StopScreenShare";
-import Tooltip from "@material-ui/core/Tooltip";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
-import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
 import red from "@material-ui/core/colors/red";
 import IconButton from "@material-ui/core/IconButton";
-import { Modal } from "@material-ui/core";
-import ModalComponent from "./ModalComponent";
-const logo = require("../../assets/images/zoom.jpg");
+// const logo = require("../../assets/images/zoom.jpg");
 
 export default class ToolbarComponent extends Component {
   state = {
@@ -53,25 +49,21 @@ export default class ToolbarComponent extends Component {
     this.props.leaveSession();
   };
 
-  toggleChat = () => {
-    this.props.toggleChat();
-  };
-
   closeModal = () => {
     this.setState({ openModal: false });
   };
 
   render() {
-    const customStyles = {
-      content: {
-        top: "50%",
-        left: "50%",
-        right: "auto",
-        bottom: "auto",
-        marginRight: "-50%",
-        transform: "translate(-50%, -50%)",
-      },
-    };
+    // const customStyles = {
+    //   content: {
+    //     top: "50%",
+    //     left: "50%",
+    //     right: "auto",
+    //     bottom: "auto",
+    //     marginRight: "-50%",
+    //     transform: "translate(-50%, -50%)",
+    //   },
+    // };
     const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
     return (
@@ -149,16 +141,6 @@ export default class ToolbarComponent extends Component {
               id='navLeaveButton'
             >
               <PowerSettingsNew />
-            </IconButton>
-            <IconButton
-              color='inherit'
-              onClick={this.toggleChat}
-              id='navChatButton'
-            >
-              {this.props.showNotification && <div id='point' className='' />}
-              <Tooltip title='Chat'>
-                <QuestionAnswer />
-              </Tooltip>
             </IconButton>
           </div>
         </Toolbar>

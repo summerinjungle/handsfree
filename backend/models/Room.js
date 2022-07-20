@@ -27,13 +27,20 @@ const roomSchema = new Schema({
         trim: true,
     },
     chatList: {
-        type: String,
+        type: Array,
     },
     starList: {
+<<<<<<< HEAD
         type: String,
     },
     recordMuteList: {
         type: String
+=======
+        type: Array,
+    },
+    recordMuteList: {
+        type: Array
+>>>>>>> 90aea7e810de9dfaae728de49c885aa88e10256a
     }
 });
 

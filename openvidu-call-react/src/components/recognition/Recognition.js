@@ -1,4 +1,5 @@
-import React, { useEffect, useState, Component } from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
 // 소리감지체크
 let sound_detect_check = false;
@@ -17,6 +18,8 @@ class Recognition extends Component {
     this.state = {
       transcript: "",
       start_time: "",
+      duringTime: props.duringTime,
+      enterTime: props.enterTime,
     };
   }
 
@@ -36,7 +39,6 @@ class Recognition extends Component {
 
     recognition.onend = () => {
       if (this.state.transcript !== "") {
-        const date = new Date();
         const sttData = {
           text: this.state.transcript,
           startTime: this.state.start_time,
@@ -44,8 +46,6 @@ class Recognition extends Component {
         // 막둥이 로직추가
         this.props.parentFunction(sttData);
         console.log(this.state.transcript);
-
-        console.log("end_time :", date.getTime() - meeting_start_time);
       }
       this.setState({ transcript: "" });
       recognition.start();
@@ -55,12 +55,8 @@ class Recognition extends Component {
     recognition.onresult = (event) => {
       if (sound_detect_check !== true) {
         texts = "";
-        const date = new Date();
-        this.state.start_time = date.getTime() - meeting_start_time;
-        console.log(
-          "recog comp start_time",
-          date.getTime() - meeting_start_time
-        );
+        this.state.start_time =
+          this.state.duringTime + (new Date().getTime() - this.state.enterTime);
         sound_detect_check = true;
       }
       let texts = Array.from(event.results)
@@ -78,4 +74,11 @@ class Recognition extends Component {
   }
 }
 
-export default Recognition;
+const mapStateToProps = (state) => {
+  return {
+    duringTime: state.user.duringTime,
+    enterTime: state.user.enterTime,
+  };
+};
+
+export default connect(mapStateToProps)(Recognition);
