@@ -81,7 +81,7 @@ const EditingRoom = (props) => {
    */
   async function loadAllRecord() {
     await axios
-      .get("/api/rooms/" + "2r8ij9nb" + "/editingroom") // 테스트를 위해 roomId : aj8iu868 넣어 놓음
+      .get("localhost:5000/api/rooms/" + "2r8ij9nb" + "/editingroom") // 테스트를 위해 roomId : aj8iu868 넣어 놓음
       .then(function (response) {
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;

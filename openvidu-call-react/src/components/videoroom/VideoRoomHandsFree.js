@@ -14,7 +14,6 @@ var localUser = new UserModel();
 
 class VideoRoomHandsFree extends Component {
   state = {
-    mySessionId: this.props.sessionId ? this.props.sessionId : "SessionA",
     myUserName: this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100),
@@ -22,7 +21,6 @@ class VideoRoomHandsFree extends Component {
     localUser: undefined,
     subscribers: [],
     currentVideoDevice: undefined,
-    isPublisher: this.props.isPublisher,
     chatInfo: {},
   };
   remotes = [];
@@ -103,7 +101,7 @@ class VideoRoomHandsFree extends Component {
   connectToSession = () => {
     if (this.props.token !== undefined) {
       console.log("token received: ", this.props.token);
-      console.log("방이름 received: ", this.state.mySessionId);
+      console.log("방이름 received: ", this.props.sessionId);
       this.connect(this.props.token);
     } else {
       this.getToken()
@@ -272,34 +270,22 @@ class VideoRoomHandsFree extends Component {
 
   leaveSession = async () => {
     if (
-      // [예] 눌렀을 때
       window.confirm("회의를 종료하시겠습니까?")
+      // [예] 눌렀을 때
     ) {
       console.log("chatInfo ==== >", this.state.chatInfo);
       await axios
-        .post(
-          this.OPENVIDU_SERVER_URL +
-            `/api/rooms/${this.state.mySessionId}/chat`,
-          {
-            chatList: this.state.chatInfo.messageList,
-            startList: this.state.chatInfo.starList,
-            recordMuteList: this.state.chatInfo.recordMuteList,
-          },
-          {
-            headers: {
-              Authorization:
-                "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-              "Content-Type": "application/json",
-            },
-          }
-        )
+        .post(`/api/rooms/${this.props.sessionId}/chat`, {
+          chatList: this.state.chatInfo.messageList,
+          startList: this.state.chatInfo.starList,
+          recordMuteList: this.state.chatInfo.recordMuteList,
+        })
         .then((res) => {
           console.log("회의 종료!! 데이터 보냄 res = ", res);
         })
         .catch((err) => {
           console.log("err === ", err);
         });
-
       const mySession = this.state.session;
 
       if (mySession) {
@@ -313,7 +299,7 @@ class VideoRoomHandsFree extends Component {
       // 방장만 실행하는 함수 (회의 강제 종료)
       if (this.props.isPublisher) {
         console.log("onlyPublisher");
-        this.forceDisconnect(this.state.mySessionId);
+        this.forceDisconnect(this.props.sessionId);
         this.props.navigate("edit");
       } else {
         if (
@@ -323,10 +309,10 @@ class VideoRoomHandsFree extends Component {
               "[취소]를 누르시면 메인 페이지로 이동합니다."
           )
         ) {
-          this.forceDisconnect(this.state.mySessionId);
+          this.forceDisconnect(this.props.sessionId);
           this.props.navigate("edit");
         } else {
-          this.forceDisconnect(this.state.mySessionId);
+          this.forceDisconnect(this.props.sessionId);
           this.props.navigate("");
         }
         this.props.navigate("/");
@@ -431,11 +417,11 @@ class VideoRoomHandsFree extends Component {
           )
         ) {
           // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-          this.forceDisconnect(this.state.mySessionId);
+          this.forceDisconnect(this.props.sessionId);
           this.props.navigate("edit");
         } else {
           // [취소] 클릭 -> Lobby로 이동
-          this.forceDisconnect(this.state.mySessionId);
+          this.forceDisconnect(this.props.sessionId);
           this.props.navigate("");
         }
       } else {
@@ -565,10 +551,8 @@ class VideoRoomHandsFree extends Component {
   };
 
   render() {
-    const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
-    // 방장여부 확인
-    console.log("방장여부 ", this.state.isPublisher);
+    console.log("방장여부 ", this.props.isPublisher);
 
     return (
       <div className='container' id='container'>
@@ -614,7 +598,7 @@ class VideoRoomHandsFree extends Component {
           </div>
         )}
         <ToolbarComponent
-          sessionId={mySessionId}
+          sessionId={this.props.sessionId}
           user={localUser}
           camStatusChanged={this.camStatusChanged}
           micStatusChanged={this.micStatusChanged}
@@ -628,7 +612,7 @@ class VideoRoomHandsFree extends Component {
   }
 
   getToken() {
-    return this.createSession(this.state.mySessionId).then((sessionId) =>
+    return this.createSession(this.props.sessionId).then((sessionId) =>
       this.createToken(sessionId)
     );
   }
@@ -656,7 +640,6 @@ class VideoRoomHandsFree extends Component {
           },
         })
         .then((response) => {
-          console.log("CREATE SESION ===== ", response);
           resolve(response.data.id);
         })
         .catch((response) => {
@@ -770,7 +753,6 @@ class VideoRoomHandsFree extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log("state ~~~~~~ ss", state);
   return {
     sessionId: state.user.sessionId,
     isPublisher: state.user.isPublisher,
