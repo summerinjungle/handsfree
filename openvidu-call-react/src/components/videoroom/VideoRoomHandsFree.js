@@ -290,20 +290,20 @@ class VideoRoomHandsFree extends Component {
         // this.forceDisconnect(this.state.mySessionId);
         this.props.navigate('edit')
       } else {
-        if (
-          window.confirm(
-            "방장이 회의를 종료하였습니다.\n" +
-              "편집실로 이동하시겠습니까?\n" +
-              "[취소]를 누르시면 메인 페이지로 이동합니다."
-          )
-        ) {
-          this.forceDisconnect(this.state.mySessionId);
-          this.props.navigate("edit");
-        } else {
-          this.forceDisconnect(this.state.mySessionId);
-          this.props.navigate("");
-        }
-        this.props.navigate('/')
+        // if (
+        //   window.confirm(
+        //     "방장이 회의를 종료하였습니다.\n" +
+        //       "편집실로 이동하시겠습니까?\n" +
+        //       "[취소]를 누르시면 메인 페이지로 이동합니다."
+        //   )
+        // ) {
+        //   this.forceDisconnect(this.state.mySessionId);
+        //   this.props.navigate("edit");
+        // } else {
+        //   this.forceDisconnect(this.state.mySessionId);
+        //   this.props.navigate("/");
+        // }
+        // this.props.navigate('/')
       }
 
     } else {
