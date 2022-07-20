@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import "./VideoRoomComponent.css";
+import "./VideoRoomHandsFree.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamHandFree from "./../stream/StreamHandFree";
 import DialogExtensionComponent from "./../dialog-extension/DialogExtension";
@@ -23,6 +23,7 @@ class VideoRoomHandsFree extends Component {
     subscribers: [],
     currentVideoDevice: undefined,
     isPublisher: this.props.isPublisher,
+    chatInfo: {},
   };
   remotes = [];
   layout = new OpenViduLayout();
@@ -102,6 +103,7 @@ class VideoRoomHandsFree extends Component {
   connectToSession = () => {
     if (this.props.token !== undefined) {
       console.log("token received: ", this.props.token);
+      console.log("방이름 received: ", this.state.mySessionId);
       this.connect(this.props.token);
     } else {
       this.getToken()
@@ -262,33 +264,55 @@ class VideoRoomHandsFree extends Component {
     );
   }
 
-  leaveSession = () => {
+  getMessageList = (chatData) => {
+    this.setState({
+      chatInfo: chatData,
+    });
+  };
+
+  leaveSession = async () => {
     if (
       // [예] 눌렀을 때
       window.confirm("회의를 종료하시겠습니까?")
     ) {
+      console.log("chatInfo ==== >", this.state.chatInfo);
+      await axios.post(
+        this.OPENVIDU_SERVER_URL + `/api/rooms/${this.state.mySessionId}/chat`,
+        {
+          chatList: this.state.chatInfo.messageList,
+          startList: this.state.chatInfo.starList,
+          recordMuteList: this.state.chatInfo.recordMuteList,
+        },
+        {
+          headers: {
+            Authorization:
+              "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+            "Content-Type": "application/json",
+          },
+        }
+          .then((res) => {
+            console.log("회의 종료!! 데이터 보냄 res = ", res);
+          })
+          .catch((err) => {
+            console.log("err === ", err);
+          })
+      );
+
       const mySession = this.state.session;
 
       if (mySession) {
         mySession.disconnect();
       }
 
-      this.OV = null;
-      this.setState({
-        session: undefined,
-        subscribers: [],
-        mySessionId: "SessionA",
-        myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
-        localUser: undefined,
-      });
       if (this.props.leaveSession) {
+        console.log("!!!!!!xxx", this.props.leaveSession);
         this.props.leaveSession();
       }
       // 방장만 실행하는 함수 (회의 강제 종료)
-      if(this.props.isPublisher) {
+      if (this.props.isPublisher) {
         this.forceDisconnect(this.state.mySessionId);
       }
-      this.props.navigate('edit')
+      this.props.navigate("edit");
     } else {
       // [아니오] 눌렀을 때
       console.log(this.state);
@@ -564,8 +588,7 @@ class VideoRoomHandsFree extends Component {
           <div className='OT_root OT_publisher custom-class'>
             <ChatHandsFree
               localUser={localUser}
-              duringTime={this.props.duringTime}
-              enterTime={this.props.enterTime}
+              rootFunction={this.getMessageList}
             />
           </div>
         )}
@@ -612,7 +635,7 @@ class VideoRoomHandsFree extends Component {
           },
         })
         .then((response) => {
-          console.log("CREATE SESION", response);
+          console.log("CREATE SESION ===== ", response);
           resolve(response.data.id);
         })
         .catch((response) => {
@@ -726,6 +749,7 @@ class VideoRoomHandsFree extends Component {
   }
 }
 const mapStateToProps = (state) => {
+  console.log("state ~~~~~~ ss", state);
   return {
     sessionId: state.user.sessionId,
     isPublisher: state.user.isPublisher,

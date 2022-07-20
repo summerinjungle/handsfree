@@ -8,6 +8,7 @@ let user = createSlice({
     enterTime: 0,
     userName: "",
     isPublisher: "",
+    messageList: [],
   },
   reducers: {
     changeSession(state, roomId) {
@@ -25,6 +26,10 @@ let user = createSlice({
     changeIsPublisher(state, bool) {
       state.isPublisher = bool.payload;
     },
+
+    changeMessageList(state, msgList) {
+      state.messageList = msgList.payload;
+    },
   },
 });
 
@@ -40,4 +45,5 @@ export let {
   changeEnterTime,
   changeUserName,
   changeIsPublisher,
+  changeMessageList,
 } = user.actions;
