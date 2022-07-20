@@ -288,6 +288,7 @@ class VideoRoomHandsFree extends Component {
       if(this.props.isPublisher) {
         this.forceDisconnect(this.state.mySessionId);
       }
+      this.props.navigate('edit')
     } else {
       // [아니오] 눌렀을 때
       console.log(this.state);
