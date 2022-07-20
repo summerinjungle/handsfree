@@ -17,7 +17,7 @@ const ChatItem = ({ key, userName, time, message }) => {
                         {time}
                     </div>
                     <div className="inline-block mx-10">
-                        재생
+                        <button>재생</button>
                     </div>
                     <div className="inline-block">
                         <button>수정</button>

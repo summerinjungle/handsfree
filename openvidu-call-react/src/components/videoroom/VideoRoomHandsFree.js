@@ -273,8 +273,22 @@ class VideoRoomHandsFree extends Component {
       window.confirm("회의를 종료하시겠습니까?")
       // [예] 눌렀을 때
     ) {
-      console.log("chatInfo ==== >", this.state.chatInfo);
-      await axios
+      const mySession = this.state.session;
+
+      if (mySession) {
+        mySession.disconnect();
+      }
+
+      if (this.props.leaveSession) {
+        console.log("!!!!!!xxx", this.props.leaveSession);
+        this.props.leaveSession();
+      }
+      
+      if (this.props.isPublisher) {
+        console.log("onlyPublisher");// 방장만 실행하는 함수 (회의 강제 종료)
+
+        /* 회의 모든 음성 데이터 서버로 전송 */ 
+        await axios
         .post(`/api/rooms/${this.props.sessionId}/chat`, {
           chatList: this.state.chatInfo.messageList,
           startList: this.state.chatInfo.starList,
@@ -286,35 +300,10 @@ class VideoRoomHandsFree extends Component {
         .catch((err) => {
           console.log("err === ", err);
         });
-      const mySession = this.state.session;
 
-      if (mySession) {
-        mySession.disconnect();
-      }
-
-      if (this.props.leaveSession) {
-        console.log("!!!!!!xxx", this.props.leaveSession);
-        this.props.leaveSession();
-      }
-      // 방장만 실행하는 함수 (회의 강제 종료)
-      if (this.props.isPublisher) {
-        console.log("onlyPublisher");
         this.forceDisconnect(this.props.sessionId);
         this.props.navigate("edit");
       } else {
-        if (
-          window.confirm(
-            "방장이 회의를 종료하였습니다.\n" +
-              "편집실로 이동하시겠습니까?\n" +
-              "[취소]를 누르시면 메인 페이지로 이동합니다."
-          )
-        ) {
-          this.forceDisconnect(this.props.sessionId);
-          this.props.navigate("edit");
-        } else {
-          this.forceDisconnect(this.props.sessionId);
-          this.props.navigate("");
-        }
         this.props.navigate("/");
       }
     } else {
@@ -322,14 +311,10 @@ class VideoRoomHandsFree extends Component {
       console.log(this.state);
       console.log(this.state.session);
       console.log(this.state.session.capabilities);
-      console.log(this.state.session.capabilities.publish); // true
       console.log(this.state.localUser.streamManager); // publisher 객체
       console.log(this.state.session.openvidu.role); // "PUBLISHER"
       console.log("TEST_PUBLISHER--3", this.state.session.streamManagers);
-      console.log(
-        "TEST_PUBLISHER--4",
-        this.state.session.streamManagers.length
-      );
+      console.log("TEST_PUBLISHER--4", this.state.session.streamManagers.length);
       console.log("CONNIE", localUser);
       console.log("CONNIE", this.state.subscribers);
     }
@@ -417,6 +402,7 @@ class VideoRoomHandsFree extends Component {
           )
         ) {
           // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
+          this.stopRecording(this.props.sessionId);
           this.forceDisconnect(this.props.sessionId);
           this.props.navigate("edit");
         } else {
@@ -734,6 +720,7 @@ class VideoRoomHandsFree extends Component {
    * @param {*} sessionId
    */
   forceDisconnect(sessionId) {
+    console.log("FOR_DIS_FIRST");
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({});
       axios
