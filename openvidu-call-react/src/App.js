@@ -5,26 +5,49 @@ import Main from "./main/main";
 import EditingRoom from "./components/edit/EditingRoom.jsx";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "./main/cookie";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  changeSession,
+  changeDuringTime,
+  changeIsPublisher,
+  changeEnterTime,
+  changeUserName,
+} from "./store.js";
 
 const App = () => {
   const navigate = useNavigate();
   let user = getUserNameInCookie();
-  let reduxCheck = useSelector((state) => { return state; });
-  let sessionId = reduxCheck.user.sessionId
+
+  let dispatch = useDispatch();
+  let data = JSON.parse(localStorage.getItem("redux"));
+  let sessionId;
+  if (data === null) {
+    sessionId = "sessionB";
+  } else {
+    sessionId = data.sessionId;
+    dispatch(changeSession(sessionId));
+    dispatch(changeIsPublisher(data.isPublisher));
+    dispatch(changeDuringTime(data.duringTime));
+    dispatch(changeEnterTime(data.enterTime));
+    dispatch(changeUserName(getUserNameInCookie()));
+  }
+
   return (
     <div className='App'>
       <Routes>
         <Route path='/' element={<Main />} />
         <Route
           path='/meeting'
-          element={<VideoRoomHandsFree user={user} navigate={navigate} />}>
-          <Route path={sessionId} element={<VideoRoomHandsFree user={user} navigate={navigate}/>}/>
+          element={<VideoRoomHandsFree user={user} navigate={navigate} />}
+        >
+          <Route
+            path={sessionId}
+            element={<VideoRoomHandsFree user={user} navigate={navigate} />}
+          />
         </Route>
         <Route path='/edit' element={<EditingRoom />} />
       </Routes>
     </div>
   );
 };
-
 export default App;

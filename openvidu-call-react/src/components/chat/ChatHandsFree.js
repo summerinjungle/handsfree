@@ -4,7 +4,7 @@ import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 
-export default class ChatHandsFree extends Component {
+class ChatHandsFree extends Component {
   state = {
     messageList: [],
     starList: [],
@@ -21,6 +21,12 @@ export default class ChatHandsFree extends Component {
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
+    const chatInfo = {
+      messageList: this.state.messageList,
+      starList: this.state.starList,
+      recordMuteList: this.state.recordMuteList,
+    };
+    this.props.rootFunction(chatInfo);
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
@@ -89,7 +95,7 @@ export default class ChatHandsFree extends Component {
   }
 
   componentWillUnmount() {
-    this.parentFunction();
+    // this.parentFunction();
   }
 
   sendMessage = () => {
@@ -218,9 +224,10 @@ export default class ChatHandsFree extends Component {
               ))}
             </div>
           </div>
-          {/* <Recognition parentFunction={this.parentFunction} /> */}
+          <Recognition parentFunction={this.parentFunction} />
         </div>
       </div>
     );
   }
 }
+export default ChatHandsFree;

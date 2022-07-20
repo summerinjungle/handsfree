@@ -23,6 +23,7 @@ const Main = () => {
   let [enterCode, setEnterCode] = useState("");
   const [isLogin, setIsLogin] = useState(false);
   const cookie = getTokenInCookie();
+
   let reduxCheck = useSelector((state) => {
     return state;
   });
@@ -41,11 +42,23 @@ const Main = () => {
       .then(function (response) {
         console.log(response.data);
         // sessionId값, 방장권한, 진행시간 0, 입장시간
+        const time = date.getTime()
         dispatch(changeSession(response.data.roomId));
         dispatch(changeIsPublisher(true));
         dispatch(changeDuringTime(0));
-        dispatch(changeEnterTime(date.getTime()));
+        dispatch(changeEnterTime(time));
         dispatch(changeUserName(getUserNameInCookie()));
+
+        const obj = 
+          {
+            isPublisher: true,
+            sessionId: response.data.roomId,
+            duringTime: 0,
+            enterTime: time
+          }
+        localStorage.setItem("redux", JSON.stringify(obj))
+        console.log("저장됨", obj)
+
         navigate("/meeting/" + response.data.roomId);
       })
       .catch(function (error) {
@@ -60,16 +73,26 @@ const Main = () => {
         console.log(response.data);
         // 입장가능한 방일때
         if (response.data.isValidRoom) {
+          const time = date.getTime()
+          let duringTime = response.data.enteredAt - Number(response.data.createdAt);
+
           dispatch(changeSession(enterCode));
           dispatch(changeIsPublisher(false));
-          let duringTime =
-            response.data.enteredAt - Number(response.data.createdAt);
-          console.log(response.data.enteredAt);
-          console.log(duringTime);
-          console.log(Number(response.data.createdAt));
           dispatch(changeDuringTime(duringTime));
           dispatch(changeUserName(getUserNameInCookie()));
-          dispatch(changeEnterTime(date.getTime()));
+          dispatch(changeEnterTime(time));
+
+          const obj = 
+          {
+            isPublisher: false,
+            sessionId: enterCode,
+            duringTime: duringTime,
+            enterTime: time
+          }
+          localStorage.setItem("redux", JSON.stringify(obj))
+          console.log("저장됨", obj)
+
+
           navigate("/meeting/" + enterCode);
         } else {
           alert("입장코드를 다시 입력해주세요");
