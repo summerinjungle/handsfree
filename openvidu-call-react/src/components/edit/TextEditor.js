@@ -1,17 +1,10 @@
-import React from "react";
-import { useState, useEffect } from "react";
-// import { QuillBinding } from ‘yjs/bindings/quill.js’
-import { QuillBinding } from "y-quill";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { WebrtcProvider } from "y-webrtc";
-import * as Y from "yjs";
-// @@@@@@@@@@@@@@@@@@@@@  @@@@@@@@@@@@@@@@@@@@@@ //
-// import Quill from 'quill”;
-// import QuillCursors from 'quill-cursors”;
-// @@@@@@@@@@@@@@@@@@@@@  @@@@@@@@@@@@@@@@@@@@@@ //
-// Quill.register('modules/cursors”, QuillCursors);
-// @@@@@@@@@@@@@@@@@@@@@  @@@@@@@@@@@@@@@@@@@@@@ //
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { QuillBinding } from 'y-quill'
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { WebrtcProvider } from 'y-webrtc';
+import * as Y from 'yjs';
 const TextEditor = () => {
   let quillRef = null;
   let reactQuillRef = null;
@@ -20,42 +13,9 @@ const TextEditor = () => {
   const [provider, setProvider] = useState();
   useEffect(() => {
     attachQuillRefs();
-    let provider = new WebrtcProvider("https://piousangel.shop", yDoc);
+    let provider = new WebrtcProvider("http://localhost:3000", yDoc);
+    let ytext = yDoc.getText("quill");
     const binding = new QuillBinding(ytext, quillRef, provider.awareness);
-    // @@@@@@@@@@@@@@@@@@@@@  @@@@@@@@@@@@@@@@@@@@@@ //
-    // var toolbarOptions = [
-    //   ['bold”, 'italic”, 'underline”, 'strike”], // toggled buttons
-    //   ['blockquote”, 'code-block”, 'formula”],
-    //   [{ header: 1 }, { header: 2 }], // custom button values
-    //   [{ list: 'ordered” }, { list: 'bullet” }],
-    //   [{ script: 'sub” }, { script: 'super” }], // superscript/subscript
-    //   [{ indent: '-1” }, { indent: '+1" }], // outdent/indent
-    //   [{ direction: 'rtl” }], // text direction
-    //   [{ size: ['small”, false, 'large”, 'huge”] }], // custom dropdown
-    //   [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    //   [{ color: ['white”] }],
-    //   ['clean”], // remove formatting button
-    // ];
-    // const editor = new Quill('#test”, {
-    //   modules: {
-    //     cursors: true,
-    //     toolbar: toolbarOptions,
-    //     history: {
-    //       userOnly: true,
-    //     },
-    //   },
-    //   placeholder: 'Start collaborating...',
-    //   theme: 'snow”, // or ‘bubble’
-    // });
-    // const cursors = editor.getModule('cursors”);
-    // cursors.createCursor(0, '1”, 'green”);
-    // @@@@@@@@@@@@@@@@@@@@@@  @@@@@@@@@@@@@@@@@@@@@@@@ //
-    //--혜진--//
-    // setDoc(yDoc);
-    // setProvider(provider);
-    // const ydocument = provider.get('textarea”);
-    //   const type = ydocument.define('textarea”, YText);
-    //   new QuillBinding(type, quillRef);
   }, []);
   const attachQuillRefs = () => {
     if (typeof reactQuillRef.getEditor !== "function") return;
@@ -68,7 +28,6 @@ const TextEditor = () => {
   };
   return (
     <div>
-      <p>hello!!</p>
       <ReactQuill
         ref={(el) => {
           reactQuillRef = el;

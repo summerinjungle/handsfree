@@ -13,6 +13,7 @@ import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
 import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
 import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect } from "react-redux";
+import TextEditor from "./TextEditor";
 
 const EditingRoom = (props) => {
   const wavesurfer = useRef(null);
@@ -149,7 +150,8 @@ const EditingRoom = (props) => {
       <div className='contents'>
         <div className='contents-left'>
           <div className='contents-label'>메모</div>
-          <textarea className='textarea'></textarea>
+          {/* <textarea className='textarea'></textarea> */}
+          <TextEditor />
         </div>
         <div className='contents-right'>
           <div className='contents-label'>음성 기록</div>
