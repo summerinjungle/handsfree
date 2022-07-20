@@ -5,7 +5,15 @@ import Main from "./main/main";
 import EditingRoom from "./components/edit/EditingRoom.jsx";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "./main/cookie";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  changeSession,
+  changeDuringTime,
+  changeIsPublisher,
+  changeEnterTime,
+  changeUserName,
+} from "./store.js";
+
 const App = () => {
   const navigate = useNavigate();
   let user = getUserNameInCookie();

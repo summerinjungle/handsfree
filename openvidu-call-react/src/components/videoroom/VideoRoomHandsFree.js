@@ -276,27 +276,29 @@ class VideoRoomHandsFree extends Component {
       window.confirm("회의를 종료하시겠습니까?")
     ) {
       console.log("chatInfo ==== >", this.state.chatInfo);
-      await axios.post(
-        this.OPENVIDU_SERVER_URL + `/api/rooms/${this.state.mySessionId}/chat`,
-        {
-          chatList: this.state.chatInfo.messageList,
-          startList: this.state.chatInfo.starList,
-          recordMuteList: this.state.chatInfo.recordMuteList,
-        },
-        {
-          headers: {
-            Authorization:
-              "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-            "Content-Type": "application/json",
+      await axios
+        .post(
+          this.OPENVIDU_SERVER_URL +
+            `/api/rooms/${this.state.mySessionId}/chat`,
+          {
+            chatList: this.state.chatInfo.messageList,
+            startList: this.state.chatInfo.starList,
+            recordMuteList: this.state.chatInfo.recordMuteList,
           },
-        }
-          .then((res) => {
-            console.log("회의 종료!! 데이터 보냄 res = ", res);
-          })
-          .catch((err) => {
-            console.log("err === ", err);
-          })
-      );
+          {
+            headers: {
+              Authorization:
+                "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          console.log("회의 종료!! 데이터 보냄 res = ", res);
+        })
+        .catch((err) => {
+          console.log("err === ", err);
+        });
 
       const mySession = this.state.session;
 
@@ -311,7 +313,7 @@ class VideoRoomHandsFree extends Component {
       // 방장만 실행하는 함수 (회의 강제 종료)
       if (this.props.isPublisher) {
         console.log("onlyPublisher");
-        // this.forceDisconnect(this.state.mySessionId);
+        this.forceDisconnect(this.state.mySessionId);
         this.props.navigate("edit");
       } else {
         if (
@@ -337,8 +339,6 @@ class VideoRoomHandsFree extends Component {
       console.log(this.state.session.capabilities.publish); // true
       console.log(this.state.localUser.streamManager); // publisher 객체
       console.log(this.state.session.openvidu.role); // "PUBLISHER"
-      // console.log(this.session.connection.role);
-      // console.log("WHO ARE YOU", this.props.user.streamManager);// undefined
       console.log("TEST_PUBLISHER--3", this.state.session.streamManagers);
       console.log(
         "TEST_PUBLISHER--4",
