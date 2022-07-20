@@ -97,7 +97,7 @@ class ChatHandsFree extends Component {
   }
 
   componentWillUnmount() {
-    this.parentFunction();
+    // this.parentFunction();
   }
 
   sendMessage = () => {

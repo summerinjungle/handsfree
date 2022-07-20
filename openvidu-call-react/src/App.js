@@ -9,10 +9,21 @@ import { useSelector } from "react-redux";
 const App = () => {
   const navigate = useNavigate();
   let user = getUserNameInCookie();
-  let reduxCheck = useSelector((state) => {
-    return state;
-  });
-  let sessionId = reduxCheck.user.sessionId;
+
+  let dispatch = useDispatch();
+  let data = JSON.parse(localStorage.getItem("redux"));
+  let sessionId;
+  if (data === null) {
+    sessionId = "sessionB";
+  } else {
+    sessionId = data.sessionId;
+    dispatch(changeSession(sessionId));
+    dispatch(changeIsPublisher(data.isPublisher));
+    dispatch(changeDuringTime(data.duringTime));
+    dispatch(changeEnterTime(data.enterTime));
+    dispatch(changeUserName(getUserNameInCookie()));
+  }
+
   return (
     <div className='App'>
       <Routes>
