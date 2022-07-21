@@ -15,7 +15,7 @@ import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect } from "react-redux";
 import TextEditor from "./TextEditor";
 
-const EditingRoom = (props) => {
+const EditingRoom = ({ props, recordFile }) => {
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
   const [volume, setVolume] = useState(1);
@@ -66,9 +66,8 @@ const EditingRoom = (props) => {
 
   useEffect(() => {
     if (wavesurfer) {
-      wavesurfer.current.load(
-        "https://openvidu.shop/openvidu/recordings/SessionB/ownweapon.webm"
-      );
+      console.log("recordFile =====> ", recordFile);
+      wavesurfer.current.load(recordFile.url);
     }
   }, []);
 
