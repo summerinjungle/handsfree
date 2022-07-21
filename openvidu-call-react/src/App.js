@@ -32,6 +32,9 @@ const App = () => {
     dispatch(changeUserName(getUserNameInCookie()));
   }
 
+  let meetingPath = "/meeting/" + sessionId;
+  let editPath = meetingPath + "/edit";
+
   return (
     <div className='App'>
       <Routes>
@@ -45,7 +48,7 @@ const App = () => {
             element={<VideoRoomHandsFree user={user} navigate={navigate} />}
           />
         </Route>
-        <Route path='/edit' element={<EditingRoom />} />
+        <Route path={editPath} element={<EditingRoom recordFile={recordFile} />} />
       </Routes>
     </div>
   );

@@ -303,7 +303,7 @@ class VideoRoomHandsFree extends Component {
 
         this.stopRecording(this.props.sessionId);
         this.forceDisconnect(this.props.sessionId);
-        this.props.navigate("edit");
+        this.props.navigate(this.props.sessionId + "/edit");
       } else {
         // 방장아닌 User 자신이 [나가기] 버튼을 눌러 나가는 경우
         this.props.navigate("/");
