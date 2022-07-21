@@ -14,7 +14,7 @@ import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
 import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
 import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect } from "react-redux";
-import TextEditor from "./TextEditor";
+import {TextEditor, insertText} from "./TextEditor";
 
 const EditingRoom = ({ props, recordFile, sessionId}) => {
     const wavesurfer = useRef(null);
