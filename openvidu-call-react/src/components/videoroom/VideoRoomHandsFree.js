@@ -307,7 +307,7 @@ class VideoRoomHandsFree extends Component {
           window.confirm("편집실로 가시겠습니까?(너는 방장)")
           // [예] 눌렀을 때
         ) {
-          this.props.navigate("meeting/" + this.props.sessionId + "/edit/" + this.props.sessionId);
+          this.props.navigate("meeting/" + this.props.sessionId + "/edit");
         } else {
           this.props.navigate("/");
         }
@@ -410,7 +410,7 @@ class VideoRoomHandsFree extends Component {
         )
       ) {
         // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-        this.props.navigate("meeting/" + this.props.sessionId + "/edit/" + this.props.sessionId);
+        this.props.navigate("meeting/" + this.props.sessionId + "/edit");
       } else {
         // [취소] 클릭 -> Lobby로 이동
         this.props.navigate("");

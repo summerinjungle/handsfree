@@ -33,8 +33,6 @@ const App = () => {
     dispatch(changeUserName(getUserNameInCookie()));
   }
 
-  let meetingPath = "/meeting/" + sessionId;
-  let editPath = meetingPath + "/edit";
   const getRecordFile = (data) => {
     setRecordFile(data);
   };
@@ -62,10 +60,9 @@ const App = () => {
           />
         </Route>
         
-        <Route path={editPath} element={<EditingRoom recordFile={recordFile} />}>
-          <Route path={sessionId} element={<EditingRoom recordFile={recordFile}/>} />
+        <Route path={editPath} element={<EditingRoom recordFile={recordFile} sessionId={sessionId}/>}>
+          {/* <Route path={sessionId} element={<EditingRoom recordFile={recordFile} sessionId={sessionId}/>} /> */}
         </Route>
-
       </Routes>
     </div>
   );
