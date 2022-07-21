@@ -58,10 +58,8 @@ const App = () => {
               />
             }
           />
-        </Route>
-        
+        </Route>        
         <Route path={editPath} element={<EditingRoom recordFile={recordFile} sessionId={sessionId}/>}>
-          {/* <Route path={sessionId} element={<EditingRoom recordFile={recordFile} sessionId={sessionId}/>} /> */}
         </Route>
       </Routes>
     </div>
