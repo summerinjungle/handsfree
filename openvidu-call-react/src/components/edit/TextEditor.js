@@ -36,7 +36,6 @@ const TextEditor = ({sessionId}) => {
         }}
         theme={"snow"}
       />
-      <button onClick={insertText}>Insert ‘Hello World!’ in Text</button>
     </div>
   );
 };
