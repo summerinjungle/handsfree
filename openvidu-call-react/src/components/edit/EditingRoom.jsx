@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 
-const EditingRoom = ({ props, recordFile, sessionId}) => {
+const EditingRoom = ({ props, recordFile, sessionId }) => {
     const wavesurfer = useRef(null);
     const [isPlay, setIsPlay] = useState(false);
     const [volume, setVolume] = useState(1);
@@ -71,9 +71,10 @@ const EditingRoom = ({ props, recordFile, sessionId}) => {
 
     useEffect(() => {
         if (wavesurfer) {
-            console.log("recordFile =====> ", recordFile);
+            console.log("recordFile =====> ", mapStateToProps);
             //   wavesurfer.current.load(recordFile.url);
-              wavesurfer.current.load(testMp3File);
+            //   wavesurfer.current.load(testMp3File);
+            wavesurfer.current.load("https://openvidu.shop/openvidu/recordings/"+ sessionId +"/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
         }
     }, []);
 
@@ -92,7 +93,7 @@ const EditingRoom = ({ props, recordFile, sessionId}) => {
      */
     async function loadAllRecord() {
         await axios
-            .get("/api/rooms/" + "2r8ij9nb" + "/editingroom") // 테스트를 위해 roomId : aj8iu868 넣어 놓음
+            .get("/api/rooms/" + sessionId + "/editingroom") // this.state.roomId 맞나요?
             .then(function (response) {
                 const { chatList, starList, recordMuteList } =
                     response.data.editingRoom;

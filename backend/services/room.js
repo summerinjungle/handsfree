@@ -32,9 +32,19 @@ exports.toEditingRoom = async (roomId) => {
     return null;
   }
   const foundRoom = foundRoomRet[0];
-  const chatList = JSON.parse(foundRoom.chatList);
-  const starList = JSON.parse(foundRoom.starList);
-  const recordMuteList = JSON.parse(foundRoom.recordMuteList);
+  const chatList = null;
+  if(foundRoom.chatList.length) {
+    console.log(foundRoom.chatList);
+    chatList = JSON.parse(foundRoom.chatList);
+  }
+  const starList = null;
+  if(foundRoom.starList.length) {
+    starList = JSON.parse(foundRoom.starList);
+  }
+  const recordMuteList = null;
+  if(foundRoom.recordMuteList.length) {
+    recordMuteList = JSON.parse(foundRoom.recordMuteList);
+  }
   return { chatList, starList, recordMuteList };
 };
 
