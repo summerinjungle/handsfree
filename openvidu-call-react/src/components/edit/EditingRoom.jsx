@@ -74,7 +74,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
             console.log("recordFile =====> ", mapStateToProps);
             //   wavesurfer.current.load(recordFile.url);
             //   wavesurfer.current.load(testMp3File);
-            wavesurfer.current.load("https://openvidu.shop/openvidu/recordings/"+ sessionId +"/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
+            wavesurfer.current.load("https://eehnoeg.shop/openvidu/recordings/"+ sessionId +"/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
         }
     }, []);
 
