@@ -285,7 +285,7 @@ class VideoRoomHandsFree extends Component {
       }
 
       if (this.props.isPublisher) {
-        console.log("onlyPublisher");// 방장만 실행하는 함수 (회의 강제 종료)
+        console.log("onlyPublisher"); // 방장만 실행하는 함수 (회의 강제 종료)
 
         /* 회의 모든 음성 데이터 서버로 전송 */
         await axios
@@ -303,7 +303,14 @@ class VideoRoomHandsFree extends Component {
 
         this.stopRecording(this.props.sessionId);
         this.forceDisconnect(this.props.sessionId);
-        this.props.navigate("edit");
+        if (
+          window.confirm("편집실로 가시겠습니까?(너는 방장)")
+          // [예] 눌렀을 때
+        ) {
+          this.props.navigate("meeting/" + this.props.sessionId + "/edit");
+        } else {
+          this.props.navigate("/");
+        }
       } else {
         // 방장아닌 User 자신이 [나가기] 버튼을 눌러 나가는 경우
         this.props.navigate("/");
@@ -403,7 +410,7 @@ class VideoRoomHandsFree extends Component {
         )
       ) {
         // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-        this.props.navigate("edit");
+        this.props.navigate("meeting/" + this.props.sessionId + "/edit");
       } else {
         // [취소] 클릭 -> Lobby로 이동
         this.props.navigate("");
@@ -686,27 +693,25 @@ class VideoRoomHandsFree extends Component {
    * @param {*} sessionId
    */
   stopRecording(sessionId) {
+    console.log("stop record ~!~!~");
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({});
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
-          "/openvidu/api/recordings/stop/" +
-          sessionId, //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
-          data,
-          {
-            headers: {
-              Authorization:
-                "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-              "Content-Type": "application/json",
-            },
-          }
+            "/openvidu/api/recordings/stop/" +
+            sessionId, //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
+          data
         )
         .then((response) => {
           console.log("STOP_RECORDING", response);
+          this.props.getRecordFile(response);
           // resolve(response.data.token);
         })
-        .catch((error) => reject(error));
+        .catch((error) => {
+          console.log("stop record  error ===> ", error);
+          reject(error);
+        });
     });
   }
 
