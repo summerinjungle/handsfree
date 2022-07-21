@@ -73,14 +73,14 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
         if (wavesurfer) {
             console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
             //   wavesurfer.current.load(recordFile.url);
-            //   wavesurfer.current.load(testMp3File);
-            wavesurfer.current.load("https://openvidu.shop/openvidu/recordings/" + sessionId + "/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
+            //   wavesurfer.current.load(testMp3File)
+            wavesurfer.current.load("https://eehnoeg.shop/openvidu/recordings/"+ sessionId +"/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
         }
     }, []);
 
     useEffect(() => {
         console.log(timeWaveSurfer);
-        wavesurfer.current.play(Number(timeWaveSurfer));
+        wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000);
     }, [timeWaveSurfer]);
 
     /**
