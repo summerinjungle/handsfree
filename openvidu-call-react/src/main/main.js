@@ -113,6 +113,17 @@ const Main = () => {
               onClick={() => {
                 createMeeting();
               }} >회의 만들기</button>
+            {/* <button className='myButton'
+              onClick={() => {
+                navigator.mediaDevices
+                .getUserMedia({ audio: true, video: true})
+                .then((stream) => {
+                  createMeeting();
+                })
+                .catch(()=>{
+                  alert("미디어접근이 거절되었습니다. 설정에서 승인후 입장가능 합니다.")
+                });
+              }} >회의 만들기</button> */}
           </p>
           <p>
             <input
@@ -125,7 +136,20 @@ const Main = () => {
                   ? alert("올바른 참여코드를 입력하세요")
                   : enterMeeting();
               }}> 회의 참여하기</button>
-
+            {/* <button className='myButton2'
+              onClick={() => {
+                enterCode === ""
+                  ? alert("올바른 참여코드를 입력하세요")
+                  : 
+                  navigator.mediaDevices
+                  .getUserMedia({ audio: true, video: true})
+                  .then((stream) => {
+                    enterMeeting();
+                  })
+                  .catch(()=>{
+                    alert("미디어접근이 거절되었습니다. 설정에서 승인후 입장가능 합니다.")
+                  });
+              }}> 회의 참여하기</button> */}
           </p>
             <p><button onClick={() => console.log(reduxCheck)}>리덕스 보기</button></p>
             <p><button onClick={() => console.log(getUserNameInCookie())}>이름 보기</button></p>

@@ -63,7 +63,7 @@ const App = () => {
         <Route path={editPath} element={<EditingRoom recordFile={recordFile} />}>
           <Route path={sessionId} element={<EditingRoom recordFile={recordFile}/>} />
         </Route>
-
+        <Route path={'/*'} element={<div> 없는페이지 입니다. </div>}/>
       </Routes>
     </div>
   );
