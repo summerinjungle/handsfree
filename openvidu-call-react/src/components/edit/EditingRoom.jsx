@@ -74,13 +74,13 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
             console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
             //   wavesurfer.current.load(recordFile.url);
             //   wavesurfer.current.load(testMp3File)
-            wavesurfer.current.load("https://eehnoeg.shop/openvidu/recordings/"+ sessionId +"/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
+            wavesurfer.current.load("https://openvidu.shop/openvidu/recordings/"+ sessionId +"/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
         }
     }, []);
 
     useEffect(() => {
-        console.log(timeWaveSurfer);
-        wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000);
+        console.log(parseFloat(timeWaveSurfer) / 1000);
+        wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
     }, [timeWaveSurfer]);
 
     /**
@@ -98,20 +98,24 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                 const { chatList, starList, recordMuteList } = response.data.editingRoom;
                 setChatList(chatList);
                 console.log("WWWWW", response.data.editingRoom);
-
+                
                 // [잡담 구간] 표시
+                console.log("RecordMuteList", recordMuteList);
                 for (let i = 0; i < recordMuteList.length; i++) {
+                    console.log("left, right!!!!!!",parseFloat(recordMuteList[i].left)/1000);
+                    console.log("left, right!!!!!!",parseFloat(recordMuteList[i].right)/1000);
                     wavesurfer.current.regions.add({
-                        start: recordMuteList[i].left,
-                        end: recordMuteList[i].right,
+                        start: parseFloat(recordMuteList[i].left)/1000 - 6,
+                        end: parseFloat(recordMuteList[i].right)/1000 - 6,
                         color: "#33CEBFAC",
                     });
                 }
 
                 // [막둥아 별표] 표시
+                console.log("starList", starList);
                 for (let i = 0; i < starList.length; i++) {
                     wavesurfer.current.addMarker({
-                        time: starList[i].time,
+                        time: parseFloat(starList[i].startTime) / 1000 - 6,
                         label: "V1",
                         color: "#FF7715",
                         position: "top",
@@ -154,8 +158,9 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                             chatList.map((recordItem) => (
                                 <ChatItem
                                     key={recordItem.id}
-                                    userName={recordItem.userName}
-                                    time={recordItem.startTime}
+                                    userName={recordItem.nickname}
+                                    time = {recordItem.time}
+                                    startTime={recordItem.startTime}
                                     message={recordItem.message}
                                     setTimeWaveSurfer={setTimeWaveSurfer}
                                 />
