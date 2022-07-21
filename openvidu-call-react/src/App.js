@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import VideoRoomHandsFree from "./components/videoroom/VideoRoomHandsFree";
 import Main from "./main/main";
 import EditingRoom from "./components/edit/EditingRoom.jsx";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "./main/cookie";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   changeSession,
   changeDuringTime,
@@ -15,9 +15,9 @@ import {
 } from "./store.js";
 
 const App = () => {
+  const [recordFile, setRecordFile] = useState("");
   const navigate = useNavigate();
   let user = getUserNameInCookie();
-
   let dispatch = useDispatch();
   let data = JSON.parse(localStorage.getItem("redux"));
   let sessionId;
@@ -32,6 +32,10 @@ const App = () => {
     dispatch(changeUserName(getUserNameInCookie()));
   }
 
+  const getRecordFile = (data) => {
+    setRecordFile(data);
+  };
+
   return (
     <div className='App'>
       <Routes>
@@ -42,10 +46,16 @@ const App = () => {
         >
           <Route
             path={sessionId}
-            element={<VideoRoomHandsFree user={user} navigate={navigate} />}
+            element={
+              <VideoRoomHandsFree
+                getRecordFile={getRecordFile}
+                user={user}
+                navigate={navigate}
+              />
+            }
           />
         </Route>
-        <Route path='/edit' element={<EditingRoom />} />
+        <Route path='/edit' element={<EditingRoom recordFile={recordFile} />} />
       </Routes>
     </div>
   );

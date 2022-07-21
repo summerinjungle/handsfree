@@ -48,14 +48,18 @@ class ChatHandsFree extends Component {
         console.log("잡담구간 확인", this.state.isRecordMute);
         console.log("잡담구간 ==", this.state.recordMuteList);
 
-        if (data.message === "기록 중지" || data.message === "기록중지") return;
-        if (data.message === "기록 시작" || data.message === "기록시작") return;
-        if (data.isRecord === true) {
+        if (data.isRecord === false) return;
+        if (
+          data.message.includes("막둥아 기록 시작") ||
+          data.message.includes("막둥아 기록시작")
+        )
+          return;
+
+        if (this.state.isRecor === true) {
           // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
           console.log("그 전 데이터  = ", messageList[length - 1]);
           console.log("막둥아 별표 = ", data.isStar);
-
-          if (this.state.isStar) {
+          if (this.state.isStar === true) {
             const stars = {
               message: messageList[length - 1].message,
               startTime: messageList[length - 1].startTime,
@@ -66,7 +70,6 @@ class ChatHandsFree extends Component {
             this.forceUpdate();
             return;
           }
-
           messageList.push({
             connectionId: event.from.connectionId,
             nickname: data.nickname,
@@ -139,14 +142,20 @@ class ChatHandsFree extends Component {
     this.state.startTime = data.startTime;
     console.log("text = ", data.text);
     console.log("chat_comp startTime = ", data.startTime);
-    if (data.text === "기록 중지" || data.text === "기록중지") {
+    if (
+      data.text.includes("막둥아 기록 중지") ||
+      data.text.includes("막둥아 기록중지")
+    ) {
       if (this.state.isRecog === true) {
         this.setState({
           left: data.startTime,
         });
       }
       this.setState({ isRecog: false });
-    } else if (data.text === "기록 시작" || data.text === "기록시작") {
+    } else if (
+      data.text.includes("막둥아 기록 시작") ||
+      data.text.includes("막둥아 기록시작")
+    ) {
       if (this.state.isRecog === false) {
         this.setState({
           right: data.startTime,
@@ -154,7 +163,12 @@ class ChatHandsFree extends Component {
         });
       }
       this.setState({ isRecog: true });
-    } else if (data.text === "막둥아 별표") {
+    } else if (
+      data.text === "막둥아 별표" ||
+      data.text === "막둥아 발표" ||
+      data.text === "박종화 별표" ||
+      data.text === "박종화 발표"
+    ) {
       this.setState({ isStar: true });
     }
 
