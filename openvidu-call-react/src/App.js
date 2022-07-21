@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import VideoRoomHandsFree from "./components/videoroom/VideoRoomHandsFree";
 import Main from "./main/main";
@@ -15,9 +15,9 @@ import {
 } from "./store.js";
 
 const App = () => {
+  const [recordFile, setRecordFile] = useState("");
   const navigate = useNavigate();
   let user = getUserNameInCookie();
-
   let dispatch = useDispatch();
   let data = JSON.parse(localStorage.getItem("redux"));
   let sessionId;
@@ -34,20 +34,18 @@ const App = () => {
 
   let meetingPath = "/meeting/" + sessionId;
   let editPath = meetingPath + "/edit";
+  const getRecordFile = (data) => {
+    setRecordFile(data);
+  };
 
   return (
     <div className='App'>
       <Routes>
         <Route path='/' element={<Main />} />
         <Route
-          path='/meeting'
-          element={<VideoRoomHandsFree user={user} navigate={navigate} />}
-        >
-          <Route
-            path={sessionId}
-            element={<VideoRoomHandsFree user={user} navigate={navigate} />}
-          />
-        </Route>
+          path={meetingPath}
+          element={<VideoRoomHandsFree user={user} navigate={navigate} getRecordFile={getRecordFile} />}
+        />
         <Route path={editPath} element={<EditingRoom recordFile={recordFile} />} />
       </Routes>
     </div>
