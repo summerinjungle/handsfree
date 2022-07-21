@@ -21,6 +21,7 @@ const App = () => {
   let dispatch = useDispatch();
   let data = JSON.parse(localStorage.getItem("redux"));
   let sessionId;
+
   if (data === null) {
     sessionId = "sessionB";
   } else {
@@ -35,6 +36,9 @@ const App = () => {
   const getRecordFile = (data) => {
     setRecordFile(data);
   };
+
+  let meetingPath = "/meeting/" + sessionId;
+  let editPath = meetingPath + "/edit";
 
   return (
     <div className='App'>
@@ -54,8 +58,9 @@ const App = () => {
               />
             }
           />
+        </Route>        
+        <Route path={editPath} element={<EditingRoom recordFile={recordFile} sessionId={sessionId}/>}>
         </Route>
-        <Route path='/edit' element={<EditingRoom recordFile={recordFile} sessionId={sessionId}/>} />
       </Routes>
     </div>
   );

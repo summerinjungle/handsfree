@@ -14,7 +14,7 @@ import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
 import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
 import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect } from "react-redux";
-import TextEditor from "./TextEditor";
+import {TextEditor, insertText} from "./TextEditor";
 
 const EditingRoom = ({ props, recordFile, sessionId }) => {
     const wavesurfer = useRef(null);
@@ -43,6 +43,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
     const [chatList, setChatList] = useState([]); // 음성 기록들
 
     useEffect(() => {
+        console.log("sessionId 입니다", sessionId);
         loadAllRecord(); // 회의에서 저장된 기록들 가져오기
 
         wavesurfer.current = WaveSurfer.create({
@@ -160,7 +161,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                 <div className='contents-left'>
                     <div className='contents-label'>메모</div>
                     {/* <textarea className='textarea'></textarea> */}
-                    <TextEditor />
+                    <TextEditor sessionId={sessionId}/>
                 </div>
                 <div className='contents-right'>
                     <div className='contents-label'>음성 기록</div>

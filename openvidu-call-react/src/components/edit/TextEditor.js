@@ -5,15 +5,19 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { WebrtcProvider } from 'y-webrtc';
 import * as Y from 'yjs';
-const TextEditor = () => {
-  let quillRef = null;
+
+export let quillRef = null;
+
+export function TextEditor ({sessionId}) {
+  // let quillRef = null;
   let reactQuillRef = null;
   let yDoc = new Y.Doc();
   const [doc, setDoc] = useState();
   const [provider, setProvider] = useState();
   useEffect(() => {
+    console.log("Text Editor에 있는 sessionId : ", sessionId);
     attachQuillRefs();
-    let provider = new WebrtcProvider("http://localhost:3000", yDoc);
+    let provider = new WebrtcProvider("http://localhost:3000/meeting/" + sessionId + "/edit", yDoc);
     let ytext = yDoc.getText("quill");
     const binding = new QuillBinding(ytext, quillRef, provider.awareness);
   }, []);
@@ -34,8 +38,17 @@ const TextEditor = () => {
         }}
         theme={"snow"}
       />
-      <button onClick={insertText}>Insert ‘Hello World!’ in Text</button>
     </div>
   );
 };
+
+{/* <div>
+<button onClick={() => insertText('Hello World!!!!')}>Insert ‘Hello World!’ in Text</button>
+</div> */}
+export function insertText(text) {
+  var range = quillRef.getSelection();
+  let position = range ? range.index : 0;
+  quillRef.insertText(position, text);
+};
+
 export default TextEditor;

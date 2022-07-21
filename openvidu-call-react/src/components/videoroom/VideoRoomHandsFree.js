@@ -307,7 +307,7 @@ class VideoRoomHandsFree extends Component {
           window.confirm("편집실로 가시겠습니까?(너는 방장)")
           // [예] 눌렀을 때
         ) {
-          this.props.navigate("edit");
+          this.props.navigate("meeting/" + this.props.sessionId + "/edit");
         } else {
           this.props.navigate("/");
         }
@@ -323,10 +323,7 @@ class VideoRoomHandsFree extends Component {
       console.log(this.state.localUser.streamManager); // publisher 객체
       console.log(this.state.session.openvidu.role); // "PUBLISHER"
       console.log("TEST_PUBLISHER--3", this.state.session.streamManagers);
-      console.log(
-        "TEST_PUBLISHER--4",
-        this.state.session.streamManagers.length
-      );
+      console.log("TEST_PUBLISHER--4", this.state.session.streamManagers.length);
       console.log("CONNIE", localUser);
       console.log("CONNIE", this.state.subscribers);
     }
@@ -413,7 +410,7 @@ class VideoRoomHandsFree extends Component {
         )
       ) {
         // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-        this.props.navigate("edit");
+        this.props.navigate("meeting/" + this.props.sessionId + "/edit");
       } else {
         // [취소] 클릭 -> Lobby로 이동
         this.props.navigate("");
@@ -566,17 +563,17 @@ class VideoRoomHandsFree extends Component {
 
           {this.state.subscribers
             ? this.state.subscribers.map((sub, i) => (
-                <div
-                  key={i}
-                  className='OT_root OT_publisher custom-class'
-                  id='remoteUsers'
-                >
-                  <StreamHandFree
-                    user={sub}
-                    streamId={sub.streamManager.stream.streamId}
-                  />
-                </div>
-              ))
+              <div
+                key={i}
+                className='OT_root OT_publisher custom-class'
+                id='remoteUsers'
+              >
+                <StreamHandFree
+                  user={sub}
+                  streamId={sub.streamManager.stream.streamId}
+                />
+              </div>
+            ))
             : null}
         </div>
 
@@ -642,16 +639,16 @@ class VideoRoomHandsFree extends Component {
             console.log(error);
             console.warn(
               "No connection to OpenVidu Server. This may be a certificate error at " +
-                this.OPENVIDU_SERVER_URL
+              this.OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                  this.OPENVIDU_SERVER_URL +
-                  '"\n\nClick OK to navigate and accept it. ' +
-                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                  this.OPENVIDU_SERVER_URL +
-                  '"'
+                this.OPENVIDU_SERVER_URL +
+                '"\n\nClick OK to navigate and accept it. ' +
+                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                this.OPENVIDU_SERVER_URL +
+                '"'
               )
             ) {
               window.location.assign(
@@ -669,9 +666,9 @@ class VideoRoomHandsFree extends Component {
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
-            "/openvidu/api/sessions/" +
-            sessionId +
-            "/connection",
+          "/openvidu/api/sessions/" +
+          sessionId +
+          "/connection",
           data,
           {
             headers: {
