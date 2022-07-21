@@ -71,16 +71,16 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
 
     useEffect(() => {
         if (wavesurfer) {
-            console.log("recordFile =====> ", mapStateToProps);
+            console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
             //   wavesurfer.current.load(recordFile.url);
-            //   wavesurfer.current.load(testMp3File);
+            //   wavesurfer.current.load(testMp3File)
             wavesurfer.current.load("https://eehnoeg.shop/openvidu/recordings/"+ sessionId +"/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
         }
     }, []);
 
     useEffect(() => {
         console.log(timeWaveSurfer);
-        wavesurfer.current.play(Number(timeWaveSurfer));
+        wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000);
     }, [timeWaveSurfer]);
 
     /**
@@ -95,46 +95,23 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
         await axios
             .get("/api/rooms/" + sessionId + "/editingroom") // this.state.roomId 맞나요?
             .then(function (response) {
-                const { chatList, starList, recordMuteList } =
-                    response.data.editingRoom;
+                const { chatList, starList, recordMuteList } = response.data.editingRoom;
                 setChatList(chatList);
                 console.log("WWWWW", response.data.editingRoom);
 
                 // [잡담 구간] 표시
                 for (let i = 0; i < recordMuteList.length; i++) {
-                    if (Object.keys(recordMuteList[i]).includes("right")) {
-                        // 'right' 키 값이 있는 경우
-                        console.log(
-                            "IS_RIGHT",
-                            recordMuteList[i].left,
-                            recordMuteList[i].right
-                        );
-                        wavesurfer.current.regions.add({
-                            start: recordMuteList[i].left,
-                            end: recordMuteList[i].right,
-                            color: "#33CEBFAC",
-                        });
-                    } else {
-                        console.log(
-                            "NO_RIGHT",
-                            recordMuteList[i].left,
-                            recordMuteList[i].right
-                        );
-                        wavesurfer.current.regions.add({
-                            // 'right' 키 값이 있는 경우
-                            start: recordMuteList[i].left,
-                            end: recordMuteList[i].left + 10000,
-                            color: "#33CEBFAC",
-                        });
-                    }
+                    wavesurfer.current.regions.add({
+                        start: recordMuteList[i].left,
+                        end: recordMuteList[i].right,
+                        color: "#33CEBFAC",
+                    });
                 }
 
                 // [막둥아 별표] 표시
-                console.log("wooseoing", starList);
                 for (let i = 0; i < starList.length; i++) {
                     wavesurfer.current.addMarker({
                         time: starList[i].time,
-                        // time: 120,
                         label: "V1",
                         color: "#FF7715",
                         position: "top",
