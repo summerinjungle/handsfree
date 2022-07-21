@@ -14,7 +14,8 @@ import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
 import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
 import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect } from "react-redux";
-import { TextEditor, insertText } from "./TextEditor";
+import TextEditor from "./TextEditor";
+import saveButton from "./docx";
 
 const EditingRoom = ({ props, recordFile, sessionId }) => {
     const wavesurfer = useRef(null);
@@ -122,6 +123,13 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
             });
     }
 
+    function getHTMLtoString() {
+      let ns = new XMLSerializer();
+      let korean = `<meta charset="utf-8" />`
+      let targetString = ns.serializeToString(document.querySelector(".ql-editor"));
+      return korean + targetString
+    }
+
     return (
         <div id='editingroom-container'>
             <div className='header'>
@@ -129,7 +137,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                     <img className='header-logo' src={mainLogo} />
                 </div>
                 <div className='header-contents text-right'>
-                    <button>PDF</button>
+                    <button onClick={ () => saveButton(getHTMLtoString()) }>메모 다운로드</button>
                     <button>나가기</button>
                 </div>
             </div>
@@ -137,8 +145,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
             <div className='contents'>
                 <div className='contents-left'>
                     <div className='contents-label'>메모</div>
-                    {/* <textarea className='textarea'></textarea> */}
-                    <TextEditor sessionId={sessionId} />
+                    <TextEditor sessionId={sessionId}/>
                 </div>
                 <div className='contents-right'>
                     <div className='contents-label'>음성 기록</div>
