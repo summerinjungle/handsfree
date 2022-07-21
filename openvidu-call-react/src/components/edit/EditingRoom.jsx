@@ -13,6 +13,7 @@ import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
 import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
 import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect } from "react-redux";
+import TextEditor from "./TextEditor";
 
 const EditingRoom = (props) => {
   const wavesurfer = useRef(null);
@@ -81,7 +82,7 @@ const EditingRoom = (props) => {
    */
   async function loadAllRecord() {
     await axios
-      .get("/api/rooms/" + "2r8ij9nb" + "/editingroom") // 테스트를 위해 roomId : aj8iu868 넣어 놓음
+      .get("localhost:5000/api/rooms/" + "2r8ij9nb" + "/editingroom") // 테스트를 위해 roomId : aj8iu868 넣어 놓음
       .then(function (response) {
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
@@ -149,7 +150,8 @@ const EditingRoom = (props) => {
       <div className='contents'>
         <div className='contents-left'>
           <div className='contents-label'>메모</div>
-          <textarea className='textarea'></textarea>
+          {/* <textarea className='textarea'></textarea> */}
+          <TextEditor />
         </div>
         <div className='contents-right'>
           <div className='contents-label'>음성 기록</div>

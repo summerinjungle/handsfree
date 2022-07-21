@@ -3,8 +3,6 @@ import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
-import { connect } from "react-redux";
-import { changeMessageList } from "../../store.js";
 
 class ChatHandsFree extends Component {
   state = {
@@ -232,10 +230,4 @@ class ChatHandsFree extends Component {
     );
   }
 }
-function mapReduxDispatchToReactProps(dispatch) {
-  return {
-    dispatch: () => changeMessageList(this.state.messageList),
-  };
-}
-
-export default connect(mapReduxDispatchToReactProps)(ChatHandsFree);
+export default ChatHandsFree;

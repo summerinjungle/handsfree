@@ -1,6 +1,13 @@
 import React from "react";
 
 const ChatItem = ({ key, userName, time, message }) => {
+
+
+
+    function sendStartTime() {
+
+    }
+
     return (
         <div key={key} className="relative mb-20">
             <div>
@@ -17,7 +24,7 @@ const ChatItem = ({ key, userName, time, message }) => {
                         {time}
                     </div>
                     <div className="inline-block mx-10">
-                        재생
+                        <button onClick={sendStartTime}>재생</button>
                     </div>
                     <div className="inline-block">
                         <button>수정</button>

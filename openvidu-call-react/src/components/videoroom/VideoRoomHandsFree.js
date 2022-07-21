@@ -14,7 +14,6 @@ var localUser = new UserModel();
 
 class VideoRoomHandsFree extends Component {
   state = {
-    mySessionId: this.props.sessionId ? this.props.sessionId : "SessionA",
     myUserName: this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100),
@@ -22,7 +21,6 @@ class VideoRoomHandsFree extends Component {
     localUser: undefined,
     subscribers: [],
     currentVideoDevice: undefined,
-    isPublisher: this.props.isPublisher,
     chatInfo: {},
   };
   remotes = [];
@@ -103,7 +101,7 @@ class VideoRoomHandsFree extends Component {
   connectToSession = () => {
     if (this.props.token !== undefined) {
       console.log("token received: ", this.props.token);
-      console.log("방이름 received: ", this.state.mySessionId);
+      console.log("방이름 received: ", this.props.sessionId);
       this.connect(this.props.token);
     } else {
       this.getToken()
@@ -272,32 +270,22 @@ class VideoRoomHandsFree extends Component {
 
   leaveSession = async () => {
     if (
-      // [예] 눌렀을 때
       window.confirm("회의를 종료하시겠습니까?")
+      // [예] 눌렀을 때
     ) {
       console.log("chatInfo ==== >", this.state.chatInfo);
-      await axios.post(
-        this.OPENVIDU_SERVER_URL + `/api/rooms/${this.state.mySessionId}/chat`,
-        {
+      await axios
+        .post(`/api/rooms/${this.props.sessionId}/chat`, {
           chatList: this.state.chatInfo.messageList,
           startList: this.state.chatInfo.starList,
           recordMuteList: this.state.chatInfo.recordMuteList,
-        },
-        {
-          headers: {
-            Authorization:
-              "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-            "Content-Type": "application/json",
-          },
-        }
-          .then((res) => {
-            console.log("회의 종료!! 데이터 보냄 res = ", res);
-          })
-          .catch((err) => {
-            console.log("err === ", err);
-          })
-      );
-
+        })
+        .then((res) => {
+          console.log("회의 종료!! 데이터 보냄 res = ", res);
+        })
+        .catch((err) => {
+          console.log("err === ", err);
+        });
       const mySession = this.state.session;
 
       if (mySession) {
@@ -308,10 +296,10 @@ class VideoRoomHandsFree extends Component {
         console.log("!!!!!!xxx", this.props.leaveSession);
         this.props.leaveSession();
       }
-      // 방장만 실행하는 함수 (회의 강제 종료)
+
       if (this.props.isPublisher) {
         console.log("onlyPublisher");
-        // this.forceDisconnect(this.state.mySessionId);
+        this.forceDisconnect(this.props.sessionId);
         this.props.navigate("edit");
       } else {
         if (
@@ -321,11 +309,11 @@ class VideoRoomHandsFree extends Component {
               "[취소]를 누르시면 메인 페이지로 이동합니다."
           )
         ) {
-          this.forceDisconnect(this.state.mySessionId);
+          this.forceDisconnect(this.props.sessionId);
           this.props.navigate("edit");
         } else {
-          this.forceDisconnect(this.state.mySessionId);
-          this.props.navigate("/");
+          this.forceDisconnect(this.props.sessionId);
+          this.props.navigate("");
         }
         this.props.navigate('/')
       }
@@ -334,16 +322,10 @@ class VideoRoomHandsFree extends Component {
       console.log(this.state);
       console.log(this.state.session);
       console.log(this.state.session.capabilities);
-      console.log(this.state.session.capabilities.publish); // true
       console.log(this.state.localUser.streamManager); // publisher 객체
       console.log(this.state.session.openvidu.role); // "PUBLISHER"
-      // console.log(this.session.connection.role);
-      // console.log("WHO ARE YOU", this.props.user.streamManager);// undefined
       console.log("TEST_PUBLISHER--3", this.state.session.streamManagers);
-      console.log(
-        "TEST_PUBLISHER--4",
-        this.state.session.streamManagers.length
-      );
+      console.log("TEST_PUBLISHER--4", this.state.session.streamManagers.length);
       console.log("CONNIE", localUser);
       console.log("CONNIE", this.state.subscribers);
     }
@@ -431,14 +413,16 @@ class VideoRoomHandsFree extends Component {
           )
         ) {
           // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-          this.forceDisconnect(this.state.mySessionId);
+          this.forceDisconnect(this.props.sessionId);
           this.props.navigate("edit");
         } else {
           // [취소] 클릭 -> Lobby로 이동
-          this.forceDisconnect(this.state.mySessionId);
+          this.forceDisconnect(this.props.sessionId);
           this.props.navigate("");
         }
       } else {
+        // [취소] 클릭 -> Lobby로 이동
+        this.props.navigate("");
       }
     });
   }
@@ -565,10 +549,8 @@ class VideoRoomHandsFree extends Component {
   };
 
   render() {
-    const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
-    // 방장여부 확인
-    console.log("방장여부 ", this.state.isPublisher);
+    console.log("방장여부 ", this.props.isPublisher);
 
     return (
       <div className='container' id='container'>
@@ -590,17 +572,17 @@ class VideoRoomHandsFree extends Component {
 
           {this.state.subscribers
             ? this.state.subscribers.map((sub, i) => (
-                <div
-                  key={i}
-                  className='OT_root OT_publisher custom-class'
-                  id='remoteUsers'
-                >
-                  <StreamHandFree
-                    user={sub}
-                    streamId={sub.streamManager.stream.streamId}
-                  />
-                </div>
-              ))
+              <div
+                key={i}
+                className='OT_root OT_publisher custom-class'
+                id='remoteUsers'
+              >
+                <StreamHandFree
+                  user={sub}
+                  streamId={sub.streamManager.stream.streamId}
+                />
+              </div>
+            ))
             : null}
         </div>
 
@@ -614,7 +596,7 @@ class VideoRoomHandsFree extends Component {
           </div>
         )}
         <ToolbarComponent
-          sessionId={mySessionId}
+          sessionId={this.props.sessionId}
           user={localUser}
           camStatusChanged={this.camStatusChanged}
           micStatusChanged={this.micStatusChanged}
@@ -628,7 +610,7 @@ class VideoRoomHandsFree extends Component {
   }
 
   getToken() {
-    return this.createSession(this.state.mySessionId).then((sessionId) =>
+    return this.createSession(this.props.sessionId).then((sessionId) =>
       this.createToken(sessionId)
     );
   }
@@ -656,7 +638,6 @@ class VideoRoomHandsFree extends Component {
           },
         })
         .then((response) => {
-          console.log("CREATE SESION ===== ", response);
           resolve(response.data.id);
         })
         .catch((response) => {
@@ -667,16 +648,16 @@ class VideoRoomHandsFree extends Component {
             console.log(error);
             console.warn(
               "No connection to OpenVidu Server. This may be a certificate error at " +
-                this.OPENVIDU_SERVER_URL
+              this.OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                  this.OPENVIDU_SERVER_URL +
-                  '"\n\nClick OK to navigate and accept it. ' +
-                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                  this.OPENVIDU_SERVER_URL +
-                  '"'
+                this.OPENVIDU_SERVER_URL +
+                '"\n\nClick OK to navigate and accept it. ' +
+                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                this.OPENVIDU_SERVER_URL +
+                '"'
               )
             ) {
               window.location.assign(
@@ -694,9 +675,9 @@ class VideoRoomHandsFree extends Component {
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
-            "/openvidu/api/sessions/" +
-            sessionId +
-            "/connection",
+          "/openvidu/api/sessions/" +
+          sessionId +
+          "/connection",
           data,
           {
             headers: {
@@ -726,8 +707,8 @@ class VideoRoomHandsFree extends Component {
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
-            "/openvidu/api/recordings/stop/" +
-            sessionId, //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
+          "/openvidu/api/recordings/stop/" +
+          sessionId, //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
           data,
           {
             headers: {
@@ -751,6 +732,7 @@ class VideoRoomHandsFree extends Component {
    * @param {*} sessionId
    */
   forceDisconnect(sessionId) {
+    console.log("FOR_DIS_FIRST");
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({});
       axios
@@ -770,7 +752,6 @@ class VideoRoomHandsFree extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log("state ~~~~~~ ss", state);
   return {
     sessionId: state.user.sessionId,
     isPublisher: state.user.isPublisher,
