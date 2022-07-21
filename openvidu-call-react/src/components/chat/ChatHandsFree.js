@@ -18,9 +18,28 @@ class ChatHandsFree extends Component {
     right: "",
   };
   chatScroll = React.createRef();
+  constructor(props) {
+    super(props);
+    console.log("11111", this.props.localUser.getStreamManager());
+    console.log("22222", this.props.localUser.getStreamManager().stream);
+    console.log(
+      "33333",
+      this.props.localUser.getStreamManager().stream.session
+    );
+    console.log(
+      "444444",
+      this.props.localUser.getStreamManager().stream.session.connection
+    );
+    console.log("!sssssssssssssssssssssss", this.state.isRecog);
+  }
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
+    this.setState({
+      isRecog:
+        this.props.localUser.getStreamManager().stream.session.connection
+          .disposed,
+    });
     const chatInfo = {
       messageList: this.state.messageList,
       starList: this.state.starList,
@@ -34,6 +53,7 @@ class ChatHandsFree extends Component {
         let messageList = this.state.messageList;
         let length = messageList.length;
         this.setState({ isRecog: data.isRecord });
+        this.setState({ isStar: data.isStar });
         console.log("잡담구간 체크 = ", this.state.isRecordMute);
 
         if (this.state.isRecordMute === true) {
@@ -47,6 +67,12 @@ class ChatHandsFree extends Component {
         }
         console.log("잡담구간 확인", this.state.isRecordMute);
         console.log("잡담구간 ==", this.state.recordMuteList);
+        console.log(
+          "꼼수 값==",
+          this.props.localUser.getStreamManager().stream.session.connection
+            .disposed
+        );
+        console.log("기록가능 ==", this.state.isRecog);
 
         if (data.isRecord === false) return;
         if (
@@ -120,6 +146,8 @@ class ChatHandsFree extends Component {
           type: "chat",
         });
       }
+      this.props.localUser.getStreamManager().stream.session.connection.disposed =
+        this.state.isRecog;
     }
     this.setState({ message: "" });
   };
