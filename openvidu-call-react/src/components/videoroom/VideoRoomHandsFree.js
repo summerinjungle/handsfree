@@ -301,7 +301,7 @@ class VideoRoomHandsFree extends Component {
             console.log("err === ", err);
           });
 
-        this.stopRecording(this.props.sessionId);
+        // this.stopRecording(this.props.sessionId); 녹화 중지 함수 사용 안 할 예정
         this.forceDisconnect(this.props.sessionId);
         if (
           window.confirm("편집실로 가시겠습니까?(너는 방장)")
@@ -708,7 +708,7 @@ class VideoRoomHandsFree extends Component {
         )
         .then((response) => {
           console.log("STOP_RECORDING", response);
-          this.props.getRecordFile(response);
+          // this.props.getRecordFile(response.data.url);
           // resolve(response.data.token);
         })
         .catch((error) => {
@@ -724,7 +724,7 @@ class VideoRoomHandsFree extends Component {
    * @param {*} sessionId
    */
   forceDisconnect(sessionId) {
-    console.log("FOR_DIS_FIRST");
+    console.log("forceDisconnect 함수 진입");
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({});
       axios
@@ -736,7 +736,7 @@ class VideoRoomHandsFree extends Component {
           },
         })
         .then((response) => {
-          console.log("FORCE_DISCONNECT", response);
+          console.log("forceDisconnect 성공", response);
           // resolve(response.data.token);
         })
         .catch((error) => reject(error));

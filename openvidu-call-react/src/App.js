@@ -55,7 +55,7 @@ const App = () => {
             }
           />
         </Route>
-        <Route path='/edit' element={<EditingRoom recordFile={recordFile} />} />
+        <Route path='/edit' element={<EditingRoom recordFile={recordFile} sessionId={sessionId}/>} />
       </Routes>
     </div>
   );
