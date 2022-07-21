@@ -151,6 +151,12 @@
 	font-weight: bold;
 }
 
+.quill {
+	width: 582px;
+	height: 400px;
+
+}
+
 .header-logo {
 	width: 120px;
 	height: 30px;
@@ -181,7 +187,7 @@
 #editingroom-container .contents {
 	display: flex;
 	padding: 0px 6px;
-	width: 100%;
+	width: 100vw;
 }
 
 #editingroom-container .contents-label {
@@ -199,8 +205,8 @@
 	width: 57%;
 	border-right: 2px solid #000000;
 	border-color: #F5F0E8;
-
 }
+
 #editingroom-container .contents-left .textarea{
 	width: 100%;
 	height: 500px;

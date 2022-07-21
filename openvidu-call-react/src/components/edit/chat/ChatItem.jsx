@@ -1,12 +1,10 @@
 import React from "react";
 
-const ChatItem = ({ key, userName, time, message }) => {
+const ChatItem = ({ key, userName, time, message, setTimeWaveSurfer }) => {
 
-
-
-    function sendStartTime() {
-
-    }
+    // const sendStartTime = () => {
+    //     //
+    // }
 
     return (
         <div key={key} className="relative mb-20">
@@ -20,11 +18,11 @@ const ChatItem = ({ key, userName, time, message }) => {
                     <div className="inline-block bold">
                         {userName}
                     </div>
-                    <div className="inline-block mx-10" >
+                    {/* <div className="inline-block mx-10" >
                         {time}
-                    </div>
+                    </div> */}
                     <div className="inline-block mx-10">
-                        <button onClick={sendStartTime}>재생</button>
+                        <button onClick={() => setTimeWaveSurfer(time)}>재생</button>
                     </div>
                     <div className="inline-block">
                         <button>수정</button>
