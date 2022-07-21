@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "./edit.css";
 import mainLogo from "../../assets/images/mainLogo.png";
+import testMp3File from "./track1.mp3"
 import ChatItem from "./chat/ChatItem.jsx";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
@@ -19,6 +20,9 @@ const EditingRoom = (props) => {
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
   const [volume, setVolume] = useState(1);
+  const [timeWaveSurfer, setTimeWaveSurfer] = useState(null);
+    
+
   const playButton = () => {
     wavesurfer.current.playPause();
     if (wavesurfer.current.isPlaying()) {
@@ -67,10 +71,17 @@ const EditingRoom = (props) => {
   useEffect(() => {
     if (wavesurfer) {
       wavesurfer.current.load(
-        "https://openvidu.shop/openvidu/recordings/SessionB/ownweapon.webm"
+        // "https://eehnoeg.shop/openvidu/recordings/anaubs2s/ownweapon.webm"
+        testMp3File // 테스트를 위한 임시 mp3 파일
       );
     }
   }, []);
+
+
+  useEffect(() => {
+      console.log(timeWaveSurfer);
+    wavesurfer.current.play(Number(timeWaveSurfer));
+  }, [timeWaveSurfer])
 
   /**
    * [GET] http://{BASE_URL}/api/rooms/{roomId}/editingroom
@@ -82,7 +93,7 @@ const EditingRoom = (props) => {
    */
   async function loadAllRecord() {
     await axios
-      .get("localhost:5000/api/rooms/" + "2r8ij9nb" + "/editingroom") // 테스트를 위해 roomId : aj8iu868 넣어 놓음
+      .get("/api/rooms/" + "2r8ij9nb" + "/editingroom") // 테스트를 위해 roomId : aj8iu868 넣어 놓음
       .then(function (response) {
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
@@ -163,6 +174,7 @@ const EditingRoom = (props) => {
                   userName={recordItem.userName}
                   time={recordItem.startTime}
                   message={recordItem.message}
+                  setTimeWaveSurfer = {setTimeWaveSurfer}
                 />
               ))}
           </div>
