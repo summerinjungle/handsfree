@@ -55,7 +55,7 @@ class ChatHandsFree extends Component {
         )
           return;
 
-        if (this.state.isRecor === true) {
+        if (this.state.isRecog === true) {
           // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
           console.log("그 전 데이터  = ", messageList[length - 1]);
           console.log("막둥아 별표 = ", data.isStar);
