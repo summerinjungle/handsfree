@@ -1,6 +1,6 @@
 import React from "react";
 
-const ChatItem = ({ key, userName, time, message, setTimeWaveSurfer }) => {
+const ChatItem = ({ key, userName, time, startTime, message, setTimeWaveSurfer }) => {
 
     // const sendStartTime = () => {
     //     //
@@ -18,11 +18,11 @@ const ChatItem = ({ key, userName, time, message, setTimeWaveSurfer }) => {
                     <div className="inline-block bold">
                         {userName}
                     </div>
-                    {/* <div className="inline-block mx-10" >
+                    <div className="inline-block mx-10" >
                         {time}
-                    </div> */}
+                    </div>
                     <div className="inline-block mx-10">
-                        <button onClick={() => setTimeWaveSurfer(time)}>재생</button>
+                        <button onClick={() => setTimeWaveSurfer(startTime)}>재생</button>
                     </div>
                     <div className="inline-block">
                         <button>수정</button>

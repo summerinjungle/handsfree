@@ -32,8 +32,7 @@ class VideoRoomHandsFree extends Component {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
-      // : "https://eehnoeg.shop:443";
-      : "https://" + window.location.hostname + ":4443"
+      : "https://openvidu.shop:443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
@@ -292,7 +291,7 @@ class VideoRoomHandsFree extends Component {
         await axios
           .post(`/api/rooms/${this.props.sessionId}/chat`, {
             chatList: this.state.chatInfo.messageList,
-            startList: this.state.chatInfo.starList,
+            starList: this.state.chatInfo.starList,
             recordMuteList: this.state.chatInfo.recordMuteList,
           })
           .then((res) => {
@@ -394,7 +393,7 @@ class VideoRoomHandsFree extends Component {
     // On every Stream destroyed...
     this.state.session.on("streamDestroyed", (event) => {
       console.log("Destroyed", this.state.localUser.connectionId);
-
+      
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
       setTimeout(() => {
@@ -617,6 +616,14 @@ class VideoRoomHandsFree extends Component {
   }
 
   createSession(sessionId) {
+
+    var today = new Date();
+    var hours = ("0" + today.getHours()).slice(-2);
+    var minutes = ("0" + today.getMinutes()).slice(-2);
+    var seconds = ("0" + today.getSeconds()).slice(-2);
+    var timeString = today.getTime();
+    console.log("CreateAt", timeString);
+
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({
         customSessionId: sessionId,
