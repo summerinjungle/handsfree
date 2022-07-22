@@ -21,7 +21,7 @@ const Main = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [enterCode, setEnterCode] = useState("");
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const cookie = getTokenInCookie();
 
   let reduxCheck = useSelector((state) => {
@@ -42,22 +42,21 @@ const Main = () => {
       .then(function (response) {
         console.log(response.data);
         // sessionId값, 방장권한, 진행시간 0, 입장시간
-        const time = date.getTime()
+        const time = date.getTime();
         dispatch(changeSession(response.data.roomId));
         dispatch(changeIsPublisher(true));
         dispatch(changeDuringTime(0));
         dispatch(changeEnterTime(time));
         dispatch(changeUserName(getUserNameInCookie()));
 
-        const obj = 
-          {
-            isPublisher: true,
-            sessionId: response.data.roomId,
-            duringTime: 0,
-            enterTime: time
-          }
-        localStorage.setItem("redux", JSON.stringify(obj))
-        console.log("저장됨", obj)
+        const obj = {
+          isPublisher: true,
+          sessionId: response.data.roomId,
+          duringTime: 0,
+          enterTime: time,
+        };
+        localStorage.setItem("redux", JSON.stringify(obj));
+        console.log("저장됨", obj);
 
         navigate("/meeting/" + response.data.roomId);
       })
@@ -73,8 +72,9 @@ const Main = () => {
         console.log(response.data);
         // 입장가능한 방일때
         if (response.data.isValidRoom) {
-          const time = date.getTime()
-          let duringTime = response.data.enteredAt - Number(response.data.createdAt);
+          const time = date.getTime();
+          let duringTime =
+            response.data.enteredAt - Number(response.data.createdAt);
 
           dispatch(changeSession(enterCode));
           dispatch(changeIsPublisher(false));
@@ -82,16 +82,14 @@ const Main = () => {
           dispatch(changeUserName(getUserNameInCookie()));
           dispatch(changeEnterTime(time));
 
-          const obj = 
-          {
+          const obj = {
             isPublisher: false,
             sessionId: enterCode,
             duringTime: duringTime,
-            enterTime: time
-          }
-          localStorage.setItem("redux", JSON.stringify(obj))
-          console.log("저장됨", obj)
-
+            enterTime: time,
+          };
+          localStorage.setItem("redux", JSON.stringify(obj));
+          console.log("저장됨", obj);
 
           navigate("/meeting/" + enterCode);
         } else {
@@ -113,17 +111,26 @@ const Main = () => {
               onClick={() => {
                 createMeeting();
               }} >회의 만들기</button> */}
-            <button className='myButton'
+            <button
+              className='myButton'
               onClick={() => {
                 navigator.mediaDevices
-                .getUserMedia({ audio: true, video: { width: 640, height: 360 } })
-                .then((stream) => {
-                  createMeeting();
-                })
-                .catch(()=>{
-                  alert("미디어접근이 거절되었습니다. 설정에서 승인후 입장가능 합니다.")
-                });
-              }} >회의 만들기</button>
+                  .getUserMedia({
+                    audio: true,
+                    video: { width: 640, height: 360 },
+                  })
+                  .then((stream) => {
+                    createMeeting();
+                  })
+                  .catch(() => {
+                    alert(
+                      "미디어접근이 거절되었습니다. 설정에서 승인후 입장가능 합니다."
+                    );
+                  });
+              }}
+            >
+              회의 만들기
+            </button>
           </p>
           <p>
             <input
@@ -136,25 +143,50 @@ const Main = () => {
                   ? alert("올바른 참여코드를 입력하세요")
                   : enterMeeting();
               }}> 회의 참여하기</button> */}
-            <button className='myButton2'
+            <button
+              className='myButton2'
               onClick={() => {
                 enterCode === ""
                   ? alert("올바른 참여코드를 입력하세요")
-                  : 
-                  navigator.mediaDevices
-                  .getUserMedia({ audio: true, video: { width: 320, height: 180 } })
-                  .then((stream) => {
-                    enterMeeting();
-                  })
-                  .catch(()=>{
-                    alert("미디어접근이 거절되었습니다. 설정에서 승인후 입장가능 합니다.")
-                  });
-              }}> 회의 참여하기</button>
+                  : navigator.mediaDevices
+                      .getUserMedia({
+                        audio: true,
+                        video: { width: 320, height: 180 },
+                      })
+                      .then((stream) => {
+                        enterMeeting();
+                      })
+                      .catch(() => {
+                        alert(
+                          "미디어접근이 거절되었습니다. 설정에서 승인후 입장가능 합니다."
+                        );
+                      });
+              }}
+            >
+              {" "}
+              회의 참여하기
+            </button>
           </p>
-            <p><button onClick={() => console.log(reduxCheck)}>리덕스 보기</button></p>
-            <p><button onClick={() => console.log(getUserNameInCookie())}>이름 보기</button></p>
-            <p><button onClick={() => navigate("/meeting")}>그냥 입장하기</button></p>
-            <p><button onClick={() => {removeTokenInCookie(); window.location.reload()}}>로그아웃</button>
+          <p>
+            <button onClick={() => console.log(reduxCheck)}>리덕스 보기</button>
+          </p>
+          <p>
+            <button onClick={() => console.log(getUserNameInCookie())}>
+              이름 보기
+            </button>
+          </p>
+          <p>
+            <button onClick={() => navigate("/meeting")}>그냥 입장하기</button>
+          </p>
+          <p>
+            <button
+              onClick={() => {
+                removeTokenInCookie();
+                window.location.reload();
+              }}
+            >
+              로그아웃
+            </button>
           </p>
         </div>
       ) : (
