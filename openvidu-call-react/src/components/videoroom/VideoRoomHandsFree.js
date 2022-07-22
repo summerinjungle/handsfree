@@ -32,7 +32,8 @@ class VideoRoomHandsFree extends Component {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
-      : "https://eehnoeg.shop:443";
+      // : "https://eehnoeg.shop:443";
+      : "https://" + window.location.hostname + ":4443"
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
@@ -524,6 +525,9 @@ class VideoRoomHandsFree extends Component {
     this.updateLayout();
   };
 
+  meetingEnd = () => {
+  }
+
   checkSize = () => {
     if (
       document.getElementById("layout").offsetWidth <= 700 &&
@@ -584,6 +588,11 @@ class VideoRoomHandsFree extends Component {
               localUser={localUser}
               rootFunction={this.getMessageList}
             />
+            {
+              this.props.isPublisher?
+              (<button id="exit" onClick={this.meetingEnd}>회의종료</button>):(null)
+            }
+            
           </div>
         )}
         <ToolbarComponent
@@ -596,6 +605,7 @@ class VideoRoomHandsFree extends Component {
           toggleFullscreen={this.toggleFullscreen}
           leaveSession={this.leaveSession}
         />
+
       </div>
     );
   }

@@ -109,47 +109,47 @@ const Main = () => {
       {isLogin ? (
         <div>
           <p>
-            <button className='myButton'
-              onClick={() => {
-                createMeeting();
-              }} >회의 만들기</button>
             {/* <button className='myButton'
               onClick={() => {
+                createMeeting();
+              }} >회의 만들기</button> */}
+            <button className='myButton'
+              onClick={() => {
                 navigator.mediaDevices
-                .getUserMedia({ audio: true, video: true})
+                .getUserMedia({ audio: true, video: { width: 640, height: 360 } })
                 .then((stream) => {
                   createMeeting();
                 })
                 .catch(()=>{
                   alert("미디어접근이 거절되었습니다. 설정에서 승인후 입장가능 합니다.")
                 });
-              }} >회의 만들기</button> */}
+              }} >회의 만들기</button>
           </p>
           <p>
             <input
               placeholder='참여코드를 입력하세요.'
               onChange={(event) => setEnterCode(event.target.value)}
             ></input>
-            <button className='myButton2'
+            {/* <button className='myButton2'
               onClick={() => {
                 enterCode === ""
                   ? alert("올바른 참여코드를 입력하세요")
                   : enterMeeting();
-              }}> 회의 참여하기</button>
-            {/* <button className='myButton2'
+              }}> 회의 참여하기</button> */}
+            <button className='myButton2'
               onClick={() => {
                 enterCode === ""
                   ? alert("올바른 참여코드를 입력하세요")
                   : 
                   navigator.mediaDevices
-                  .getUserMedia({ audio: true, video: true})
+                  .getUserMedia({ audio: true, video: { width: 320, height: 180 } })
                   .then((stream) => {
                     enterMeeting();
                   })
                   .catch(()=>{
                     alert("미디어접근이 거절되었습니다. 설정에서 승인후 입장가능 합니다.")
                   });
-              }}> 회의 참여하기</button> */}
+              }}> 회의 참여하기</button>
           </p>
             <p><button onClick={() => console.log(reduxCheck)}>리덕스 보기</button></p>
             <p><button onClick={() => console.log(getUserNameInCookie())}>이름 보기</button></p>
