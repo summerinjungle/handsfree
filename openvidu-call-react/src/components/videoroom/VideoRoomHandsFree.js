@@ -291,7 +291,7 @@ class VideoRoomHandsFree extends Component {
         await axios
           .post(`/api/rooms/${this.props.sessionId}/chat`, {
             chatList: this.state.chatInfo.messageList,
-            startList: this.state.chatInfo.starList,
+            starList: this.state.chatInfo.starList,
             recordMuteList: this.state.chatInfo.recordMuteList,
           })
           .then((res) => {
