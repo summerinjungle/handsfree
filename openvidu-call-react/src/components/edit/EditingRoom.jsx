@@ -75,7 +75,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
             console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
             //   wavesurfer.current.load(recordFile.url);
             //   wavesurfer.current.load(testMp3File)
-            wavesurfer.current.load("http://localhost:433/openvidu/recordings/" + sessionId + "/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
+            wavesurfer.current.load("https://openvidu.shop/openvidu/recordings/"+ sessionId +"/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
         }
     }, []);
 
@@ -148,17 +148,6 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
             });
     }
 
-    function getHTMLtoString() {
-        let ns = new XMLSerializer();
-        let korean = `<meta charset="utf-8" />`
-        let targetString = ns.serializeToString(document.querySelector(".ql-editor"));
-        return korean + targetString
-    }
-
-    useEffect(() => {
-        console.log(parseFloat(timeWaveSurfer) / 1000);
-        wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
-    }, [timeWaveSurfer]);
 
     /**
      * [GET] http://{BASE_URL}/api/rooms/{roomId}/editingroom
