@@ -84,8 +84,12 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
     // }, [timeWaveSurfer]);
 
     function playTimeWaveSurfer () {
-        console.log(parseFloat(timeWaveSurfer) / 1000);
-        wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
+        if(timeWaveSurfer) {
+            console.log(parseFloat("playTimeWaveSurfer진입", timeWaveSurfer) / 1000);
+            wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
+        } else {
+            console.log("timeWaveSurfer 값이 존재하지 않습니다.")
+        }
     }
 
     /**
