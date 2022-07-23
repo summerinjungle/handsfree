@@ -1,4 +1,5 @@
 import React from "react";
+import playButtonImg from "../../../assets/images/playButton.png";
 
 const ChatItem = ({ key, userName, time, startTime, message, setTimeWaveSurfer }) => {
 
@@ -22,7 +23,7 @@ const ChatItem = ({ key, userName, time, startTime, message, setTimeWaveSurfer }
                         {time}
                     </div>
                     <div className="inline-block mx-10">
-                        <button onClick={() => setTimeWaveSurfer(startTime)}>재생</button>
+                        <button onClick={() => setTimeWaveSurfer(startTime)}><img src={playButtonImg} height ="15" width="15" /></button>
                     </div>
                     <div className="inline-block">
                         <button>수정</button>
