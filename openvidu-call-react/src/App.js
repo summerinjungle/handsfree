@@ -12,6 +12,7 @@ import {
   changeIsPublisher,
   changeEnterTime,
   changeUserName,
+  changeCreatedAt,
 } from "./store.js";
 
 const App = () => {
@@ -31,8 +32,8 @@ const App = () => {
     dispatch(changeDuringTime(data.duringTime));
     dispatch(changeEnterTime(data.enterTime));
     dispatch(changeUserName(getUserNameInCookie()));
+    dispatch(changeCreatedAt(data.createdAt));
   }
-
   const getRecordFile = (data) => {
     setRecordFile(data);
   };

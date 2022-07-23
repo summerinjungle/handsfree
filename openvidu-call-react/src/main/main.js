@@ -9,6 +9,7 @@ import {
   changeIsPublisher,
   changeEnterTime,
   changeUserName,
+  changeCreatedAt
 } from "../store.js";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { getTokenInCookie } from "./cookie";
@@ -48,12 +49,13 @@ const Main = () => {
         dispatch(changeDuringTime(0));
         dispatch(changeEnterTime(time));
         dispatch(changeUserName(getUserNameInCookie()));
-
+        dispatch(changeCreatedAt(Number(response.data.createdAt)));
         const obj = {
           isPublisher: true,
           sessionId: response.data.roomId,
           duringTime: 0,
           enterTime: time,
+          createdAt: Number(response.data.createdAt)
         };
         localStorage.setItem("redux", JSON.stringify(obj));
         console.log("저장됨", obj);
@@ -81,12 +83,13 @@ const Main = () => {
           dispatch(changeDuringTime(duringTime));
           dispatch(changeUserName(getUserNameInCookie()));
           dispatch(changeEnterTime(time));
-
+          dispatch(changeCreatedAt(Number(response.data.createdAt)));
           const obj = {
             isPublisher: false,
             sessionId: enterCode,
             duringTime: duringTime,
             enterTime: time,
+            createdAt: Number(response.data.createdAt)
           };
           localStorage.setItem("redux", JSON.stringify(obj));
           console.log("저장됨", obj);
@@ -120,7 +123,7 @@ const Main = () => {
                     video: true,
                   })
                   .then((stream) => {
-                    console.log("입장 버튼 = >", stream);
+                    // console.log("입장 버튼 = >", stream);
                     createMeeting();
                   })
                   .catch(() => {

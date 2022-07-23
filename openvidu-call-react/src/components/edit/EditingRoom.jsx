@@ -17,11 +17,15 @@ import { connect } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import Voice from "./Voice";
-
+import { useSelector } from "react-redux";
 const EditingRoom = ({ props, recordFile, sessionId }) => {
+    let reduxCheck = useSelector((state) => {
+        return state;
+      });
     const wavesurfer = useRef(null);
     const [isPlay, setIsPlay] = useState(false);
     const [volume, setVolume] = useState(1);
+    const createdAt = reduxCheck.createdAt;
 
     const playButton = () => {
         wavesurfer.current.playPause();
