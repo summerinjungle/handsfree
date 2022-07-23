@@ -254,6 +254,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                                     userName={recordItem.nickname}
                                     time={recordItem.time}
                                     startTime={recordItem.startTime}
+                                    isMarker={recordItem.marker}
                                     message={recordItem.message}
                                     setTimeWaveSurfer={setTimeWaveSurfer}
                                     deleteChatItem={deleteChatItem}

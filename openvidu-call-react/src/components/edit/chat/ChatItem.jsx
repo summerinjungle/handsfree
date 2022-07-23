@@ -1,8 +1,9 @@
 import React from "react";
 import { useRef, useState } from "react";
 import playButtonImg from "../../../assets/images/playButton.png";
+import markerImg from "../../../assets/images/markerImg.png";
 
-const ChatItem = ({ key, id, userName, time, startTime, message, setTimeWaveSurfer, deleteChatItem }) => {
+const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, setTimeWaveSurfer, deleteChatItem }) => {
 
     const localInput = useRef();
 
@@ -27,7 +28,16 @@ const ChatItem = ({ key, id, userName, time, startTime, message, setTimeWaveSurf
         <div key={key} className="relative mb-20">
             <div>
                 <div className="absolute t-40">
-                    *
+                    { // 수정중인 상태면 ? 수정완료,취소버튼 보이게. 수정중인 상태가 아니면 : 수정, 삭제 버튼 보이게
+                        isMarker
+                            ? (<>
+                                <img src={markerImg} height="12" width="12" />
+                            </>)
+                            : <>
+                                {/* 아무것도 안 찍힘 */}
+                            </>
+                    }
+                    
                 </div>
             </div>
             <div className="pl-20">
