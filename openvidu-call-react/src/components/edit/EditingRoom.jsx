@@ -22,7 +22,6 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
     const wavesurfer = useRef(null);
     const [isPlay, setIsPlay] = useState(false);
     const [volume, setVolume] = useState(1);
-    const [timeWaveSurfer, setTimeWaveSurfer] = useState(null);
 
     const playButton = () => {
         wavesurfer.current.playPause();
@@ -79,20 +78,14 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
         }
     }, []);
 
-    useEffect(() => {
-        console.log(parseFloat(timeWaveSurfer) / 1000);
-        wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
-    }, [timeWaveSurfer]);
-
-    // /* 일단 대기 */
-    // function playTimeWaveSurfer() {
-    //     if (timeWaveSurfer) {
-    //         console.log(parseFloat("playTimeWaveSurfer진입", timeWaveSurfer) / 1000);
-    //         wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
-    //     } else {
-    //         console.log("timeWaveSurfer 값이 존재하지 않습니다.")
-    //     }
-    // }
+    /* 일단 대기 */
+    function playTimeWaveSurfer(startTime) {
+        if (startTime) {
+            wavesurfer.current.play(parseFloat(startTime) / 1000 - 6);
+        } else {
+            console.log("timeWaveSurfer 값이 존재하지 않습니다.")
+        }
+    }
 
 
     /**
@@ -245,7 +238,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                                     startTime={recordItem.startTime}
                                     isMarker={recordItem.marker}
                                     message={recordItem.message}
-                                    setTimeWaveSurfer={setTimeWaveSurfer}
+                                    playTimeWaveSurfer={playTimeWaveSurfer}
                                     deleteChatItem={deleteChatItem}
                                 />
                             ))}
