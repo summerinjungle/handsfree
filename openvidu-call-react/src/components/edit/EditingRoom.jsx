@@ -99,7 +99,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
      * 음성기록 리스트 내 아이템 삭제 함수
      */
     function deleteChatItem(paramId) {
-        console.log(chatList, paramId);
+        setChatList(chatList.filter(chat => chat.id !== paramId));
         // setChatList(chatList.filter(chat => chat.id !== paramId));
     };
 

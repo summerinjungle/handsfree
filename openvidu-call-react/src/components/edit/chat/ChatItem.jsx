@@ -2,7 +2,7 @@ import React from "react";
 import { useRef, useState } from "react";
 import playButtonImg from "../../../assets/images/playButton.png";
 
-const ChatItem = ({ key, userName, time, startTime, message, setTimeWaveSurfer, deleteChatItem }) => {
+const ChatItem = ({ key, id, userName, time, startTime, message, setTimeWaveSurfer, deleteChatItem }) => {
 
     const localInput = useRef();
 
@@ -52,7 +52,7 @@ const ChatItem = ({ key, userName, time, startTime, message, setTimeWaveSurfer, 
                                     <button onClick={toggleIsEdit}>수정</button>
                                 </>
                         }
-                        <button onClick={()=>deleteChatItem()}>삭제</button>
+                        <button onClick={() => deleteChatItem(id)}>삭제</button>
                         <button>메모 추가</button>
                     </div>
 
