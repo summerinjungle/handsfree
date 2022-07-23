@@ -76,11 +76,11 @@ export function TextEditor ({sessionId}) {
     if (typeof reactQuillRef.getEditor !== "function") return;
     quillRef = reactQuillRef.getEditor();
   };
-  const insertText = () => {
-    var range = quillRef.getSelection();
-    let position = range ? range.index : 0;
-    quillRef.insertText(position, "Hello, World! ");
-  };
+  // const insertText = () => {
+  //   var range = quillRef.getSelection();
+  //   let position = range ? range.index : 0;
+  //   quillRef.insertText(position, "Hello, World! ");
+  // };
   return (
     <div>
       <ReactQuill
@@ -93,9 +93,11 @@ export function TextEditor ({sessionId}) {
   );
 };
 
-{/* <div>
+{ <div>
 <button onClick={() => insertText('Hello World!!!!')}>Insert ‘Hello World!’ in Text</button>
-</div> */}
+</div> 
+}
+
 export function insertText(text) {
   var range = quillRef.getSelection();
   let position = range ? range.index : 0;

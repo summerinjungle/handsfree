@@ -6,7 +6,7 @@
     position: absolute;
     top: 93%;
     left: 15px;
-    width:98.5%;
+    width: 77.1%;
     z-index: 999999;
     border-radius: 20px;
     min-width: 400px !important;
@@ -22,6 +22,7 @@
   
   #navSessionInfo {
     position: absolute;
+
   }
 
   #navButtons {
