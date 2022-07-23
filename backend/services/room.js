@@ -14,7 +14,6 @@ exports.createRoom = async ({ roomId, publisher, timeString }) => {
 exports.validateRoomId = async (roomId) => {
   const findRoom = await to(findByRoomId(roomId));
 
-  console.log("!!!!@#!@#!@#", findRoom[1]);
   console.log(findRoom[1]);
 
   if (findRoom[1].length != 0) {
@@ -46,7 +45,7 @@ exports.toEditingRoom = async (roomId) => {
   } catch (err) {
     starList = null;
   }
-   
+
   let recordMuteList = null;
   try {
     recordMuteList = JSON.parse(foundRoom.recordMuteList);

@@ -16,6 +16,7 @@ class ChatHandsFree extends Component {
     startTime: "",
     left: "",
     right: "",
+    msgIndex: 0,
   };
   chatScroll = React.createRef();
   constructor(props) {
@@ -56,6 +57,13 @@ class ChatHandsFree extends Component {
         this.setState({ isStar: data.isStar });
         console.log("잡담구간 체크 = ", this.state.isRecordMute);
 
+        if (data.isRecord === false) return;
+        if (
+          data.message.includes("막둥아 기록 시작") ||
+          data.message.includes("막둥아 기록시작")
+        )
+          return;
+
         if (data.isRecordMute === true) {
           this.state.recordMuteList.push({
             left: this.state.left,
@@ -74,13 +82,6 @@ class ChatHandsFree extends Component {
         );
         console.log("기록가능 ==", this.state.isRecog);
 
-        if (data.isRecord === false) return;
-        if (
-          data.message.includes("막둥아 기록 시작") ||
-          data.message.includes("막둥아 기록시작")
-        )
-          return;
-
         if (this.state.isRecog === true) {
           // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
           console.log("그 전 데이터  = ", messageList[length - 1]);
@@ -89,6 +90,7 @@ class ChatHandsFree extends Component {
             const stars = {
               message: messageList[length - 1].message,
               startTime: messageList[length - 1].startTime,
+              id: this.state.msgIndex - 1,
             };
             this.state.starList.push(stars);
             this.setState({ isStar: false });
@@ -103,6 +105,10 @@ class ChatHandsFree extends Component {
             time: data.time,
             startTime: data.startTime,
             marker: this.state.isStar,
+            id: this.state.msgIndex,
+          });
+          this.setState({
+            msgIndex: this.state.msgIndex + 1,
           });
 
           console.log("마커 리스트", this.state.starList);

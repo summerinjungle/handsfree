@@ -106,7 +106,6 @@ exports.getEditingRoom = async (req, res, next) => {
 
 exports.createChat = async (req, res, next) => {
   const roomId = req.params.roomId;
-  console.log("sdsds room id~~~", roomId);
 
   const room = await roomServices.createChat(
     roomId,
