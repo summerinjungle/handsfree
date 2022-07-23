@@ -56,7 +56,7 @@ class ChatHandsFree extends Component {
         this.setState({ isStar: data.isStar });
         console.log("잡담구간 체크 = ", this.state.isRecordMute);
 
-        if (this.state.isRecordMute === true) {
+        if (data.isRecordMute === true) {
           this.state.recordMuteList.push({
             left: this.state.left,
             right: this.state.right,
@@ -133,6 +133,7 @@ class ChatHandsFree extends Component {
       if (message !== "" && message !== " ") {
         const date = new Date();
         const data = {
+          isRecordMute: this.state.isRecordMute,
           isRecord: this.state.isRecog,
           isStar: this.state.isStar,
           time: date.getHours() + ":" + date.getMinutes(),
@@ -266,7 +267,7 @@ class ChatHandsFree extends Component {
               ))}
             </div>
           </div>
-          <Recognition parentFunction={this.parentFunction} />
+          {/* <Recognition parentFunction={this.parentFunction} /> */}
         </div>
       </div>
     );

@@ -117,14 +117,15 @@ const Main = () => {
                 navigator.mediaDevices
                   .getUserMedia({
                     audio: true,
-                    video: { width: 640, height: 360 },
+                    video: true,
                   })
                   .then((stream) => {
+                    console.log("입장 버튼 = >", stream);
                     createMeeting();
                   })
                   .catch(() => {
                     alert(
-                      "미디어접근이 거절되었습니다. 설정에서 승인후 입장가능 합니다."
+                      "미디어 접근이 거절되었습니다. 설정에서 승인후 입장가능 합니다."
                     );
                   });
               }}
