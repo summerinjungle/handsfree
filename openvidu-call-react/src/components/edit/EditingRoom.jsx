@@ -142,20 +142,14 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
     }
 
 
-    useEffect(() => {
-        console.log(parseFloat(timeWaveSurfer) / 1000);
-        wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
-    }, [timeWaveSurfer]);
-
-    // /* 일단 대기 */
-    // function playTimeWaveSurfer() {
-    //     if (timeWaveSurfer) {
-    //         console.log(parseFloat("playTimeWaveSurfer진입", timeWaveSurfer) / 1000);
-    //         wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
-    //     } else {
-    //         console.log("timeWaveSurfer 값이 존재하지 않습니다.")
-    //     }
-    // }
+    /* 음성기록 Item에서 [재생]버튼 클릭 시 실행 */
+    function playTimeWaveSurfer(startTime) {
+        if (startTime) {
+            wavesurfer.current.play(parseFloat(startTime) / 1000 - 6);
+        } else {
+            console.log("timeWaveSurfer 값이 존재하지 않습니다.")
+        }
+    }
 
     /**
      * 음성기록 리스트 내 아이템 삭제 함수
@@ -253,65 +247,8 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                     <button>나가기</button>
                 </div>
             </div >
-            <hr className='my-0'></hr>
-            <div className='contents'>
-                <div className='contents-left'>
-                    <div className='contents-label'>메모</div>
-                    <TextEditor sessionId={sessionId} />
-                </div>
-                <div className='contents-right'>
-                    <div className='contents-label'>음성 기록</div>
-                    <div className='recorditems'>
-                        {chatList &&
-                            chatList.map((recordItem) => (
-                                <ChatItem
-                                    key={recordItem.id}
-                                    id={recordItem.id}
-                                    userName={recordItem.nickname}
-                                    time={recordItem.time}
-                                    startTime={recordItem.startTime}
-                                    isMarker={recordItem.marker}
-                                    message={recordItem.message}
-                                    setTimeWaveSurfer={setTimeWaveSurfer}
-                                    deleteChatItem={deleteChatItem}
-                                />
-                            ))}
-                    </div>
-                </div>
-            </div>
-            <div className='audio-container'>
-                {/* <div className='track-name'>The name of the track</div> */}
-                <div className='audio'></div>
-                <div className='buttons'>
-                    <span
-                        className={"play-btn btn" + (isPlay === true ? " playing" : "")}
-                        onClick={playButton}
-                    >
-                        <PlayArrowIcon className='fas fa-play' />
-                        <PauseIcon className='fas fa-pause' />
-                    </span>
 
-                    <span className='stop-btn btn' onClick={stopButton}>
-                        <Stop className='fas fa-stop' />
-                    </span>
 
-                    <span className={"mute-btn btn" + (!volume ? " muted" : "")}>
-                        <VolumeUp className='fas fa-volume-up' />
-                        <VolumeOff className='fas fa-volume-mute' />
-                    </span>
-
-                    <input
-                        type='range'
-                        min={0}
-                        max={20}
-                        step={1}
-                        value={volume}
-                        className='volume-slider'
-                        onChange={changeVolume}
-                        readOnly
-                    />
-                </div>
-            </div>
         </div >
     );
 };
