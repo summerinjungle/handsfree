@@ -23,7 +23,7 @@ const ChatItem = ({ key, userName, time, startTime, message, setTimeWaveSurfer }
                         {time}
                     </div>
                     <div className="inline-block mx-10">
-                        <button onClick={() => setTimeWaveSurfer(startTime)}><img src={playButtonImg} height ="15" width="15" /></button>
+                        <button onClick={() => setTimeWaveSurfer(startTime)}><img src={playButtonImg} height="15" width="15" /></button>
                     </div>
                     <div className="inline-block">
                         <button>수정</button>

@@ -78,10 +78,15 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
         }
     }, []);
 
-    useEffect(() => {
+    // useEffect(() => {
+    //     console.log(parseFloat(timeWaveSurfer) / 1000);
+    //     wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
+    // }, [timeWaveSurfer]);
+
+    function playTimeWaveSurfer () {
         console.log(parseFloat(timeWaveSurfer) / 1000);
         wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
-    }, [timeWaveSurfer]);
+    }
 
     /**
      * [GET] http://{BASE_URL}/api/rooms/{roomId}/editingroom
@@ -162,7 +167,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                                     time = {recordItem.time}
                                     startTime={recordItem.startTime}
                                     message={recordItem.message}
-                                    setTimeWaveSurfer={setTimeWaveSurfer}
+                                    setTimeWaveSurfer={playTimeWaveSurfer}
                                 />
                             ))}
                     </div>
