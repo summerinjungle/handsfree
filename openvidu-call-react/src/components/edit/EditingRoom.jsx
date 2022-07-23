@@ -74,13 +74,13 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
             console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
             //   wavesurfer.current.load(recordFile.url);
             //   wavesurfer.current.load(testMp3File)
-            wavesurfer.current.load("https://openvidu.shop/openvidu/recordings/"+ sessionId +"/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
+            wavesurfer.current.load("https://hyunseokmemo.shop/openvidu/recordings/"+ sessionId +"/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
         }
     }, []);
 
     useEffect(() => {
         console.log(parseFloat(timeWaveSurfer) / 1000);
-        wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
+        wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 8);
     }, [timeWaveSurfer]);
 
     /**
@@ -105,8 +105,8 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                     console.log("left, right!!!!!!",parseFloat(recordMuteList[i].left)/1000);
                     console.log("left, right!!!!!!",parseFloat(recordMuteList[i].right)/1000);
                     wavesurfer.current.regions.add({
-                        start: parseFloat(recordMuteList[i].left)/1000 - 6,
-                        end: parseFloat(recordMuteList[i].right)/1000 - 6,
+                        start: parseFloat(recordMuteList[i].left)/1000 - 8,
+                        end: parseFloat(recordMuteList[i].right)/1000 - 8,
                         color: "#33CEBFAC",
                     });
                 }
@@ -115,7 +115,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                 console.log("starList", starList);
                 for (let i = 0; i < starList.length; i++) {
                     wavesurfer.current.addMarker({
-                        time: parseFloat(starList[i].startTime) / 1000 - 6,
+                        time: parseFloat(starList[i].startTime) / 1000 - 8,
                         label: "V1",
                         color: "#FF7715",
                         position: "top",
