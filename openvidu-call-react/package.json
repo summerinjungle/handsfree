@@ -31,6 +31,8 @@
         "react-scroll-to-bottom": "^4.2.0",
         "react-speech-recognition": "^3.9.1",
         "react-wavesurfer": "^0.8.6",
+        "simple-peer": "^9.11.1",
+        "socket.io-client": "^4.5.1",
         "styled-components": "^5.3.5",
         "wavesurfer-react": "^2.2.2",
         "wavesurfer.js": "^6.2.0",
