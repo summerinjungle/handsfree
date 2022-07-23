@@ -22,10 +22,10 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
     let reduxCheck = useSelector((state) => {
         return state;
       });
+    let gap = localStorage.getItem("createdAt") - reduxCheck.createdAt;
     const wavesurfer = useRef(null);
     const [isPlay, setIsPlay] = useState(false);
     const [volume, setVolume] = useState(1);
-    const createdAt = reduxCheck.createdAt;
 
     const playButton = () => {
         wavesurfer.current.playPause();
@@ -85,7 +85,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
     /* 일단 대기 */
     function playTimeWaveSurfer(startTime) {
         if (startTime) {
-            wavesurfer.current.play(parseFloat(startTime) / 1000 - 6);
+            wavesurfer.current.play((parseFloat(startTime) - gap) / 1000);
         } else {
             console.log("timeWaveSurfer 값이 존재하지 않습니다.")
         }
@@ -122,8 +122,8 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                     console.log("right!!!!!!", parseFloat(recordMuteList[i].right) / 1000);
                     if (recordMuteList[i].left) { // 없을 때 추가 안 해줌(예외 처리)
                         wavesurfer.current.regions.add({
-                            start: parseFloat(recordMuteList[i].left) / 1000 - 6,
-                            end: parseFloat(recordMuteList[i].right) / 1000 - 6,
+                            start: parseFloat((recordMuteList[i].left) - gap)/ 1000,
+                            end: parseFloat((recordMuteList[i].right) - gap) / 1000,
                             color: "#33CEBFAC",
                         });
                     }
@@ -133,7 +133,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                 console.log("starList", starList);
                 for (let i = 0; i < starList.length; i++) {
                     wavesurfer.current.addMarker({
-                        time: parseFloat(starList[i].startTime) / 1000 - 6,
+                        time: parseFloat((starList[i].startTime) - gap) / 1000,
                         label: "V1",
                         color: "#FF7715",
                         position: "top",
@@ -149,7 +149,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
     /* 음성기록 Item에서 [재생]버튼 클릭 시 실행 */
     function playTimeWaveSurfer(startTime) {
         if (startTime) {
-            wavesurfer.current.play(parseFloat(startTime) / 1000 - 6);
+            wavesurfer.current.play((parseFloat(startTime) - gap) / 1000);
         } else {
             console.log("timeWaveSurfer 값이 존재하지 않습니다.")
         }
