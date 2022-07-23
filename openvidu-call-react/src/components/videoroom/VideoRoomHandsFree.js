@@ -32,7 +32,7 @@ class VideoRoomHandsFree extends Component {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
-      : "https://openvidu.shop:443";
+      : "https://hyunseokmemo.shop:443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
@@ -104,6 +104,7 @@ class VideoRoomHandsFree extends Component {
       console.log("token received: ", this.props.token);
       console.log("방이름 received: ", this.props.sessionId);
       this.connect(this.props.token);
+      
     } else {
       this.getToken()
         .then((token) => {
@@ -476,6 +477,8 @@ class VideoRoomHandsFree extends Component {
           }
         });
     });
+
+    
   }
 
   createToken(sessionId) {
@@ -558,6 +561,27 @@ class VideoRoomHandsFree extends Component {
     });
   }
 
+  startRecordingChk(sessionId) {
+    console.log("startRecordingChk 함수 진입");
+    return new Promise((resolve, reject) => {
+      var data = JSON.stringify({});
+      axios
+        .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/recordings/" + sessionId, {
+          headers: {
+            Authorization:
+              "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          console.log("startRecordingChk 성공", response);
+
+        })
+        .catch((error) => reject(error));
+    });
+  }
+
+
   render() {
     const localUser = this.state.localUser;
     console.log("방장여부 ", this.props.isPublisher);
@@ -620,6 +644,7 @@ class VideoRoomHandsFree extends Component {
       </div>
     );
   }
+
 }
 const mapStateToProps = (state) => {
   return {
@@ -627,5 +652,7 @@ const mapStateToProps = (state) => {
     isPublisher: state.user.isPublisher,
   };
 };
+
+
 
 export default connect(mapStateToProps)(VideoRoomHandsFree);

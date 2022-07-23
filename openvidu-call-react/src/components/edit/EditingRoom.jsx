@@ -74,7 +74,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
             console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
             //   wavesurfer.current.load(recordFile.url);
             //   wavesurfer.current.load(testMp3File)
-            wavesurfer.current.load("https://openvidu.shop/openvidu/recordings/"+ sessionId +"/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
+            wavesurfer.current.load("https://openvidu.shop/openvidu/recordings/" + sessionId + "/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
         }
     }, []);
 
@@ -142,59 +142,28 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
     }
 
 
+    useEffect(() => {
+        console.log(parseFloat(timeWaveSurfer) / 1000);
+        wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
+    }, [timeWaveSurfer]);
+
+    // /* 일단 대기 */
+    // function playTimeWaveSurfer() {
+    //     if (timeWaveSurfer) {
+    //         console.log(parseFloat("playTimeWaveSurfer진입", timeWaveSurfer) / 1000);
+    //         wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 6);
+    //     } else {
+    //         console.log("timeWaveSurfer 값이 존재하지 않습니다.")
+    //     }
+    // }
+
     /**
-     * [GET] http://{BASE_URL}/api/rooms/{roomId}/editingroom
-     *
-     * 잡담구간, 별표표시, 음성기록에 필요한 정보들 받아와
-     * WaveSurfer에 뿌려줌
-     *
-     * TODO: 아래 for 반복문 2개 함수로 분리
+     * 음성기록 리스트 내 아이템 삭제 함수
      */
-    async function loadAllRecord() {
-        await axios
-            .get("/api/rooms/" + sessionId + "/editingroom") // this.state.roomId 맞나요?
-            .then(function (response) {
-                const { chatList, starList, recordMuteList } =
-                    response.data.editingRoom;
-                setChatList(chatList);
-                console.log("WWWWW", response.data.editingRoom);
-                console.log("@@@", chatList)
-                console.log("@@@@", response.data.editingRoom.chatList)
-                console.log("@@@@@", response.data.editingRoom.chatList[2].id)
-
-                // [잡담 구간] 표시
-                console.log("RecordMuteList", recordMuteList);
-                for (let i = 0; i < recordMuteList.length; i++) {
-                    console.log(
-                        "left, right!!!!!!",
-                        parseFloat(recordMuteList[i].left) / 1000
-                    );
-                    console.log(
-                        "left, right!!!!!!",
-                        parseFloat(recordMuteList[i].right) / 1000
-                    );
-                    wavesurfer.current.regions.add({
-                        start: parseFloat(recordMuteList[i].left) / 1000 - 6,
-                        end: parseFloat(recordMuteList[i].right) / 1000 - 6,
-                        color: "#33CEBFAC",
-                    });
-                }
-
-                // [막둥아 별표] 표시
-                console.log("starList", starList);
-                for (let i = 0; i < starList.length; i++) {
-                    wavesurfer.current.addMarker({
-                        time: parseFloat(starList[i].startTime) / 1000 - 6,
-                        label: "V1",
-                        color: "#FF7715",
-                        position: "top",
-                    });
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    function deleteChatItem(paramId) {
+        setChatList(chatList.filter((chat) => chat.id !== paramId));
     }
+
 
     function getHTMLtoString() {
         let ns = new XMLSerializer();
@@ -277,8 +246,73 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                         readOnly
                     />
                 </div>
+                <div className='header-contents text-right'>
+                    <button onClick={() => saveButton(getHTMLtoString())}>
+                        메모 다운로드
+                    </button>
+                    <button>나가기</button>
+                </div>
+            </div >
+            <hr className='my-0'></hr>
+            <div className='contents'>
+                <div className='contents-left'>
+                    <div className='contents-label'>메모</div>
+                    <TextEditor sessionId={sessionId} />
+                </div>
+                <div className='contents-right'>
+                    <div className='contents-label'>음성 기록</div>
+                    <div className='recorditems'>
+                        {chatList &&
+                            chatList.map((recordItem) => (
+                                <ChatItem
+                                    key={recordItem.id}
+                                    id={recordItem.id}
+                                    userName={recordItem.nickname}
+                                    time={recordItem.time}
+                                    startTime={recordItem.startTime}
+                                    isMarker={recordItem.marker}
+                                    message={recordItem.message}
+                                    setTimeWaveSurfer={setTimeWaveSurfer}
+                                    deleteChatItem={deleteChatItem}
+                                />
+                            ))}
+                    </div>
+                </div>
             </div>
-        </div>
+            <div className='audio-container'>
+                {/* <div className='track-name'>The name of the track</div> */}
+                <div className='audio'></div>
+                <div className='buttons'>
+                    <span
+                        className={"play-btn btn" + (isPlay === true ? " playing" : "")}
+                        onClick={playButton}
+                    >
+                        <PlayArrowIcon className='fas fa-play' />
+                        <PauseIcon className='fas fa-pause' />
+                    </span>
+
+                    <span className='stop-btn btn' onClick={stopButton}>
+                        <Stop className='fas fa-stop' />
+                    </span>
+
+                    <span className={"mute-btn btn" + (!volume ? " muted" : "")}>
+                        <VolumeUp className='fas fa-volume-up' />
+                        <VolumeOff className='fas fa-volume-mute' />
+                    </span>
+
+                    <input
+                        type='range'
+                        min={0}
+                        max={20}
+                        step={1}
+                        value={volume}
+                        className='volume-slider'
+                        onChange={changeVolume}
+                        readOnly
+                    />
+                </div>
+            </div>
+        </div >
     );
 };
 
