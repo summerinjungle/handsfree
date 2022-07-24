@@ -26,15 +26,40 @@ const roomSchema = new Schema({
         type: Array,
         trim: true,
     },
-    chatList: {
-        type: String,
-    },
-    starList: {
-        type: String,
-    },
-    recordMuteList: {
-        type: String
-    }
+    chatList: [
+        new Schema({
+            id : {
+                type: Number,
+            },
+            userName : {
+                type: String,
+            },
+            message: {
+                type: String,
+            },
+            startTime: {
+                type: String
+            }
+        })
+    ],
+
+    starList: [
+        new Schema({
+            time : {
+                type: String,
+            }
+        })
+    ],
+    recordMuteList: [
+        new Schema({
+            left : {
+                type: String,
+            },
+            right : {
+                type: String,
+            }
+        })
+    ]
 });
 
 module.exports = model('Room', roomSchema);

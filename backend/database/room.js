@@ -10,9 +10,9 @@ exports.createRoom = async ({roomId, publisher, timeString}) => {
             recordingUrl: "",
             createdAt: timeString,
             emailList: [],
-            chatList: "",
-            starList: "",
-            recordMuteList: ""
+            chatList: [],
+            starList: [],
+            recordMuteList: []
           });
         } catch (err) {
           console.log(err);
