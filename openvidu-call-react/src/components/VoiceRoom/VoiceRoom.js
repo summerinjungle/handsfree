@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
-import StreamHandFree from "../Stream/StreamHandFree";
+import StreamHandFree from "../stream/StreamHandFree";
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import { connect } from "react-redux";
