@@ -174,7 +174,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
 
     return (
         <div id='editingroom-container'>
-            <Voice sessionId={sessionId} />
+            {/* <Voice sessionId={sessionId} /> */}
             <div className='header'>
                 <div className='header-contents'>
                     <img className='header-logo' src={mainLogo} />
@@ -243,12 +243,6 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
                         onChange={changeVolume}
                         readOnly
                     />
-                </div>
-                <div className='header-contents text-right'>
-                    <button onClick={() => saveButton(getHTMLtoString())}>
-                        메모 다운로드
-                    </button>
-                    <button>나가기</button>
                 </div>
             </div >
 
