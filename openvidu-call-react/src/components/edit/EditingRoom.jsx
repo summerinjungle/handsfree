@@ -13,11 +13,11 @@ import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
 import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
 import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 // import Voice from "../VoiceRoom/Voice";
-import VoiceRoom from "../VoiceRoom/VoiceRoom";
+import VoiceRoom from "../voiceroom/VoiceRoom";
 import { useNavigate } from "react-router-dom";
 
 const EditingRoom = ({ sessionId }) => {
@@ -188,7 +188,7 @@ const EditingRoom = ({ sessionId }) => {
     setChatList(chatList.filter((chat) => chat.id !== paramId));
   }
 
-  function getHTMLtoString() {
+  function saveMemo() {
     let ns = new XMLSerializer();
     let korean = `<meta charset="utf-8" />`;
     let targetString = ns.serializeToString(
@@ -208,7 +208,7 @@ const EditingRoom = ({ sessionId }) => {
     targetString = targetString.replace(/재생/g, "");
     targetString = targetString.replace(/수정/g, "");
     targetString = targetString.replace(/삭제/g, "");
-    targetString = targetString.replace(/메모 추가/g, "");
+    targetString = targetString.replace(/메모장에 추가/g, "");
     console.log(targetString);
     return korean + targetString;
   }
