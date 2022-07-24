@@ -75,7 +75,7 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
                                         onChange={(e) => { setLocalContent(e.target.value) }} />
                                 </>)
                                 : <>
-                                    {localContent}
+                                    {localContent} 
                                 </>
                         }
                     </div>
