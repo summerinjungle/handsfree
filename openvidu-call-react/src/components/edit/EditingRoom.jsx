@@ -25,11 +25,14 @@ const EditingRoom = ({ sessionId }) => {
     return state;
   });
 
-  let gap = parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) / 1000 + 1;
+  let gap =
+    parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) /
+      1000 +
+    1;
   console.log(localStorage.getItem("createAt"));
   console.log(reduxCheck.user.createdAt);
-  console.log("@@@@@@@@",gap);
-  
+  console.log("@@@@@@@@", gap);
+
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
   const [volume, setVolume] = useState(1);
@@ -103,10 +106,10 @@ const EditingRoom = ({ sessionId }) => {
     }
   }
 
-//   useEffect(() => {
-//     console.log(parseFloat(timeWaveSurfer) / 1000);
-//     wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 8);
-// }, [timeWaveSurfer]);
+  //   useEffect(() => {
+  //     console.log(parseFloat(timeWaveSurfer) / 1000);
+  //     wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 8);
+  // }, [timeWaveSurfer]);
 
   /**
    * 음성기록 리스트 내 아이템 삭제 함수
@@ -131,7 +134,8 @@ const EditingRoom = ({ sessionId }) => {
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
         setChatList(chatList);
-        console.log("WWWWW", response.data.editingRoom);
+        console.log("WWWWW", response.data);
+        console.log("WWWWW222", response.data.editingRoom);
 
         // [잡담 구간] 표시
         console.log("RecordMuteList", recordMuteList);
@@ -145,7 +149,7 @@ const EditingRoom = ({ sessionId }) => {
           if (recordMuteList[i].left) {
             // 없을 때 추가 안 해줌(예외 처리)
             wavesurfer.current.regions.add({
-              start: parseFloat(recordMuteList[i].left) / 1000 - gap ,
+              start: parseFloat(recordMuteList[i].left) / 1000 - gap,
               end: parseFloat(recordMuteList[i].right) / 1000 - gap,
               color: "#33CEBFAC",
             });
@@ -157,7 +161,7 @@ const EditingRoom = ({ sessionId }) => {
         console.log("gap!!!!!!!!!!!!!!!!@@@@@", gap);
         for (let i = 0; i < starList.length; i++) {
           wavesurfer.current.addMarker({
-            time: parseFloat(starList[i].startTime ) / 1000 - gap,
+            time: parseFloat(starList[i].startTime) / 1000 - gap,
             label: "V1",
             color: "#FF7715",
             position: "top",
@@ -172,7 +176,7 @@ const EditingRoom = ({ sessionId }) => {
   /* 음성기록 Item에서 [재생]버튼 클릭 시 실행 */
   function playTimeWaveSurfer(startTime) {
     if (startTime) {
-      wavesurfer.current.play(parseFloat(startTime) / 1000 - gap );
+      wavesurfer.current.play(parseFloat(startTime) / 1000 - gap);
     } else {
       console.log("timeWaveSurfer 값이 존재하지 않습니다.");
     }
@@ -198,15 +202,15 @@ const EditingRoom = ({ sessionId }) => {
     let ns = new XMLSerializer();
     let korean = `<meta charset="utf-8" />`;
     let targetString = ns.serializeToString(
-        // document.querySelector(".ql-editor")
-        document.querySelector(".contents-right")
+      // document.querySelector(".ql-editor")
+      document.querySelector(".contents-right")
     );
-    targetString = targetString.replace('음성 기록', '<h2>음성 기록</h2>');
-    targetString = targetString.replace(/재생/g, '');
-    targetString = targetString.replace(/수정/g, '');
-    targetString = targetString.replace(/삭제/g, '');
-    targetString = targetString.replace(/메모 추가/g, '');
-    console.log(targetString)
+    targetString = targetString.replace("음성 기록", "<h2>음성 기록</h2>");
+    targetString = targetString.replace(/재생/g, "");
+    targetString = targetString.replace(/수정/g, "");
+    targetString = targetString.replace(/삭제/g, "");
+    targetString = targetString.replace(/메모 추가/g, "");
+    console.log(targetString);
     return korean + targetString;
   }
 
@@ -219,13 +223,21 @@ const EditingRoom = ({ sessionId }) => {
           <img className='header-logo' src={mainLogo} />
         </div>
         <div className='header-contents text-right'>
-          <button className='download' onClick={() => saveButton(saveMemo(),"메모")}>
+          <button
+            className='download'
+            onClick={() => saveButton(saveMemo(), "메모")}
+          >
             메모 다운로드
           </button>
-          <button className='download2' onClick={() => saveButton(saveSoundMemo(),"음성 기록")}>
+          <button
+            className='download2'
+            onClick={() => saveButton(saveSoundMemo(), "음성 기록")}
+          >
             음성기록 다운로드
           </button>
-          <button className='exit' onClick={() => navigate("/")}>나가기</button>
+          <button className='exit' onClick={() => navigate("/")}>
+            나가기
+          </button>
         </div>
       </div>
       <hr className='my-0'></hr>
