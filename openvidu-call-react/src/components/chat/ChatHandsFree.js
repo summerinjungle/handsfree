@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
-import Recognition from "../recognition/Recognition";
+import Recognition from "../Recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 
 class ChatHandsFree extends Component {
@@ -14,7 +14,7 @@ class ChatHandsFree extends Component {
     isStar: false,
     isRecordMute: false,
     startTime: "",
-    left: "",
+    left: 0,
     right: "",
     msgIndex: 0,
   };
@@ -26,10 +26,6 @@ class ChatHandsFree extends Component {
     console.log(
       "33333",
       this.props.localUser.getStreamManager().stream.session
-    );
-    console.log(
-      "444444",
-      this.props.localUser.getStreamManager().stream.session.connection
     );
     console.log("!sssssssssssssssssssssss", this.state.isRecog);
   }
@@ -237,25 +233,25 @@ class ChatHandsFree extends Component {
                       : " right")
                   }
                 >
-                  <div className='user-img '>
-                    <p>
-                      <b>{data.nickname}</b>
-                      {data.time}
-                    </p>
-                  </div>
                   <div className='msg-detail'>
                     <div className='msg-info'>
-                      <p className='text'>
-                        {data.marker ? (
-                          <Star style={{ color: yellow[800] }} />
-                        ) : null}
+                      <p>
+                        <b>{data.nickname} </b>
+                        {data.time}
                       </p>
                     </div>
 
                     <div className='msg-content'>
-                      <span className='triangle' />
-                      <p className='text'>{data.message}</p>
+                      {/* <span className='triangle' /> */}
+                      <p className='text'>
+                        {data.marker ? (
+                          <Star style={{ color: yellow[800] }} />
+                        ) : null}
+                        {data.message}
+                      </p>
                     </div>
+                    {/* <div className='user-img '>
+                    </div> */}
                   </div>
                 </div>
               ))}
