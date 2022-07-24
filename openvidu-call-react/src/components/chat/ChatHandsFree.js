@@ -113,16 +113,6 @@ class ChatHandsFree extends Component {
 
           console.log("마커 리스트", this.state.starList);
           console.log("메세지 리스트", this.state.messageList);
-
-          const document = window.document;
-          setTimeout(() => {
-            const userImg = document.getElementById(
-              "userImg-" + (this.state.messageList.length - 1)
-            );
-            const video = document.getElementById("video-" + data.streamId);
-            const avatar = userImg.getContext("2d");
-            avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
-          }, 50);
           this.setState({ messageList: messageList });
           this.scrollToBottom();
         }
@@ -247,20 +237,18 @@ class ChatHandsFree extends Component {
                       : " right")
                   }
                 >
-                  <canvas
-                    id={"userImg-" + i}
-                    width='60'
-                    height='60'
-                    className='user-img'
-                  />
+                  <div className='user-img '>
+                    <p>
+                      <b>{data.nickname}</b>
+                      {data.time}
+                    </p>
+                  </div>
                   <div className='msg-detail'>
                     <div className='msg-info'>
-                      <p> {data.nickname}</p>
                       <p className='text'>
                         {data.marker ? (
                           <Star style={{ color: yellow[800] }} />
                         ) : null}
-                        {data.time}
                       </p>
                     </div>
 
