@@ -17,9 +17,9 @@ import { connect } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 // import Voice from "../VoiceRoom/Voice";
-import { useSelector } from "react-redux";
 import VoiceRoom from "../VoiceRoom/VoiceRoom";
 import { useNavigate } from "react-router-dom";
+
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
     return state;
@@ -188,7 +188,7 @@ const EditingRoom = ({ sessionId }) => {
     setChatList(chatList.filter((chat) => chat.id !== paramId));
   }
 
-  function saveMemo() {
+  function getHTMLtoString() {
     let ns = new XMLSerializer();
     let korean = `<meta charset="utf-8" />`;
     let targetString = ns.serializeToString(

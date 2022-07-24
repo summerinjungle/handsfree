@@ -61,7 +61,7 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
                                 </>
                         }
                         <button onClick={() => deleteChatItem(id)}>삭제</button>
-                        <button onClick={() => insertText('Hello World!!!!')}>메모장에 추가</button>
+                        <button onClick={() => insertText(localContent)}>메모장에 추가</button>
                         <div>
                         </div> 
                     </div>
@@ -78,7 +78,7 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
                                         onChange={(e) => { setLocalContent(e.target.value) }} />
                                 </>)
                                 : <>
-                                    {localContent}
+                                    {localContent} 
                                 </>
                         }
                     </div>
