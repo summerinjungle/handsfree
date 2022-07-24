@@ -6,7 +6,7 @@
   }
   
   #chatToolbar {
-    height: 30px;
+    /* height: 0px; */
     display: none;
     background-color: #3d3d3d;
     box-sizing: border-box;
@@ -26,25 +26,49 @@
   }
   
   #chatComponent {
-    background-color: #34b4eb;
+    background-color: #3d3d3d;
     position: absolute;
     z-index: 99999;
+    /* display: none; */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    margin: auto;
-    height: calc(100% - 30px);
-    width: calc(100% - 30px);
+    /* margin: auto; */
+    margin-left: 3.7%;
+    margin-top: -3.2vh;
+    height: 105.1%;
+    width: 92.6%;
+    /* width: calc(100% - 25px); */
     border-radius: 20px;
   }
-  
+
+
+  .isRecog{
+    position:absolute;
+    top:-12.2%;
+    left: 3.7%;
+    text-align: center;
+    width: 92.6%;
+    /* margin-left: 1%; */
+    /* margin-right: 3.3%; */
+    /* padding-right: 5px; */
+    height: 6.4%;
+    border-radius: 15px;
+    background-color: #4b6b6b;
+
+    /* margin-bottom: 20px; */
+    /* size: 30%; */
+    /* margin-top: 10px; */
+  }
+
+
   .message-wrap {
     border-radius: 20px;
-    background-color: #34b4eb;
+    background-color: #f0f0f094;
     /* background-color: #81e9b0; */
-    padding: 0 15px;
-    height: calc(100% - 80px);
+    /* padding: 0 15px; */
+    height: calc(100%);
     overflow: auto;
   }
   
@@ -61,7 +85,8 @@
   }
   
   .msg-detail {
-    width: calc(100% - 65px);
+    /* width: calc(100% - 65px); */
+    width: 97%;
     display: inline-block;
   }
   
@@ -87,13 +112,13 @@
   }
   
   span.triangle {
-    border-radius: 2px;
-    height: 8px;
-    width: 8px;
-    top: 12px;
+    border-radius: 1px;
+    height: 11px;
+    width: 5px;
+    top: 15px;
     display: block;
     -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
+    transform: rotate(125deg);
     position: absolute;
   }
   
@@ -113,7 +138,7 @@
   
   .message.left .user-img {
     left: -5px;
-    border: 1px solid #f0f0f094;
+    /* border: 1px solid #f0f0f094; */
   }
   
   .message.left .msg-detail .msg-content {
@@ -136,15 +161,15 @@
   }
   .message.right .user-img {
     right: -5px;
-    border: 1px solid #c8ffe8ab;
+    /* border: 1px solid #c8ffe8ab; */
   }
   
   .message.right .msg-detail .msg-content {
-    background-color: #c8ffe8;
+    background-color: #eaf1b6;
     float: right;
   }
   .message.right .msg-detail .msg-content span.triangle {
-    background-color: #c8ffe8;
+    background-color: #eaf1b6;
     border-bottom-width: 0;
     border-left-width: 0;
     right: -5px;

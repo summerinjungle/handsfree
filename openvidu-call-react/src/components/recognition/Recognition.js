@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-
-// 소리감지체크
+import { connect } from "react-redux";
 let sound_detect_check = false;
 
 const SpeechRecognition =
@@ -12,14 +11,10 @@ recognition.interimResults = true;
 recognition.lang = "ko-KR";
 
 class Recognition extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      transcript: "",
-      start_time: "",
-    };
-  }
-
+  state = {
+    transcript: "",
+    start_time: "",
+  };
   componentDidMount() {
     const recognition = new SpeechRecognition();
     recognition.interimResults = true;
@@ -71,4 +66,11 @@ class Recognition extends Component {
   }
 }
 
-export default Recognition;
+const mapStateToProps = (state) => {
+  return {
+    duringTime: state.user.duringTime,
+    enterTime: state.user.enterTime,
+  };
+};
+
+export default connect(mapStateToProps)(Recognition);
