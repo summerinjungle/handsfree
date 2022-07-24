@@ -375,6 +375,7 @@ class VideoRoomHandsFree extends Component {
       this.setState({
         terminate: true,
       });
+      this.startRecordingChk(this.props.sessionId);
     } else {
       const mySession = this.state.session;
 
