@@ -36,12 +36,17 @@ class ChatHandsFree extends Component {
     });
     console.log("기록 가능?", this.state.isRecog);
     console.log(
-      "꼼수 값==",
+      "disposed ==",
       this.props.localUser.getStreamManager().stream.session.connection.disposed
     );
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
+        console.log(
+          "diseposed 변경됨 ? =",
+          this.props.localUser.getStreamManager().stream.session.connection
+            .disposed
+        );
         const data = JSON.parse(event.data);
         let messageList = this.state.messageList;
         let length = messageList.length;
