@@ -553,25 +553,22 @@ class VideoRoomHandsFree extends Component {
    *
    * @param {*} sessionId
    */
-  forceDisconnect(sessionId) {
+  forceDisconnect = async (sessionId) => {
     console.log("forceDisconnect 함수 진입");
-    return new Promise((resolve, reject) => {
-      var data = JSON.stringify({});
-      axios
-        .delete(this.OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId, {
-          headers: {
-            Authorization:
-              "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-            "Content-Type": "application/json",
-          },
-        })
-        .then((response) => {
-          console.log("forceDisconnect 성공", response);
-          // resolve(response.data.token);
-        })
-        .catch((error) => reject(error));
-    });
-  }
+    await axios
+      .delete(this.OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId, {
+        headers: {
+          Authorization:
+            "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("forceDisconnect 성공", response);
+        // resolve(response.data.token);
+      })
+      .catch((error) => console.log("force error", error));
+  };
 
   startRecordingChk = async (sessionId) => {
     console.log("startRecordingChk 함수 진입");
