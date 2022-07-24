@@ -175,6 +175,7 @@ const EditingRoom = ({ sessionId }) => {
   /* 음성기록 Item에서 [재생]버튼 클릭 시 실행 */
   function playTimeWaveSurfer(startTime) {
     if (startTime) {
+      console.log(parseFloat(startTime) / 1000 - gap);
       wavesurfer.current.play(parseFloat(startTime) / 1000 - gap);
     } else {
       console.log("timeWaveSurfer 값이 존재하지 않습니다.");
