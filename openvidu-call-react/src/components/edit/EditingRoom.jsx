@@ -16,7 +16,7 @@ import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
-import Voice from "../VoiceRoom/Voice";
+// import Voice from "../VoiceRoom/Voice";
 import { useSelector } from "react-redux";
 import VoiceRoom from "../VoiceRoom/VoiceRoom";
 import { useNavigate } from "react-router-dom";
