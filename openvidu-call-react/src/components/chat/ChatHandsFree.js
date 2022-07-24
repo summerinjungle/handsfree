@@ -164,7 +164,7 @@ class ChatHandsFree extends Component {
     ) {
       if (this.state.isRecog === true) {
         this.setState({
-          left: data.startTime,
+          left: new Date().getTime() + 1000,
         });
       }
       this.setState({ isRecog: false });
@@ -174,7 +174,7 @@ class ChatHandsFree extends Component {
     ) {
       if (this.state.isRecog === false) {
         this.setState({
-          right: data.startTime,
+          right: new Date().getTime() + 1000,
           isRecordMute: true,
         });
       }
@@ -197,9 +197,9 @@ class ChatHandsFree extends Component {
       if (this.state.isRecog === false) {
         this.state.recordMuteList.push({
           left: this.state.left,
-          right:
-            this.props.duringTime +
-            (new Date().getTime() - this.props.enterTime),
+          right: new Date().getTime()
+            // this.props.duringTime +
+            // (new Date().getTime() - this.props.enterTime),
         });
       }
       const chatInfo = {
