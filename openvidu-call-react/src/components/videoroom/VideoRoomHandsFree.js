@@ -236,6 +236,20 @@ class VideoRoomHandsFree extends Component {
       .catch((err) => {
         console.log("err === ", err);
       });
+    this.startRecordingChk(this.props.sessionId);
+    const mySession = this.state.session;
+
+    if (mySession) {
+      mySession.disconnect();
+    }
+    // Empty all properties...
+    this.OV = null;
+    this.setState({
+      session: undefined,
+      subscribers: [],
+      myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
+      localUser: undefined,
+    });
 
     this.forceDisconnect(this.props.sessionId);
 
@@ -243,6 +257,36 @@ class VideoRoomHandsFree extends Component {
       this.props.navigate("meeting/" + this.props.sessionId + "/edit");
     } else {
       this.props.navigate("/");
+    }
+  };
+
+  meetingEnd = async () => {
+    if (this.props.isPublisher) {
+      this.setState({
+        terminate: true,
+      });
+    } else {
+      if (window.confirm("회의실에서 나가시겠습니까?")) {
+        const mySession = this.state.session;
+
+        if (mySession) {
+          mySession.disconnect();
+        }
+        // Empty all properties...
+        this.OV = null;
+        this.setState({
+          session: undefined,
+          subscribers: [],
+          mySessionId: "SessionA",
+          myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
+          localUser: undefined,
+        });
+        if (this.props.leaveSession) {
+          this.props.leaveSession();
+        }
+
+        this.props.navigate("/");
+      }
     }
   };
 
@@ -365,35 +409,6 @@ class VideoRoomHandsFree extends Component {
 
   closeDialogExtension = () => {
     this.setState({ showExtensionDialog: false });
-  };
-
-  meetingEnd = async () => {
-    if (this.props.isPublisher) {
-      this.setState({
-        terminate: true,
-      });
-      this.startRecordingChk(this.props.sessionId);
-    } else {
-      const mySession = this.state.session;
-
-      if (mySession) {
-        mySession.disconnect();
-      }
-      // Empty all properties...
-      this.OV = null;
-      this.setState({
-        session: undefined,
-        subscribers: [],
-        mySessionId: "SessionA",
-        myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
-        localUser: undefined,
-      });
-      if (this.props.leaveSession) {
-        this.props.leaveSession();
-      }
-
-      this.props.navigate("/");
-    }
   };
 
   checkSize = () => {
@@ -574,8 +589,8 @@ class VideoRoomHandsFree extends Component {
           }
         )
         .then((response) => {
-          console.log("startRecordingChk 성공", response);
           localStorage.setItem("createAt", response.data.createdAt);
+          console.log("startRecordingChk 성공", response);
         })
         .catch((error) => reject(error));
     });
