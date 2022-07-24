@@ -4,6 +4,7 @@ import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 import { connect } from "react-redux";
+import { StarSpeech } from "../speech/Speech";
 
 class ChatHandsFree extends Component {
   state = {
@@ -24,10 +25,6 @@ class ChatHandsFree extends Component {
     super(props);
     console.log("11111", this.props.localUser.getStreamManager());
     console.log("22222", this.props.localUser.getStreamManager().stream);
-    console.log(
-      "33333",
-      this.props.localUser.getStreamManager().stream.session
-    );
     console.log("!sssssssssssssssssssssss", this.state.isRecog);
   }
 
@@ -38,7 +35,6 @@ class ChatHandsFree extends Component {
         this.props.localUser.getStreamManager().stream.session.connection
           .disposed,
     });
-
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
@@ -134,6 +130,7 @@ class ChatHandsFree extends Component {
           data: JSON.stringify(data),
           type: "chat",
         });
+        // this.props.localUser.getStreamManager().stream
       }
       this.props.localUser.getStreamManager().stream.session.connection.disposed =
         this.state.isRecog;
@@ -181,12 +178,12 @@ class ChatHandsFree extends Component {
       }
       this.setState({ isRecog: true });
     } else if (
-      data.text === "막둥아 별표" ||
-      data.text === "막둥아 발표" ||
-      data.text === "박종화 별표" ||
-      data.text === "박종화 발표"
+      data.text.includes("막둥아 별표") ||
+      data.text.includes("막둥아 대표") ||
+      data.text.includes("막둥아 발표") ||
+      data.text.includes("박종화 별표") ||
+      data.text.includes("박종화 대표")
     ) {
-      this.setState({ isStar: true });
     }
 
     this.sendMessage();

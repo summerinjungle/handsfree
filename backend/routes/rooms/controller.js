@@ -29,13 +29,12 @@ exports.createRoom = async (req, res, next) => {
     console.log("isVaild!!!", isVaild);
     timeString = getTime();
     if (isVaild == true) {
-      
       await roomServices.createRoom({ roomId, publisher, timeString });
 
       res.status(CREATED).json({
         message: "방생성 성공",
         roomId: roomId,
-        createdAt: timeString
+        createdAt: timeString,
       });
     } else {
       console.log("방이름이 중복됩니다.");
@@ -92,7 +91,7 @@ exports.joinRoom = async (req, res, next) => {
 exports.getEditingRoom = async (req, res, next) => {
   const roomId = req.params.roomId;
   const editingRoom = await roomServices.toEditingRoom(roomId);
-  console.log(editingRoom);
+  console.log("방 정보 == ", editingRoom);
   if (!editingRoom) {
     console.log("nono room");
     res.status(BAD_REQUEST).json({

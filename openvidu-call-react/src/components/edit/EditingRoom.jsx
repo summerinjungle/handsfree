@@ -134,8 +134,7 @@ const EditingRoom = ({ sessionId }) => {
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
         setChatList(chatList);
-        console.log("WWWWW", response.data);
-        console.log("WWWWW222", response.data.editingRoom);
+        console.log("WWWWW", response);
 
         // [잡담 구간] 표시
         console.log("RecordMuteList", recordMuteList);
