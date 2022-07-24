@@ -55,7 +55,7 @@ exports.toEditingRoom = async (roomId) => {
   } catch (err) {
     starList = null;
   }
-   
+
   let recordMuteList = null;
   try {
     recordMuteList = foundRoom.recordMuteList;

@@ -12,8 +12,8 @@ function presentTime() {
   return String(year).substr(-2) + "-" + month.substr(-2) + "-" + day.substr(-2) + " "+ hour.substr(-2) + minute.substr(-2);
 }
 
-export default function saveButton(a) {
+export default function saveButton(a, b) {
   asBlob(a).then(data => {
-     saveAs(data, presentTime() + ' 회의록' + '.docx')
+     saveAs(data, presentTime() + ' ' + b + '.docx')
   })
 };

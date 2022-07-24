@@ -3,6 +3,7 @@ import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
+import { connect } from "react-redux";
 
 class ChatHandsFree extends Component {
   state = {
@@ -14,8 +15,9 @@ class ChatHandsFree extends Component {
     isStar: false,
     isRecordMute: false,
     startTime: "",
-    left: "",
+    left: 0,
     right: "",
+    msgIndex: 0,
   };
   chatScroll = React.createRef();
   constructor(props) {
@@ -25,10 +27,6 @@ class ChatHandsFree extends Component {
     console.log(
       "33333",
       this.props.localUser.getStreamManager().stream.session
-    );
-    console.log(
-      "444444",
-      this.props.localUser.getStreamManager().stream.session.connection
     );
     console.log("!sssssssssssssssssssssss", this.state.isRecog);
   }
@@ -40,12 +38,7 @@ class ChatHandsFree extends Component {
         this.props.localUser.getStreamManager().stream.session.connection
           .disposed,
     });
-    const chatInfo = {
-      messageList: this.state.messageList,
-      starList: this.state.starList,
-      recordMuteList: this.state.recordMuteList,
-    };
-    this.props.rootFunction(chatInfo);
+
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
@@ -55,6 +48,13 @@ class ChatHandsFree extends Component {
         this.setState({ isRecog: data.isRecord });
         this.setState({ isStar: data.isStar });
         console.log("잡담구간 체크 = ", this.state.isRecordMute);
+
+        if (data.isRecord === false) return;
+        if (
+          data.message.includes("막둥아 기록 시작") ||
+          data.message.includes("막둥아 기록시작")
+        )
+          return;
 
         if (data.isRecordMute === true) {
           this.state.recordMuteList.push({
@@ -74,21 +74,15 @@ class ChatHandsFree extends Component {
         );
         console.log("기록가능 ==", this.state.isRecog);
 
-        if (data.isRecord === false) return;
-        if (
-          data.message.includes("막둥아 기록 시작") ||
-          data.message.includes("막둥아 기록시작")
-        )
-          return;
-
         if (this.state.isRecog === true) {
           // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
           console.log("그 전 데이터  = ", messageList[length - 1]);
           console.log("막둥아 별표 = ", data.isStar);
-          if (this.state.isStar === true) {
+          if (this.state.isStar === true && length > 0) {
             const stars = {
               message: messageList[length - 1].message,
               startTime: messageList[length - 1].startTime,
+              id: this.state.msgIndex - 1,
             };
             this.state.starList.push(stars);
             this.setState({ isStar: false });
@@ -103,20 +97,14 @@ class ChatHandsFree extends Component {
             time: data.time,
             startTime: data.startTime,
             marker: this.state.isStar,
+            id: this.state.msgIndex,
+          });
+          this.setState({
+            msgIndex: this.state.msgIndex + 1,
           });
 
           console.log("마커 리스트", this.state.starList);
           console.log("메세지 리스트", this.state.messageList);
-
-          const document = window.document;
-          setTimeout(() => {
-            const userImg = document.getElementById(
-              "userImg-" + (this.state.messageList.length - 1)
-            );
-            const video = document.getElementById("video-" + data.streamId);
-            const avatar = userImg.getContext("2d");
-            avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
-          }, 50);
           this.setState({ messageList: messageList });
           this.scrollToBottom();
         }
@@ -205,6 +193,22 @@ class ChatHandsFree extends Component {
   };
 
   render() {
+    if (this.props.terminate === true) {
+      if (this.state.isRecog === false) {
+        this.state.recordMuteList.push({
+          left: this.state.left,
+          right:
+            this.props.duringTime +
+            (new Date().getTime() - this.props.enterTime),
+        });
+      }
+      const chatInfo = {
+        messageList: this.state.messageList,
+        starList: this.state.starList,
+        recordMuteList: this.state.recordMuteList,
+      };
+      this.props.rootFunction(chatInfo);
+    }
     return (
       <div>
         <div className='isRecog'>
@@ -241,27 +245,25 @@ class ChatHandsFree extends Component {
                       : " right")
                   }
                 >
-                  <canvas
-                    id={"userImg-" + i}
-                    width='60'
-                    height='60'
-                    className='user-img'
-                  />
                   <div className='msg-detail'>
                     <div className='msg-info'>
-                      <p> {data.nickname}</p>
-                      <p className='text'>
-                        {data.marker ? (
-                          <Star style={{ color: yellow[800] }} />
-                        ) : null}
+                      <p>
+                        <b>{data.nickname} </b>
                         {data.time}
                       </p>
                     </div>
 
                     <div className='msg-content'>
-                      <span className='triangle' />
-                      <p className='text'>{data.message}</p>
+                      {/* <span className='triangle' /> */}
+                      <p className='text'>
+                        {data.marker ? (
+                          <Star style={{ color: yellow[800] }} />
+                        ) : null}
+                        {data.message}
+                      </p>
                     </div>
+                    {/* <div className='user-img '>
+                    </div> */}
                   </div>
                 </div>
               ))}
@@ -273,4 +275,12 @@ class ChatHandsFree extends Component {
     );
   }
 }
-export default ChatHandsFree;
+
+const mapStateToProps = (state) => {
+  return {
+    duringTime: state.user.duringTime,
+    enterTime: state.user.enterTime,
+  };
+};
+
+export default connect(mapStateToProps)(ChatHandsFree);

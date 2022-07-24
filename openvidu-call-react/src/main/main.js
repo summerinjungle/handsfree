@@ -9,6 +9,7 @@ import {
   changeIsPublisher,
   changeEnterTime,
   changeUserName,
+  changeCreatedAt
 } from "../store.js";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { getTokenInCookie } from "./cookie";
@@ -21,7 +22,7 @@ const Main = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [enterCode, setEnterCode] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const cookie = getTokenInCookie();
 
   let reduxCheck = useSelector((state) => {
@@ -48,12 +49,13 @@ const Main = () => {
         dispatch(changeDuringTime(0));
         dispatch(changeEnterTime(time));
         dispatch(changeUserName(getUserNameInCookie()));
-
+        dispatch(changeCreatedAt(Number(response.data.createdAt)));
         const obj = {
           isPublisher: true,
           sessionId: response.data.roomId,
           duringTime: 0,
           enterTime: time,
+          createdAt: Number(response.data.createdAt)
         };
         localStorage.setItem("redux", JSON.stringify(obj));
         console.log("저장됨", obj);
@@ -72,6 +74,11 @@ const Main = () => {
         console.log(response.data);
         // 입장가능한 방일때
         if (response.data.isValidRoom) {
+          if (response.data.isEnd) {
+            alert("종료된 회의입니다.");
+            return;
+          } 
+
           const time = date.getTime();
           let duringTime =
             response.data.enteredAt - Number(response.data.createdAt);
@@ -81,17 +88,19 @@ const Main = () => {
           dispatch(changeDuringTime(duringTime));
           dispatch(changeUserName(getUserNameInCookie()));
           dispatch(changeEnterTime(time));
-
+          dispatch(changeCreatedAt(Number(response.data.createdAt)));
           const obj = {
             isPublisher: false,
             sessionId: enterCode,
             duringTime: duringTime,
             enterTime: time,
+            createdAt: Number(response.data.createdAt)
           };
           localStorage.setItem("redux", JSON.stringify(obj));
           console.log("저장됨", obj);
 
           navigate("/meeting/" + enterCode);
+
         } else {
           alert("입장코드를 다시 입력해주세요");
         }
@@ -120,7 +129,7 @@ const Main = () => {
                     video: true,
                   })
                   .then((stream) => {
-                    console.log("입장 버튼 = >", stream);
+                    // console.log("입장 버튼 = >", stream);
                     createMeeting();
                   })
                   .catch(() => {

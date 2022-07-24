@@ -6,16 +6,17 @@ import EditingRoom from "./components/edit/EditingRoom.jsx";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "./main/cookie";
 import { useSelector, useDispatch } from "react-redux";
+import VoiceRoom from "./components/voiceroom/VoiceRoom";
 import {
   changeSession,
   changeDuringTime,
   changeIsPublisher,
   changeEnterTime,
   changeUserName,
+  changeCreatedAt,
 } from "./store.js";
 
 const App = () => {
-  const [recordFile, setRecordFile] = useState("");
   const navigate = useNavigate();
   let user = getUserNameInCookie();
   let dispatch = useDispatch();
@@ -31,12 +32,8 @@ const App = () => {
     dispatch(changeDuringTime(data.duringTime));
     dispatch(changeEnterTime(data.enterTime));
     dispatch(changeUserName(getUserNameInCookie()));
+    dispatch(changeCreatedAt(data.createdAt));
   }
-
-  const getRecordFile = (data) => {
-    setRecordFile(data);
-  };
-
   let meetingPath = "/meeting/" + sessionId;
   let editPath = meetingPath + "/edit";
 
@@ -50,18 +47,15 @@ const App = () => {
         >
           <Route
             path={sessionId}
-            element={
-              <VideoRoomHandsFree
-                getRecordFile={getRecordFile}
-                user={user}
-                navigate={navigate}
-              />
-            }
+            element={<VideoRoomHandsFree user={user} navigate={navigate} />}
           />
-        </Route>        
-        <Route path={editPath} element={<EditingRoom recordFile={recordFile} sessionId={sessionId}/>}>
         </Route>
-        <Route path={'/*'} element={<div> 없는페이지 입니다. </div>}/>
+        <Route
+          path={editPath}
+          element={<EditingRoom sessionId={sessionId} />}
+        ></Route>
+        <Route path={"/*"} element={<div> 없는페이지 입니다. </div>} />
+        <Route path={"/voice"} element={<VoiceRoom />} />
       </Routes>
     </div>
   );
