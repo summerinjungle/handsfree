@@ -59,7 +59,6 @@ const Main = () => {
         };
         localStorage.setItem("redux", JSON.stringify(obj));
         console.log("저장됨", obj);
-
         navigate("/meeting/" + response.data.roomId);
       })
       .catch(function (error) {

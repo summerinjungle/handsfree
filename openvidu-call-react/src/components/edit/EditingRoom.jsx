@@ -19,11 +19,13 @@ import saveButton from "./docx";
 // import Voice from "../VoiceRoom/Voice";
 import VoiceRoom from "../voiceroom/VoiceRoom";
 import { useNavigate } from "react-router-dom";
+import BoiceRoom from "../voiceroom/BoiceRoom";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
     return state;
   });
+  let newSessionId = sessionId + "EDIT";
 
   let gap =
     parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) /
@@ -37,6 +39,7 @@ const EditingRoom = ({ sessionId }) => {
   const [isPlay, setIsPlay] = useState(false);
   const [volume, setVolume] = useState(1);
   const navigate = useNavigate();
+
 
   const playButton = () => {
     wavesurfer.current.playPause();
@@ -216,7 +219,7 @@ const EditingRoom = ({ sessionId }) => {
   return (
     <div id='editingroom-container'>
       {/* <Voice sessionId={sessionId} /> */}
-      {/* <VoiceRoom /> */}
+      <BoiceRoom sessionId={newSessionId} />
       <div className='header'>
         <div className='header-contents'>
           <img className='header-logo' src={mainLogo} />
@@ -243,7 +246,7 @@ const EditingRoom = ({ sessionId }) => {
       <div className='contents'>
         <div className='contents-left'>
           <div className='contents-label'>메모</div>
-          <TextEditor sessionId={sessionId} />
+          <TextEditor sessionId={sessionId}/>
         </div>
         <div className='contents-right'>
           <div className='contents-label'>음성 기록</div>
