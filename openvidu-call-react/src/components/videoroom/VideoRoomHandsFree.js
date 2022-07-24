@@ -251,7 +251,6 @@ class VideoRoomHandsFree extends Component {
       localUser: undefined,
     });
 
-  
     if (window.confirm("편집실로 가시겠습니까?")) {
       this.props.navigate("meeting/" + this.props.sessionId + "/edit");
     } else {
@@ -573,28 +572,24 @@ class VideoRoomHandsFree extends Component {
     });
   }
 
-  startRecordingChk(sessionId) {
+  startRecordingChk = async (sessionId) => {
     console.log("startRecordingChk 함수 진입");
-    return new Promise((resolve, reject) => {
-      var data = JSON.stringify({});
-      axios
-        .get(
-          this.OPENVIDU_SERVER_URL + "/openvidu/api/recordings/" + sessionId,
-          {
-            headers: {
-              Authorization:
-                "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          localStorage.setItem("createAt", response.data.createdAt);
-          console.log("startRecordingChk 성공", response);
-        })
-        .catch((error) => reject(error));
-    });
-  }
+    await axios
+      .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/recordings/" + sessionId, {
+        headers: {
+          Authorization:
+            "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        localStorage.setItem("createAt", response.data.createdAt);
+        console.log("startRecordingChk 성공", response);
+      })
+      .catch((error) => {
+        console.log("error !!", error);
+      });
+  };
 
   render() {
     const localUser = this.state.localUser;
