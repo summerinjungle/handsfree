@@ -58,7 +58,7 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
                                 </>
                         }
                         <button onClick={() => deleteChatItem(id)}>삭제</button>
-                        <button>메모 추가</button>
+                        <button onClick={() => insertText('Hello World!!!!')}>Insert ‘Hello World!’ in Text</button>
                     </div>
 
                 </div>

@@ -13,7 +13,7 @@ Quill.register('modules/cursors', QuillCursors);
 
 export let quillRef = null;
 
-export function TextEditor ({sessionId}) {
+export function TextEditor({ sessionId }) {
   // let quillRef = null;
   let reactQuillRef = null;
   const yDoc = new Y.Doc();
@@ -25,7 +25,7 @@ export function TextEditor ({sessionId}) {
     attachQuillRefs();
     const provider = new WebrtcProvider("http://localhost:3000/meeting/" + sessionId + "/edit", yDoc);
     const ytext = yDoc.getText("quill");
-    
+
     let user = Math.random().toString(36);
 
     provider.awareness.setLocalStateField('user', {
@@ -80,10 +80,11 @@ export function TextEditor ({sessionId}) {
   );
 };
 
-// { <div>
-// <button onClick={() => insertText('Hello World!!!!')}>Insert ‘Hello World!’ in Text</button>
-// </div> 
-// }
+{
+  // <div>
+  //   
+  // </div>
+}
 
 export function insertText(text) {
   var range = quillRef.getSelection();
