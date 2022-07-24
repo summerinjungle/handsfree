@@ -11,7 +11,7 @@ const roomSchema = new Schema({
         required: true,
         maxlength: 50
     },
-    isRecording: {    //기록 중지 여부
+    isEnd: {    //회의 종료 여부 
         type: Boolean,
         required: true
     },

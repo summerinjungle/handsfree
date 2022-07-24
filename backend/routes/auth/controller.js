@@ -30,7 +30,6 @@ exports.googleLogin = async (req, res, next) => {
         })
 
         const token = await authServices.createAccessToken(login_user);
-        console.log("here token", token);
         res.status(OK)
         .cookie('token', token, {
             httpOnly: false
