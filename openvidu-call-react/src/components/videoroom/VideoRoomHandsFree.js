@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./VideoRoomHandsFree.css";
 import { OpenVidu } from "openvidu-browser";
-import StreamHandFree from "./../stream/StreamHandFree";
-import DialogExtensionComponent from "./../dialog-extension/DialogExtension";
-import ChatHandsFree from "./../chat/ChatHandsFree";
+import StreamHandFree from "../stream/StreamHandFree";
+import DialogExtensionComponent from "../dialog-extension/DialogExtension";
+import ChatHandsFree from "../chat/ChatHandsFree";
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
-import ToolbarComponent from "./../toolbar/ToolbarComponent";
+import ToolbarComponent from "../toolbar/ToolbarComponent";
 import { connect } from "react-redux";
 
 var localUser = new UserModel();
@@ -39,10 +39,7 @@ class VideoRoomHandsFree extends Component {
   }
 
   componentDidMount() {
-    console.log("닉네임 ㅋㅋ", this.state.myUserName);
-    // this.setState({
-    //   myUserName: this.state.myUserName.substring(0, 3),
-    // });
+    console.log("server url = ", this.OPENVIDU_SERVER_URL);
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -78,7 +75,7 @@ class VideoRoomHandsFree extends Component {
   }
 
   onbeforeunload = (event) => {
-    this.meetingEnd();
+    // this.meetingEnd();
   };
 
   joinSession = () => {
@@ -375,7 +372,7 @@ class VideoRoomHandsFree extends Component {
       ) {
         this.props.navigate("meeting/" + this.props.sessionId + "/edit");
       } else {
-        this.props.navigate("/sdsdsdsd");
+        this.props.navigate("/");
       }
     } else {
       const mySession = this.state.session;
