@@ -5,7 +5,6 @@ import StreamHandFree from "../stream/StreamHandFree";
 import DialogExtensionComponent from "../dialog-extension/DialogExtension";
 import ChatHandsFree from "../chat/ChatHandsFree";
 import UserModel from "../../models/user-model";
-import ToolbarComponent from "../toolbar/ToolbarComponent";
 import { connect } from "react-redux";
 
 var localUser = new UserModel();
@@ -15,7 +14,7 @@ class BoiceRoom extends Component {
     myUserName: this.props.user
       ? this.props.user
       : "user" + Math.floor(Math.random() * 100),
-    session: undefined,
+    session: this.props.sessionId;
     localUser: undefined,
     subscribers: [],
     currentVideoDevice: undefined,
@@ -184,10 +183,6 @@ class BoiceRoom extends Component {
     );
   }
 
-
-  camStatusChanged = () => {
-  };
-
   micStatusChanged = () => {
     localUser.setAudioActive(!localUser.isAudioActive());
     localUser.getStreamManager().publishAudio(localUser.isAudioActive());
@@ -282,7 +277,7 @@ class BoiceRoom extends Component {
       });
     });
   }
-  
+
   sendSignalUserChanged(data) {
     const signalOptions = {
       data: JSON.stringify(data),
@@ -351,12 +346,6 @@ class BoiceRoom extends Component {
   }
 
   createSession(sessionId) {
-    var today = new Date();
-    var hours = ("0" + today.getHours()).slice(-2);
-    var minutes = ("0" + today.getMinutes()).slice(-2);
-    var seconds = ("0" + today.getSeconds()).slice(-2);
-    var timeString = today.getTime();
-    console.log("CreateAt", timeString);
 
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({
@@ -476,6 +465,7 @@ const mapStateToProps = (state) => {
   return {
     sessionId: state.user.sessionId,
     isPublisher: state.user.isPublisher,
+    nickname: state.user.userName,
   };
 };
 
