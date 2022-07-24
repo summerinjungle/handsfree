@@ -25,16 +25,20 @@ class ChatHandsFree extends Component {
     super(props);
     console.log("11111", this.props.localUser.getStreamManager());
     console.log("22222", this.props.localUser.getStreamManager().stream);
-    console.log("!sssssssssssssssssssssss", this.state.isRecog);
   }
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
-  componentDidMount() {
-    this.setState({
+  async componentDidMount() {
+    await this.setState({
       isRecog:
         this.props.localUser.getStreamManager().stream.session.connection
           .disposed,
     });
+    console.log("기록 가능?", this.state.isRecog);
+    console.log(
+      "꼼수 값==",
+      this.props.localUser.getStreamManager().stream.session.connection.disposed
+    );
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
@@ -62,13 +66,6 @@ class ChatHandsFree extends Component {
           });
         }
         console.log("잡담구간 확인", this.state.isRecordMute);
-        console.log("잡담구간 ==", this.state.recordMuteList);
-        console.log(
-          "꼼수 값==",
-          this.props.localUser.getStreamManager().stream.session.connection
-            .disposed
-        );
-        console.log("기록가능 ==", this.state.isRecog);
 
         if (this.state.isRecog === true) {
           // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
@@ -184,6 +181,7 @@ class ChatHandsFree extends Component {
       data.text.includes("박종화 별표") ||
       data.text.includes("박종화 대표")
     ) {
+      this.setState({ isStar: true });
     }
 
     this.sendMessage();
@@ -266,7 +264,7 @@ class ChatHandsFree extends Component {
               ))}
             </div>
           </div>
-          {/* <Recognition parentFunction={this.parentFunction} /> */}
+          <Recognition parentFunction={this.parentFunction} />
         </div>
       </div>
     );
