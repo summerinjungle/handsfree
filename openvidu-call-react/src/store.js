@@ -3,13 +3,13 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
 let user = createSlice({
   name: "user",
   initialState: {
-    sessionId: "SessionB",
+    sessionId: "Normal",
     duringTime: 0,
     enterTime: 0,
     userName: "",
     isPublisher: "",
     messageList: [],
-    createdAt:0
+    createdAt: 0,
   },
   reducers: {
     changeSession(state, roomId) {
@@ -49,5 +49,5 @@ export let {
   changeUserName,
   changeIsPublisher,
   changeMessageList,
-  changeCreatedAt
+  changeCreatedAt,
 } = user.actions;

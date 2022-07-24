@@ -22,7 +22,7 @@ const Main = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [enterCode, setEnterCode] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const cookie = getTokenInCookie();
 
   let reduxCheck = useSelector((state) => {
@@ -74,6 +74,11 @@ const Main = () => {
         console.log(response.data);
         // 입장가능한 방일때
         if (response.data.isValidRoom) {
+          if (response.data.isEnd) {
+            alert("종료된 회의입니다.");
+            return;
+          } 
+
           const time = date.getTime();
           let duringTime =
             response.data.enteredAt - Number(response.data.createdAt);
@@ -95,6 +100,7 @@ const Main = () => {
           console.log("저장됨", obj);
 
           navigate("/meeting/" + enterCode);
+
         } else {
           alert("입장코드를 다시 입력해주세요");
         }

@@ -76,7 +76,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
       //   wavesurfer.current.load(recordFile.url);
       //   wavesurfer.current.load(testMp3File)
       wavesurfer.current.load(
-        "http://localhost:433/openvidu/recordings/" +
+        "http://hyunseokmemo.shop/openvidu/recordings/" +
           sessionId +
           "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
