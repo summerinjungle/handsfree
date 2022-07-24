@@ -32,7 +32,7 @@ class VideoRoomHandsFree extends Component {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
-      : "https://hyunseokmemo.shop:443";
+      : "https://localhost:4443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
@@ -222,9 +222,9 @@ class VideoRoomHandsFree extends Component {
     );
   }
 
-  getMessageList = (chatData) => {
+  getMessageList = async (chatData) => {
     console.log("채팅 정보 == ", chatData);
-    axios
+    await axios
       .post(`/api/rooms/${this.props.sessionId}/chat`, {
         chatList: chatData.messageList,
         starList: chatData.starList,
@@ -239,10 +239,7 @@ class VideoRoomHandsFree extends Component {
 
     this.forceDisconnect(this.props.sessionId);
 
-    if (
-      window.confirm("편집실로 가시겠습니까?")
-      // [예] 눌렀을 때
-    ) {
+    if (window.confirm("편집실로 가시겠습니까?")) {
       this.props.navigate("meeting/" + this.props.sessionId + "/edit");
     } else {
       this.props.navigate("/");

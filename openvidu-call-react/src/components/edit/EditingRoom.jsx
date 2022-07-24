@@ -13,13 +13,13 @@ import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
 import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
 import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 // import Voice from "../VoiceRoom/Voice";
-import { useSelector } from "react-redux";
-import VoiceRoom from "../VoiceRoom/VoiceRoom";
+import VoiceRoom from "../voiceroom/VoiceRoom";
 import { useNavigate } from "react-router-dom";
+
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
     return state;
@@ -134,8 +134,7 @@ const EditingRoom = ({ sessionId }) => {
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
         setChatList(chatList);
-        console.log("WWWWW", response.data);
-        console.log("WWWWW222", response.data.editingRoom);
+        console.log("WWWWW", response);
 
         // [잡담 구간] 표시
         console.log("RecordMuteList", recordMuteList);
@@ -209,7 +208,7 @@ const EditingRoom = ({ sessionId }) => {
     targetString = targetString.replace(/재생/g, "");
     targetString = targetString.replace(/수정/g, "");
     targetString = targetString.replace(/삭제/g, "");
-    targetString = targetString.replace(/메모 추가/g, "");
+    targetString = targetString.replace(/메모장에 추가/g, "");
     console.log(targetString);
     return korean + targetString;
   }
