@@ -72,11 +72,6 @@ export function TextEditor ({sessionId}) {
   );
 };
 
-{
-  // <div>
-  //   
-  // </div>
-}
 
 export function insertText(text) {
   var range = quillRef.getSelection();

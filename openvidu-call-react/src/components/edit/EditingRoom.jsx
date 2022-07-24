@@ -18,7 +18,7 @@ import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 // import Voice from "../VoiceRoom/Voice";
 import { useSelector } from "react-redux";
-import VoiceRoom from "../voiceroom/VoiceRoom";
+// import VoiceRoom from "../voiceroom/VoiceRoom";
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
     return state;
