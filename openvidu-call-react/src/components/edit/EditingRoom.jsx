@@ -200,7 +200,7 @@ const EditingRoom = ({ sessionId }) => {
   return (
     <div id='editingroom-container'>
       {/* <Voice sessionId={sessionId} /> */}
-      {/* <VoiceRoom /> */}
+      <VoiceRoom />
       <div className='header'>
         <div className='header-contents'>
           <img className='header-logo' src={mainLogo} />
