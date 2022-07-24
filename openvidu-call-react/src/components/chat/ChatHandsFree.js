@@ -14,7 +14,7 @@ class ChatHandsFree extends Component {
     isStar: false,
     isRecordMute: false,
     startTime: "",
-    left: "",
+    left: 0,
     right: "",
     msgIndex: 0,
   };
@@ -239,20 +239,20 @@ class ChatHandsFree extends Component {
                 >
                   <div className='msg-detail'>
                     <div className='msg-info'>
-                      <p className='text'>
-                        {data.marker ? (
-                          <Star style={{ color: yellow[800] }} />
-                        ) : null}
-                      </p>
                       <p>
-                        <b>{data.nickname}</b>
+                        <b>{data.nickname} </b>
                         {data.time}
                       </p>
                     </div>
 
                     <div className='msg-content'>
                       {/* <span className='triangle' /> */}
-                      <p className='text'>{data.message}</p>
+                      <p className='text'>
+                        {data.marker ? (
+                          <Star style={{ color: yellow[800] }} />
+                        ) : null}
+                        {data.message}
+                      </p>
                     </div>
                     {/* <div className='user-img '>
                     </div> */}

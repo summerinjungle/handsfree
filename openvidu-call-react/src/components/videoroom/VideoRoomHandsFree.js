@@ -40,9 +40,6 @@ class VideoRoomHandsFree extends Component {
 
   componentDidMount() {
     console.log("닉네임 ㅋㅋ", this.state.myUserName);
-    // this.setState({
-    //   myUserName: this.state.myUserName.substring(0, 3),
-    // });
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -78,7 +75,7 @@ class VideoRoomHandsFree extends Component {
   }
 
   onbeforeunload = (event) => {
-    this.meetingEnd();
+    // this.meetingEnd();
   };
 
   joinSession = () => {
@@ -375,7 +372,7 @@ class VideoRoomHandsFree extends Component {
       ) {
         this.props.navigate("meeting/" + this.props.sessionId + "/edit");
       } else {
-        this.props.navigate("/sdsdsdsd");
+        this.props.navigate("/");
       }
     } else {
       const mySession = this.state.session;
