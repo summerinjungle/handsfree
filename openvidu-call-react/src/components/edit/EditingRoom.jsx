@@ -16,7 +16,7 @@ import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
-import Voice from "./Voice";
+// import Voice from "./Voice";
 import { useSelector } from "react-redux";
 const EditingRoom = ({ props, recordFile, sessionId }) => {
     let reduxCheck = useSelector((state) => {
@@ -174,7 +174,7 @@ const EditingRoom = ({ props, recordFile, sessionId }) => {
 
     return (
         <div id='editingroom-container'>
-            <Voice sessionId={sessionId} />
+            {/* <Voice sessionId={sessionId} /> */}
             <div className='header'>
                 <div className='header-contents'>
                     <img className='header-logo' src={mainLogo} />
