@@ -575,7 +575,7 @@ class VideoRoomHandsFree extends Component {
         })
         .then((response) => {
           console.log("startRecordingChk 성공", response);
-
+          localStorage.setItem("createdAt", response.data.createdAt);
         })
         .catch((error) => reject(error));
     });
