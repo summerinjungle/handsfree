@@ -351,6 +351,8 @@ class VideoRoomHandsFree extends Component {
 
   meetingEnd = async () => {
     if (this.props.isPublisher) {
+      this.startRecordingChk(this.props.sessionId);
+      
       await axios
         .post(`/api/rooms/${this.props.sessionId}/chat`, {
           chatList: this.state.chatInfo.messageList,
