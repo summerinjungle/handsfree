@@ -18,7 +18,7 @@ import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 // import Voice from "../VoiceRoom/Voice";
 import { useSelector } from "react-redux";
-import VoiceRoom from "../voiceroom/VoiceRoom";
+// import VoiceRoom from "../voiceroom/VoiceRoom";
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
     return state;
@@ -163,12 +163,14 @@ const EditingRoom = ({ sessionId }) => {
     }
   }
 
+
   /**
    * 음성기록 리스트 내 아이템 삭제 함수
    */
   function deleteChatItem(paramId) {
     setChatList(chatList.filter((chat) => chat.id !== paramId));
   }
+
 
   function getHTMLtoString() {
     let ns = new XMLSerializer();
