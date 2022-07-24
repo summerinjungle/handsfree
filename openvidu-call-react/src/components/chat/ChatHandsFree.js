@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
-import Recognition from "../recognition/Recognition";
+import Recognition from "../Recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 
 class ChatHandsFree extends Component {
@@ -27,20 +27,16 @@ class ChatHandsFree extends Component {
       "33333",
       this.props.localUser.getStreamManager().stream.session
     );
-    console.log(
-      "444444",
-      this.props.localUser.getStreamManager().stream.session.connection
-    );
     console.log("!sssssssssssssssssssssss", this.state.isRecog);
   }
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
-    // this.setState({
-    //   isRecog:
-    //     this.props.localUser.getStreamManager().stream.session.connection
-    //       .disposed,
-    // });
+    this.setState({
+      isRecog:
+        this.props.localUser.getStreamManager().stream.session.connection
+          .disposed,
+    });
     const chatInfo = {
       messageList: this.state.messageList,
       starList: this.state.starList,

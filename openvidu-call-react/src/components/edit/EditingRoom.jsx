@@ -3,7 +3,7 @@ import axios from "axios";
 import "./edit.css";
 import mainLogo from "../../assets/images/mainLogo.png";
 import testMp3File from "./track1.mp3";
-import ChatItem from "./chat/ChatItem.jsx";
+import ChatItem from "./Chat/ChatItem.jsx";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import VolumeUp from "@material-ui/icons/VolumeUp";
@@ -16,8 +16,9 @@ import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
-import Voice from "./Voice";
+import Voice from "../VoiceRoom/Voice";
 import { useSelector } from "react-redux";
+import VoiceRoom from "../VoiceRoom/VoiceRoom";
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
     return state;
@@ -180,7 +181,8 @@ const EditingRoom = ({ sessionId }) => {
 
   return (
     <div id='editingroom-container'>
-      <Voice sessionId={sessionId} />
+      {/* <Voice sessionId={sessionId} /> */}
+      {/* <VoiceRoom /> */}
       <div className='header'>
         <div className='header-contents'>
           <img className='header-logo' src={mainLogo} />
