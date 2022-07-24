@@ -21,7 +21,7 @@ class VideoRoomHandsFree extends Component {
     localUser: undefined,
     subscribers: [],
     currentVideoDevice: undefined,
-    chatInfo: {},
+    terminate: false,
   };
   remotes = [];
   layout = new OpenViduLayout();
@@ -223,9 +223,30 @@ class VideoRoomHandsFree extends Component {
   }
 
   getMessageList = (chatData) => {
-    this.setState({
-      chatInfo: chatData,
-    });
+    console.log("채팅 정보 == ", chatData);
+    axios
+      .post(`/api/rooms/${this.props.sessionId}/chat`, {
+        chatList: chatData.messageList,
+        starList: chatData.starList,
+        recordMuteList: chatData.recordMuteList,
+      })
+      .then((res) => {
+        console.log("회의 종료!! 데이터 보냄 res = ", res);
+      })
+      .catch((err) => {
+        console.log("err === ", err);
+      });
+
+    this.forceDisconnect(this.props.sessionId);
+
+    if (
+      window.confirm("편집실로 가시겠습니까?")
+      // [예] 눌렀을 때
+    ) {
+      this.props.navigate("meeting/" + this.props.sessionId + "/edit");
+    } else {
+      this.props.navigate("/");
+    }
   };
 
   camStatusChanged = () => {
@@ -351,29 +372,10 @@ class VideoRoomHandsFree extends Component {
 
   meetingEnd = async () => {
     if (this.props.isPublisher) {
-      await axios
-        .post(`/api/rooms/${this.props.sessionId}/chat`, {
-          chatList: this.state.chatInfo.messageList,
-          starList: this.state.chatInfo.starList,
-          recordMuteList: this.state.chatInfo.recordMuteList,
-        })
-        .then((res) => {
-          console.log("회의 종료!! 데이터 보냄 res = ", res);
-        })
-        .catch((err) => {
-          console.log("err === ", err);
-        });
-
-      this.forceDisconnect(this.props.sessionId);
-
-      if (
-        window.confirm("편집실로 가시겠습니까?")
-        // [예] 눌렀을 때
-      ) {
-        this.props.navigate("meeting/" + this.props.sessionId + "/edit");
-      } else {
-        this.props.navigate("/");
-      }
+      this.setState({
+        terminate: true,
+      });
+      this.startRecordingChk(this.props.sessionId);
     } else {
       const mySession = this.state.session;
 
@@ -576,6 +578,7 @@ class VideoRoomHandsFree extends Component {
         )
         .then((response) => {
           console.log("startRecordingChk 성공", response);
+          localStorage.setItem("createAt", response.data.createdAt);
         })
         .catch((error) => reject(error));
     });
@@ -622,6 +625,7 @@ class VideoRoomHandsFree extends Component {
             <ChatHandsFree
               localUser={localUser}
               rootFunction={this.getMessageList}
+              terminate={this.state.terminate}
             />
             {this.props.isPublisher ? (
               <button id='exit' onClick={this.meetingEnd}>

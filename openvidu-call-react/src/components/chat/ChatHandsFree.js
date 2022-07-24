@@ -3,6 +3,7 @@ import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
+import { connect } from "react-redux";
 
 class ChatHandsFree extends Component {
   state = {
@@ -37,12 +38,7 @@ class ChatHandsFree extends Component {
         this.props.localUser.getStreamManager().stream.session.connection
           .disposed,
     });
-    const chatInfo = {
-      messageList: this.state.messageList,
-      starList: this.state.starList,
-      recordMuteList: this.state.recordMuteList,
-    };
-    this.props.rootFunction(chatInfo);
+
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
@@ -82,7 +78,7 @@ class ChatHandsFree extends Component {
           // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
           console.log("그 전 데이터  = ", messageList[length - 1]);
           console.log("막둥아 별표 = ", data.isStar);
-          if (this.state.isStar === true) {
+          if (this.state.isStar === true && length > 0) {
             const stars = {
               message: messageList[length - 1].message,
               startTime: messageList[length - 1].startTime,
@@ -197,6 +193,22 @@ class ChatHandsFree extends Component {
   };
 
   render() {
+    if (this.props.terminate === true) {
+      if (this.state.isRecog === false) {
+        this.state.recordMuteList.push({
+          left: this.state.left,
+          right:
+            this.props.duringTime +
+            (new Date().getTime() - this.props.enterTime),
+        });
+      }
+      const chatInfo = {
+        messageList: this.state.messageList,
+        starList: this.state.starList,
+        recordMuteList: this.state.recordMuteList,
+      };
+      this.props.rootFunction(chatInfo);
+    }
     return (
       <div>
         <div className='isRecog'>
@@ -263,4 +275,12 @@ class ChatHandsFree extends Component {
     );
   }
 }
-export default ChatHandsFree;
+
+const mapStateToProps = (state) => {
+  return {
+    duringTime: state.user.duringTime,
+    enterTime: state.user.enterTime,
+  };
+};
+
+export default connect(mapStateToProps)(ChatHandsFree);
