@@ -137,7 +137,7 @@
   
   .message.left .user-img {
     left: -5px;
-    border: 1px solid #f0f0f094;
+    /* border: 1px solid #f0f0f094; */
   }
   
   .message.left .msg-detail .msg-content {
@@ -160,7 +160,7 @@
   }
   .message.right .user-img {
     right: -5px;
-    border: 1px solid #c8ffe8ab;
+    /* border: 1px solid #c8ffe8ab; */
   }
   
   .message.right .msg-detail .msg-content {

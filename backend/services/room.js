@@ -14,7 +14,6 @@ exports.createRoom = async ({ roomId, publisher, timeString }) => {
 exports.validateRoomId = async (roomId) => {
   const findRoom = await to(findByRoomId(roomId));
 
-  console.log("!!!!@#!@#!@#", findRoom[1]);
   console.log(findRoom[1]);
 
   if (findRoom[1].length != 0) {
@@ -32,9 +31,27 @@ exports.toEditingRoom = async (roomId) => {
     return null;
   }
   const foundRoom = foundRoomRet[0];
-  const chatList = JSON.parse(foundRoom.chatList);
-  const starList = JSON.parse(foundRoom.starList);
-  const recordMuteList = JSON.parse(foundRoom.recordMuteList);
+  let chatList = null;
+
+  try {
+    chatList = JSON.parse(foundRoom.chatList);
+  } catch (err) {
+    chatList = null;
+  }
+
+  let starList = null;
+  try {
+    starList = JSON.parse(foundRoom.starList);
+  } catch (err) {
+    starList = null;
+  }
+
+  let recordMuteList = null;
+  try {
+    recordMuteList = JSON.parse(foundRoom.recordMuteList);
+  } catch (err) {
+    recordMuteList = null;
+  }
   return { chatList, starList, recordMuteList };
 };
 

@@ -11,8 +11,6 @@ import VideocamOff from "@material-ui/icons/VideocamOff";
 import Fullscreen from "@material-ui/icons/Fullscreen";
 import FullscreenExit from "@material-ui/icons/FullscreenExit";
 import PictureInPicture from "@material-ui/icons/PictureInPicture";
-import ScreenShare from "@material-ui/icons/ScreenShare";
-import StopScreenShare from "@material-ui/icons/StopScreenShare";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import red from "@material-ui/core/colors/red";
 import IconButton from "@material-ui/core/IconButton";
@@ -30,19 +28,6 @@ export default class ToolbarComponent extends Component {
 
   camStatusChanged = () => {
     this.props.camStatusChanged();
-  };
-
-  screenShare = () => {
-    this.props.screenShare();
-  };
-
-  stopScreenShare = () => {
-    this.props.stopScreenShare();
-  };
-
-  toggleFullscreen = () => {
-    this.setState({ fullscreen: !this.state.fullscreen });
-    this.props.toggleFullscreen();
   };
 
   leaveSession = () => {
@@ -93,44 +78,6 @@ export default class ToolbarComponent extends Component {
               ) : (
                 <VideocamOff style={{ color: red[800] }} />
               )}
-            </IconButton>
-
-            <IconButton
-              color='inherit'
-              className='navButton'
-              onClick={this.screenShare}
-            >
-              {localUser !== undefined && localUser.isScreenShareActive() ? (
-                <PictureInPicture />
-              ) : (
-                <ScreenShare />
-              )}
-            </IconButton>
-
-            {localUser !== undefined && localUser.isScreenShareActive() && (
-              <IconButton onClick={this.stopScreenShare} id='navScreenButton'>
-                <StopScreenShare color='secondary' />
-              </IconButton>
-            )}
-            <IconButton
-              color='inherit'
-              className='navButton'
-              onClick={this.toggleFullscreen}
-            >
-              {localUser !== undefined && this.state.fullscreen ? (
-                <FullscreenExit />
-              ) : (
-                <Fullscreen />
-              )}
-            </IconButton>
-            <IconButton
-              style={{ color: red[800] }}
-              color='secondary'
-              className='navButton'
-              onClick={this.leaveSession}
-              id='navLeaveButton'
-            >
-              <PowerSettingsNew />
             </IconButton>
           </div>
         </Toolbar>

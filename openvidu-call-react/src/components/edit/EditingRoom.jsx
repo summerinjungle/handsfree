@@ -15,12 +15,17 @@ import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min.js";
 import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect } from "react-redux";
 import TextEditor from "./TextEditor";
-
-const EditingRoom = ({ props, recordFile, sessionId}) => {
+import saveButton from "./docx";
+import Voice from "./Voice";
+import { useSelector } from "react-redux";
+const EditingRoom = ({ props, recordFile, sessionId }) => {
+    let reduxCheck = useSelector((state) => {
+        return state;
+      });
+    let gap = localStorage.getItem("createdAt") - reduxCheck.createdAt;
     const wavesurfer = useRef(null);
     const [isPlay, setIsPlay] = useState(false);
     const [volume, setVolume] = useState(1);
-    const [timeWaveSurfer, setTimeWaveSurfer] = useState(null);
 
     const playButton = () => {
         wavesurfer.current.playPause();
@@ -70,16 +75,29 @@ const EditingRoom = ({ props, recordFile, sessionId}) => {
 
     useEffect(() => {
         if (wavesurfer) {
-            console.log("recordFile =====> ", recordFile);
+            console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
             //   wavesurfer.current.load(recordFile.url);
-              wavesurfer.current.load(testMp3File);
+            //   wavesurfer.current.load(testMp3File)
+            wavesurfer.current.load("https://openvidu.shop/openvidu/recordings/" + sessionId + "/ownweapon.webm") // OPEN_VIDU 주소 전달해주면 됨
         }
     }, []);
 
-    useEffect(() => {
-        console.log(timeWaveSurfer);
-        wavesurfer.current.play(Number(timeWaveSurfer));
-    }, [timeWaveSurfer]);
+    /* 일단 대기 */
+    function playTimeWaveSurfer(startTime) {
+        if (startTime) {
+            wavesurfer.current.play((parseFloat(startTime) - gap) / 1000);
+        } else {
+            console.log("timeWaveSurfer 값이 존재하지 않습니다.")
+        }
+    }
+
+
+    /**
+     * 음성기록 리스트 내 아이템 삭제 함수
+     */
+    function deleteChatItem(paramId) {
+        setChatList(chatList.filter(chat => chat.id !== paramId));
+    };
 
     /**
      * [GET] http://{BASE_URL}/api/rooms/{roomId}/editingroom
@@ -91,48 +109,31 @@ const EditingRoom = ({ props, recordFile, sessionId}) => {
      */
     async function loadAllRecord() {
         await axios
-            .get("/api/rooms/" + "2r8ij9nb" + "/editingroom") // 테스트를 위해 roomId : aj8iu868 넣어 놓음
+            .get("/api/rooms/" + sessionId + "/editingroom") // this.state.roomId 맞나요?
             .then(function (response) {
-                const { chatList, starList, recordMuteList } =
-                    response.data.editingRoom;
+                const { chatList, starList, recordMuteList } = response.data.editingRoom;
                 setChatList(chatList);
                 console.log("WWWWW", response.data.editingRoom);
 
                 // [잡담 구간] 표시
+                console.log("RecordMuteList", recordMuteList);
                 for (let i = 0; i < recordMuteList.length; i++) {
-                    if (Object.keys(recordMuteList[i]).includes("right")) {
-                        // 'right' 키 값이 있는 경우
-                        console.log(
-                            "IS_RIGHT",
-                            recordMuteList[i].left,
-                            recordMuteList[i].right
-                        );
+                    console.log("left!!!!!!", parseFloat(recordMuteList[i].left) / 1000);
+                    console.log("right!!!!!!", parseFloat(recordMuteList[i].right) / 1000);
+                    if (recordMuteList[i].left) { // 없을 때 추가 안 해줌(예외 처리)
                         wavesurfer.current.regions.add({
-                            start: recordMuteList[i].left,
-                            end: recordMuteList[i].right,
-                            color: "#33CEBFAC",
-                        });
-                    } else {
-                        console.log(
-                            "NO_RIGHT",
-                            recordMuteList[i].left,
-                            recordMuteList[i].right
-                        );
-                        wavesurfer.current.regions.add({
-                            // 'right' 키 값이 있는 경우
-                            start: recordMuteList[i].left,
-                            end: recordMuteList[i].left + 10000,
+                            start: parseFloat((recordMuteList[i].left) - gap)/ 1000,
+                            end: parseFloat((recordMuteList[i].right) - gap) / 1000,
                             color: "#33CEBFAC",
                         });
                     }
                 }
 
                 // [막둥아 별표] 표시
-                console.log("wooseoing", starList);
+                console.log("starList", starList);
                 for (let i = 0; i < starList.length; i++) {
                     wavesurfer.current.addMarker({
-                        time: starList[i].time,
-                        // time: 120,
+                        time: parseFloat((starList[i].startTime) - gap) / 1000,
                         label: "V1",
                         color: "#FF7715",
                         position: "top",
@@ -144,14 +145,44 @@ const EditingRoom = ({ props, recordFile, sessionId}) => {
             });
     }
 
+
+    /* 음성기록 Item에서 [재생]버튼 클릭 시 실행 */
+    function playTimeWaveSurfer(startTime) {
+        if (startTime) {
+            wavesurfer.current.play((parseFloat(startTime) - gap) / 1000);
+        } else {
+            console.log("timeWaveSurfer 값이 존재하지 않습니다.")
+        }
+    }
+
+    /**
+     * 음성기록 리스트 내 아이템 삭제 함수
+     */
+    function deleteChatItem(paramId) {
+        setChatList(chatList.filter((chat) => chat.id !== paramId));
+    }
+
+
+    function getHTMLtoString() {
+        let ns = new XMLSerializer();
+        let korean = `<meta charset="utf-8" />`;
+        let targetString = ns.serializeToString(
+            document.querySelector(".ql-editor")
+        );
+        return korean + targetString;
+    }
+
     return (
         <div id='editingroom-container'>
+            <Voice sessionId={sessionId} />
             <div className='header'>
                 <div className='header-contents'>
                     <img className='header-logo' src={mainLogo} />
                 </div>
                 <div className='header-contents text-right'>
-                    <button>PDF</button>
+                    <button onClick={() => saveButton(getHTMLtoString())}>
+                        메모 다운로드
+                    </button>
                     <button>나가기</button>
                 </div>
             </div>
@@ -159,8 +190,7 @@ const EditingRoom = ({ props, recordFile, sessionId}) => {
             <div className='contents'>
                 <div className='contents-left'>
                     <div className='contents-label'>메모</div>
-                    {/* <textarea className='textarea'></textarea> */}
-                    <TextEditor sessionId={sessionId}/>
+                    <TextEditor sessionId={sessionId} />
                 </div>
                 <div className='contents-right'>
                     <div className='contents-label'>음성 기록</div>
@@ -169,10 +199,14 @@ const EditingRoom = ({ props, recordFile, sessionId}) => {
                             chatList.map((recordItem) => (
                                 <ChatItem
                                     key={recordItem.id}
-                                    userName={recordItem.userName}
-                                    time={recordItem.startTime}
+                                    id={recordItem.id}
+                                    userName={recordItem.nickname}
+                                    time={recordItem.time}
+                                    startTime={recordItem.startTime}
+                                    isMarker={recordItem.marker}
                                     message={recordItem.message}
-                                    setTimeWaveSurfer={setTimeWaveSurfer}
+                                    playTimeWaveSurfer={playTimeWaveSurfer}
+                                    deleteChatItem={deleteChatItem}
                                 />
                             ))}
                     </div>
@@ -210,8 +244,16 @@ const EditingRoom = ({ props, recordFile, sessionId}) => {
                         readOnly
                     />
                 </div>
-            </div>
-        </div>
+                <div className='header-contents text-right'>
+                    <button onClick={() => saveButton(getHTMLtoString())}>
+                        메모 다운로드
+                    </button>
+                    <button>나가기</button>
+                </div>
+            </div >
+
+
+        </div >
     );
 };
 

@@ -27,14 +27,15 @@ exports.createRoom = async (req, res, next) => {
     publisher = "A"; //임의
     const isVaild = await roomServices.validateRoomId(roomId); // 같은 이름의 방이 있는지 검증하는 로직
     console.log("isVaild!!!", isVaild);
-
+    timeString = getTime();
     if (isVaild == true) {
-      timeString = getTime();
+      
       await roomServices.createRoom({ roomId, publisher, timeString });
 
       res.status(CREATED).json({
         message: "방생성 성공",
         roomId: roomId,
+        createdAt: timeString
       });
     } else {
       console.log("방이름이 중복됩니다.");
@@ -106,7 +107,6 @@ exports.getEditingRoom = async (req, res, next) => {
 
 exports.createChat = async (req, res, next) => {
   const roomId = req.params.roomId;
-  console.log("sdsds room id~~~", roomId);
 
   const room = await roomServices.createChat(
     roomId,

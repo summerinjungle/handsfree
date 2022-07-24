@@ -16,11 +16,31 @@ class ChatHandsFree extends Component {
     startTime: "",
     left: "",
     right: "",
+    msgIndex: 0,
   };
   chatScroll = React.createRef();
+  constructor(props) {
+    super(props);
+    console.log("11111", this.props.localUser.getStreamManager());
+    console.log("22222", this.props.localUser.getStreamManager().stream);
+    console.log(
+      "33333",
+      this.props.localUser.getStreamManager().stream.session
+    );
+    console.log(
+      "444444",
+      this.props.localUser.getStreamManager().stream.session.connection
+    );
+    console.log("!sssssssssssssssssssssss", this.state.isRecog);
+  }
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
+    this.setState({
+      isRecog:
+        this.props.localUser.getStreamManager().stream.session.connection
+          .disposed,
+    });
     const chatInfo = {
       messageList: this.state.messageList,
       starList: this.state.starList,
@@ -34,9 +54,17 @@ class ChatHandsFree extends Component {
         let messageList = this.state.messageList;
         let length = messageList.length;
         this.setState({ isRecog: data.isRecord });
+        this.setState({ isStar: data.isStar });
         console.log("잡담구간 체크 = ", this.state.isRecordMute);
 
-        if (this.state.isRecordMute === true) {
+        if (data.isRecord === false) return;
+        if (
+          data.message.includes("막둥아 기록 시작") ||
+          data.message.includes("막둥아 기록시작")
+        )
+          return;
+
+        if (data.isRecordMute === true) {
           this.state.recordMuteList.push({
             left: this.state.left,
             right: this.state.right,
@@ -47,15 +75,14 @@ class ChatHandsFree extends Component {
         }
         console.log("잡담구간 확인", this.state.isRecordMute);
         console.log("잡담구간 ==", this.state.recordMuteList);
+        console.log(
+          "꼼수 값==",
+          this.props.localUser.getStreamManager().stream.session.connection
+            .disposed
+        );
+        console.log("기록가능 ==", this.state.isRecog);
 
-        if (data.isRecord === false) return;
-        if (
-          data.message.includes("막둥아 기록 시작") ||
-          data.message.includes("막둥아 기록시작")
-        )
-          return;
-
-        if (this.state.isRecor === true) {
+        if (this.state.isRecog === true) {
           // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
           console.log("그 전 데이터  = ", messageList[length - 1]);
           console.log("막둥아 별표 = ", data.isStar);
@@ -63,6 +90,7 @@ class ChatHandsFree extends Component {
             const stars = {
               message: messageList[length - 1].message,
               startTime: messageList[length - 1].startTime,
+              id: this.state.msgIndex - 1,
             };
             this.state.starList.push(stars);
             this.setState({ isStar: false });
@@ -77,20 +105,14 @@ class ChatHandsFree extends Component {
             time: data.time,
             startTime: data.startTime,
             marker: this.state.isStar,
+            id: this.state.msgIndex,
+          });
+          this.setState({
+            msgIndex: this.state.msgIndex + 1,
           });
 
           console.log("마커 리스트", this.state.starList);
           console.log("메세지 리스트", this.state.messageList);
-
-          const document = window.document;
-          setTimeout(() => {
-            const userImg = document.getElementById(
-              "userImg-" + (this.state.messageList.length - 1)
-            );
-            const video = document.getElementById("video-" + data.streamId);
-            const avatar = userImg.getContext("2d");
-            avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
-          }, 50);
           this.setState({ messageList: messageList });
           this.scrollToBottom();
         }
@@ -107,6 +129,7 @@ class ChatHandsFree extends Component {
       if (message !== "" && message !== " ") {
         const date = new Date();
         const data = {
+          isRecordMute: this.state.isRecordMute,
           isRecord: this.state.isRecog,
           isStar: this.state.isStar,
           time: date.getHours() + ":" + date.getMinutes(),
@@ -120,6 +143,8 @@ class ChatHandsFree extends Component {
           type: "chat",
         });
       }
+      this.props.localUser.getStreamManager().stream.session.connection.disposed =
+        this.state.isRecog;
     }
     this.setState({ message: "" });
   };
@@ -212,20 +237,18 @@ class ChatHandsFree extends Component {
                       : " right")
                   }
                 >
-                  <canvas
-                    id={"userImg-" + i}
-                    width='60'
-                    height='60'
-                    className='user-img'
-                  />
+                  <div className='user-img '>
+                    <p>
+                      <b>{data.nickname}</b>
+                      {data.time}
+                    </p>
+                  </div>
                   <div className='msg-detail'>
                     <div className='msg-info'>
-                      <p> {data.nickname}</p>
                       <p className='text'>
                         {data.marker ? (
                           <Star style={{ color: yellow[800] }} />
                         ) : null}
-                        {data.time}
                       </p>
                     </div>
 

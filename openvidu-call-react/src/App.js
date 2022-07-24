@@ -12,6 +12,7 @@ import {
   changeIsPublisher,
   changeEnterTime,
   changeUserName,
+  changeCreatedAt,
 } from "./store.js";
 
 const App = () => {
@@ -31,8 +32,8 @@ const App = () => {
     dispatch(changeDuringTime(data.duringTime));
     dispatch(changeEnterTime(data.enterTime));
     dispatch(changeUserName(getUserNameInCookie()));
+    dispatch(changeCreatedAt(data.createdAt));
   }
-
   const getRecordFile = (data) => {
     setRecordFile(data);
   };
@@ -58,11 +59,10 @@ const App = () => {
               />
             }
           />
-        </Route>
-        
+        </Route>        
         <Route path={editPath} element={<EditingRoom recordFile={recordFile} sessionId={sessionId}/>}>
-          {/* <Route path={sessionId} element={<EditingRoom recordFile={recordFile} sessionId={sessionId}/>} /> */}
         </Route>
+        <Route path={'/*'} element={<div> 없는페이지 입니다. </div>}/>
       </Routes>
     </div>
   );
