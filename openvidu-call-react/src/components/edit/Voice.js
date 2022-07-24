@@ -9,7 +9,7 @@ const Voice = ({ sessionId }) => {
   const [stream, setStream] = useState();
   const peersRef = useRef([]);
   useEffect(() => {
-    socketRef.current = io.connect("/");
+    socketRef.current = io.connect("https://localhost:5000");
     navigator.mediaDevices
       .getUserMedia({ video: false, audio: true })
       .then((stream) => {

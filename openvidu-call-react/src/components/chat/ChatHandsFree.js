@@ -36,11 +36,11 @@ class ChatHandsFree extends Component {
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
-    this.setState({
-      isRecog:
-        this.props.localUser.getStreamManager().stream.session.connection
-          .disposed,
-    });
+    // this.setState({
+    //   isRecog:
+    //     this.props.localUser.getStreamManager().stream.session.connection
+    //       .disposed,
+    // });
     const chatInfo = {
       messageList: this.state.messageList,
       starList: this.state.starList,
@@ -113,16 +113,6 @@ class ChatHandsFree extends Component {
 
           console.log("마커 리스트", this.state.starList);
           console.log("메세지 리스트", this.state.messageList);
-
-          const document = window.document;
-          setTimeout(() => {
-            const userImg = document.getElementById(
-              "userImg-" + (this.state.messageList.length - 1)
-            );
-            const video = document.getElementById("video-" + data.streamId);
-            const avatar = userImg.getContext("2d");
-            avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
-          }, 50);
           this.setState({ messageList: messageList });
           this.scrollToBottom();
         }
@@ -247,27 +237,25 @@ class ChatHandsFree extends Component {
                       : " right")
                   }
                 >
-                  <canvas
-                    id={"userImg-" + i}
-                    width='60'
-                    height='60'
-                    className='user-img'
-                  />
                   <div className='msg-detail'>
                     <div className='msg-info'>
-                      <p> {data.nickname}</p>
                       <p className='text'>
                         {data.marker ? (
                           <Star style={{ color: yellow[800] }} />
                         ) : null}
+                      </p>
+                      <p>
+                        <b>{data.nickname}</b>
                         {data.time}
                       </p>
                     </div>
 
                     <div className='msg-content'>
-                      <span className='triangle' />
+                      {/* <span className='triangle' /> */}
                       <p className='text'>{data.message}</p>
                     </div>
+                    {/* <div className='user-img '>
+                    </div> */}
                   </div>
                 </div>
               ))}
