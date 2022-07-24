@@ -43,13 +43,16 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
             <div className="pl-20">
                 <div>
                     <div className="inline-block bold">
-                        {userName}
+                        {userName} {time}
                     </div>
-                    <div className="inline-block mx-10" >
+                    {/* <div className="inline-block mx-10" >
                         {time}
-                    </div>
+                    </div> */}
                     <div className="inline-block mx-10">
-                        <button onClick={() => playTimeWaveSurfer(startTime)}><img src={playButtonImg} height="12" width="10" /></button>
+                        <button onClick={() => playTimeWaveSurfer(startTime)}>
+                            {/* <img src={playButtonImg} height="12" width="10" /> */}
+                            재생
+                            </button>
                     </div>
                     <div className="inline-block">
                         { // 수정중인 상태면 ? 수정완료,취소버튼 보이게. 수정중인 상태가 아니면 : 수정, 삭제 버튼 보이게

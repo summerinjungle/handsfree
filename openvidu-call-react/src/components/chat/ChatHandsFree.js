@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
-import Recognition from "../Recognition/Recognition";
+import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 
 class ChatHandsFree extends Component {

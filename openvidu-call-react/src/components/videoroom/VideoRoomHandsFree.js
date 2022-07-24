@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./VideoRoomHandsFree.css";
 import { OpenVidu } from "openvidu-browser";
-import StreamHandFree from "../Stream/StreamHandFree";
+import StreamHandFree from "../stream/StreamHandFree";
 import DialogExtensionComponent from "../dialog-extension/DialogExtension";
-import ChatHandsFree from "../Chat/ChatHandsFree";
+import ChatHandsFree from "../chat/ChatHandsFree";
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
-import ToolbarComponent from "../ToolBar/ToolbarComponent";
+import ToolbarComponent from "../toolbar/ToolbarComponent";
 import { connect } from "react-redux";
 
 var localUser = new UserModel();

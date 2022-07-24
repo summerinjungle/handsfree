@@ -3,7 +3,7 @@ import axios from "axios";
 import "./edit.css";
 import mainLogo from "../../assets/images/mainLogo.png";
 import testMp3File from "./track1.mp3";
-import ChatItem from "./Chat/ChatItem.jsx";
+import ChatItem from "../edit/chat/ChatItem";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import VolumeUp from "@material-ui/icons/VolumeUp";
@@ -19,6 +19,7 @@ import saveButton from "./docx";
 import Voice from "../VoiceRoom/Voice";
 import { useSelector } from "react-redux";
 import VoiceRoom from "../VoiceRoom/VoiceRoom";
+import { useNavigate } from "react-router-dom";
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
     return state;
@@ -27,6 +28,7 @@ const EditingRoom = ({ sessionId }) => {
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
   const [volume, setVolume] = useState(1);
+  const navigate = useNavigate();
 
   const playButton = () => {
     wavesurfer.current.playPause();
@@ -170,12 +172,28 @@ const EditingRoom = ({ sessionId }) => {
     setChatList(chatList.filter((chat) => chat.id !== paramId));
   }
 
-  function getHTMLtoString() {
+  function saveMemo() {
     let ns = new XMLSerializer();
     let korean = `<meta charset="utf-8" />`;
     let targetString = ns.serializeToString(
       document.querySelector(".ql-editor")
     );
+    return korean + targetString;
+  }
+
+  function saveSoundMemo() {
+    let ns = new XMLSerializer();
+    let korean = `<meta charset="utf-8" />`;
+    let targetString = ns.serializeToString(
+        // document.querySelector(".ql-editor")
+        document.querySelector(".contents-right")
+    );
+    targetString = targetString.replace('음성 기록', '<h2>음성 기록</h2>');
+    targetString = targetString.replace(/재생/g, '');
+    targetString = targetString.replace(/수정/g, '');
+    targetString = targetString.replace(/삭제/g, '');
+    targetString = targetString.replace(/메모 추가/g, '');
+    console.log(targetString)
     return korean + targetString;
   }
 
@@ -188,10 +206,13 @@ const EditingRoom = ({ sessionId }) => {
           <img className='header-logo' src={mainLogo} />
         </div>
         <div className='header-contents text-right'>
-          <button onClick={() => saveButton(getHTMLtoString())}>
+          <button className='download' onClick={() => saveButton(saveMemo(),"메모")}>
             메모 다운로드
           </button>
-          <button>나가기</button>
+          <button className='download2' onClick={() => saveButton(saveSoundMemo(),"음성 기록")}>
+            음성기록 다운로드
+          </button>
+          <button className='exit' onClick={() => navigate("/")}>나가기</button>
         </div>
       </div>
       <hr className='my-0'></hr>
@@ -251,12 +272,6 @@ const EditingRoom = ({ sessionId }) => {
             onChange={changeVolume}
             readOnly
           />
-        </div>
-        <div className='header-contents text-right'>
-          <button onClick={() => saveButton(getHTMLtoString())}>
-            메모 다운로드
-          </button>
-          <button>나가기</button>
         </div>
       </div>
     </div>
