@@ -36,11 +36,11 @@ class ChatHandsFree extends Component {
 
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
-    this.setState({
-      isRecog:
-        this.props.localUser.getStreamManager().stream.session.connection
-          .disposed,
-    });
+    // this.setState({
+    //   isRecog:
+    //     this.props.localUser.getStreamManager().stream.session.connection
+    //       .disposed,
+    // });
     const chatInfo = {
       messageList: this.state.messageList,
       starList: this.state.starList,
@@ -237,12 +237,6 @@ class ChatHandsFree extends Component {
                       : " right")
                   }
                 >
-                  <div className='user-img '>
-                    <p>
-                      <b>{data.nickname}</b>
-                      {data.time}
-                    </p>
-                  </div>
                   <div className='msg-detail'>
                     <div className='msg-info'>
                       <p className='text'>
@@ -250,12 +244,18 @@ class ChatHandsFree extends Component {
                           <Star style={{ color: yellow[800] }} />
                         ) : null}
                       </p>
+                      <p>
+                        <b>{data.nickname}</b>
+                        {data.time}
+                      </p>
                     </div>
 
                     <div className='msg-content'>
-                      <span className='triangle' />
+                      {/* <span className='triangle' /> */}
                       <p className='text'>{data.message}</p>
                     </div>
+                    {/* <div className='user-img '>
+                    </div> */}
                   </div>
                 </div>
               ))}

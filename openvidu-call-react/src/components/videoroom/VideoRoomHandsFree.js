@@ -16,7 +16,7 @@ class VideoRoomHandsFree extends Component {
   state = {
     myUserName: this.props.user
       ? this.props.user
-      : "OpenVidu_User" + Math.floor(Math.random() * 100),
+      : "user" + Math.floor(Math.random() * 100),
     session: undefined,
     localUser: undefined,
     subscribers: [],
@@ -39,6 +39,10 @@ class VideoRoomHandsFree extends Component {
   }
 
   componentDidMount() {
+    console.log("닉네임 ㅋㅋ", this.state.myUserName);
+    // this.setState({
+    //   myUserName: this.state.myUserName.substring(0, 3),
+    // });
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -104,7 +108,6 @@ class VideoRoomHandsFree extends Component {
       console.log("token received: ", this.props.token);
       console.log("방이름 received: ", this.props.sessionId);
       this.connect(this.props.token);
-      
     } else {
       this.getToken()
         .then((token) => {
@@ -372,7 +375,7 @@ class VideoRoomHandsFree extends Component {
       ) {
         this.props.navigate("meeting/" + this.props.sessionId + "/edit");
       } else {
-        this.props.navigate("/");
+        this.props.navigate("/sdsdsdsd");
       }
     } else {
       const mySession = this.state.session;
@@ -477,8 +480,6 @@ class VideoRoomHandsFree extends Component {
           }
         });
     });
-
-    
   }
 
   createToken(sessionId) {
@@ -566,21 +567,22 @@ class VideoRoomHandsFree extends Component {
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({});
       axios
-        .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/recordings/" + sessionId, {
-          headers: {
-            Authorization:
-              "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-            "Content-Type": "application/json",
-          },
-        })
+        .get(
+          this.OPENVIDU_SERVER_URL + "/openvidu/api/recordings/" + sessionId,
+          {
+            headers: {
+              Authorization:
+                "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+              "Content-Type": "application/json",
+            },
+          }
+        )
         .then((response) => {
           console.log("startRecordingChk 성공", response);
-
         })
         .catch((error) => reject(error));
     });
   }
-
 
   render() {
     const localUser = this.state.localUser;
@@ -644,7 +646,6 @@ class VideoRoomHandsFree extends Component {
       </div>
     );
   }
-
 }
 const mapStateToProps = (state) => {
   return {
@@ -652,7 +653,5 @@ const mapStateToProps = (state) => {
     isPublisher: state.user.isPublisher,
   };
 };
-
-
 
 export default connect(mapStateToProps)(VideoRoomHandsFree);
