@@ -6,7 +6,7 @@ import EditingRoom from "./components/edit/EditingRoom.jsx";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "./main/cookie";
 import { useSelector, useDispatch } from "react-redux";
-import VoiceRoom from "./components/VoiceRoom/VoiceRoom";
+import VoiceRoom from "./components/voiceroom/VoiceRoom";
 import {
   changeSession,
   changeDuringTime,

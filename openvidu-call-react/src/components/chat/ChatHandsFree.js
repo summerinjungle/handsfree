@@ -266,7 +266,7 @@ class ChatHandsFree extends Component {
               ))}
             </div>
           </div>
-          <Recognition parentFunction={this.parentFunction} />
+          {/* <Recognition parentFunction={this.parentFunction} /> */}
         </div>
       </div>
     );

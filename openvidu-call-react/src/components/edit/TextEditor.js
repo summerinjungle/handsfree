@@ -5,6 +5,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { WebrtcProvider } from 'y-webrtc';
 import * as Y from 'yjs';
+import { getUserNameInCookie } from '../../main/cookie';
 
 import Quill from 'quill';
 import QuillCursors from 'quill-cursors';
@@ -14,11 +15,8 @@ Quill.register('modules/cursors', QuillCursors);
 export let quillRef = null;
 
 export function TextEditor ({sessionId}) {
-  // let quillRef = null;
   let reactQuillRef = null;
   const yDoc = new Y.Doc();
-  // const [doc, setDoc] = useState();
-  // const [provider, setProvider] = useState();
 
   useEffect(() => {
     console.log("Text Editor에 있는 sessionId : ", sessionId);
@@ -29,7 +27,7 @@ export function TextEditor ({sessionId}) {
     let user = Math.random().toString(36);
 
     provider.awareness.setLocalStateField('user', {
-      name: 'Typing Jimmy',
+      name: getUserNameInCookie(),
       color: 'blue'
     })
 
@@ -41,12 +39,6 @@ export function TextEditor ({sessionId}) {
     if (typeof reactQuillRef.getEditor !== "function") return;
     quillRef = reactQuillRef.getEditor();
   };
-
-  // const insertText = () => {
-  //   var range = quillRef.getSelection();
-  //   let position = range ? range.index : 0;
-  //   quillRef.insertText(position, "Hello, World! ");
-  // };
 
   const modulesRef = {
     toolbar: [
