@@ -16,22 +16,7 @@ import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
-<<<<<<< HEAD
-// import Voice from "./Voice";
-import { useSelector } from "react-redux";
-const EditingRoom = ({ props, recordFile, sessionId }) => {
-    let reduxCheck = useSelector((state) => {
-        return state;
-      });
-    let gap = localStorage.getItem("createdAt") - reduxCheck.createdAt;
-    const wavesurfer = useRef(null);
-    const [isPlay, setIsPlay] = useState(false);
-    const [volume, setVolume] = useState(1);
-=======
-// import Voice from "../VoiceRoom/Voice";
-import VoiceRoom from "../voiceroom/VoiceRoom";
 import { useNavigate } from "react-router-dom";
->>>>>>> b9b4f805700ac932a8b2bd688a477b4655b4a394
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
