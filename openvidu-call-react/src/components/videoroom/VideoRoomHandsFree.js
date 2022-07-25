@@ -342,6 +342,7 @@ class VideoRoomHandsFree extends Component {
 
   subscribeToStreamDestroyed() {
     // On every Stream destroyed...
+    this.startRecordingChk(this.props.sessionId);
     this.state.session.on("streamDestroyed", (event) => {
       console.log("Destroyed", this.state.localUser.connectionId);
 
