@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
-import StreamHandFree from "../stream/StreamHandFree";
-import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import { connect } from "react-redux";
-
+import StreamHandFree from "../stream/StreamHandFree";
 var localUser = new UserModel();
 
 class VoiceRoom extends Component {
@@ -30,18 +28,6 @@ class VoiceRoom extends Component {
 
   componentDidMount() {
     console.log("server url = ", this.OPENVIDU_SERVER_URL);
-    const openViduLayoutOptions = {
-      maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
-      minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
-      fixedRatio: false, // If this is true then the aspect ratio of the video is maintained and minRatio and maxRatio are ignored (default false)
-      bigClass: "OV_big", // The class to add to elements that should be sized bigger
-      bigPercentage: 0.8, // The maximum percentage of space the big ones should take up
-      bigFixedRatio: false, // fixedRatio for the big ones
-      bigMaxRatio: 3 / 2, // The narrowest ratio to use for the big elements (default 2x3)
-      bigMinRatio: 9 / 16, // The widest ratio to use for the big elements (default 16x9)
-      bigFirst: true, // Whether to place the big one in the top left (true) or bottom right
-      animate: true, // Whether you want to animate the transitions
-    };
     this.joinSession();
   }
 
@@ -164,10 +150,10 @@ class VoiceRoom extends Component {
       { currentVideoDevice: videoDevices[0], localUser: localUser },
       () => {
         this.state.localUser.getStreamManager().on("streamPlaying", (e) => {
-          this.updateLayout();
-          publisher.videos[0].video.parentElement.classList.remove(
-            "custom-class"
-          );
+          // this.updateLayout();
+          // publisher.videos[0].video.parentElement.classList.remove(
+            // "custom-class"
+          // );
         });
       }
     );
@@ -384,9 +370,11 @@ class VoiceRoom extends Component {
     console.log("방장여부 ", this.props.isPublisher);
 
     return (
-      <div className='container' id='container'>
+      <div className='container' id='container' 
+      style={{display: "none"}}
+      >
         {/* <h1>보이스</h1> */}
-        {/* <div id='layout' className='bounds'>
+        <div id='layout' className='bounds'>
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className='OT_root OT_publisher custom-class' id='localUser'>
@@ -408,7 +396,7 @@ class VoiceRoom extends Component {
                 </div>
               ))
             : null}
-        </div> */}
+        </div>
       </div>
     );
   }
