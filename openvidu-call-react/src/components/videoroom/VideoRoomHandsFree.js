@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./VideoRoomHandsFree.css";
 import { OpenVidu } from "openvidu-browser";
+// import { OpenViduLogger } from "OpenViduLogger";
 import StreamHandFree from "../stream/StreamHandFree";
 import DialogExtensionComponent from "../dialog-extension/DialogExtension";
 import ChatHandsFree from "../chat/ChatHandsFree";
@@ -9,6 +10,7 @@ import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "../toolbar/ToolbarComponent";
 import { connect } from "react-redux";
+import { OpenViduLoggerConfiguration } from "openvidu-browser/lib/OpenViduInternal/Logger/OpenViduLoggerConfiguration";
 
 var localUser = new UserModel();
 
@@ -237,7 +239,7 @@ class VideoRoomHandsFree extends Component {
       .catch((err) => {
         console.log("err === ", err);
       });
-    
+
     const mySession = this.state.session;
 
     if (mySession) {
@@ -307,6 +309,7 @@ class VideoRoomHandsFree extends Component {
   };
 
   deleteSubscriber(stream) {
+    console.log("-------deleteSubscriber------------", stream);
     const remoteUsers = this.state.subscribers;
     const userStream = remoteUsers.filter(
       (user) => user.getStreamManager().stream === stream
@@ -321,6 +324,7 @@ class VideoRoomHandsFree extends Component {
   }
 
   subscribeToStreamCreated() {
+    console.log("-------subscribeToStreamCreated------------");
     this.state.session.on("streamCreated", (event) => {
       const subscriber = this.state.session.subscribe(event.stream, undefined);
       // var subscribers = this.state.subscribers;
@@ -343,6 +347,7 @@ class VideoRoomHandsFree extends Component {
   }
 
   subscribeToStreamDestroyed() {
+    console.log("-------subscribeToStreamDestroyed------------");
     // On every Stream destroyed...
     this.state.session.on("streamDestroyed", (event) => {
       console.log("Destroyed", this.state.localUser.connectionId);
@@ -369,6 +374,7 @@ class VideoRoomHandsFree extends Component {
   }
 
   subscribeToUserChanged() {
+    console.log("-------subscribeToUserChanged------------");
     this.state.session.on("signal:userChanged", (event) => {
       let remoteUsers = this.state.subscribers;
       remoteUsers.forEach((user) => {
@@ -402,6 +408,7 @@ class VideoRoomHandsFree extends Component {
   };
 
   sendSignalUserChanged(data) {
+    console.log("-------sendSignalUserChanged------------");
     const signalOptions = {
       data: JSON.stringify(data),
       type: "userChanged",

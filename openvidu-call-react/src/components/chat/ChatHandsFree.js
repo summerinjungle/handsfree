@@ -24,6 +24,7 @@ class ChatHandsFree extends Component {
   constructor(props) {
     super(props);
     console.log("11111", this.props.localUser.getStreamManager());
+    console.log("2222", this.props.localUser.getStreamManager());
   }
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
@@ -182,9 +183,9 @@ class ChatHandsFree extends Component {
       if (this.state.isRecog === false) {
         this.state.recordMuteList.push({
           left: this.state.left,
-          right: new Date().getTime()
-            // this.props.duringTime +
-            // (new Date().getTime() - this.props.enterTime),
+          right: new Date().getTime(),
+          // this.props.duringTime +
+          // (new Date().getTime() - this.props.enterTime),
         });
       }
       const chatInfo = {
