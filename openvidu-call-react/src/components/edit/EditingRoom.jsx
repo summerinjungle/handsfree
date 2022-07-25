@@ -16,7 +16,7 @@ import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
-// import Voice from "../VoiceRoom/Voice";
+import Voice from "../voiceroom/Voice";
 import VoiceRoom from "../voiceroom/VoiceRoom";
 import { useNavigate } from "react-router-dom";
 
@@ -24,7 +24,7 @@ const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
     return state;
   });
-
+  let newSessionId = 'edit' + sessionId;
   // let gap = parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) / 1000 -1;
   const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1000;
   console.log(localStorage.getItem("createAt"));
@@ -86,12 +86,12 @@ const EditingRoom = ({ sessionId }) => {
     if (wavesurfer) {
       console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
       //   wavesurfer.current.load(recordFile.url);
-      //   wavesurfer.current.load(testMp3File)
-      wavesurfer.current.load(
-        "https://hyunseokmemo.shop/openvidu/recordings/" +
-          sessionId +
-          "/ownweapon.webm"
-      ); // OPEN_VIDU 주소 전달해주면 됨
+        wavesurfer.current.load(testMp3File)
+      // wavesurfer.current.load(
+      //   "https://hyunseokmemo.shop/openvidu/recordings/" +
+      //     sessionId +
+      //     "/ownweapon.webm"
+      // ); // OPEN_VIDU 주소 전달해주면 됨
     }
   }, []);
 
@@ -205,7 +205,11 @@ const EditingRoom = ({ sessionId }) => {
           >
             음성기록 다운로드
           </button>
-          <button className='exit' onClick={() => navigate("/")}>
+          <button className='exit' onClick={() => {
+            navigate("/");
+            window.location.reload();
+          }
+            }>
             나가기
           </button>
         </div>
@@ -269,6 +273,7 @@ const EditingRoom = ({ sessionId }) => {
           />
         </div>
       </div>
+      <VoiceRoom sessionId={newSessionId}/>
     </div>
   );
 };
