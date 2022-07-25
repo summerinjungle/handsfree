@@ -12,7 +12,7 @@ class ChatHandsFree extends Component {
     starList: [],
     recordMuteList: [],
     message: "",
-    isRecog: true,
+    isRecog: false,
     isStar: false,
     isRecordMute: false,
     startTime: "",
@@ -24,29 +24,13 @@ class ChatHandsFree extends Component {
   constructor(props) {
     super(props);
     console.log("11111", this.props.localUser.getStreamManager());
-    console.log("22222", this.props.localUser.getStreamManager().stream);
   }
-
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
-  async componentDidMount() {
-    await this.setState({
-      isRecog:
-        this.props.localUser.getStreamManager().stream.session.connection
-          .disposed,
-    });
+  componentDidMount() {
     console.log("기록 가능?", this.state.isRecog);
-    console.log(
-      "disposed ==",
-      this.props.localUser.getStreamManager().stream.session.connection.disposed
-    );
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
-        console.log(
-          "diseposed 변경됨 ? =",
-          this.props.localUser.getStreamManager().stream.session.connection
-            .disposed
-        );
         const data = JSON.parse(event.data);
         let messageList = this.state.messageList;
         let length = messageList.length;
@@ -55,11 +39,6 @@ class ChatHandsFree extends Component {
         console.log("잡담구간 체크 = ", this.state.isRecordMute);
 
         if (data.isRecord === false) return;
-        if (
-          data.message.includes("막둥아 기록 시작") ||
-          data.message.includes("막둥아 기록시작")
-        )
-          return;
 
         if (data.isRecordMute === true) {
           this.state.recordMuteList.push({
@@ -70,6 +49,12 @@ class ChatHandsFree extends Component {
             isRecordMute: false,
           });
         }
+        if (
+          data.message.includes("막둥아 기록 시작") ||
+          data.message.includes("막둥아 기록시작")
+        )
+          return;
+
         console.log("잡담구간 확인", this.state.isRecordMute);
 
         if (this.state.isRecog === true) {
