@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "./edit.css";
 import mainLogo from "../../assets/images/mainLogo.png";
-import testMp3File from "./track1.mp3";
 import ChatItem from "../edit/chat/ChatItem";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
@@ -17,6 +16,7 @@ import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
+import { getUserNameInCookie } from "../../main/cookie";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -24,7 +24,7 @@ const EditingRoom = ({ sessionId }) => {
   });
   let newSessionId = "edit" + sessionId;
   // let gap = parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) / 1000 -1;
-  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1400;
+  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1100;
   console.log(localStorage.getItem("createAt"));
   console.log(reduxCheck.user.createdAt);
   // console.log("@@@@@@@@", gap);
@@ -86,7 +86,7 @@ const EditingRoom = ({ sessionId }) => {
       //   wavesurfer.current.load(recordFile.url);
       // wavesurfer.current.load(testMp3File)
       wavesurfer.current.load(
-        "https://hyunseokmemo.shop/openvidu/recordings/" +
+        "https://eehnoeg.shop/openvidu/recordings/" +
           sessionId +
           "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
@@ -108,7 +108,7 @@ const EditingRoom = ({ sessionId }) => {
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
         setChatList(chatList);
-        console.log("WWWWW", response);
+        console.log("editingroom response : ", response);
 
         // [잡담 구간] 표시
         console.log("RecordMuteList", recordMuteList);
