@@ -156,6 +156,7 @@ class VideoRoomHandsFree extends Component {
 
   async connectWebCam() {
     var devices = await this.OV.getDevices();
+    // console.log("디바이스 정보 = ", devices);
     var videoDevices = devices.filter((device) => device.kind === "videoinput");
 
     let publisher = this.OV.initPublisher(undefined, {
@@ -290,6 +291,7 @@ class VideoRoomHandsFree extends Component {
   };
 
   camStatusChanged = () => {
+    console.log("local User = ", localUser);
     localUser.setVideoActive(!localUser.isVideoActive());
     localUser.getStreamManager().publishVideo(localUser.isVideoActive());
     this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
