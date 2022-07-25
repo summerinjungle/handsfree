@@ -40,13 +40,12 @@
 
 .audio-container {
 	width: 100%;
-	top:83%;
 	box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.3);
 	font-family: "Roboto", sans-serif;
 	position: absolute;
 	/* border-radius: 10px; */
 	overflow: hidden;
-	/* margin: 0px auto; */
+	margin: 40px auto;
 	padding : 0px 0px;
   }
   
@@ -114,6 +113,11 @@
 
 
 /* 공통 */
+
+::-webkit-scrollbar {
+    display: none;
+}
+
 .absolute {
 	position: absolute;
 }
@@ -158,6 +162,7 @@
 	height: 400px;
 
 }
+ 
 
 .header-logo {
 	/* width: 10%; */
@@ -172,9 +177,8 @@
 
 
 #editingroom-container {
-	width: 100%;
-	max-height: 100%;
-	/* max-width: 100%; */
+	width: 100vw;
+	height: 100vh;
 }
 
 #editingroom-container .header {
@@ -228,12 +232,38 @@
 	overflow: scroll;
 }
 
+#editingroom-container .contents-right .recorditems .chattime-buttons {
+	color: #6A573D;
+} 
+
+.message-time {
+	font-size: 14px;
+	color: #B5B5B5
+}
+
 
 .download {
 	box-shadow:inset 0px 1px 0px 0px #efdcfb;
 	background-color:#dfaffa;
 	border-radius:6px;
 	border:1px solid #c584f3;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #9752cc;
+	margin-right: 19px;
+}
+
+.download2 {
+	box-shadow:inset 0px 1px 0px 0px #efdcfb;
+	background-color:#632488;
+	border-radius:6px;
+	border:1px solid #1e072f;
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;

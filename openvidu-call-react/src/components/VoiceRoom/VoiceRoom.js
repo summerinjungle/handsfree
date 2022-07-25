@@ -1,38 +1,28 @@
 import React, { Component } from "react";
 import axios from "axios";
-import "./VideoRoomHandsFree.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamHandFree from "../stream/StreamHandFree";
-import DialogExtensionComponent from "../dialog-extension/DialogExtension";
-import ChatHandsFree from "../chat/ChatHandsFree";
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
-import ToolbarComponent from "../toolbar/ToolbarComponent";
 import { connect } from "react-redux";
 
 var localUser = new UserModel();
 
-class VideoRoomHandsFree extends Component {
+class VoiceRoom extends Component {
   state = {
-    myUserName: this.props.user
-      ? this.props.user
-      : "user" + Math.floor(Math.random() * 100),
     session: undefined,
     localUser: undefined,
     subscribers: [],
     currentVideoDevice: undefined,
-    terminate: false,
   };
   remotes = [];
-  layout = new OpenViduLayout();
-  hasBeenUpdated = false;
   localUserAccessAllowed = false;
 
   constructor(props) {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
-      : "https://eehnoeg.shop:443";
+      : "https://hyunseokmemo.shop:443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
@@ -52,31 +42,12 @@ class VideoRoomHandsFree extends Component {
       bigFirst: true, // Whether to place the big one in the top left (true) or bottom right
       animate: true, // Whether you want to animate the transitions
     };
-
-    this.layout.initLayoutContainer(
-      document.getElementById("layout"),
-      openViduLayoutOptions
-    );
-    window.addEventListener("beforeunload", this.onbeforeunload);
-    window.addEventListener("resize", this.updateLayout);
-    window.addEventListener("resize", this.checkSize);
     this.joinSession();
   }
 
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.onbeforeunload);
-    window.removeEventListener("resize", this.updateLayout);
-    window.removeEventListener("resize", this.checkSize);
-    // this.leaveSession();
-    // this.connectToSession();
-    // this.connect();
-    // this.connectWebCam();
-    // this.camStatusChanged();
   }
-
-  onbeforeunload = (event) => {
-    // this.meetingEnd();
-  };
 
   joinSession = () => {
     this.OV = new OpenVidu();
@@ -217,78 +188,9 @@ class VideoRoomHandsFree extends Component {
             isScreenShareActive: this.state.localUser.isScreenShareActive(),
           });
         }
-        this.updateLayout();
       }
     );
   }
-
-  getMessageList = async (chatData) => {
-    console.log("채팅 정보 == ", chatData);
-    await axios
-      .post(`/api/rooms/${this.props.sessionId}/chat`, {
-        chatList: chatData.messageList,
-        starList: chatData.starList,
-        recordMuteList: chatData.recordMuteList,
-      })
-      .then((res) => {
-        console.log("회의 종료!! 데이터 보냄 res = ", res);
-      })
-      .catch((err) => {
-        console.log("err === ", err);
-      });
-    
-    const mySession = this.state.session;
-
-    if (mySession) {
-      mySession.disconnect();
-    }
-    // Empty all properties...
-    this.OV = null;
-    this.setState({
-      session: undefined,
-      subscribers: [],
-      myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
-      localUser: undefined,
-    });
-
-    if (window.confirm("편집실로 가시겠습니까?")) {
-      this.props.navigate("meeting/" + this.props.sessionId + "/edit");
-    } else {
-      this.props.navigate("/");
-    }
-  };
-
-  meetingEnd = async () => {
-    if (this.props.isPublisher) {
-      this.forceDisconnect(this.props.sessionId);
-      this.startRecordingChk(this.props.sessionId);
-      this.setState({
-        terminate: true,
-      });
-    } else {
-      if (window.confirm("회의실에서 나가시겠습니까?")) {
-        const mySession = this.state.session;
-
-        if (mySession) {
-          mySession.disconnect();
-        }
-        // Empty all properties...
-        this.OV = null;
-        this.setState({
-          session: undefined,
-          subscribers: [],
-          mySessionId: "SessionA",
-          myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
-          localUser: undefined,
-        });
-        if (this.props.leaveSession) {
-          this.props.leaveSession();
-        }
-
-        this.props.navigate("/");
-      }
-    }
-  };
 
   camStatusChanged = () => {
     localUser.setVideoActive(!localUser.isVideoActive());
@@ -348,21 +250,7 @@ class VideoRoomHandsFree extends Component {
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
       event.preventDefault();
-      this.updateLayout();
       // 회의 종료 알림창 확인창
-      if (
-        window.confirm(
-          "방장이 회의를 종료하였습니다.\n" +
-            "편집실로 아동하시겠습니까?\n" +
-            "[취소]를 누르시면 메인 페이지로 이동합니다."
-        )
-      ) {
-        // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-        this.props.navigate("meeting/" + this.props.sessionId + "/edit");
-      } else {
-        // [취소] 클릭 -> Lobby로 이동
-        this.props.navigate("");
-      }
     });
   }
 
@@ -393,12 +281,6 @@ class VideoRoomHandsFree extends Component {
     });
   }
 
-  updateLayout = () => {
-    setTimeout(() => {
-      this.layout.updateLayout();
-    }, 20);
-  };
-
   sendSignalUserChanged(data) {
     const signalOptions = {
       data: JSON.stringify(data),
@@ -406,25 +288,6 @@ class VideoRoomHandsFree extends Component {
     };
     this.state.session.signal(signalOptions);
   }
-
-  closeDialogExtension = () => {
-    this.setState({ showExtensionDialog: false });
-  };
-
-  checkSize = () => {
-    if (
-      document.getElementById("layout").offsetWidth <= 700 &&
-      !this.hasBeenUpdated
-    ) {
-      this.hasBeenUpdated = true;
-    }
-    if (
-      document.getElementById("layout").offsetWidth > 700 &&
-      this.hasBeenUpdated
-    ) {
-      this.hasBeenUpdated = false;
-    }
-  };
 
   getToken() {
     return this.createSession(this.props.sessionId).then((sessionId) =>
@@ -434,9 +297,6 @@ class VideoRoomHandsFree extends Component {
 
   createSession(sessionId) {
     var today = new Date();
-    var hours = ("0" + today.getHours()).slice(-2);
-    var minutes = ("0" + today.getMinutes()).slice(-2);
-    var seconds = ("0" + today.getSeconds()).slice(-2);
     var timeString = today.getTime();
     console.log("CreateAt", timeString);
 
@@ -519,88 +379,14 @@ class VideoRoomHandsFree extends Component {
     });
   }
 
-  /**
-   * 회의 Recording 종료 함수
-   *  (현재 사용 안 함)
-   *
-   * @param {*} sessionId
-   */
-  stopRecording(sessionId) {
-    console.log("stop record ~!~!~");
-    return new Promise((resolve, reject) => {
-      var data = JSON.stringify({});
-      axios
-        .post(
-          this.OPENVIDU_SERVER_URL +
-            "/openvidu/api/recordings/stop/" +
-            sessionId, //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
-          data
-        )
-        .then((response) => {
-          console.log("STOP_RECORDING", response);
-          // this.props.getRecordFile(response.data.url);
-          // resolve(response.data.token);
-        })
-        .catch((error) => {
-          console.log("stop record  error ===> ", error);
-          reject(error);
-        });
-    });
-  }
-
-  /**
-   * * 방장(Publisher)이 회의 종료 시, 모든 Subscribers 회의 강제 종료
-   *
-   * @param {*} sessionId
-   */
-  forceDisconnect = async (sessionId) => {
-    console.log("forceDisconnect 함수 진입");
-    await axios
-      .delete(this.OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId, {
-        headers: {
-          Authorization:
-            "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        console.log("forceDisconnect 성공", response);
-        // resolve(response.data.token);
-      })
-      .catch((error) => console.log("force error", error));
-  };
-
-  startRecordingChk = async (sessionId) => {
-    console.log("startRecordingChk 함수 진입");
-    await axios
-      .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/recordings/" + sessionId, {
-        headers: {
-          Authorization:
-            "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        localStorage.setItem("createAt", response.data.createdAt);
-        console.log("startRecordingChk 성공", response);
-      })
-      .catch((error) => {
-        console.log("error !!", error);
-      });
-  };
-
   render() {
     const localUser = this.state.localUser;
     console.log("방장여부 ", this.props.isPublisher);
 
     return (
       <div className='container' id='container'>
-        <DialogExtensionComponent
-          showDialog={this.state.showExtensionDialog}
-          cancelClicked={this.closeDialogExtension}
-        />
-
-        <div id='layout' className='bounds'>
+        {/* <h1>보이스</h1> */}
+        {/* <div id='layout' className='bounds'>
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className='OT_root OT_publisher custom-class' id='localUser'>
@@ -622,33 +408,7 @@ class VideoRoomHandsFree extends Component {
                 </div>
               ))
             : null}
-        </div>
-
-        <div className='soundScribe'></div>
-        {localUser !== undefined && localUser.getStreamManager() !== undefined && (
-          <div className='OT_root OT_publisher custom-class'>
-            <ChatHandsFree
-              localUser={localUser}
-              rootFunction={this.getMessageList}
-              terminate={this.state.terminate}
-            />
-            {this.props.isPublisher ? (
-              <button id='exit' onClick={this.meetingEnd}>
-                회의종료
-              </button>
-            ) : (
-              <button id='exit' onClick={this.meetingEnd}>
-                나가기
-              </button>
-            )}
-          </div>
-        )}
-        <ToolbarComponent
-          sessionId={this.props.sessionId}
-          user={localUser}
-          camStatusChanged={this.camStatusChanged}
-          micStatusChanged={this.micStatusChanged}
-        />
+        </div> */}
       </div>
     );
   }
@@ -657,7 +417,8 @@ const mapStateToProps = (state) => {
   return {
     sessionId: state.user.sessionId,
     isPublisher: state.user.isPublisher,
+    nickname: state.user.userName,
   };
 };
 
-export default connect(mapStateToProps)(VideoRoomHandsFree);
+export default connect(mapStateToProps)(VoiceRoom);

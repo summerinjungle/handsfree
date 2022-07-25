@@ -7,10 +7,7 @@ const authServices = require("../../services/auth");
 const userServices = require("../../services/user");
 
 const client = new OAuth2Client(process.env.NODE_APP_GOOGLE_LOGIN_CLIENT_ID);
-/*
-    POST /api/auth/
-    * 사용자 가입(추가) API
-*/
+
 exports.googleLogin = async (req, res, next) => {
   try {
     const { credential } = req.body;
@@ -29,7 +26,6 @@ exports.googleLogin = async (req, res, next) => {
     });
 
     const token = await authServices.createAccessToken(login_user);
-    console.log("here token", token);
     res
       .status(OK)
       .cookie("token", token, {

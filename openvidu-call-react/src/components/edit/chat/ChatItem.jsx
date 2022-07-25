@@ -2,6 +2,7 @@ import React from "react";
 import { useRef, useState } from "react";
 import playButtonImg from "../../../assets/images/playButton.png";
 import markerImg from "../../../assets/images/markerImg.png";
+import { insertText } from "../TextEditor"
 
 const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playTimeWaveSurfer, deleteChatItem }) => {
 
@@ -16,11 +17,6 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
     // 수정완료 눌렀을때 
     // 해당 id값과, 새로바뀔 컨텐츠인 localContent를 전달
     const handleEdit = () => {
-        if (localContent.length < 5) {
-            localInput.current.focus();
-            return;
-        }
-
         toggleIsEdit(); // 수정하고 나면 수정폼은 닫아줌
     }
 
@@ -28,16 +24,15 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
         <div key={key} className="relative mb-20">
             <div>
                 <div className="absolute t-40">
-                    { // 수정중인 상태면 ? 수정완료,취소버튼 보이게. 수정중인 상태가 아니면 : 수정, 삭제 버튼 보이게
+                    {
                         isMarker
                             ? (<>
                                 <img src={markerImg} height="12" width="12" />
                             </>)
                             : <>
-                                {/* 아무것도 안 찍힘 */}
+                                {/* 마커 없는 경우 -> 아무것도 안 찍힘 */}
                             </>
                     }
-                    
                 </div>
             </div>
             <div className="pl-20">
@@ -45,25 +40,30 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
                     <div className="inline-block bold">
                         {userName}
                     </div>
-                    <div className="inline-block mx-10" >
+                    <div className="message-time inline-block mx-10" >
                         {time}
                     </div>
                     <div className="inline-block mx-10">
-                        <button onClick={() => playTimeWaveSurfer(startTime)}><img src={playButtonImg} height="12" width="10" /></button>
+                        <button onClick={() => playTimeWaveSurfer(startTime)} className="chattime-buttons">
+                            {/* <img src={playButtonImg} height="12" width="10" /> */}
+                            ▶︎
+                            </button>
                     </div>
                     <div className="inline-block">
                         { // 수정중인 상태면 ? 수정완료,취소버튼 보이게. 수정중인 상태가 아니면 : 수정, 삭제 버튼 보이게
                             isEdit
                                 ? (<>
-                                    <button onClick={handleEdit}>수정완료</button>
+                                    <button onClick={handleEdit} className="chattime-buttons">수정완료</button>
                                 </>)
                                 : <>
 
-                                    <button onClick={toggleIsEdit}>수정</button>
+                                    <button onClick={toggleIsEdit} className="chattime-buttons">수정</button>
                                 </>
                         }
-                        <button onClick={() => deleteChatItem(id)}>삭제</button>
-                        <button>메모 추가</button>
+                        <button onClick={() => deleteChatItem(id)} className="chattime-buttons">삭제</button>
+                        <button onClick={() => insertText(localContent)} className="chattime-buttons">메모장에 추가</button>
+                        <div>
+                        </div> 
                     </div>
 
                 </div>
@@ -78,10 +78,9 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
                                         onChange={(e) => { setLocalContent(e.target.value) }} />
                                 </>)
                                 : <>
-                                    {localContent}
+                                    {localContent} 
                                 </>
                         }
-
                     </div>
                 </div>
             </div>

@@ -11,11 +11,21 @@ exports.createRoom = async ({ roomId, publisher, timeString }) => {
   await createRoom({ roomId, publisher, timeString });
 };
 
+exports.findByRoomId = async (roomId) => {
+  const findRoom = await to(findByRoomId(roomId));
+  if (findRoom[1].length != 0) {
+    console.log("존재하는 방");
+    return findRoom[1][0];
+  } else {
+    console.log("존재하지 않는 방");
+    return null;
+  }
+};
+
 exports.validateRoomId = async (roomId) => {
   const findRoom = await to(findByRoomId(roomId));
-
-  console.log(findRoom[1]);
-
+  // console.log("!!!!@#!@#!@#", findRoom[1]);
+  // console.log(findRoom[1]);
   if (findRoom[1].length != 0) {
     console.log("존재하는 방");
     return false;
@@ -34,42 +44,61 @@ exports.toEditingRoom = async (roomId) => {
   let chatList = null;
 
   try {
-    chatList = JSON.parse(foundRoom.chatList);
+    chatList = foundRoom.chatList;
   } catch (err) {
     chatList = null;
   }
 
   let starList = null;
   try {
-    starList = JSON.parse(foundRoom.starList);
+    starList = foundRoom.starList;
   } catch (err) {
     starList = null;
   }
 
   let recordMuteList = null;
   try {
-    recordMuteList = JSON.parse(foundRoom.recordMuteList);
+    recordMuteList = foundRoom.recordMuteList;
   } catch (err) {
     recordMuteList = null;
   }
   return { chatList, starList, recordMuteList };
 };
 
-exports.createChat = async (roomId, chatList, starList, recordMuteList) => {
-  console.log("create chat!!", chatList);
+exports.createChat = async (roomId, chatListJson, starListJson, recordMuteListJson) => {
+  console.log("방 요청이 왔습니다!");
   const foundRoom = await findByRoomId(roomId);
   if (!foundRoom) {
     return false;
   }
 
-  const chatListStr = JSON.stringify(chatList);
-  const starListStr = JSON.stringify(starList);
-  const recordMuteListStr = JSON.stringify(recordMuteList);
+  let chatList = [];
+  if(!chatList) {
+    console.log("비었습니다!!!");
+  }
+  var keys = Object.keys(chatListJson);
+  keys.forEach(function(key){
+    chatList.push(chatListJson[key]);
+  })
+
+  let starList = [];
+  var keys = Object.keys(starListJson);
+  keys.forEach(function(key){
+    starList.push(starListJson[key]);
+  })
+
+  let recordMuteList = [];
+  var keys = Object.keys(recordMuteListJson);
+  keys.forEach(function(key){
+    recordMuteList.push(recordMuteListJson[key]);
+  })
+
   const filter = { roomId: roomId };
   const update = {
-    chatList: chatListStr,
-    starList: starListStr,
-    recordMuteList: recordMuteListStr,
+    isEnd: true,
+    chatList: chatList,
+    starList: starList,
+    recordMuteList: recordMuteList,
   };
 
   const room = await findRoomAndUpdate(filter, update);
