@@ -47,8 +47,8 @@ class Recognition extends Component {
     recognition.onresult = (event) => {
       if (sound_detect_check !== true) {
         texts = "";
-        this.state.start_time =
-          this.props.duringTime + (new Date().getTime() - this.props.enterTime);
+        this.state.start_time = new Date().getTime();
+          // this.props.duringTime + (new Date().getTime() - this.props.enterTime);
         sound_detect_check = true;
       }
       let texts = Array.from(event.results)
@@ -68,8 +68,8 @@ class Recognition extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    duringTime: state.user.duringTime,
-    enterTime: state.user.enterTime,
+    // duringTime: state.user.duringTime,
+    // enterTime: state.user.enterTime,
   };
 };
 

@@ -1,14 +1,7 @@
 const { OK, CREATED, BAD_REQUEST } =
-  require("../../config/statusCode").statusCode;
+require("../../config/statusCode").statusCode;
 require("dotenv").config();
 const roomServices = require("../../services/room");
-
-/*
-    POST /api/rooms/
-    * 방생성 오픈 API
-*/
-
-// 시간, 랜덤 방이름 생성
 
 function getTime() {
   var today = new Date();
@@ -16,12 +9,12 @@ function getTime() {
   var minutes = ("0" + today.getMinutes()).slice(-2);
   var seconds = ("0" + today.getSeconds()).slice(-2);
   var timeString = today.getTime();
-
   return timeString;
 }
 
 //방 생성 API
 exports.createRoom = async (req, res, next) => {
+  console.log("방 만들기!");
   try {
     var roomId = Math.random().toString(36).slice(-8);
     publisher = "A"; //임의
@@ -51,41 +44,41 @@ exports.createRoom = async (req, res, next) => {
 
 //방 입장 API
 exports.joinRoom = async (req, res, next) => {
-  try {
+  // try {
     const { roomId } = req.params;
-    const isVaild = await roomServices.validateRoomId(roomId); // 같은 이름의 방이 있는지 검증하는 로직
-    console.log("isVaild!!!", isVaild);
-
-    if (isVaild != true) {
-      // 같은 방이 있으면
-
-      //방 시작시간을 알려주는 로직이 들어가야 함
-      console.log("hello!");
-      const createTime = await roomServices.findRoomResponseTime(roomId);
-      // console.log(createTime);
-
-      timeString = getTime();
-
+    const foundRoom = await roomServices.findByRoomId(roomId);
+    if(!foundRoom) {
       res.status(CREATED).json({
-        message: "방입장 성공",
-        roomId: roomId,
-        createdAt: createTime,
-        enteredAt: timeString,
-        isValidRoom: true,
-      });
-    } else {
-      console.log("방이름이 중복되지않습니다.");
-      res.status(CREATED).json({
-        message: "방입장 실패",
+        message: "없는 방입니다",
         isValidRoom: false,
       });
     }
-  } catch (error) {
-    res.status(BAD_REQUEST).json({
-      message: "방입장 실패",
-      isValidRoom: false,
-    });
-  }
+    else {
+      console.log("방찾음!!", foundRoom)
+      console.log(foundRoom.isEnd);
+      if(foundRoom.isEnd) {
+        console.log("종료된 회의!!");
+        res.status(CREATED).json({
+          message: "종료된 회의 입니다.",
+          isValidRoom: true,
+          isEnd: true
+        });
+      } else {
+        console.log("안종료된 회의!!");
+        // 같은 방이 있으면
+        //방 시작시간을 알려주는 로직이 들어가야 함
+        const createTime = await roomServices.findRoomResponseTime(roomId);
+        timeString = getTime();
+        res.status(CREATED).json({
+          message: "방입장 성공",
+          roomId: roomId,
+          createdAt: createTime,
+          enteredAt: timeString,
+          isValidRoom: true,
+          isEnd: false
+        });
+      }
+    } 
 };
 
 exports.getEditingRoom = async (req, res, next) => {

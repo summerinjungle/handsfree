@@ -6,13 +6,13 @@ exports.createRoom = async ({roomId, publisher, timeString}) => {
           const room = await Room.create({
             roomId: roomId,
             publisher: publisher,
-            isRecording: true,
+            isEnd: true,
             recordingUrl: "",
             createdAt: timeString,
             emailList: [],
-            chatList: "",
-            starList: "",
-            recordMuteList: ""
+            chatList: [],
+            starList: [],
+            recordMuteList: []
           });
         } catch (err) {
           console.log(err);
