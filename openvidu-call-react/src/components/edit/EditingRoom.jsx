@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "./edit.css";
 import mainLogo from "../../assets/images/mainLogo.png";
-import testMp3File from "./track1.mp3";
 import ChatItem from "../edit/chat/ChatItem";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
@@ -17,6 +16,7 @@ import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
+import { getUserNameInCookie } from "../../main/cookie";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -109,7 +109,7 @@ const EditingRoom = ({ sessionId }) => {
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
         setChatList(chatList);
-        console.log("WWWWW", response);
+        console.log("editingroom response : ", response);
 
         // [잡담 구간] 표시
         console.log("RecordMuteList", recordMuteList);
@@ -225,7 +225,7 @@ const EditingRoom = ({ sessionId }) => {
                 <ChatItem
                   key={recordItem.id}
                   id={recordItem.id}
-                  userName={recordItem.nickname}
+                  userName={getUserNameInCookie()}
                   time={recordItem.time}
                   startTime={recordItem.startTime}
                   isMarker={recordItem.marker}
