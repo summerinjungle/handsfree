@@ -236,7 +236,7 @@ class VideoRoomHandsFree extends Component {
       .catch((err) => {
         console.log("err === ", err);
       });
-    this.startRecordingChk(this.props.sessionId);
+    
     const mySession = this.state.session;
 
     if (mySession) {
@@ -261,6 +261,7 @@ class VideoRoomHandsFree extends Component {
   meetingEnd = async () => {
     if (this.props.isPublisher) {
       this.forceDisconnect(this.props.sessionId);
+      this.startRecordingChk(this.props.sessionId);
       this.setState({
         terminate: true,
       });
