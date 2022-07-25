@@ -86,12 +86,12 @@ const EditingRoom = ({ sessionId }) => {
     if (wavesurfer) {
       console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
       //   wavesurfer.current.load(recordFile.url);
-        wavesurfer.current.load(testMp3File)
-      // wavesurfer.current.load(
-      //   "https://hyunseokmemo.shop/openvidu/recordings/" +
-      //     sessionId +
-      //     "/ownweapon.webm"
-      // ); // OPEN_VIDU 주소 전달해주면 됨
+        // wavesurfer.current.load(testMp3File)
+      wavesurfer.current.load(
+        "https://hyunseokmemo.shop/openvidu/recordings/" +
+          sessionId +
+          "/ownweapon.webm"
+      ); // OPEN_VIDU 주소 전달해주면 됨
     }
   }, []);
 
