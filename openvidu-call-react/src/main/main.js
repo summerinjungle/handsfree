@@ -3,11 +3,7 @@ import "./main.css";
 import mainLogo from "../assets/images/mainLogo.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {
-  changeSession,
-  changeIsPublisher,
-  changeUserName,
-} from "../store.js";
+import { changeSession, changeIsPublisher, changeUserName } from "../store.js";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { getTokenInCookie } from "./cookie";
 import axios from "axios";
@@ -67,7 +63,7 @@ const Main = () => {
           if (response.data.isEnd) {
             alert("종료된 회의입니다.");
             return;
-          } 
+          }
           const time = date.getTime();
           dispatch(changeSession(enterCode));
           dispatch(changeIsPublisher(false));
@@ -159,7 +155,9 @@ const Main = () => {
           </p>
           {/* <p><button onClick={() => console.log(reduxCheck)}>리덕스 보기</button></p> */}
           {/* <p><button onClick={() => console.log(getUserNameInCookie())}>이름 보기</button></p> */}
-          <p><button onClick={() => navigate("/meeting")}>그냥 입장하기</button></p>
+          <p>
+            <button onClick={() => navigate("/meeting")}>그냥 입장하기</button>
+          </p>
           <p>
             <button
               onClick={() => {
