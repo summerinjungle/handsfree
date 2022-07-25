@@ -188,7 +188,14 @@ class VideoRoomHandsFree extends Component {
     }
     localUser.setNickname(this.state.myUserName);
     localUser.setConnectionId(this.state.session.connection.connectionId);
-    localUser.setScreenShareActive(false);
+
+    if (this.props.isPublisher === true) {
+      localUser.setScreenShareActive(true);
+    } else {
+      localUser.setScreenShareActive(false);
+    }
+
+    // localUser.setScreenShareActive(false);
     localUser.setStreamManager(publisher);
     this.subscribeToUserChanged();
     this.subscribeToStreamDestroyed();
@@ -266,6 +273,16 @@ class VideoRoomHandsFree extends Component {
   };
 
   meetingEnd = async () => {
+    // ****************** 꼼수 ********************
+    if (this.props.isPublisher) {
+      // setScreenShareActive(true);
+      this.state.localUser.setScreenShareActive(true);
+    } else {
+      this.state.localUser.setScreenShareActive(false);
+      // this.state.localUser.screenShareActive = false;
+    }
+    // ********************************************
+
     if (this.props.isPublisher) {
       this.forceDisconnect(this.props.sessionId);
       this.startRecordingChk(this.props.sessionId);
@@ -313,7 +330,7 @@ class VideoRoomHandsFree extends Component {
   };
 
   deleteSubscriber(stream) {
-    console.log("-------deleteSubscriber------------", stream);
+    
     const remoteUsers = this.state.subscribers;
     const userStream = remoteUsers.filter(
       (user) => user.getStreamManager().stream === stream
@@ -325,6 +342,29 @@ class VideoRoomHandsFree extends Component {
         subscribers: remoteUsers,
       });
     }
+
+    console.log("-------deleteSubscriber------------", stream);
+    console.log("-------deleteSubscriber 2------------", remoteUsers.filter(
+      (user) => user.getStreamManager().stream === stream
+    ));
+    console.log(userStream, index);
+    console.log("Important", userStream.screenShareActive);
+    if (userStream.screenShareActive) {
+      // 회의 종료 알림창 확인창
+      if (
+        window.confirm(
+          "방장이 회의를 종료하였습니다.\n" +
+            "편집실로 아동하시겠습니까?\n" +
+            "[취소]를 누르시면 메인 페이지로 이동합니다."
+        )
+      ) {
+        // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
+        this.props.navigate("meeting/" + this.props.sessionId + "/edit");
+      } else {
+        // [취소] 클릭 -> Lobby로 이동
+        this.props.navigate("");
+      }
+    } 
   }
 
   subscribeToStreamCreated() {
@@ -354,26 +394,13 @@ class VideoRoomHandsFree extends Component {
     console.log("-------subscribeToStreamDestroyed------------");
     // On every Stream destroyed...
     this.state.session.on("streamDestroyed", (event) => {
-      console.log("Destroyed", this.state.localUser.connectionId);
+      console.log("Destroyed", this.state.localUser);
+      console.log("Destroyed", event)
 
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
       event.preventDefault();
       this.updateLayout();
-      // 회의 종료 알림창 확인창
-      if (
-        window.confirm(
-          "방장이 회의를 종료하였습니다.\n" +
-            "편집실로 아동하시겠습니까?\n" +
-            "[취소]를 누르시면 메인 페이지로 이동합니다."
-        )
-      ) {
-        // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-        this.props.navigate("meeting/" + this.props.sessionId + "/edit");
-      } else {
-        // [취소] 클릭 -> Lobby로 이동
-        this.props.navigate("");
-      }
     });
   }
 
