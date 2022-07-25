@@ -278,8 +278,8 @@ class ChatHandsFree extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    duringTime: state.user.duringTime,
-    enterTime: state.user.enterTime,
+    // duringTime: state.user.duringTime,
+    // enterTime: state.user.enterTime,
   };
 };
 

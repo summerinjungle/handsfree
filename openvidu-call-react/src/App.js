@@ -9,11 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import VoiceRoom from "./components/voiceroom/VoiceRoom";
 import {
   changeSession,
-  changeDuringTime,
   changeIsPublisher,
-  changeEnterTime,
   changeUserName,
-  changeCreatedAt,
 } from "./store.js";
 
 const App = () => {
@@ -29,10 +26,7 @@ const App = () => {
     sessionId = data.sessionId;
     dispatch(changeSession(sessionId));
     dispatch(changeIsPublisher(data.isPublisher));
-    dispatch(changeDuringTime(data.duringTime));
-    dispatch(changeEnterTime(data.enterTime));
     dispatch(changeUserName(getUserNameInCookie()));
-    dispatch(changeCreatedAt(data.createdAt));
   }
   let meetingPath = "/meeting/" + sessionId;
   let editPath = meetingPath + "/edit";
