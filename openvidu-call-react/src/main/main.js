@@ -5,11 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   changeSession,
-  changeDuringTime,
   changeIsPublisher,
-  changeEnterTime,
   changeUserName,
-  changeCreatedAt
 } from "../store.js";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { getTokenInCookie } from "./cookie";
@@ -43,19 +40,12 @@ const Main = () => {
       .then(function (response) {
         console.log(response.data);
         // sessionId값, 방장권한, 진행시간 0, 입장시간
-        const time = date.getTime();
         dispatch(changeSession(response.data.roomId));
         dispatch(changeIsPublisher(true));
-        dispatch(changeDuringTime(0));
-        dispatch(changeEnterTime(time));
         dispatch(changeUserName(getUserNameInCookie()));
-        dispatch(changeCreatedAt(Number(response.data.createdAt)));
         const obj = {
           isPublisher: true,
           sessionId: response.data.roomId,
-          duringTime: 0,
-          enterTime: time,
-          createdAt: Number(response.data.createdAt)
         };
         localStorage.setItem("redux", JSON.stringify(obj));
         console.log("저장됨", obj);
@@ -78,29 +68,17 @@ const Main = () => {
             alert("종료된 회의입니다.");
             return;
           } 
-
           const time = date.getTime();
-          let duringTime =
-            response.data.enteredAt - Number(response.data.createdAt);
-
           dispatch(changeSession(enterCode));
           dispatch(changeIsPublisher(false));
-          dispatch(changeDuringTime(duringTime));
           dispatch(changeUserName(getUserNameInCookie()));
-          dispatch(changeEnterTime(time));
-          dispatch(changeCreatedAt(Number(response.data.createdAt)));
           const obj = {
             isPublisher: false,
             sessionId: enterCode,
-            duringTime: duringTime,
-            enterTime: time,
-            createdAt: Number(response.data.createdAt)
           };
           localStorage.setItem("redux", JSON.stringify(obj));
           console.log("저장됨", obj);
-
           navigate("/meeting/" + enterCode);
-
         } else {
           alert("입장코드를 다시 입력해주세요");
         }
@@ -126,7 +104,7 @@ const Main = () => {
                 navigator.mediaDevices
                   .getUserMedia({
                     audio: true,
-                    video: true,
+                    video: { width: 640, height: 360 },
                   })
                   .then((stream) => {
                     // console.log("입장 버튼 = >", stream);
@@ -134,8 +112,9 @@ const Main = () => {
                   })
                   .catch(() => {
                     alert(
-                      "미디어 접근이 거절되었습니다. 설정에서 승인후 입장가능 합니다."
+                      "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다."
                     );
+                    createMeeting();
                   });
               }}
             >
@@ -161,15 +140,16 @@ const Main = () => {
                   : navigator.mediaDevices
                       .getUserMedia({
                         audio: true,
-                        video: { width: 320, height: 180 },
+                        video: { width: 640, height: 360 },
                       })
                       .then((stream) => {
                         enterMeeting();
                       })
                       .catch(() => {
                         alert(
-                          "미디어접근이 거절되었습니다. 설정에서 승인후 입장가능 합니다."
+                          "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다."
                         );
+                        enterMeeting();
                       });
               }}
             >
@@ -177,17 +157,9 @@ const Main = () => {
               회의 참여하기
             </button>
           </p>
-          <p>
-            <button onClick={() => console.log(reduxCheck)}>리덕스 보기</button>
-          </p>
-          <p>
-            <button onClick={() => console.log(getUserNameInCookie())}>
-              이름 보기
-            </button>
-          </p>
-          <p>
-            <button onClick={() => navigate("/meeting")}>그냥 입장하기</button>
-          </p>
+          {/* <p><button onClick={() => console.log(reduxCheck)}>리덕스 보기</button></p> */}
+          {/* <p><button onClick={() => console.log(getUserNameInCookie())}>이름 보기</button></p> */}
+          <p><button onClick={() => navigate("/meeting")}>그냥 입장하기</button></p>
           <p>
             <button
               onClick={() => {

@@ -25,13 +25,11 @@ const EditingRoom = ({ sessionId }) => {
     return state;
   });
 
-  let gap =
-    parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) /
-      1000 +
-    1;
+  // let gap = parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) / 1000 -1;
+  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1000;
   console.log(localStorage.getItem("createAt"));
   console.log(reduxCheck.user.createdAt);
-  console.log("@@@@@@@@", gap);
+  // console.log("@@@@@@@@", gap);
 
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
@@ -97,27 +95,6 @@ const EditingRoom = ({ sessionId }) => {
     }
   }, []);
 
-  /* 일단 대기 */
-  function playTimeWaveSurfer(startTime) {
-    if (startTime) {
-      wavesurfer.current.play(parseFloat(startTime) / 1000 - gap);
-    } else {
-      console.log("timeWaveSurfer 값이 존재하지 않습니다.");
-    }
-  }
-
-  //   useEffect(() => {
-  //     console.log(parseFloat(timeWaveSurfer) / 1000);
-  //     wavesurfer.current.play(parseFloat(timeWaveSurfer) / 1000 - 8);
-  // }, [timeWaveSurfer]);
-
-  /**
-   * 음성기록 리스트 내 아이템 삭제 함수
-   */
-
-  // function deleteChatItem(paramId) {
-  //   setChatList(chatList.filter((chat) => chat.id !== paramId));
-  // }
 
   /**
    * [GET] http://{BASE_URL}/api/rooms/{roomId}/editingroom
@@ -138,30 +115,23 @@ const EditingRoom = ({ sessionId }) => {
 
         // [잡담 구간] 표시
         console.log("RecordMuteList", recordMuteList);
-        console.log("gap!!!!!!!!!!!!!!!!@@@@@", gap);
         for (let i = 0; i < recordMuteList.length; i++) {
-          console.log("left!!!!!!", parseFloat(recordMuteList[i].left) / 1000);
-          console.log(
-            "right!!!!!!",
-            parseFloat(recordMuteList[i].right) / 1000
-          );
-          if (recordMuteList[i].left) {
-            // 없을 때 추가 안 해줌(예외 처리)
-            wavesurfer.current.regions.add({
-              start: parseFloat(recordMuteList[i].left) / 1000 - gap,
-              end: parseFloat(recordMuteList[i].right) / 1000 - gap,
-              color: "#33CEBFAC",
-            });
-          }
+          console.log("left!!!!!!", (recordMuteList[i].left - sessionStartTime) / 1000);
+          console.log("right!!!!!!", (recordMuteList[i].right - sessionStartTime) / 1000);
+
+          wavesurfer.current.regions.add({
+            start: parseFloat(recordMuteList[i].left - sessionStartTime) / 1000,
+            end: parseFloat(recordMuteList[i].right - sessionStartTime) / 1000,
+            color: "#33CEBFAC",
+          });
         }
 
         // [막둥아 별표] 표시
         console.log("starList", starList);
-        console.log("gap!!!!!!!!!!!!!!!!@@@@@", gap);
         for (let i = 0; i < starList.length; i++) {
           wavesurfer.current.addMarker({
-            time: parseFloat(starList[i].startTime) / 1000 - gap,
-            label: "V1",
+            time: parseFloat(starList[i].startTime - sessionStartTime) / 1000,
+            label: "별표",
             color: "#FF7715",
             position: "top",
           });
@@ -175,8 +145,8 @@ const EditingRoom = ({ sessionId }) => {
   /* 음성기록 Item에서 [재생]버튼 클릭 시 실행 */
   function playTimeWaveSurfer(startTime) {
     if (startTime) {
-      console.log(parseFloat(startTime) / 1000 - gap);
-      wavesurfer.current.play(parseFloat(startTime) / 1000 - gap);
+      console.log(parseFloat(startTime - sessionStartTime) / 1000);
+      wavesurfer.current.play(parseFloat(startTime - sessionStartTime) / 1000);
     } else {
       console.log("timeWaveSurfer 값이 존재하지 않습니다.");
     }

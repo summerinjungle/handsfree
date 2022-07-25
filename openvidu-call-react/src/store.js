@@ -4,22 +4,13 @@ let user = createSlice({
   name: "user",
   initialState: {
     sessionId: "Normal",
-    duringTime: 0,
-    enterTime: 0,
     userName: "",
     isPublisher: "",
     messageList: [],
-    createdAt: 0,
   },
   reducers: {
     changeSession(state, roomId) {
       state.sessionId = roomId.payload;
-    },
-    changeDuringTime(state, duringTime) {
-      state.duringTime = duringTime.payload;
-    },
-    changeEnterTime(state, time) {
-      state.enterTime = time.payload;
     },
     changeUserName(state, name) {
       state.userName = name.payload;
@@ -29,9 +20,6 @@ let user = createSlice({
     },
     changeMessageList(state, msgList) {
       state.messageList = msgList.payload;
-    },
-    changeCreatedAt(state, time) {
-      state.createdAt = time.payload;
     },
   },
 });
@@ -44,10 +32,7 @@ export default configureStore({
 
 export let {
   changeSession,
-  changeDuringTime,
-  changeEnterTime,
   changeUserName,
   changeIsPublisher,
   changeMessageList,
-  changeCreatedAt,
 } = user.actions;
