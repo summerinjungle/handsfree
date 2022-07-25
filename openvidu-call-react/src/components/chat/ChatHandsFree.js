@@ -90,7 +90,7 @@ class ChatHandsFree extends Component {
           }
           messageList.push({
             connectionId: event.from.connectionId,
-            nickname: data.nickname,
+            userName: data.nickname,
             message: data.message,
             time: data.time,
             startTime: data.startTime,
