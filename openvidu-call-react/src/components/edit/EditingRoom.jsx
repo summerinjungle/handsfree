@@ -26,7 +26,7 @@ const EditingRoom = ({ sessionId }) => {
   });
 
   // let gap = parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) / 1000 -1;
-  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1000;
+  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1400;
   console.log(localStorage.getItem("createAt"));
   console.log(reduxCheck.user.createdAt);
   // console.log("@@@@@@@@", gap);
