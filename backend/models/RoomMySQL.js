@@ -11,7 +11,7 @@ const roomSchema = new Schema({
         required: true,
         maxlength: 50
     },
-    isEnd: {    //회의 종료 여부 
+    isRecording: {    //기록 중지 여부
         type: Boolean,
         required: true
     },
@@ -26,40 +26,15 @@ const roomSchema = new Schema({
         type: Array,
         trim: true,
     },
-    chatList: [
-        new Schema({
-            id : {
-                type: Number,
-            },
-            nickname : {
-                type: String,
-            },
-            message: {
-                type: String,
-            },
-            startTime: {
-                type: String
-            }
-        })
-    ],
-
-    starList: [
-        new Schema({
-            startTime : {
-                type: String,
-            }
-        })
-    ],
-    recordMuteList: [
-        new Schema({
-            left : {
-                type: String,
-            },
-            right : {
-                type: String,
-            }
-        })
-    ]
+    chatList: {
+        type: String,
+    },
+    starList: {
+        type: String,
+    },
+    recordMuteList: {
+        type: String
+    }
 });
 
 module.exports = model('Room', roomSchema);
