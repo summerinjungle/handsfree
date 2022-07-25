@@ -166,11 +166,17 @@ class ChatHandsFree extends Component {
       }
       this.setState({ isRecog: true });
     } else if (
-      data.text.includes("막둥아 별표") ||
-      data.text.includes("막둥아 대표") ||
       data.text.includes("막둥아 발표") ||
-      data.text.includes("박종화 별표") ||
-      data.text.includes("박종화 대표")
+      data.text.includes("막둥아 대표") ||
+      data.text.includes("막둥아 별표") ||
+
+      data.text.includes("박동화 발표") ||
+      data.text.includes("박동화 대표") ||
+      data.text.includes("박동화 별표") ||
+      
+      data.text.includes("박종화 발표") ||
+      data.text.includes("박종화 대표") ||
+      data.text.includes("박종화 별표")
     ) {
       this.setState({ isStar: true });
     }

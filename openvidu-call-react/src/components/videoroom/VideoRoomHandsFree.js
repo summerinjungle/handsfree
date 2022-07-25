@@ -63,6 +63,10 @@ class VideoRoomHandsFree extends Component {
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
     this.joinSession();
+  
+    // window.onbeforeunload = function() {
+    //   return "";
+    // }.bind(this);
   }
 
   componentWillUnmount() {
