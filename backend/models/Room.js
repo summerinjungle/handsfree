@@ -45,7 +45,7 @@ const roomSchema = new Schema({
 
     starList: [
         new Schema({
-            time : {
+            startTime : {
                 type: String,
             }
         })

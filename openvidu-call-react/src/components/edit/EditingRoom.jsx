@@ -16,8 +16,6 @@ import MarkersPlugin from "wavesurfer.js/dist/plugin/wavesurfer.markers.min.js";
 import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
-// import Voice from "../VoiceRoom/Voice";
-import VoiceRoom from "../voiceroom/VoiceRoom";
 import { useNavigate } from "react-router-dom";
 
 const EditingRoom = ({ sessionId }) => {
@@ -26,7 +24,7 @@ const EditingRoom = ({ sessionId }) => {
   });
 
   // let gap = parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) / 1000 -1;
-  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1000;
+  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1400;
   console.log(localStorage.getItem("createAt"));
   console.log(reduxCheck.user.createdAt);
   // console.log("@@@@@@@@", gap);
@@ -63,19 +61,19 @@ const EditingRoom = ({ sessionId }) => {
     wavesurfer.current = WaveSurfer.create({
       container: ".audio",
       waveColor: "#FFFFFF",
-      progressColor: "red",
+      progressColor: "#FF7833",
       barWidth: 3,
       plugins: [
         RegionsPlugin.create({}),
         MarkersPlugin.create({}),
         CursorPlugin.create({
           showTime: true,
-          opacity: 1,
+          opacity: 0.9,
           customShowTimeStyle: {
-            "background-color": "red",
+            "background-color": "#FF7833",
             color: "#fff",
             padding: "6px",
-            "font-size": "15px",
+            "font-size": "12px",
           },
         }),
       ],
@@ -122,7 +120,10 @@ const EditingRoom = ({ sessionId }) => {
           wavesurfer.current.regions.add({
             start: parseFloat(recordMuteList[i].left - sessionStartTime) / 1000,
             end: parseFloat(recordMuteList[i].right - sessionStartTime) / 1000,
-            color: "#33CEBFAC",
+            // color: "#CEBFAC",
+            color: "rgba(228, 209, 185, 0.7)",
+            drag: false,
+            resize: false,
           });
         }
 
@@ -131,7 +132,7 @@ const EditingRoom = ({ sessionId }) => {
         for (let i = 0; i < starList.length; i++) {
           wavesurfer.current.addMarker({
             time: parseFloat(starList[i].startTime - sessionStartTime) / 1000,
-            label: "별표",
+            label: "",
             color: "#FF7715",
             position: "top",
           });
@@ -176,7 +177,7 @@ const EditingRoom = ({ sessionId }) => {
       document.querySelector(".contents-right")
     );
     targetString = targetString.replace("음성 기록", "<h2>음성 기록</h2>");
-    targetString = targetString.replace(/재생/g, "");
+    targetString = targetString.replace(/▶︎/g, "");
     targetString = targetString.replace(/수정/g, "");
     targetString = targetString.replace(/삭제/g, "");
     targetString = targetString.replace(/메모장에 추가/g, "");
@@ -213,7 +214,7 @@ const EditingRoom = ({ sessionId }) => {
       <hr className='my-0'></hr>
       <div className='contents'>
         <div className='contents-left'>
-          <div className='contents-label'>메모</div>
+          <div className='contents-label'>메모장</div>
           <TextEditor sessionId={sessionId} />
         </div>
         <div className='contents-right'>
