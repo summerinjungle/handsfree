@@ -225,7 +225,7 @@ const EditingRoom = ({ sessionId }) => {
                 <ChatItem
                   key={recordItem.id}
                   id={recordItem.id}
-                  userName={getUserNameInCookie()}
+                  userName={recordItem.userName}
                   time={recordItem.time}
                   startTime={recordItem.startTime}
                   isMarker={recordItem.marker}
