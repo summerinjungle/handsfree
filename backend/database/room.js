@@ -6,7 +6,7 @@ exports.createRoom = async ({roomId, publisher, timeString}) => {
           const room = await Room.create({
             roomId: roomId,
             publisher: publisher,
-            isEnd: true,
+            isEnd: false,
             recordingUrl: "",
             createdAt: timeString,
             emailList: [],
