@@ -434,12 +434,6 @@ class VideoRoomHandsFree extends Component {
   }
 
   createSession(sessionId) {
-    var today = new Date();
-    var hours = ("0" + today.getHours()).slice(-2);
-    var minutes = ("0" + today.getMinutes()).slice(-2);
-    var seconds = ("0" + today.getSeconds()).slice(-2);
-    var timeString = today.getTime();
-    console.log("CreateAt", timeString);
 
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({
@@ -527,7 +521,7 @@ class VideoRoomHandsFree extends Component {
    * @param {*} sessionId
    */
   stopRecording(sessionId) {
-    console.log("stop record ~!~!~");
+    
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({});
       axios
@@ -565,14 +559,14 @@ class VideoRoomHandsFree extends Component {
         },
       })
       .then((response) => {
-        console.log("forceDisconnect 성공", response);
+      
         // resolve(response.data.token);
       })
       .catch((error) => console.log("force error", error));
   };
 
   startRecordingChk = async (sessionId) => {
-    console.log("startRecordingChk 함수 진입");
+
     await axios
       .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/recordings/" + sessionId, {
         headers: {
@@ -583,7 +577,7 @@ class VideoRoomHandsFree extends Component {
       })
       .then((response) => {
         localStorage.setItem("createAt", response.data.createdAt);
-        console.log("startRecordingChk 성공", response);
+    
       })
       .catch((error) => {
         console.log("error !!", error);
