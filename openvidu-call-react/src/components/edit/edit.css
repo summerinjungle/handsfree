@@ -232,6 +232,10 @@
 	overflow: scroll;
 }
 
+#editingroom-container .contents-right .recorditems .chattime-buttons {
+	color: #6A573D;
+} 
+
 .message-time {
 	font-size: 14px;
 	color: #B5B5B5

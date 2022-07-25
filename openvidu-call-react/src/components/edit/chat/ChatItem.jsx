@@ -44,7 +44,7 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
                         {time}
                     </div>
                     <div className="inline-block mx-10">
-                        <button onClick={() => playTimeWaveSurfer(startTime)}>
+                        <button onClick={() => playTimeWaveSurfer(startTime)} className="chattime-buttons">
                             {/* <img src={playButtonImg} height="12" width="10" /> */}
                             ▶︎
                             </button>
@@ -53,15 +53,15 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
                         { // 수정중인 상태면 ? 수정완료,취소버튼 보이게. 수정중인 상태가 아니면 : 수정, 삭제 버튼 보이게
                             isEdit
                                 ? (<>
-                                    <button onClick={handleEdit}>수정완료</button>
+                                    <button onClick={handleEdit} className="chattime-buttons">수정완료</button>
                                 </>)
                                 : <>
 
-                                    <button onClick={toggleIsEdit}>수정</button>
+                                    <button onClick={toggleIsEdit} className="chattime-buttons">수정</button>
                                 </>
                         }
-                        <button onClick={() => deleteChatItem(id)}>삭제</button>
-                        <button onClick={() => insertText(localContent)}>메모장에 추가</button>
+                        <button onClick={() => deleteChatItem(id)} className="chattime-buttons">삭제</button>
+                        <button onClick={() => insertText(localContent)} className="chattime-buttons">메모장에 추가</button>
                         <div>
                         </div> 
                     </div>
