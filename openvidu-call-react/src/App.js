@@ -6,12 +6,7 @@ import EditingRoom from "./components/edit/EditingRoom.jsx";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "./main/cookie";
 import { useSelector, useDispatch } from "react-redux";
-import VoiceRoom from "./components/voiceroom/VoiceRoom";
-import {
-  changeSession,
-  changeIsPublisher,
-  changeUserName,
-} from "./store.js";
+import { changeSession, changeIsPublisher, changeUserName } from "./store.js";
 
 const App = () => {
   const navigate = useNavigate();
@@ -49,7 +44,6 @@ const App = () => {
           element={<EditingRoom sessionId={sessionId} />}
         ></Route>
         <Route path={"/*"} element={<div> 없는페이지 입니다. </div>} />
-        <Route path={"/voice"} element={<VoiceRoom />} />
       </Routes>
     </div>
   );
