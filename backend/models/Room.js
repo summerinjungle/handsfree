@@ -31,7 +31,7 @@ const roomSchema = new Schema({
             id : {
                 type: Number,
             },
-            userName : {
+            nickName : {
                 type: String,
             },
             message: {
