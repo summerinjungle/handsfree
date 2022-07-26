@@ -87,8 +87,7 @@ const EditingRoom = ({ sessionId }) => {
       // wavesurfer.current.load(testMp3File)
       wavesurfer.current.load(
         "https://hyunseokmemo.shop/openvidu/recordings/" +
-          // sessionId +
-          "liplrmkl"+
+          sessionId +
           "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
     }
