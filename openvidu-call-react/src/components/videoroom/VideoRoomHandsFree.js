@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./VideoRoomHandsFree.css";
 import { OpenVidu } from "openvidu-browser";
-// import { OpenViduLogger } from "OpenViduLogger";
 import StreamHandFree from "../stream/StreamHandFree";
 import DialogExtensionComponent from "../dialog-extension/DialogExtension";
 import ChatHandsFree from "../chat/ChatHandsFree";
@@ -10,7 +9,6 @@ import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "../toolbar/ToolbarComponent";
 import { connect } from "react-redux";
-import { OpenViduLoggerConfiguration } from "openvidu-browser/lib/OpenViduInternal/Logger/OpenViduLoggerConfiguration";
 
 var localUser = new UserModel();
 
@@ -194,8 +192,6 @@ class VideoRoomHandsFree extends Component {
     } else {
       localUser.setScreenShareActive(false);
     }
-
-    // localUser.setScreenShareActive(false);
     localUser.setStreamManager(publisher);
     this.subscribeToUserChanged();
     this.subscribeToStreamDestroyed();
@@ -273,16 +269,6 @@ class VideoRoomHandsFree extends Component {
   };
 
   meetingEnd = async () => {
-    // ****************** 꼼수 ********************
-    if (this.props.isPublisher) {
-      // setScreenShareActive(true);
-      this.state.localUser.setScreenShareActive(true);
-    } else {
-      this.state.localUser.setScreenShareActive(false);
-      // this.state.localUser.screenShareActive = false;
-    }
-    // ********************************************
-
     if (this.props.isPublisher) {
       this.forceDisconnect(this.props.sessionId);
       this.startRecordingChk(this.props.sessionId);
