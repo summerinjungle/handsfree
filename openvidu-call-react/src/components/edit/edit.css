@@ -42,33 +42,49 @@
 	width: 100%;
 	box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.3);
 	font-family: "Roboto", sans-serif;
-	position: absolute;
+	/* position: absolute; */
 	/* border-radius: 10px; */
+	position: absolute;
+	top: 84.3%;
 	overflow: hidden;
-	margin: 40px auto;
+	/* margin: 40px auto; */
 	padding : 0px 0px;
-  }
+}
   
-  .audio-container .audio {
+
+.audiobar {
 	background: #998A78;
+	height: 70px;
+	margin-top: 20px;
+	/* padding-top: 5px; */
+}
+
+
+.audio {
+	background:#998A78;
 	width: 100%;
-	/* height: 125px; */
-  }
-  
+	position: relative;
+	/* margin-top: 20px; */
+	/* height: 80px; */
+	top: 10%;
+	/* display: block; */
+}
+
   .audio-container .track-name {
-	position: absolute;
-	top: 8px;
-	/* left: 8px; */
-	color: #fff;
-	
-	background: rgba(0, 0, 0, 0.7);
-	/* padding: 8px 32px; */
-	/* border-radius: 10px; */
-	font-size: 13px;
+		/* margin-top: 50px; */
+		position: absolute;
+		top: 8px;
+		/* left: 8px; */
+		color: #fff;
+		
+		background: rgba(0, 0, 0, 0.7);
+		/* padding: 8px 32px; */
+		/* border-radius: 10px; */
+		font-size: 13px;
   }
   
   .audio-container .btn {
-	padding: 16px;
+	padding: 10px;
 	width: 24px;
 	/* margin-right: 8px; */
 	cursor: pointer;
@@ -160,7 +176,6 @@
 .quill {
 	width: 582px;
 	height: 400px;
-
 }
  
 
@@ -168,8 +183,16 @@
 	/* width: 10%; */
 	height: 30px;
 	margin-top: 8px;
-	margin-left: 5px;
+	margin-left: 31%;
 }
+
+/* .header-logo {
+	position: relative;
+	height: 30px;
+	left: 20%;
+	margin-top: 8px;
+} */
+
 
 .text-right {
 	text-align: right;
@@ -199,8 +222,8 @@
 
 #editingroom-container .contents-label {
 	display: inline-block;
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-top: 15px;
+	margin-bottom: 20px;
 	font-weight: 700;
 	font-size: 20px;
 }
@@ -209,27 +232,28 @@
 	display: inline-block;
 	margin-bottom: 10px;
 	position: relative;
-	padding: 6px 50px;
-	width: 45%;
-	border-right: 2px solid #000000;
-	border-color: #F5F0E8;
+	left: 15.5%;
+	width: 40%;
+	/* border-right: 2px solid #000000; */
+	/* border-color: #F5F0E8; */
 }
 
 #editingroom-container .contents-left .textarea{
 	width: 100%;
-	height: 500px;
 }
 
 
 #editingroom-container .contents-right {
 	display: inline-block;
-	padding: 6px 75px 6px 70px;
-	width: 35%;
+	position: absolute;
+	left: 61.5%;
+	/* padding: 6px 75px 6px 70px; */
+	width: 23%;
 }
 
 #editingroom-container .contents-right .recorditems{
-	max-height: 500px;
-	overflow: scroll;
+	max-height: 470px;
+	overflow:scroll;
 }
 
 #editingroom-container .contents-right .recorditems .chattime-buttons {
@@ -241,55 +265,85 @@
 	color: #B5B5B5
 }
 
-
-.download {
-	box-shadow:inset 0px 1px 0px 0px #efdcfb;
-	background-color:#dfaffa;
-	border-radius:6px;
-	border:1px solid #c584f3;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:6px 24px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #9752cc;
-	margin-right: 19px;
-}
-
-.download2 {
-	box-shadow:inset 0px 1px 0px 0px #efdcfb;
-	background-color:#632488;
-	border-radius:6px;
-	border:1px solid #1e072f;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:6px 24px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #9752cc;
-	margin-right: 19px;
-}
-
 .exit{
 	/* box-shadow:inset 0px 1px 0px 0px #1564ad; */
   /* margin-top: 6px; */
-	background-color:#79bbff;
+	background-color:#6A573D;
 	border-radius:6px;
-	border:1px solid #337bc4;
+	border:0px solid #6A573D;
 	/* display:inline-block; */
-	cursor:pointer;
+	/* cursor:pointer; */
 	color:#ffffff;
-	font-family:Arial;
-	font-size:15px;
+	/* font-family:Arial; */
+	font-size:14px;
 	font-weight:bold;
 	padding:6px 24px;
 	/* text-decoration:none; */
-	text-shadow:0px 1px 0px #528ecc;
-	margin-right: 19px;
+	/* text-shadow:0px 1px 0px #528ecc; */
+	/* margin-right: 20px; */
+	position: absolute;
+	right: 0.7%;
+	top: 1%;
+	/* bottom: 10%; */
+	/* margin-bottom: 10%; */
+}
+.exit:hover{
+	background-color:#DFB48E;
+	color: black;
+}
+
+
+.antsound {
+	background-color:#6A573D;
+	color: white;
+	border:0px;
+	border-radius:6px;
+	/* float: center; */
+	/* top: 1%; */
+	position: relative;
+	bottom: 2.1px;
+	padding: 5px 10px 5px 10px;
+	/* background-color: #1e072f; */
+}
+
+.ant1 {
+	padding: 5px 10px 5px 10px;
+	background-color:#6A573D;
+	border-radius:6px;
+	border:0px;
+	color: white;
+	position: relative;
+	top: -0.4%;
+}
+
+.antsound:hover{
+	background-color:#DFB48E;
+	color: black;
+}
+
+.ant1:hover{
+	background-color:#DFB48E;
+	color: black;
+}
+
+.chattime-buttons{
+	padding-bottom: 3px;
+	/* border-radius:4px; */
+	border:1px solid whitesmoke;
+	font-weight:bold;
+	background-color:#F7F2EC;
+	/* margin-left: 2px; */
+	/* color: #337bc4; */
+}
+
+.chattime-buttons:hover{
+	background-color:blanchedalmond;
+}
+
+
+
+.textedit{
+	background-color: #E3DDD5;
+	width: 640px;
+	height: 471px;
 }

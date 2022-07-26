@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "./edit.css";
+import "./wave.css";
+import testMp3File from "./track1.mp3";
 import mainLogo from "../../assets/images/mainLogo.png";
 import ChatItem from "../edit/chat/ChatItem";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
-import VolumeUp from "@material-ui/icons/VolumeUp";
-import VolumeOff from "@material-ui/icons/VolumeOff";
+// import VolumeUp from "@material-ui/icons/VolumeUp";
+// import VolumeOff from "@material-ui/icons/VolumeOff";
 import Stop from "@material-ui/icons/Stop";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
@@ -18,6 +20,12 @@ import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "../../main/cookie";
 import VoiceRoom from "../VoiceRoom/VoiceRoom"
+import { Button, Radio } from 'antd';
+import { SizeType } from 'antd/es/config-provider/SizeContext';
+// import type { SizeType } from 'antd/es/config-provider/SizeContext';
+import { DownloadOutlined } from "@ant-design/icons";
+// import { Button } from 'antd';
+
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -61,9 +69,10 @@ const EditingRoom = ({ sessionId }) => {
 
     wavesurfer.current = WaveSurfer.create({
       container: ".audio",
-      waveColor: "#FFFFFF",
+      waveColor: "#F7F2EC",
       progressColor: "#FF7833",
       barWidth: 3,
+      height: 65,
       plugins: [
         RegionsPlugin.create({}),
         MarkersPlugin.create({}),
@@ -71,8 +80,8 @@ const EditingRoom = ({ sessionId }) => {
           showTime: true,
           opacity: 0.9,
           customShowTimeStyle: {
-            "background-color": "#FF7833",
-            color: "#fff",
+            "background-color": "#6A573D",
+            color: "#E3DDD5",
             padding: "6px",
             "font-size": "12px",
           },
@@ -85,12 +94,12 @@ const EditingRoom = ({ sessionId }) => {
     if (wavesurfer) {
       console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
       //   wavesurfer.current.load(recordFile.url);
-      // wavesurfer.current.load(testMp3File)
-      wavesurfer.current.load(
-        "https://eehnoeg.shop/openvidu/recordings/" +
-          sessionId +
-          "/ownweapon.webm"
-      ); // OPEN_VIDU 주소 전달해주면 됨
+      wavesurfer.current.load(testMp3File)
+      // wavesurfer.current.load(
+      //   "https://eehnoeg.shop/openvidu/recordings/" +
+      //     sessionId +
+      //     "/ownweapon.webm"
+      // ); // OPEN_VIDU 주소 전달해주면 됨
     }
   }, []);
 
@@ -139,7 +148,8 @@ const EditingRoom = ({ sessionId }) => {
           wavesurfer.current.addMarker({
             time: parseFloat(starList[i].startTime - sessionStartTime) / 1000,
             label: "",
-            color: "#FF7715",
+            size:100,
+            color: "red",
             position: "top",
           });
         }
@@ -201,18 +211,6 @@ const EditingRoom = ({ sessionId }) => {
         </div>
         <div className='header-contents text-right'>
           <button
-            className='download'
-            onClick={() => saveButton(saveMemo(), "메모")}
-          >
-            메모 다운로드
-          </button>
-          <button
-            className='download2'
-            onClick={() => saveButton(saveSoundMemo(), "음성 기록")}
-          >
-            음성기록 다운로드
-          </button>
-          <button
             className='exit'
             onClick={() => {
               navigate("/");
@@ -226,11 +224,37 @@ const EditingRoom = ({ sessionId }) => {
       <hr className='my-0'></hr>
       <div className='contents'>
         <div className='contents-left'>
-          <div className='contents-label'>메모장</div>
-          <TextEditor sessionId={sessionId} />
+          <div className='contents-label'>메모장&nbsp;</div>
+          {/* <DownloadOutlined onClick={ () =>{
+            saveButton(saveMemo(), "메모")
+          }}/> */}
+          {/* <InstagramOutlined /> */}
+          {/* <button
+            className='download'
+            onClick={() => saveButton(saveMemo(), "메모")}
+          >
+            Download
+          </button> */}
+          <Button type="primary" className='ant1' shape="round" icon={<DownloadOutlined /> } onClick={() => {
+            saveButton(saveMemo(), "메모")
+          }}> 다운로드</Button>
+
+          <div className="textedit" >
+            <TextEditor sessionId={sessionId} />
+          </div>
+
         </div>
         <div className='contents-right'>
-          <div className='contents-label'>음성 기록</div>
+          <div className='contents-label'>&nbsp;&nbsp;&nbsp;음성 기록&nbsp;</div>
+          <Button type="primary" className='antsound' shape="round" icon={<DownloadOutlined /> } onClick={() => {
+            saveButton(saveSoundMemo(), "음성 기록")
+          }}> 다운로드</Button>
+          {/* <button
+            className='download2'
+            onClick={() => saveButton(saveSoundMemo(), "음성 기록")}
+          >
+            Download
+          </button> */}
           <div className='recorditems'>
             {chatList &&
               chatList.map((recordItem) => (
@@ -251,7 +275,9 @@ const EditingRoom = ({ sessionId }) => {
       </div>
       <div className='audio-container'>
         {/* <div className='track-name'>The name of the track</div> */}
-        <div className='audio'></div>
+        {/* <div className='audiobar'> */}
+          <div className='audio'></div>
+        {/* </div> */}
         <div className='buttons'>
           <span
             className={"play-btn btn" + (isPlay === true ? " playing" : "")}
@@ -265,12 +291,12 @@ const EditingRoom = ({ sessionId }) => {
             <Stop className='fas fa-stop' />
           </span>
 
-          <span className={"mute-btn btn" + (!volume ? " muted" : "")}>
+          {/* <span className={"mute-btn btn" + (!volume ? " muted" : "")}>
             <VolumeUp className='fas fa-volume-up' />
             <VolumeOff className='fas fa-volume-mute' />
-          </span>
+          </span> */}
 
-          <input
+          {/* <input
             type='range'
             min={0}
             max={20}
@@ -279,7 +305,7 @@ const EditingRoom = ({ sessionId }) => {
             className='volume-slider'
             onChange={changeVolume}
             readOnly
-          />
+          /> */}
         </div>
       </div>
       <VoiceRoom sessionId={newSessionId} />
