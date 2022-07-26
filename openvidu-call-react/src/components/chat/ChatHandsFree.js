@@ -3,6 +3,8 @@ import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
+import isWriting from "../../assets/images/isWriting.png";
+import isNotWriting from "../../assets/images/isNotWriting.png";
 import { connect } from "react-redux";
 
 class ChatHandsFree extends Component {
@@ -131,7 +133,7 @@ class ChatHandsFree extends Component {
       try {
         this.chatScroll.current.scrollTop =
           this.chatScroll.current.scrollHeight;
-      } catch (err) {}
+      } catch (err) { }
     }, 20);
   }
 
@@ -202,26 +204,41 @@ class ChatHandsFree extends Component {
       this.props.rootFunction(chatInfo);
     }
     return (
-      <div>
+
+      
+      <div className="status-container">
+        {/* <div className='isRecog'>
+          <div className="writingStatus mb-5">
+            <div className={`inline-block ${this.state.isRecog? "colorBlue": "colorRed"}`}>
+              {
+                this.state.isRecog ? "ON" : "OFF"
+              }
+            </div>
+            <div className="inline-block">
+              <img src={this.state.isRecog ? isWriting : isNotWriting} height="30" width="30" />
+            </div>
+            <div className="inline-block"> 
+              {this.state.isRecog ? "🔵 막둥이가 지금 기록중이에요!" : "막둥이를 불러주세요!"}
+            </div>
+          </div>
+        </div> */}
+
         <div className='isRecog'>
-          {this.state.isRecog ? (
-            <h1
-              style={{
-                color: "skyblue",
-                fontSize: "25px",
-                textAlign: "center",
-              }}
-            >
-              🔵 기록중 🔵
-            </h1>
-          ) : (
-            <h1
-              style={{ color: "pink", fontSize: "25px", textAlign: "center" }}
-            >
-              ❌ 기록중지 ❌
-            </h1>
-          )}
+          <div className="writingStatus">
+            <div className={`inline-block vertical-align mr-20 ${this.state.isRecog? "colorYellow": "colorRed"}`}>
+              {
+                this.state.isRecog ? "ON" : "OFF"
+              }
+            </div>
+            <div className="inline-block vertical-align mr-8">
+              <img src={this.state.isRecog ? isWriting : isNotWriting} height={this.state.isRecog ? "40" : "20"} width={this.state.isRecog ? "42" : "22"} />
+            </div>
+            <div className="inline-block vertical-align"> 
+              {this.state.isRecog ? "막둥이가 지금 기록중이에요!" : " 막둥이를 불러주세요!   "}
+            </div>
+          </div>
         </div>
+
         <div id='chatContainer'>
           <div id='chatComponent'>
             <div className='message-wrap' ref={this.chatScroll}>
@@ -232,7 +249,7 @@ class ChatHandsFree extends Component {
                   className={
                     "message" +
                     (data.connectionId !==
-                    this.props.localUser.getConnectionId()
+                      this.props.localUser.getConnectionId()
                       ? " left"
                       : " right")
                   }
@@ -245,11 +262,11 @@ class ChatHandsFree extends Component {
                       </p>
                     </div>
 
-                    <div className='msg-content'>
+                    <div className={data.marker? 'msg-content-star':'msg-content'}>
                       {/* <span className='triangle' /> */}
                       <p className='text'>
                         {data.marker ? (
-                          <Star style={{ color: yellow[800] }} />
+                          <Star className="starInChat" style={{ color: yellow[800] }} />
                         ) : null}
                         {data.message}
                       </p>
@@ -263,7 +280,7 @@ class ChatHandsFree extends Component {
           </div>
           <Recognition parentFunction={this.parentFunction} />
         </div>
-      </div>
+      </div >
     );
   }
 }
