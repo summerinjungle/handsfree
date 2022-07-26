@@ -17,7 +17,7 @@ import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
 // import { getUserNameInCookie } from "../../main/cookie";
-import VoiceRoom from "../VoiceRoom/VoiceRoom"
+import VoiceRoom from "../voiceRoom/VoiceRoom"
 import { Button, Radio } from 'antd';
 import { DownloadOutlined } from "@ant-design/icons";
 
@@ -112,23 +112,26 @@ const EditingRoom = ({ sessionId }) => {
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
         setChatList(chatList);
-        console.log("editingroom response : ", response);
+        console.log(" ----- editingroom response : ", response);
 
         // [잡담 구간] 표시
         console.log("RecordMuteList", recordMuteList);
         for (let i = 0; i < recordMuteList.length; i++) {
-          console.log(
-            "left!!!!!!",
-            (recordMuteList[i].left - sessionStartTime) / 1000
-          );
-          console.log(
-            "right!!!!!!",
-            (recordMuteList[i].right - sessionStartTime) / 1000
-          );
+          let currLeft, currRight;
+          if (recordMuteList[i].left == 0) {
+            currLeft = 0;
+          } else {
+            currLeft = parseFloat(recordMuteList[i].left - sessionStartTime) / 1000;
+          }
+          currRight = parseFloat(recordMuteList[i].right - sessionStartTime) / 1000;
 
+          console.log("left!!!!!!", currLeft);
+          console.log("right!!!!!!", currRight);
+
+          
           wavesurfer.current.regions.add({
-            start: parseFloat(recordMuteList[i].left - sessionStartTime) / 1000,
-            end: parseFloat(recordMuteList[i].right - sessionStartTime) / 1000,
+            start: currLeft,
+            end: currRight,
             // color: "#CEBFAC",
             color: "rgba(228, 209, 185, 0.7)",
             drag: false,
