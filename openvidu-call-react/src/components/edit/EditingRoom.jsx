@@ -17,7 +17,7 @@ import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
 // import { getUserNameInCookie } from "../../main/cookie";
-import VoiceRoom from "../voiceRoom/VoiceRoom"
+import VoiceRoom from "../voiceRoom/VoiceRoom.js"
 import { Button, Radio } from 'antd';
 import { DownloadOutlined } from "@ant-design/icons";
 

@@ -668,10 +668,10 @@ class VideoRoomHandsFree extends PureComponent {
               terminate={this.state.terminate}
             />
 
-            <div id='copy' class="btnUrlCopy mr-10 l-4" onClick={this.copyUrl}>
+            <div className='copy' onClick={this.copyUrl}>
               방코드 복사
             </div>
-            <div id='exit' class="btnExit l-6" onClick={this.meetingEnd}>
+            <div className='exitt' onClick={this.meetingEnd}>
               {this.props.isPublisher ? "회의종료" : "나가기"}
             </div>
           </div>

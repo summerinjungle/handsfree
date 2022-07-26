@@ -68,18 +68,18 @@
   }
   
   #chatComponent {
-    background-color: #3d3d3d;
+    background-color: white;
     position: absolute;
     z-index: 99999;
     /* display: none; */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: -9%;
+    /* left: ; */
+    right: 3.8%;
+    /* bottom: 0; */
     /* margin: auto; */
-    margin-left: 3.7%;
-    margin-top: -4.2vh;
-    height: 106.1%;
+    /* margin-left: 3.7%; */
+    /* margin-top: -4.2vh; */
+    height: 107.3%;
     width: 92.6%;
     /* width: calc(100% - 25px); */
     border-radius: 20px;
@@ -91,7 +91,7 @@
 
   .isRecog{
     position:relative;
-    height: 70%;
+    height: 50%;
     left: 3.7%;
     text-align: center;
     width: 92.6%;
@@ -101,7 +101,7 @@
     /* padding-right: 5px; */
     border-radius: 15px;
     background-color: #675743;
-
+    
     /* margin-bottom: 20px; */
     /* size: 30%; */
     /* margin-top: 10px; */
