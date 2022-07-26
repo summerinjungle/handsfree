@@ -17,7 +17,7 @@ import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "../../main/cookie";
-import VoiceRoom from "../VoiceRoom/VoiceRoom"
+import VoiceRoom from "../voiceRoom/VoiceRoom";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
