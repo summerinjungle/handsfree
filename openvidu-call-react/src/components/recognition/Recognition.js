@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { PureComponent } from "react";
 let sound_detect_check = false;
 
 const SpeechRecognition =
@@ -10,7 +9,7 @@ recognition.continuous = false;
 recognition.interimResults = true;
 recognition.lang = "ko-KR";
 
-class Recognition extends Component {
+class Recognition extends PureComponent {
   state = {
     transcript: "",
     start_time: "",
@@ -57,6 +56,7 @@ class Recognition extends Component {
     };
   }
   render() {
+    console.log("STT 컴포넌트 호출");
     return (
       <div>
         <script></script>
@@ -65,11 +65,4 @@ class Recognition extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    // duringTime: state.user.duringTime,
-    // enterTime: state.user.enterTime,
-  };
-};
-
-export default connect(mapStateToProps)(Recognition);
+export default React.memo(Recognition);

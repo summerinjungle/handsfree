@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 import { connect } from "react-redux";
 
-class ChatHandsFree extends Component {
+class ChatHandsFree extends PureComponent {
   state = {
     messageList: [],
     starList: [],
@@ -21,12 +21,6 @@ class ChatHandsFree extends Component {
     msgIndex: 0,
   };
   chatScroll = React.createRef();
-  constructor(props) {
-    super(props);
-    console.log("11111", this.props.localUser.getStreamManager());
-    console.log("2222", this.props.localUser.getStreamManager());
-  }
-  // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
     this.props.localUser
       .getStreamManager()
@@ -87,10 +81,11 @@ class ChatHandsFree extends Component {
             marker: this.state.isStar,
             id: this.state.msgIndex,
           });
-          this.setState({
+
+          this.setState((prevState) => ({
+            msgIndex: prevState.msgIndex + 1,
             messageList: addMsg,
-            msgIndex: this.state.msgIndex + 1,
-          });
+          }));
 
           console.log("마커 리스트", this.state.starList);
           console.log("메세지 리스트", this.state.messageList);
@@ -100,7 +95,7 @@ class ChatHandsFree extends Component {
   }
 
   componentWillUnmount() {
-    // this.parentFunction();
+    this.parentFunction();
   }
 
   sendMessage = () => {
@@ -191,21 +186,24 @@ class ChatHandsFree extends Component {
     this.sendMessage();
   };
 
+  speechProps = this.parentFunction.bind(this);
+
   render() {
-    if (this.props.terminate === true) {
-      if (this.state.isRecog === false) {
-        this.state.recordMuteList.push({
-          left: this.state.left,
-          right: new Date().getTime(),
-        });
-      }
-      const chatInfo = {
-        messageList: this.state.messageList,
-        starList: this.state.starList,
-        recordMuteList: this.state.recordMuteList,
-      };
-      this.props.rootFunction(chatInfo);
-    }
+    console.log("채팅 컴포넌트 호출 ! ");
+    // if (this.props.terminate === true) {
+    //   if (this.state.isRecog === false) {
+    //     this.state.recordMuteList.push({
+    //       left: this.state.left,
+    //       right: new Date().getTime(),
+    //     });
+    //   }
+    //   const chatInfo = {
+    //     messageList: this.state.messageList,
+    //     starList: this.state.starList,
+    //     recordMuteList: this.state.recordMuteList,
+    //   };
+    //   this.props.rootFunction(chatInfo);
+    // }
     return (
       <div>
         <div className='isRecog'>
@@ -266,7 +264,7 @@ class ChatHandsFree extends Component {
               ))}
             </div>
           </div>
-          <Recognition parentFunction={this.parentFunction} />
+          <Recognition parentFunction={this.speechProps} />
         </div>
       </div>
     );
@@ -280,4 +278,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ChatHandsFree);
+export default React.memo(connect(mapStateToProps)(ChatHandsFree));
