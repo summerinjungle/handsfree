@@ -4,7 +4,6 @@ import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 import { connect } from "react-redux";
-import { StarSpeech } from "../speech/Speech";
 
 class ChatHandsFree extends Component {
   state = {
@@ -28,7 +27,6 @@ class ChatHandsFree extends Component {
   }
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
-    console.log("기록 가능?", this.state.isRecog);
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
@@ -37,11 +35,13 @@ class ChatHandsFree extends Component {
         let length = messageList.length;
         this.setState({ isRecog: data.isRecord });
         this.setState({ isStar: data.isStar });
+        this.setState({ isRecordMute: data.isRecordMute });
+
         console.log("잡담구간 체크 = ", this.state.isRecordMute);
 
         if (data.isRecord === false) return;
 
-        if (data.isRecordMute === true) {
+        if (this.state.isRecordMute === true) {
           this.state.recordMuteList.push({
             left: this.state.left,
             right: this.state.right,
@@ -146,7 +146,9 @@ class ChatHandsFree extends Component {
     console.log("chat_comp startTime = ", data.startTime);
     if (
       data.text.includes("막둥아 기록 중지") ||
-      data.text.includes("막둥아 기록중지")
+      data.text.includes("막둥아 기록중지") ||
+      data.text.includes("기록 중지") ||
+      data.text.includes("박종화 기록 중지")
     ) {
       if (this.state.isRecog === true) {
         this.setState({
@@ -156,7 +158,9 @@ class ChatHandsFree extends Component {
       this.setState({ isRecog: false });
     } else if (
       data.text.includes("막둥아 기록 시작") ||
-      data.text.includes("막둥아 기록시작")
+      data.text.includes("막둥아 기록시작") ||
+      data.text.includes("기록시작") ||
+      data.text.includes("기록 시작")
     ) {
       if (this.state.isRecog === false) {
         this.setState({
@@ -169,11 +173,9 @@ class ChatHandsFree extends Component {
       data.text.includes("막둥아 발표") ||
       data.text.includes("막둥아 대표") ||
       data.text.includes("막둥아 별표") ||
-
       data.text.includes("박동화 발표") ||
       data.text.includes("박동화 대표") ||
       data.text.includes("박동화 별표") ||
-      
       data.text.includes("박종화 발표") ||
       data.text.includes("박종화 대표") ||
       data.text.includes("박종화 별표")
@@ -190,8 +192,6 @@ class ChatHandsFree extends Component {
         this.state.recordMuteList.push({
           left: this.state.left,
           right: new Date().getTime(),
-          // this.props.duringTime +
-          // (new Date().getTime() - this.props.enterTime),
         });
       }
       const chatInfo = {
