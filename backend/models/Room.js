@@ -39,7 +39,13 @@ const roomSchema = new Schema({
             },
             startTime: {
                 type: String
-            }
+            },
+            marker: {
+                type: Boolean
+            },
+            time: {
+                type: String
+            },
         })
     ],
 
