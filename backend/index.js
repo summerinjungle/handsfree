@@ -36,5 +36,5 @@ server.listen(port, () => {
 });
 
 io.on('connection', socket => {
-  socketHandle(socket);
+  socketHandle(io, socket);
 })

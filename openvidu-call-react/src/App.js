@@ -34,6 +34,7 @@ const App = () => {
     <div className='App'>
       <Routes>
         <Route path='/' element={<Main />} />
+        <Route path='/audio' element={<Voicechat />} />
         <Route
           path='/meeting'
           element={<VideoRoomHandsFree user={user} navigate={navigate} />}

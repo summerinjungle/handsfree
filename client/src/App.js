@@ -23,7 +23,7 @@ function App() {
       ) : (
         <p> You are not logged in!  <GoogleLoginButton /> </p>
       )}  */}
-      <Voicechat />
+      <Voicechat userName={"김개똥"} roomId={"abc"}/>
     </div>
   )
 }

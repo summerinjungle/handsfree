@@ -3,78 +3,75 @@ import { useRef, useEffect, useState } from "react";
 import Peer from "peerjs";
 const { io } = require("socket.io-client");
 
-export default function Voicechat({roomId}) {
+export default function Voicechat({userName, roomId}) {
     const [myId, setMyId] = useState('');
-    const [remotePeerIdValue, setRemotePeerIdValue] = useState([]);
+    const [usersPeerId, setUsersPeerId] = useState([]);
     const remoteVoiceRefs = useRef([]);
     const userAudioRef = useRef(null);
     const peerInstane = useRef(null);
     const socketRef = useRef();
+    const [startChat, setStartChat] = useState(false);
+    const [disable, setDisable] = React.useState(false);
     let peer = null;
-
+  
     useEffect(()=> {
+        socketRef.current = io.connect("http://43.200.3.223:5000/");
         peer = new Peer();
-        
         peer.on('open', (myId) => {
+            console.log("My Peer ID", myId)
             setMyId(myId);
         });
-        console.log("hello!!");
         
-        socketRef.current = io.connect("http://127.0.0.1:5000");
-        socketRef.current.emit('msg', "hi im client");
-        socketRef.current.on('msg', (data) => {
-            console.log(data);
-        });
-        console.log("done!!");
-
-        // socketRef.current.on('all users',  (coworkersPeerId) => {
-        //     setRemotePeerIdValue(coworkersPeerId);
-        // })
-
-        // socketRef.current.on('user joined',  (coworkerPeerId) => {
-        //     setRemotePeerIdValue(coworkersPeerId => [...coworkersPeerId, coworkerPeerId]);
-        // })
+        socketRef.current.on("userJoined",  (newUser, usersPeerId) => {
+            console.log("hello", newUser);
+            setUsersPeerId(usersPeerId);
+            console.log("user joined!!", usersPeerId);            
+        })
 
 
-        // peer.on('call', (call) => { //전화 받을 때 
-        //     let getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        peer.on('call', (call) => { //전화 받을 때 
+            let getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-        //     getUserMedia({video: false, audio: true}, (mediaStream) => {
-        //         userAudioRef.current.srcObject = mediaStream;
-        //         call.answer(mediaStream); //give your mediastream
-        //         call.on('stream', (remoteStream) => {
-        //             remoteVoiceRefs.current.forEach(remoteVoiceRef=> {
-        //                 remoteVoiceRef.srcObject = remoteStream;
-        //                 remoteVoiceRef.play();
-        //             })
-        //         });
-        //     });
-        // })
+            getUserMedia({video: false, audio: true}, (mediaStream) => {
+                // userAudioRef.current.srcObject = mediaStream;
+                call.answer(mediaStream); //give your mediastream
+                call.on('stream', (remoteStream) => {
+                    remoteVoiceRefs.current.forEach(remoteVoiceRef=> {
+                        remoteVoiceRef.srcObject = remoteStream;
+                        remoteVoiceRef.play();
+                    })
+                });
+            });
+        })
 
-        // peerInstane.current = peer;
+        peerInstane.current = peer;
         // return () => {
         //     socketRef.current.off('all users');
         // }
     }, [])
 
+    // console.log("myId : ", myId);
+
 
     const startVoiceChat = () => {
-        socketRef.current.emit('join room', myId, roomId);
+        console.log("hi!!!! i'm : ", myId);
+        socketRef.current.emit('joinRoom', userName, myId, roomId);
+        setStartChat(true);
     }
 
-    const call = (remotePeerId) => {
+    const call = (memberRef, remotePeerId) => {
         let getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
         getUserMedia({video: false, audio: true}, (mediaStream) => {
 
-            userAudioRef.current.srcObject = mediaStream;
-            userAudioRef.current.play();
+            // userAudioRef.current.srcObject = mediaStream;
+            // userAudioRef.current.play();
 
             const call = peerInstane.current.call(remotePeerId, mediaStream);
             call.on('stream', (remoteStream) => { //when other user accepts your call
 
-                remoteVoiceRefs.current.srcObject = remoteStream;
-                remoteVoiceRefs.current.play();
+                memberRef.srcObject = remoteStream;
+                memberRef.play();
                
             });
           }, function(err) {
@@ -82,18 +79,52 @@ export default function Voicechat({roomId}) {
           });
     }
 
+    useEffect(() => {
+        if(startChat) {
+            for (let i = 0; i< usersPeerId.length; i++) {
+                if(usersPeerId[i] !== myId) {
+                    call(remoteVoiceRefs.current[i], usersPeerId[i]);
+                }
+                    
+            }
+        }
+    }, [usersPeerId, startChat]);
+
     return (
         <div>
-            {/* <input type="text" value={remotePeerIdValue} onChange={e => setRemotePeerIdValue(e.target.value)} />
-            <button onClick={() => startVoiceChat}>Call</button>
-            <p>hi</p>
             <div>
-                <video ref={userAudioRef}/>
+                {startChat ? 
+                <button disabled={true}>참여완료!</button>
+                : 
+                <button disabled={disable} onClick={() => {
+                    setDisable(true);
+                    startVoiceChat();
+                }}>
+                참여해보자!
+                </button>
+                }
             </div>
             <div>
-                <video ref={remoteVoiceRefs} />
-            </div> */}
-        </div>
-       
+            <p>hi</p>
+            {usersPeerId.length ? 
+                usersPeerId.map((userPeerId, idx) => {
+                    if(userPeerId != myId) {
+                        return(
+                            <div style={{ display: 'none' }}>
+                                <video ref={el => (remoteVoiceRefs.current[idx] = el)} />
+                            </div>
+                        )
+                    } else {
+                        return(
+                            <div style={{ display: 'none' }}>
+                                <video ref={el => (remoteVoiceRefs.current[idx] = el)} muted/>
+                            </div>
+                        )
+                    }
+                })
+            :   <p>no user</p>
+            }
+            </div>
+        </div>    
     );
 }
