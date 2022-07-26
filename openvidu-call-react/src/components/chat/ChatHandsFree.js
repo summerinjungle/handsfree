@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
 import Recognition from "../recognition/Recognition";
@@ -7,13 +7,14 @@ import isWriting from "../../assets/images/isWriting.png";
 import isNotWriting from "../../assets/images/isNotWriting.png";
 import { connect } from "react-redux";
 
-class ChatHandsFree extends Component {
+class ChatHandsFree extends PureComponent {
   state = {
     messageList: [],
     starList: [],
     recordMuteList: [],
     message: "",
     isRecog: false,
+    startRecord: false,
     isStar: false,
     isRecordMute: false,
     startTime: "",
@@ -22,61 +23,55 @@ class ChatHandsFree extends Component {
     msgIndex: 0,
   };
   chatScroll = React.createRef();
-  constructor(props) {
-    super(props);
-    console.log("11111", this.props.localUser.getStreamManager());
-    console.log("2222", this.props.localUser.getStreamManager());
-  }
-  // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
     this.props.localUser
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
         const data = JSON.parse(event.data);
-        let messageList = this.state.messageList;
-        let length = messageList.length;
+        let length = this.state.messageList.length;
         this.setState({ isRecog: data.isRecord });
         this.setState({ isStar: data.isStar });
         this.setState({ isRecordMute: data.isRecordMute });
+        this.setState({ startRecord: data.startRecord });
 
-        console.log("잡담구간 체크 = ", this.state.isRecordMute);
+        console.log("잡담 구간 = ", this.state.recordMuteList);
 
         if (data.isRecord === false) return;
 
         if (this.state.isRecordMute === true) {
-          this.state.recordMuteList.push({
-            left: this.state.left,
-            right: this.state.right,
+          this.setState({
+            recordMuteList: this.state.recordMuteList.concat({
+              left: this.state.left,
+              right: this.state.right,
+            }),
           });
           this.setState({
             isRecordMute: false,
           });
         }
-        if (
-          data.message.includes("막둥아 기록 시작") ||
-          data.message.includes("막둥아 기록시작")
-        )
+        if (this.state.startRecord == true) {
+          this.setState({ startRecord: false });
           return;
+        }
 
         console.log("잡담구간 확인", this.state.isRecordMute);
 
         if (this.state.isRecog === true) {
-          // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
-          console.log("그 전 데이터  = ", messageList[length - 1]);
-          console.log("막둥아 별표 = ", data.isStar);
           if (this.state.isStar === true && length > 0) {
-            const stars = {
-              message: messageList[length - 1].message,
-              startTime: messageList[length - 1].startTime,
-              id: this.state.msgIndex - 1,
-            };
-            this.state.starList.push(stars);
+            this.setState({
+              starList: this.state.starList.concat({
+                message: this.state.messageList[length - 1].message,
+                startTime: this.state.messageList[length - 1].startTime,
+                id: this.state.msgIndex - 1,
+              }),
+            });
             this.setState({ isStar: false });
-            messageList[length - 1].marker = true;
+            this.state.messageList[length - 1].marker = true;
             this.forceUpdate();
             return;
           }
-          messageList.push({
+
+          var addMsg = this.state.messageList.concat({
             connectionId: event.from.connectionId,
             nickname: data.nickname,
             message: data.message,
@@ -85,13 +80,14 @@ class ChatHandsFree extends Component {
             marker: this.state.isStar,
             id: this.state.msgIndex,
           });
-          this.setState({
-            msgIndex: this.state.msgIndex + 1,
-          });
+
+          this.setState((prevState) => ({
+            msgIndex: prevState.msgIndex + 1,
+            messageList: addMsg,
+          }));
 
           console.log("마커 리스트", this.state.starList);
           console.log("메세지 리스트", this.state.messageList);
-          this.setState({ messageList: messageList });
           this.scrollToBottom();
         }
       });
@@ -109,6 +105,7 @@ class ChatHandsFree extends Component {
         const data = {
           isRecordMute: this.state.isRecordMute,
           isRecord: this.state.isRecog,
+          startRecord: this.state.startRecord,
           isStar: this.state.isStar,
           time: date.getHours() + ":" + date.getMinutes(),
           message: message,
@@ -120,7 +117,6 @@ class ChatHandsFree extends Component {
           data: JSON.stringify(data),
           type: "chat",
         });
-        // this.props.localUser.getStreamManager().stream
       }
       this.props.localUser.getStreamManager().stream.session.connection.disposed =
         this.state.isRecog;
@@ -128,14 +124,14 @@ class ChatHandsFree extends Component {
     this.setState({ message: "" });
   };
 
-  scrollToBottom() {
+  scrollToBottom = () => {
     setTimeout(() => {
       try {
         this.chatScroll.current.scrollTop =
           this.chatScroll.current.scrollHeight;
       } catch (err) { }
     }, 20);
-  }
+  };
 
   close = () => {
     this.props.closeBtn(undefined);
@@ -170,6 +166,7 @@ class ChatHandsFree extends Component {
           isRecordMute: true,
         });
       }
+      this.setState({ startRecord: true });
       this.setState({ isRecog: true });
     } else if (
       data.text.includes("막둥아 발표") ||
@@ -188,7 +185,10 @@ class ChatHandsFree extends Component {
     this.sendMessage();
   };
 
+  // speechProps = this.parentFunction.bind(this);
+
   render() {
+    console.log("채팅 컴포넌트 호출 ! ");
     if (this.props.terminate === true) {
       if (this.state.isRecog === false) {
         this.state.recordMuteList.push({
@@ -292,4 +292,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ChatHandsFree);
+export default React.memo(connect(mapStateToProps)(ChatHandsFree));

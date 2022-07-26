@@ -20,14 +20,15 @@ class VoiceRoom extends Component {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
+      // : "https://eehnoeg.shop:443";
       : "https://hyunseokmemo.shop:443";
+      // : "https://" + window.location.hostname + ":4443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
   }
 
   componentDidMount() {
-    console.log("server url = ", this.OPENVIDU_SERVER_URL);
     this.joinSession();
   }
 
@@ -37,7 +38,6 @@ class VoiceRoom extends Component {
 
   joinSession = () => {
     this.OV = new OpenVidu();
-    console.log("open vidu ==> ", this.OV);
 
     this.OV.setAdvancedConfiguration({
       publisherSpeakingEventsOptions: {
@@ -59,13 +59,10 @@ class VoiceRoom extends Component {
 
   connectToSession = () => {
     if (this.props.token !== undefined) {
-      console.log("token received: ", this.props.token);
-      console.log("방이름 received: ", this.props.sessionId);
       this.connect(this.props.token);
     } else {
       this.getToken()
         .then((token) => {
-          console.log(token);
           this.connect(token);
         })
         .catch((error) => {
@@ -77,11 +74,6 @@ class VoiceRoom extends Component {
               status: error.status,
             });
           }
-          console.log(
-            "There was an error getting the token:",
-            error.code,
-            error.message
-          );
           alert("There was an error getting the token:", error.message);
         });
     }
@@ -103,11 +95,6 @@ class VoiceRoom extends Component {
           });
         }
         alert("There was an error connecting to the session:", error.message);
-        console.log(
-          "There was an error connecting to the session:",
-          error.code,
-          error.message
-        );
       });
   }
 
@@ -149,12 +136,12 @@ class VoiceRoom extends Component {
     this.setState(
       { currentVideoDevice: videoDevices[0], localUser: localUser },
       () => {
-        this.state.localUser.getStreamManager().on("streamPlaying", (e) => {
-          // this.updateLayout();
-          // publisher.videos[0].video.parentElement.classList.remove(
-          // "custom-class"
-          // );
-        });
+        // this.state.localUser.getStreamManager().on("streamPlaying", (e) => {
+        //   // this.updateLayout();
+        //   // publisher.videos[0].video.parentElement.classList.remove(
+        //     // "custom-class"
+        //   // );
+        // });
       }
     );
   }
@@ -211,9 +198,9 @@ class VoiceRoom extends Component {
       const subscriber = this.state.session.subscribe(event.stream, undefined);
       // var subscribers = this.state.subscribers;
       subscriber.on("streamPlaying", (e) => {
-        subscriber.videos[0].video.parentElement.classList.remove(
-          "custom-class"
-        );
+        // subscriber.videos[0].video.parentElement.classList.remove(
+        //   "custom-class"
+        // );
       });
       const newUser = new UserModel();
       newUser.setStreamManager(subscriber);
@@ -231,8 +218,6 @@ class VoiceRoom extends Component {
   subscribeToStreamDestroyed() {
     // On every Stream destroyed...
     this.state.session.on("streamDestroyed", (event) => {
-      console.log("Destroyed", this.state.localUser.connectionId);
-
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
       event.preventDefault();
@@ -246,7 +231,6 @@ class VoiceRoom extends Component {
       remoteUsers.forEach((user) => {
         if (user.getConnectionId() === event.from.connectionId) {
           const data = JSON.parse(event.data);
-          console.log("EVENTO REMOTE: ", event.data);
           if (data.isAudioActive !== undefined) {
             user.setAudioActive(data.isAudioActive);
           }
@@ -282,62 +266,42 @@ class VoiceRoom extends Component {
   }
 
   createSession(sessionId) {
-    var today = new Date();
-    var timeString = today.getTime();
-    console.log("CreateAt", timeString);
-
     return new Promise((resolve, reject) => {
-      var data = JSON.stringify({
-        customSessionId: sessionId,
-        recordingMode: "ALWAYS", // 녹화를 위한 BODY 추가 추가
-        defaultRecordingProperties: {
-          name: "ownweapon",
-          hasAudio: true,
-          hasVideo: false,
-          outputMode: "COMPOSED",
-          resolution: "640x480",
-          frameRate: 24,
-        },
-      });
-      axios
-        .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
-          headers: {
-            Authorization:
-              "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-            "Content-Type": "application/json",
-          },
-        })
-        .then((response) => {
-          resolve(response.data.id);
-        })
-        .catch((response) => {
-          var error = Object.assign({}, response);
-          if (error.response && error.response.status === 409) {
-            resolve(sessionId);
-          } else {
-            console.log(error);
-            console.warn(
-              "No connection to OpenVidu Server. This may be a certificate error at " +
-                this.OPENVIDU_SERVER_URL
-            );
-            if (
-              window.confirm(
-                'No connection to OpenVidu Server. This may be a certificate error at "' +
-                  this.OPENVIDU_SERVER_URL +
-                  '"\n\nClick OK to navigate and accept it. ' +
-                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                  this.OPENVIDU_SERVER_URL +
-                  '"'
-              )
-            ) {
-              window.location.assign(
-                this.OPENVIDU_SERVER_URL + "/accept-certificate"
-              );
-            }
-          }
-        });
+        var data = JSON.stringify({ customSessionId: sessionId });
+        axios
+            .post(this.OPENVIDU_SERVER_URL + '/openvidu/api/sessions', data, {
+                headers: {
+                    Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((response) => {
+                resolve(response.data.id);
+            })
+            .catch((response) => {
+                var error = Object.assign({}, response);
+                if (error.response && error.response.status === 409) {
+                    resolve(sessionId);
+                } else {
+                    console.warn(
+                        'No connection to OpenVidu Server. This may be a certificate error at ' + this.OPENVIDU_SERVER_URL,
+                    );
+                    if (
+                        window.confirm(
+                            'No connection to OpenVidu Server. This may be a certificate error at "' +
+                                this.OPENVIDU_SERVER_URL +
+                                '"\n\nClick OK to navigate and accept it. ' +
+                                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                                this.OPENVIDU_SERVER_URL +
+                                '"',
+                        )
+                    ) {
+                        window.location.assign(this.OPENVIDU_SERVER_URL + '/accept-certificate');
+                    }
+                }
+            });
     });
-  }
+}
 
   createToken(sessionId) {
     return new Promise((resolve, reject) => {
@@ -358,7 +322,6 @@ class VoiceRoom extends Component {
           }
         )
         .then((response) => {
-          console.log("TOKEN", response);
           resolve(response.data.token);
         })
         .catch((error) => reject(error));
@@ -367,7 +330,6 @@ class VoiceRoom extends Component {
 
   render() {
     const localUser = this.state.localUser;
-    console.log("방장여부 ", this.props.isPublisher);
 
     return (
       <div className='container' id='container' style={{ display: "none" }}>

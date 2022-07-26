@@ -1,139 +1,125 @@
-import React, { Component, useEffect, useRef, useState } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import Fab from "@material-ui/core/Fab";
-import HighlightOff from "@material-ui/icons/HighlightOff";
-import Send from "@material-ui/icons/Send";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
+import React, { useEffect, useRef, useState } from "react";
+import Star from "@material-ui/icons/Star";
 import "./ChatComponent.css";
-import { Tooltip } from "@material-ui/core";
+import Recognition from "../recognition/Recognition";
+import yellow from "@material-ui/core/colors/yellow";
 
-const ChatComponent = ({ chatDisplay, user, rootFunction, closeBtn }) => {
-  const [message, setMessage] = useState("");
+const ChatComponent = ({ localUser, closeBtn, terminate }) => {
   const [messageList, setMessageList] = useState([]);
-  const { transcript, resetTranscipt } = useSpeechRecognition();
-
+  const [starList, setStartList] = useState([]);
+  const [recordMuteList, setRecordMuteList] = useState([]);
+  const [message, setMessage] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [isStar, setIsStar] = useState(false);
+  const [isRecordMute, setIsRecordMute] = useState(false);
+  const [startTime, setStartTime] = useState("");
+  const [left, setLeft] = useState(0);
+  const [right, setRight] = useState("");
+  const [msgIndex, setMsgIndex] = useState(0);
   const chatScroll = useRef(null);
 
-  SpeechRecognition.startListening({
-    continuous: true,
-    // autoStart: false,
-    // interimResults: true,
-    language: "ko-KR",
-  });
+  // if (this.props.terminate === true) {
+  //   if (this.state.isRecog === false) {
+  //     this.state.recordMuteList.push({
+  //       left: this.state.left,
+  //       right: new Date().getTime(),
+  //     });
+  //   }
+  //   const chatInfo = {
+  //     messageList: this.state.messageList,
+  //     starList: this.state.starList,
+  //     recordMuteList: this.state.recordMuteList,
+  //   };
+  //   this.props.rootFunction(chatInfo);
+  // }
 
-  // useEffect(() => {
-  //   setMessage(transcript);
-  //   sendMessage();
-  // }, []);
-
-  // const parentFunction = (data) => {
-  //   console.log("parentFunction , data ", data);
-  //   setMessage(data);
-  //   sendMessage();
-  // };
-  let datas;
-
-  const toRootFunction = (data) => rootFunction(data);
-
-  const commands = [
-    {
-      command: [
-        "마이크 켜",
-        "마이크 꺼",
-        "카메라 켜",
-        "카메라 꺼",
-        "채팅 켜",
-        "채팅 꺼",
-        "채팅 창 켜",
-        "채팅 창 꺼",
-        "채팅창 켜",
-        "채팅창 꺼",
-      ],
-      callback: (command) => {
-        console.lop(`command =  ${command}`);
-        toRootFunction(command);
-        resetTranscript();
-      },
-    },
-  ];
-
-  const { resetTranscript } = useSpeechRecognition({ commands });
-
+  // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   useEffect(() => {
-    setMessage(transcript);
-    sendMessage();
-    user.getStreamManager().stream.session.on("signal:chat", (event) => {
-      console.log("event ===== >", event);
+    localUser.getStreamManager().stream.session.on("signal:chat", (event) => {
       const data = JSON.parse(event.data);
-      datas = {
-        connectionId: event.from.connectionId,
-        nickname: data.nickname,
-        message: data.message,
-      };
+      console.log("채팅 데이터 === ", data);
+      let length = messageList.length;
+      setIsRecording(data.isRocrd);
+      setIsStar(data.isStar);
+      setIsRecordMute(data.isRecordMute);
 
-      // messageList = messageList.concat(datas);
-      setMessageList((messageList) => [...messageList, data]);
-      // setMessageList((messageList) => [...messageList, datas]);
-      // setMessageList((list) => [...list, messageList]);
-      // setMessageList([...messageList, datas]);
-      console.log();
-      // const document = window.document;
-      setTimeout(() => {
-        const userImg = document.getElementById(
-          "userImg-" + messageList.length - 1
-        );
-        const video = document.getElementById("video-" + data.streamId);
-        // console.log("userImg = ", userImg);
-        console.log("length = ", messageList.length);
-        console.log("length = ", messageList);
-        // const avatar = userImg.getContext("2d");
-        // avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
-        // this.props.messageReceived();
-      }, 50);
-      // this.setState({ messageList: messageList });
-      scrollToBottom();
+      if (isRecording === false) return;
+
+      if (isRecordMute === true) {
+        setRecordMuteList((list) => [
+          ...list,
+          recordMuteList.concat({ left, right }),
+        ]);
+        setIsRecordMute(false);
+      }
+      if (
+        data.message.includes("막둥아 기록 시작") ||
+        data.message.includes("막둥아 기록시작") ||
+        data.message.includes("박종화 기록시작") ||
+        data.message.includes("박동화 기록시작")
+      ) {
+        return;
+      }
+
+      if (isRecording === true) {
+        if (isStar === true && length > 0) {
+          const stars = {
+            message: messageList[length - 1].message,
+            startTime: messageList[length - 1].startTime,
+            id: msgIndex - 1,
+          };
+
+          setStartList((list) => [...list, starList.concat(stars)]);
+          setIsStar(false);
+          messageList[length - 1].marker = true;
+          this.forceUpdate();
+          return;
+        }
+        setMessageList((list) => [
+          ...list,
+          messageList.concat({
+            connectionId: event.from.connectionId,
+            nickname: data.nickname,
+            message: data.message,
+            time: data.time,
+            startTime: data.startTime,
+            marker: isStar,
+            id: msgIndex,
+          }),
+        ]);
+        setMsgIndex(msgIndex + 1);
+        scrollToBottom();
+      }
     });
-  }, []);
-
-  const handleChange = (event) => {
-    setMessage(event.target.value);
-    // this.setState({ message: event.target.value });
-  };
-
-  const handlePressKey = (event) => {
-    if (event.key === "Enter") {
-      sendMessage();
-    }
-  };
+  }, [message]);
 
   const sendMessage = () => {
-    console.log("send Message TQ", message);
-    // setMessage(transcript);
-
-    if (user && message) {
-      const msg = message.replace(/ +(?= )/g, "");
-      if (msg !== "" && msg !== " ") {
-        const data = {
-          message: msg,
-          nickname: user.getNickname(),
-          streamId: user.getStreamManager().stream.streamId,
-        };
-
-        user.getStreamManager().stream.session.signal({
-          data: JSON.stringify(data),
-          type: "chat",
-        });
-      }
+    if (localUser && message) {
+      console.log("메세지 보냄 ==", message);
+      const date = new Date();
+      const data = {
+        isRecordMute: isRecordMute,
+        isRecord: isRecording,
+        isStar: isStar,
+        time: date.getHours() + ":" + date.getMinutes(),
+        message: message,
+        nickname: localUser.getNickname(),
+        streamId: localUser.getStreamManager().stream.streamId,
+        startTime: startTime,
+      };
+      localUser.getStreamManager().stream.session.signal({
+        data: JSON.stringify(data),
+        type: "chat",
+      });
+      setMessage("");
     }
-    setMessage("");
   };
 
   const scrollToBottom = () => {
     setTimeout(() => {
       try {
-        chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
+        this.chatScroll.current.scrollTop =
+          this.chatScroll.current.scrollHeight;
       } catch (err) {}
     }, 20);
   };
@@ -143,75 +129,106 @@ const ChatComponent = ({ chatDisplay, user, rootFunction, closeBtn }) => {
   };
 
   const parentFunction = (data) => {
-    console.log("parentFunction , data ", data);
-    // setMessage(data);
+    setMessage(data.text);
+    setStartTime(data.startTime);
+    console.log("parent func !", message);
+    console.log("text = ", data.text);
+    if (
+      data.text.includes("막둥아 기록 중지") ||
+      data.text.includes("막둥아 기록중지") ||
+      data.text.includes("기록 중지") ||
+      data.text.includes("박종화 기록 중지")
+    ) {
+      if (isRecording === true) {
+        setLeft(new Date().getTime() + 1000);
+      }
+      setIsRecording(false);
+    } else if (
+      data.text.includes("막둥아 기록 시작") ||
+      data.text.includes("막둥아 기록시작") ||
+      data.text.includes("기록시작") ||
+      data.text.includes("기록 시작")
+    ) {
+      if (isRecording === false) {
+        setRight(new Date().getTime() + 1000);
+        setIsRecordMute(true);
+      }
+      setIsRecording(true);
+    } else if (
+      data.text.includes("막둥아 발표") ||
+      data.text.includes("막둥아 대표") ||
+      data.text.includes("막둥아 별표") ||
+      data.text.includes("박동화 발표") ||
+      data.text.includes("박동화 대표") ||
+      data.text.includes("박동화 별표") ||
+      data.text.includes("박종화 발표") ||
+      data.text.includes("박종화 대표") ||
+      data.text.includes("박종화 별표")
+    ) {
+      setIsStar(true);
+    }
+
     sendMessage();
   };
 
-  const styleChat = { display: chatDisplay };
   return (
-    <div id='chatContainer'>
-      <div id='chatComponent' style={styleChat}>
-        <div id='chatToolbar'>
-          <span>{user.getStreamManager().stream.session.sessionId} - CHAT</span>
-          <IconButton id='closeButton' onClick={close}>
-            <HighlightOff color='secondary' />
-          </IconButton>
-        </div>
-        <div className='message-wrap' ref={chatScroll}>
-          {messageList.map((data, i) => (
-            <div
-              key={i}
-              id='remoteUsers'
-              className={
-                "message" +
-                (data.connectionId !== user.getConnectionId()
-                  ? " left"
-                  : " right")
-              }
-            >
-              <canvas
-                id={"userImg-" + i}
-                width='60'
-                height='60'
-                className='user-img'
-              />
-              <div className='msg-detail'>
-                <div className='msg-info'>
-                  <p> {data.nickname}</p>
-                </div>
-                <div className='msg-content'>
-                  <span className='triangle' />
-                  <p className='text'>{data.message}</p>
+    <div>
+      <div className='isRecog'>
+        {isRecording ? (
+          <h1
+            style={{
+              color: "skyblue",
+              fontSize: "25px",
+              textAlign: "center",
+            }}
+          >
+            🔵 기록중 🔵
+          </h1>
+        ) : (
+          <h1 style={{ color: "pink", fontSize: "25px", textAlign: "center" }}>
+            ❌ 기록중지 ❌
+          </h1>
+        )}
+      </div>
+      <div id='chatContainer'>
+        <div id='chatComponent'>
+          <div className='message-wrap' ref={chatScroll}>
+            {messageList.map((data, i) => (
+              <div
+                key={i}
+                id='remoteUsers'
+                className={
+                  "message" +
+                  (data.connectionId !== localUser.getConnectionId()
+                    ? " left"
+                    : " right")
+                }
+              >
+                <div className='msg-detail'>
+                  <div className='msg-info'>
+                    <p>
+                      <b>{data.nickname} </b>
+                      {data.time}
+                    </p>
+                  </div>
+
+                  <div className='msg-content'>
+                    <p className='text'>
+                      {data.marker ? (
+                        <Star style={{ color: yellow[800] }} />
+                      ) : null}
+                      {data.message}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-
-        <div id='messageInput'>
-          <input
-            placeholder='Send a messge'
-            id='chatInput'
-            value={message}
-            onChange={handleChange}
-            onKeyPress={handlePressKey}
-          />
-          <Tooltip title='Send message'>
-            <Fab size='small' id='sendButton' onClick={sendMessage}>
-              <Send />
-            </Fab>
-          </Tooltip>
-        </div>
+        <Recognition parentFunction={parentFunction} />
       </div>
-      {/* {this.props.type == "stt" && (
-          <Dictaphone
-            parentFunction={this.parentFunction}
-            rootFunction={this.props.rootFunction}
-          />
-        )} */}
-      {/* <Dictaphone parentFunction={parentFunction} rootFunction={rootFunction} /> */}
     </div>
   );
 };
+
 export default ChatComponent;
