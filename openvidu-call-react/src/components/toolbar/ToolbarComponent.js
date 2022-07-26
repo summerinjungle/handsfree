@@ -8,13 +8,8 @@ import Mic from "@material-ui/icons/Mic";
 import MicOff from "@material-ui/icons/MicOff";
 import Videocam from "@material-ui/icons/Videocam";
 import VideocamOff from "@material-ui/icons/VideocamOff";
-import Fullscreen from "@material-ui/icons/Fullscreen";
-import FullscreenExit from "@material-ui/icons/FullscreenExit";
-import PictureInPicture from "@material-ui/icons/PictureInPicture";
-import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import red from "@material-ui/core/colors/red";
 import IconButton from "@material-ui/core/IconButton";
-// const logo = require("../../assets/images/zoom.jpg");
 
 export default class ToolbarComponent extends Component {
   state = {

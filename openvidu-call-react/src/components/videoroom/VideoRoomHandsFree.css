@@ -1,3 +1,15 @@
+.mr-10 {
+  margin-right: 10px;
+}
+
+.l-4 {
+  left: 4%;
+}
+
+.l-6 {
+  left: 6%;
+}
+
 #header {
   color: #ffffff;
   background-color: #333333;
@@ -280,9 +292,9 @@
   /* min-width: 50px; */
 	/* min-height: 48px; */
   /* border: 4px solid slateblue; */
-  top: 11%;
+  top: 10px;
   width: 22%;
-	height: 79.5%;
+	height: 100%;
 }
 
 .OT_publisher .OT_video-element,
@@ -908,22 +920,45 @@
 }
   
 #exit{
-  position: absolute;
-  top: 103%;
-  left: 63.6%;
+  position: relative;
+  width: 44%;
+  height: 24px;
+  top: 80%;
+  text-align: center;
+  background-color: #cd3b33;
+  left: 7.4%;
   /* margin-right: 20px; */
   
-  background-color:#79bbff;
 	border-radius:6px;
-	border:1px solid #337bc4;
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Arial;
 	font-size:15px;
 	font-weight:bold;
-	padding:7px 24px;
+	padding:7px 0px;
 	text-decoration:none;
-  height: 37px;
+	text-shadow:0px 1px 0px #528ecc;
+}
+
+#copy{
+  position: relative;
+  width: 44%;
+  height: 24px;
+  top: 80%;
+  text-align: center;
+  background-color: #675743;
+  left: 5.6%;
+  /* margin-right: 20px; */
+  
+	border-radius:6px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:7px 0px;
+	text-decoration:none;
 	text-shadow:0px 1px 0px #528ecc;
 }
