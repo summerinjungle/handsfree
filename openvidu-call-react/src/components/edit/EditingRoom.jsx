@@ -17,7 +17,7 @@ import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "../../main/cookie";
-import VoiceRoom from "../voiceRoom/VoiceRoom";
+import VoiceRoom from "../voiceroom/VoiceRoom";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -28,7 +28,6 @@ const EditingRoom = ({ sessionId }) => {
   const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1100;
   console.log(localStorage.getItem("createAt"));
   console.log(reduxCheck.user.createdAt);
-  // console.log("@@@@@@@@", gap);
 
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
@@ -193,8 +192,6 @@ const EditingRoom = ({ sessionId }) => {
 
   return (
     <div id='editingroom-container'>
-      {/* <Voice sessionId={sessionId} /> */}
-      {/* <VoiceRoom /> */}
       <div className='header'>
         <div className='header-contents'>
           <img className='header-logo' src={mainLogo} />

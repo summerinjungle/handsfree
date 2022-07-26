@@ -34,13 +34,13 @@ class VideoRoomHandsFree extends Component {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
-      : "https://eehnoeg.shop:443";
+      : "https://hyunseokmemo.shop:443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     console.log("server url = ", this.OPENVIDU_SERVER_URL);
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
@@ -63,13 +63,13 @@ class VideoRoomHandsFree extends Component {
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
     this.joinSession();
-  
+
     // window.onbeforeunload = function() {
     //   return "";
     // }.bind(this);
-  }
+  };
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     window.removeEventListener("beforeunload", this.onbeforeunload);
     window.removeEventListener("resize", this.updateLayout);
     window.removeEventListener("resize", this.checkSize);
@@ -78,7 +78,7 @@ class VideoRoomHandsFree extends Component {
     // this.connect();
     // this.connectWebCam();
     // this.camStatusChanged();
-  }
+  };
 
   onbeforeunload = (event) => {
     // this.meetingEnd();
@@ -136,7 +136,7 @@ class VideoRoomHandsFree extends Component {
     }
   };
 
-  connect(token) {
+  connect = (token) => {
     this.state.session
       .connect(token, { clientData: this.state.myUserName })
       .then(() => {
@@ -158,9 +158,9 @@ class VideoRoomHandsFree extends Component {
           error.message
         );
       });
-  }
+  };
 
-  async connectWebCam() {
+  connectWebCam = async () => {
     var devices = await this.OV.getDevices();
     // console.log("디바이스 정보 = ", devices);
     var videoDevices = devices.filter((device) => device.kind === "videoinput");
@@ -214,9 +214,9 @@ class VideoRoomHandsFree extends Component {
         });
       }
     );
-  }
+  };
 
-  updateSubscribers() {
+  updateSubscribers = () => {
     var subscribers = this.remotes;
     this.setState(
       {
@@ -234,7 +234,7 @@ class VideoRoomHandsFree extends Component {
         this.updateLayout();
       }
     );
-  }
+  };
 
   getMessageList = async (chatData) => {
     console.log("채팅 정보 == ", chatData);
@@ -329,8 +329,7 @@ class VideoRoomHandsFree extends Component {
     this.setState({ localUser: localUser });
   };
 
-  deleteSubscriber(stream) {
-    
+  deleteSubscriber = (stream) => {
     const remoteUsers = this.state.subscribers;
     const userStream = remoteUsers.filter(
       (user) => user.getStreamManager().stream === stream
@@ -344,9 +343,10 @@ class VideoRoomHandsFree extends Component {
     }
 
     console.log("-------deleteSubscriber------------", stream);
-    console.log("-------deleteSubscriber 2------------", remoteUsers.filter(
-      (user) => user.getStreamManager().stream === stream
-    ));
+    console.log(
+      "-------deleteSubscriber 2------------",
+      remoteUsers.filter((user) => user.getStreamManager().stream === stream)
+    );
     console.log(userStream, index);
     console.log("Important", userStream.screenShareActive);
     if (userStream.screenShareActive) {
@@ -364,10 +364,10 @@ class VideoRoomHandsFree extends Component {
         // [취소] 클릭 -> Lobby로 이동
         this.props.navigate("");
       }
-    } 
-  }
+    }
+  };
 
-  subscribeToStreamCreated() {
+  subscribeToStreamCreated = () => {
     console.log("-------subscribeToStreamCreated------------");
     this.state.session.on("streamCreated", (event) => {
       const subscriber = this.state.session.subscribe(event.stream, undefined);
@@ -388,24 +388,24 @@ class VideoRoomHandsFree extends Component {
         this.updateSubscribers();
       }
     });
-  }
+  };
 
-  subscribeToStreamDestroyed() {
+  subscribeToStreamDestroyed = () => {
     console.log("-------subscribeToStreamDestroyed------------");
     // On every Stream destroyed...
     this.startRecordingChk(this.props.sessionId);
     this.state.session.on("streamDestroyed", (event) => {
       console.log("Destroyed", this.state.localUser);
-      console.log("Destroyed", event)
+      console.log("Destroyed", event);
 
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
       event.preventDefault();
       this.updateLayout();
     });
-  }
+  };
 
-  subscribeToUserChanged() {
+  subscribeToUserChanged = () => {
     console.log("-------subscribeToUserChanged------------");
     this.state.session.on("signal:userChanged", (event) => {
       let remoteUsers = this.state.subscribers;
@@ -431,7 +431,7 @@ class VideoRoomHandsFree extends Component {
         subscribers: remoteUsers,
       });
     });
-  }
+  };
 
   updateLayout = () => {
     setTimeout(() => {
@@ -439,14 +439,14 @@ class VideoRoomHandsFree extends Component {
     }, 20);
   };
 
-  sendSignalUserChanged(data) {
+  sendSignalUserChanged = (data) => {
     console.log("-------sendSignalUserChanged------------");
     const signalOptions = {
       data: JSON.stringify(data),
       type: "userChanged",
     };
     this.state.session.signal(signalOptions);
-  }
+  };
 
   closeDialogExtension = () => {
     this.setState({ showExtensionDialog: false });
@@ -467,14 +467,13 @@ class VideoRoomHandsFree extends Component {
     }
   };
 
-  getToken() {
+  getToken = async () => {
     return this.createSession(this.props.sessionId).then((sessionId) =>
       this.createToken(sessionId)
     );
-  }
+  };
 
-  createSession(sessionId) {
-
+  createSession = (sessionId) => {
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({
         customSessionId: sessionId,
@@ -526,9 +525,9 @@ class VideoRoomHandsFree extends Component {
           }
         });
     });
-  }
+  };
 
-  createToken(sessionId) {
+  createToken = (sessionId) => {
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({});
       axios
@@ -552,7 +551,7 @@ class VideoRoomHandsFree extends Component {
         })
         .catch((error) => reject(error));
     });
-  }
+  };
 
   /**
    * 회의 Recording 종료 함수
@@ -560,28 +559,20 @@ class VideoRoomHandsFree extends Component {
    *
    * @param {*} sessionId
    */
-  stopRecording(sessionId) {
-    
-    return new Promise((resolve, reject) => {
-      var data = JSON.stringify({});
-      axios
-        .post(
-          this.OPENVIDU_SERVER_URL +
-            "/openvidu/api/recordings/stop/" +
-            sessionId, //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
-          data
-        )
-        .then((response) => {
-          console.log("STOP_RECORDING", response);
-          // this.props.getRecordFile(response.data.url);
-          // resolve(response.data.token);
-        })
-        .catch((error) => {
-          console.log("stop record  error ===> ", error);
-          reject(error);
-        });
-    });
-  }
+  stopRecording = async (sessionId) => {
+    await axios
+      .post(
+        this.OPENVIDU_SERVER_URL + "/openvidu/api/recordings/stop/" + sessionId //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
+      )
+      .then((response) => {
+        console.log("STOP_RECORDING", response);
+        // this.props.getRecordFile(response.data.url);
+        // resolve(response.data.token);
+      })
+      .catch((error) => {
+        console.log("stop record  error ===> ", error);
+      });
+  };
 
   /**
    * * 방장(Publisher)이 회의 종료 시, 모든 Subscribers 회의 강제 종료
@@ -599,14 +590,12 @@ class VideoRoomHandsFree extends Component {
         },
       })
       .then((response) => {
-      
         // resolve(response.data.token);
       })
       .catch((error) => console.log("force error", error));
   };
 
   startRecordingChk = async (sessionId) => {
-
     await axios
       .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/recordings/" + sessionId, {
         headers: {
@@ -617,7 +606,6 @@ class VideoRoomHandsFree extends Component {
       })
       .then((response) => {
         localStorage.setItem("createAt", response.data.createdAt);
-    
       })
       .catch((error) => {
         console.log("error !!", error);
