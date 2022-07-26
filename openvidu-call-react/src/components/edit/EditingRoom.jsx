@@ -16,7 +16,6 @@ import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
-import { getUserNameInCookie } from "../../main/cookie";
 import VoiceRoom from "../voiceroom/VoiceRoom";
 
 const EditingRoom = ({ sessionId }) => {
@@ -86,7 +85,7 @@ const EditingRoom = ({ sessionId }) => {
       //   wavesurfer.current.load(recordFile.url);
       // wavesurfer.current.load(testMp3File)
       wavesurfer.current.load(
-        "https://eehnoeg.shop/openvidu/recordings/" +
+        "https://hyunseokmemo.shop/openvidu/recordings/" +
           sessionId +
           "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨

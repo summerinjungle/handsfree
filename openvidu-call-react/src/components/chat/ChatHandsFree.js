@@ -32,21 +32,22 @@ class ChatHandsFree extends Component {
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
         const data = JSON.parse(event.data);
-        let messageList = this.state.messageList;
-        let length = messageList.length;
+        let length = this.state.messageList.length;
         this.setState({ isRecog: data.isRecord });
         this.setState({ isStar: data.isStar });
         this.setState({ isRecordMute: data.isRecordMute });
         this.setState({ startRecord: data.startRecord });
 
-        console.log("잡담구간 체크 = ", this.state.isRecordMute);
+        console.log("잡담 구간 = ", this.state.recordMuteList);
 
         if (data.isRecord === false) return;
 
         if (this.state.isRecordMute === true) {
-          this.state.recordMuteList.push({
-            left: this.state.left,
-            right: this.state.right,
+          this.setState({
+            recordMuteList: this.state.recordMuteList.concat({
+              left: this.state.left,
+              right: this.state.right,
+            }),
           });
           this.setState({
             isRecordMute: false,
@@ -61,22 +62,23 @@ class ChatHandsFree extends Component {
 
         if (this.state.isRecog === true) {
           // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
-          console.log("그 전 데이터  = ", messageList[length - 1]);
+          console.log("그 전 데이터  = ", this.state.messageList[length - 1]);
           console.log("막둥아 별표 = ", data.isStar);
           if (this.state.isStar === true && length > 0) {
-            const stars = {
-              message: messageList[length - 1].message,
-              startTime: messageList[length - 1].startTime,
-              id: this.state.msgIndex - 1,
-            };
-            this.state.starList.push(stars);
+            this.setState({
+              starList: this.state.starList.concat({
+                message: this.state.messageList[length - 1].message,
+                startTime: this.state.messageList[length - 1].startTime,
+                id: this.state.msgIndex - 1,
+              }),
+            });
             this.setState({ isStar: false });
-            messageList[length - 1].marker = true;
+            this.state.messageList[length - 1].marker = true;
             this.forceUpdate();
             return;
           }
 
-          var addMsg = messageList.concat({
+          var addMsg = this.state.messageList.concat({
             connectionId: event.from.connectionId,
             nickname: data.nickname,
             message: data.message,
@@ -85,8 +87,8 @@ class ChatHandsFree extends Component {
             marker: this.state.isStar,
             id: this.state.msgIndex,
           });
-          this.setState({ messageList: addMsg });
           this.setState({
+            messageList: addMsg,
             msgIndex: this.state.msgIndex + 1,
           });
 
