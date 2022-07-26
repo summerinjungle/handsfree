@@ -152,7 +152,7 @@ class VoiceRoom extends Component {
         this.state.localUser.getStreamManager().on("streamPlaying", (e) => {
           // this.updateLayout();
           // publisher.videos[0].video.parentElement.classList.remove(
-            // "custom-class"
+          // "custom-class"
           // );
         });
       }
@@ -370,9 +370,7 @@ class VoiceRoom extends Component {
     console.log("방장여부 ", this.props.isPublisher);
 
     return (
-      <div className='container' id='container' 
-      style={{display: "none"}}
-      >
+      <div className='container' id='container' style={{ display: "none" }}>
         {/* <h1>보이스</h1> */}
         <div id='layout' className='bounds'>
           {localUser !== undefined &&
