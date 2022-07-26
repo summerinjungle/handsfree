@@ -7,11 +7,11 @@ import { changeSession, changeIsPublisher, changeUserName } from "../store.js";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { getTokenInCookie } from "./cookie";
 import axios from "axios";
-import { getUserNameInCookie } from "./cookie";
 import { useSelector } from "react-redux";
 import { removeTokenInCookie } from "./cookie";
 
-const Main = () => {
+const Main = ({ username }) => {
+  console.log("main js ");
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [enterCode, setEnterCode] = useState("");
@@ -21,8 +21,6 @@ const Main = () => {
   let reduxCheck = useSelector((state) => {
     return state;
   });
-  const date = new Date();
-
   useMemo(() => {
     if (cookie) {
       setIsLogin(true);
@@ -30,7 +28,7 @@ const Main = () => {
     }
   }, [cookie]);
 
-  async function createMeeting() {
+  const createMeeting = async () => {
     await axios
       .post("/api/rooms/")
       .then(function (response) {
@@ -38,7 +36,7 @@ const Main = () => {
         // sessionId값, 방장권한, 진행시간 0, 입장시간
         dispatch(changeSession(response.data.roomId));
         dispatch(changeIsPublisher(true));
-        dispatch(changeUserName(getUserNameInCookie()));
+        dispatch(changeUserName(username));
         const obj = {
           isPublisher: true,
           sessionId: response.data.roomId,
@@ -51,38 +49,55 @@ const Main = () => {
       .catch(function (error) {
         console.log(error);
       });
-  }
+  };
 
-  async function enterMeeting() {
+  const enterMeeting = async () => {
+    if (enterCode.length === 0) {
+      alert("입장 코드를 입력하세요");
+      return;
+    }
     await axios
       .post("/api/rooms/" + String(enterCode) + "/join")
       .then(function (response) {
-        console.log(response.data);
+        console.log("회의실 입장 버튼 =", response.data);
         // 입장가능한 방일때
         if (response.data.isValidRoom) {
           if (response.data.isEnd) {
             alert("종료된 회의입니다.");
             return;
           }
-          const time = date.getTime();
+
           dispatch(changeSession(enterCode));
           dispatch(changeIsPublisher(false));
-          dispatch(changeUserName(getUserNameInCookie()));
+          dispatch(changeUserName(username));
           const obj = {
             isPublisher: false,
             sessionId: enterCode,
           };
           localStorage.setItem("redux", JSON.stringify(obj));
           console.log("저장됨", obj);
+          // navigator.mediaDevices
+          //   .getUserMedia({
+          //     audio: true,
+          //     video: { width: 640, height: 360 },
+          //   })
+          //   .then((stream) => {
+          //     enterMeeting();
+          //   })
+          //   .catch(() => {
+          //     alert(
+          //       "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다."
+          //     );
+          //   });
           navigate("/meeting/" + enterCode);
         } else {
-          alert("입장코드를 다시 입력해주세요");
+          alert("입장 코드를 다시 입력해주세요");
         }
       })
       .catch(function (err) {
         console.log("실패함", err);
       });
-  }
+  };
 
   return (
     <div className='main-bg'>
@@ -90,10 +105,6 @@ const Main = () => {
       {isLogin ? (
         <div>
           <p>
-            {/* <button className='myButton'
-              onClick={() => {
-                createMeeting();
-              }} >회의 만들기</button> */}
             <button
               className='myButton'
               onClick={() => {
@@ -122,34 +133,7 @@ const Main = () => {
               placeholder='참여코드를 입력하세요.'
               onChange={(event) => setEnterCode(event.target.value)}
             ></input>
-            {/* <button className='myButton2'
-              onClick={() => {
-                enterCode === ""
-                  ? alert("올바른 참여코드를 입력하세요")
-                  : enterMeeting();
-              }}> 회의 참여하기</button> */}
-            <button
-              className='myButton2'
-              onClick={() => {
-                enterCode === ""
-                  ? alert("올바른 참여코드를 입력하세요")
-                  : navigator.mediaDevices
-                      .getUserMedia({
-                        audio: true,
-                        video: { width: 640, height: 360 },
-                      })
-                      .then((stream) => {
-                        enterMeeting();
-                      })
-                      .catch(() => {
-                        alert(
-                          "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다."
-                        );
-                        enterMeeting();
-                      });
-              }}
-            >
-              {" "}
+            <button className='myButton2' onClick={enterMeeting}>
               회의 참여하기
             </button>
           </p>

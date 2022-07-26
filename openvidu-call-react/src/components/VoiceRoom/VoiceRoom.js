@@ -332,9 +332,7 @@ class VoiceRoom extends Component {
     const localUser = this.state.localUser;
 
     return (
-      <div className='container' id='container' 
-      style={{display: "none"}}
-      >
+      <div className='container' id='container' style={{ display: "none" }}>
         {/* <h1>보이스</h1> */}
         <div id='layout' className='bounds'>
           {localUser !== undefined &&

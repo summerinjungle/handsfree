@@ -7,8 +7,6 @@ import mainLogo from "../../assets/images/mainLogo.png";
 import ChatItem from "../edit/chat/ChatItem";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
-// import VolumeUp from "@material-ui/icons/VolumeUp";
-// import VolumeOff from "@material-ui/icons/VolumeOff";
 import Stop from "@material-ui/icons/Stop";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
@@ -18,13 +16,10 @@ import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
-import { getUserNameInCookie } from "../../main/cookie";
+// import { getUserNameInCookie } from "../../main/cookie";
 import VoiceRoom from "../VoiceRoom/VoiceRoom"
 import { Button, Radio } from 'antd';
-import { SizeType } from 'antd/es/config-provider/SizeContext';
-// import type { SizeType } from 'antd/es/config-provider/SizeContext';
 import { DownloadOutlined } from "@ant-design/icons";
-// import { Button } from 'antd';
 
 
 const EditingRoom = ({ sessionId }) => {
@@ -36,7 +31,6 @@ const EditingRoom = ({ sessionId }) => {
   const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1100;
   console.log(localStorage.getItem("createAt"));
   console.log(reduxCheck.user.createdAt);
-  // console.log("@@@@@@@@", gap);
 
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
@@ -94,12 +88,12 @@ const EditingRoom = ({ sessionId }) => {
     if (wavesurfer) {
       console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
       //   wavesurfer.current.load(recordFile.url);
-      wavesurfer.current.load(testMp3File)
-      // wavesurfer.current.load(
-      //   "https://eehnoeg.shop/openvidu/recordings/" +
-      //     sessionId +
-      //     "/ownweapon.webm"
-      // ); // OPEN_VIDU 주소 전달해주면 됨
+      // wavesurfer.current.load(testMp3File)
+      wavesurfer.current.load(
+        "https://hyunseokmemo.shop/openvidu/recordings/" +
+          sessionId +
+          "/ownweapon.webm"
+      ); // OPEN_VIDU 주소 전달해주면 됨
     }
   }, []);
 
@@ -203,8 +197,6 @@ const EditingRoom = ({ sessionId }) => {
 
   return (
     <div id='editingroom-container'>
-      {/* <Voice sessionId={sessionId} /> */}
-      {/* <VoiceRoom /> */}
       <div className='header'>
         <div className='header-contents'>
           <img className='header-logo' src={mainLogo} />
