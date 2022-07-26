@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./VideoRoomHandsFree.css";
 import { OpenVidu } from "openvidu-browser";
+// import { OpenViduLogger } from "OpenViduLogger";
 import StreamHandFree from "../stream/StreamHandFree";
 import DialogExtensionComponent from "../dialog-extension/DialogExtension";
 import ChatHandsFree from "../chat/ChatHandsFree";
@@ -9,6 +10,7 @@ import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "../toolbar/ToolbarComponent";
 import { connect } from "react-redux";
+import { OpenViduLoggerConfiguration } from "openvidu-browser/lib/OpenViduInternal/Logger/OpenViduLoggerConfiguration";
 
 var localUser = new UserModel();
 
@@ -61,6 +63,10 @@ class VideoRoomHandsFree extends Component {
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
     this.joinSession();
+  
+    // window.onbeforeunload = function() {
+    //   return "";
+    // }.bind(this);
   }
 
   componentWillUnmount() {
@@ -156,6 +162,7 @@ class VideoRoomHandsFree extends Component {
 
   async connectWebCam() {
     var devices = await this.OV.getDevices();
+    // console.log("디바이스 정보 = ", devices);
     var videoDevices = devices.filter((device) => device.kind === "videoinput");
 
     let publisher = this.OV.initPublisher(undefined, {
@@ -181,7 +188,14 @@ class VideoRoomHandsFree extends Component {
     }
     localUser.setNickname(this.state.myUserName);
     localUser.setConnectionId(this.state.session.connection.connectionId);
-    localUser.setScreenShareActive(false);
+
+    if (this.props.isPublisher === true) {
+      localUser.setScreenShareActive(true);
+    } else {
+      localUser.setScreenShareActive(false);
+    }
+
+    // localUser.setScreenShareActive(false);
     localUser.setStreamManager(publisher);
     this.subscribeToUserChanged();
     this.subscribeToStreamDestroyed();
@@ -236,7 +250,7 @@ class VideoRoomHandsFree extends Component {
       .catch((err) => {
         console.log("err === ", err);
       });
-    
+
     const mySession = this.state.session;
 
     if (mySession) {
@@ -259,6 +273,16 @@ class VideoRoomHandsFree extends Component {
   };
 
   meetingEnd = async () => {
+    // ****************** 꼼수 ********************
+    if (this.props.isPublisher) {
+      // setScreenShareActive(true);
+      this.state.localUser.setScreenShareActive(true);
+    } else {
+      this.state.localUser.setScreenShareActive(false);
+      // this.state.localUser.screenShareActive = false;
+    }
+    // ********************************************
+
     if (this.props.isPublisher) {
       this.forceDisconnect(this.props.sessionId);
       this.startRecordingChk(this.props.sessionId);
@@ -291,6 +315,7 @@ class VideoRoomHandsFree extends Component {
   };
 
   camStatusChanged = () => {
+    console.log("local User = ", localUser);
     localUser.setVideoActive(!localUser.isVideoActive());
     localUser.getStreamManager().publishVideo(localUser.isVideoActive());
     this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
@@ -305,6 +330,7 @@ class VideoRoomHandsFree extends Component {
   };
 
   deleteSubscriber(stream) {
+    
     const remoteUsers = this.state.subscribers;
     const userStream = remoteUsers.filter(
       (user) => user.getStreamManager().stream === stream
@@ -316,9 +342,33 @@ class VideoRoomHandsFree extends Component {
         subscribers: remoteUsers,
       });
     }
+
+    console.log("-------deleteSubscriber------------", stream);
+    console.log("-------deleteSubscriber 2------------", remoteUsers.filter(
+      (user) => user.getStreamManager().stream === stream
+    ));
+    console.log(userStream, index);
+    console.log("Important", userStream.screenShareActive);
+    if (userStream.screenShareActive) {
+      // 회의 종료 알림창 확인창
+      if (
+        window.confirm(
+          "방장이 회의를 종료하였습니다.\n" +
+            "편집실로 아동하시겠습니까?\n" +
+            "[취소]를 누르시면 메인 페이지로 이동합니다."
+        )
+      ) {
+        // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
+        this.props.navigate("meeting/" + this.props.sessionId + "/edit");
+      } else {
+        // [취소] 클릭 -> Lobby로 이동
+        this.props.navigate("");
+      }
+    } 
   }
 
   subscribeToStreamCreated() {
+    console.log("-------subscribeToStreamCreated------------");
     this.state.session.on("streamCreated", (event) => {
       const subscriber = this.state.session.subscribe(event.stream, undefined);
       // var subscribers = this.state.subscribers;
@@ -341,33 +391,22 @@ class VideoRoomHandsFree extends Component {
   }
 
   subscribeToStreamDestroyed() {
+    console.log("-------subscribeToStreamDestroyed------------");
     // On every Stream destroyed...
     this.startRecordingChk(this.props.sessionId);
     this.state.session.on("streamDestroyed", (event) => {
-      console.log("Destroyed", this.state.localUser.connectionId);
+      console.log("Destroyed", this.state.localUser);
+      console.log("Destroyed", event)
 
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
       event.preventDefault();
       this.updateLayout();
-      // 회의 종료 알림창 확인창
-      if (
-        window.confirm(
-          "방장이 회의를 종료하였습니다.\n" +
-            "편집실로 아동하시겠습니까?\n" +
-            "[취소]를 누르시면 메인 페이지로 이동합니다."
-        )
-      ) {
-        // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
-        this.props.navigate("meeting/" + this.props.sessionId + "/edit");
-      } else {
-        // [취소] 클릭 -> Lobby로 이동
-        this.props.navigate("");
-      }
     });
   }
 
   subscribeToUserChanged() {
+    console.log("-------subscribeToUserChanged------------");
     this.state.session.on("signal:userChanged", (event) => {
       let remoteUsers = this.state.subscribers;
       remoteUsers.forEach((user) => {
@@ -401,6 +440,7 @@ class VideoRoomHandsFree extends Component {
   };
 
   sendSignalUserChanged(data) {
+    console.log("-------sendSignalUserChanged------------");
     const signalOptions = {
       data: JSON.stringify(data),
       type: "userChanged",
@@ -434,12 +474,6 @@ class VideoRoomHandsFree extends Component {
   }
 
   createSession(sessionId) {
-    var today = new Date();
-    var hours = ("0" + today.getHours()).slice(-2);
-    var minutes = ("0" + today.getMinutes()).slice(-2);
-    var seconds = ("0" + today.getSeconds()).slice(-2);
-    var timeString = today.getTime();
-    console.log("CreateAt", timeString);
 
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({
@@ -527,7 +561,7 @@ class VideoRoomHandsFree extends Component {
    * @param {*} sessionId
    */
   stopRecording(sessionId) {
-    console.log("stop record ~!~!~");
+    
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({});
       axios
@@ -565,14 +599,14 @@ class VideoRoomHandsFree extends Component {
         },
       })
       .then((response) => {
-        console.log("forceDisconnect 성공", response);
+      
         // resolve(response.data.token);
       })
       .catch((error) => console.log("force error", error));
   };
 
   startRecordingChk = async (sessionId) => {
-    console.log("startRecordingChk 함수 진입");
+
     await axios
       .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/recordings/" + sessionId, {
         headers: {
@@ -583,7 +617,7 @@ class VideoRoomHandsFree extends Component {
       })
       .then((response) => {
         localStorage.setItem("createAt", response.data.createdAt);
-        console.log("startRecordingChk 성공", response);
+    
       })
       .catch((error) => {
         console.log("error !!", error);
