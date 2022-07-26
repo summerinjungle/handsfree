@@ -140,10 +140,7 @@ const Main = ({ username }) => {
           {/* <p><button onClick={() => console.log(reduxCheck)}>리덕스 보기</button></p> */}
           {/* <p><button onClick={() => console.log(getUserNameInCookie())}>이름 보기</button></p> */}
           <p>
-            <button onClick={() => navigate("/meeting")}>그냥 입장하기</button>
-          </p>
-          <p>
-            <button
+            <button className='logOut'
               onClick={() => {
                 removeTokenInCookie();
                 window.location.reload();
@@ -158,6 +155,7 @@ const Main = ({ username }) => {
           <GoogleLoginButton />
         </div>
       )}
+        <button className='asdf' onClick={() => navigate("/meeting")}>그냥 입장하기</button>
     </div>
   );
 };
