@@ -273,16 +273,6 @@ class VideoRoomHandsFree extends Component {
   };
 
   meetingEnd = async () => {
-    // ****************** 꼼수 ********************
-    if (this.props.isPublisher) {
-      // setScreenShareActive(true);
-      this.state.localUser.setScreenShareActive(true);
-    } else {
-      this.state.localUser.setScreenShareActive(false);
-      // this.state.localUser.screenShareActive = false;
-    }
-    // ********************************************
-
     if (this.props.isPublisher) {
       this.forceDisconnect(this.props.sessionId);
       this.startRecordingChk(this.props.sessionId);
@@ -313,6 +303,18 @@ class VideoRoomHandsFree extends Component {
       }
     }
   };
+
+  /** SessionID 복사 함수 */
+  copyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(this.props.sessionId);
+      
+      alert('방 코드가 복사되었습니다.');
+    } catch (error) {
+      alert('복사 실패!');
+    }
+  };
+
 
   camStatusChanged = () => {
     console.log("local User = ", localUser);
@@ -354,8 +356,8 @@ class VideoRoomHandsFree extends Component {
       if (
         window.confirm(
           "방장이 회의를 종료하였습니다.\n" +
-            "편집실로 아동하시겠습니까?\n" +
-            "[취소]를 누르시면 메인 페이지로 이동합니다."
+          "편집실로 아동하시겠습니까?\n" +
+          "[취소]를 누르시면 메인 페이지로 이동합니다."
         )
       ) {
         // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
@@ -506,16 +508,16 @@ class VideoRoomHandsFree extends Component {
             console.log(error);
             console.warn(
               "No connection to OpenVidu Server. This may be a certificate error at " +
-                this.OPENVIDU_SERVER_URL
+              this.OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                  this.OPENVIDU_SERVER_URL +
-                  '"\n\nClick OK to navigate and accept it. ' +
-                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                  this.OPENVIDU_SERVER_URL +
-                  '"'
+                this.OPENVIDU_SERVER_URL +
+                '"\n\nClick OK to navigate and accept it. ' +
+                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                this.OPENVIDU_SERVER_URL +
+                '"'
               )
             ) {
               window.location.assign(
@@ -533,9 +535,9 @@ class VideoRoomHandsFree extends Component {
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
-            "/openvidu/api/sessions/" +
-            sessionId +
-            "/connection",
+          "/openvidu/api/sessions/" +
+          sessionId +
+          "/connection",
           data,
           {
             headers: {
@@ -633,17 +635,17 @@ class VideoRoomHandsFree extends Component {
 
           {this.state.subscribers
             ? this.state.subscribers.map((sub, i) => (
-                <div
-                  key={i}
-                  className='OT_root OT_publisher custom-class'
-                  id='remoteUsers'
-                >
-                  <StreamHandFree
-                    user={sub}
-                    streamId={sub.streamManager.stream.streamId}
-                  />
-                </div>
-              ))
+              <div
+                key={i}
+                className='OT_root OT_publisher custom-class'
+                id='remoteUsers'
+              >
+                <StreamHandFree
+                  user={sub}
+                  streamId={sub.streamManager.stream.streamId}
+                />
+              </div>
+            ))
             : null}
         </div>
 
@@ -655,15 +657,13 @@ class VideoRoomHandsFree extends Component {
               rootFunction={this.getMessageList}
               terminate={this.state.terminate}
             />
-            {this.props.isPublisher ? (
-              <button id='exit' onClick={this.meetingEnd}>
-                회의종료
-              </button>
-            ) : (
-              <button id='exit' onClick={this.meetingEnd}>
-                나가기
-              </button>
-            )}
+
+            <div id='copy' class="btnUrlCopy mr-10 l-4" onClick={this.copyUrl}>
+              방코드 복사
+            </div>
+            <div id='exit' class="btnExit l-6" onClick={this.meetingEnd}>
+              {this.props.isPublisher ? "회의종료" : "나가기"}
+            </div>
           </div>
         )}
         <ToolbarComponent
