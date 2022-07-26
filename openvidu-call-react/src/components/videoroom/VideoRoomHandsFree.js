@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import axios from "axios";
 import "./VideoRoomHandsFree.css";
 import { OpenVidu } from "openvidu-browser";
@@ -9,11 +9,10 @@ import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "../toolbar/ToolbarComponent";
 import { connect } from "react-redux";
-import ChatComponent from "../chat/ChatComponent";
 
 var localUser = new UserModel();
 
-class VideoRoomHandsFree extends Component {
+class VideoRoomHandsFree extends PureComponent {
   state = {
     myUserName: this.props.user
       ? this.props.user
@@ -82,6 +81,16 @@ class VideoRoomHandsFree extends Component {
   onbeforeunload = (event) => {
     // this.meetingEnd();
   };
+
+  async getCamerasList() {
+    if (!this.OV) {
+      return null;
+    }
+
+    const devices = await this.OV.getDevices();
+    var videoDevices = devices.filter((device) => device.kind === "videoinput");
+    return videoDevices;
+  }
 
   joinSession = () => {
     this.OV = new OpenVidu();
@@ -163,6 +172,9 @@ class VideoRoomHandsFree extends Component {
     var devices = await this.OV.getDevices();
     // console.log("디바이스 정보 = ", devices);
     var videoDevices = devices.filter((device) => device.kind === "videoinput");
+    const dv = this.getCamerasList();
+    console.log("디바이스 정보1 =", dv);
+    console.log("디바이스 정보2 =", devices);
 
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: undefined,
@@ -270,6 +282,7 @@ class VideoRoomHandsFree extends Component {
   };
 
   meetingEnd = async () => {
+    console.log("회의 종료 버튼 ");
     if (this.props.isPublisher) {
       this.forceDisconnect(this.props.sessionId);
       this.startRecordingChk(this.props.sessionId);
@@ -310,6 +323,7 @@ class VideoRoomHandsFree extends Component {
   };
 
   micStatusChanged = () => {
+    console.log("마이크 토클 === ");
     localUser.setAudioActive(!localUser.isAudioActive());
     localUser.getStreamManager().publishAudio(localUser.isAudioActive());
     this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
@@ -642,11 +656,6 @@ class VideoRoomHandsFree extends Component {
               rootFunction={this.getMessageList}
               terminate={this.state.terminate}
             />
-            {/* <ChatComponent
-              localUser={localUser}
-              rootFunction={this.getMessageList}
-              terminate={this.state.terminate}
-            /> */}
             {this.props.isPublisher ? (
               <button id='exit' onClick={this.meetingEnd}>
                 회의종료

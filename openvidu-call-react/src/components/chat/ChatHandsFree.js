@@ -55,9 +55,6 @@ class ChatHandsFree extends PureComponent {
         console.log("잡담구간 확인", this.state.isRecordMute);
 
         if (this.state.isRecog === true) {
-          // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
-          console.log("그 전 데이터  = ", this.state.messageList[length - 1]);
-          console.log("막둥아 별표 = ", data.isStar);
           if (this.state.isStar === true && length > 0) {
             this.setState({
               starList: this.state.starList.concat({
@@ -95,7 +92,7 @@ class ChatHandsFree extends PureComponent {
   }
 
   componentWillUnmount() {
-    this.parentFunction();
+    // this.parentFunction();
   }
 
   sendMessage = () => {
@@ -186,24 +183,24 @@ class ChatHandsFree extends PureComponent {
     this.sendMessage();
   };
 
-  speechProps = this.parentFunction.bind(this);
+  // speechProps = this.parentFunction.bind(this);
 
   render() {
     console.log("채팅 컴포넌트 호출 ! ");
-    // if (this.props.terminate === true) {
-    //   if (this.state.isRecog === false) {
-    //     this.state.recordMuteList.push({
-    //       left: this.state.left,
-    //       right: new Date().getTime(),
-    //     });
-    //   }
-    //   const chatInfo = {
-    //     messageList: this.state.messageList,
-    //     starList: this.state.starList,
-    //     recordMuteList: this.state.recordMuteList,
-    //   };
-    //   this.props.rootFunction(chatInfo);
-    // }
+    if (this.props.terminate === true) {
+      if (this.state.isRecog === false) {
+        this.state.recordMuteList.push({
+          left: this.state.left,
+          right: new Date().getTime(),
+        });
+      }
+      const chatInfo = {
+        messageList: this.state.messageList,
+        starList: this.state.starList,
+        recordMuteList: this.state.recordMuteList,
+      };
+      this.props.rootFunction(chatInfo);
+    }
     return (
       <div>
         <div className='isRecog'>
@@ -264,7 +261,7 @@ class ChatHandsFree extends PureComponent {
               ))}
             </div>
           </div>
-          <Recognition parentFunction={this.speechProps} />
+          <Recognition parentFunction={this.parentFunction} />
         </div>
       </div>
     );
