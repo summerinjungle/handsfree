@@ -16,16 +16,11 @@ import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
-import { getUserNameInCookie } from "../../main/cookie";
-import VoiceRoom from "../voiceRoom/VoiceRoom";
-=======
 // import { getUserNameInCookie } from "../../main/cookie";
 import VoiceRoom from "../VoiceRoom/VoiceRoom"
 import { Button, Radio } from 'antd';
 import { DownloadOutlined } from "@ant-design/icons";
 
->>>>>>> 3a8f79165b3b3bfcfac692579946b57521fcd83e
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {

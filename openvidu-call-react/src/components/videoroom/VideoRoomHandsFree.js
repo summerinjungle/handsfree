@@ -282,10 +282,6 @@ class VideoRoomHandsFree extends PureComponent {
   };
 
   meetingEnd = async () => {
-<<<<<<< HEAD
-=======
-    console.log("회의 종료 버튼 ");
->>>>>>> 3a8f79165b3b3bfcfac692579946b57521fcd83e
     if (this.props.isPublisher) {
       this.forceDisconnect(this.props.sessionId);
       this.startRecordingChk(this.props.sessionId);
