@@ -12,6 +12,7 @@ class ChatHandsFree extends Component {
     recordMuteList: [],
     message: "",
     isRecog: false,
+    startRecord: false,
     isStar: false,
     isRecordMute: false,
     startTime: "",
@@ -36,6 +37,7 @@ class ChatHandsFree extends Component {
         this.setState({ isRecog: data.isRecord });
         this.setState({ isStar: data.isStar });
         this.setState({ isRecordMute: data.isRecordMute });
+        this.setState({ startRecord: data.startRecord });
 
         console.log("잡담구간 체크 = ", this.state.isRecordMute);
 
@@ -50,11 +52,10 @@ class ChatHandsFree extends Component {
             isRecordMute: false,
           });
         }
-        if (
-          data.message.includes("막둥아 기록 시작") ||
-          data.message.includes("막둥아 기록시작")
-        )
+        if (this.state.startRecord == true) {
+          this.setState({ startRecord: false });
           return;
+        }
 
         console.log("잡담구간 확인", this.state.isRecordMute);
 
@@ -74,7 +75,8 @@ class ChatHandsFree extends Component {
             this.forceUpdate();
             return;
           }
-          messageList.push({
+
+          var addMsg = messageList.concat({
             connectionId: event.from.connectionId,
             nickname: data.nickname,
             message: data.message,
@@ -83,13 +85,13 @@ class ChatHandsFree extends Component {
             marker: this.state.isStar,
             id: this.state.msgIndex,
           });
+          this.setState({ messageList: addMsg });
           this.setState({
             msgIndex: this.state.msgIndex + 1,
           });
 
           console.log("마커 리스트", this.state.starList);
           console.log("메세지 리스트", this.state.messageList);
-          this.setState({ messageList: messageList });
           this.scrollToBottom();
         }
       });
@@ -107,6 +109,7 @@ class ChatHandsFree extends Component {
         const data = {
           isRecordMute: this.state.isRecordMute,
           isRecord: this.state.isRecog,
+          startRecord: this.state.startRecord,
           isStar: this.state.isStar,
           time: date.getHours() + ":" + date.getMinutes(),
           message: message,
@@ -118,7 +121,6 @@ class ChatHandsFree extends Component {
           data: JSON.stringify(data),
           type: "chat",
         });
-        // this.props.localUser.getStreamManager().stream
       }
       this.props.localUser.getStreamManager().stream.session.connection.disposed =
         this.state.isRecog;
@@ -126,14 +128,14 @@ class ChatHandsFree extends Component {
     this.setState({ message: "" });
   };
 
-  scrollToBottom() {
+  scrollToBottom = () => {
     setTimeout(() => {
       try {
         this.chatScroll.current.scrollTop =
           this.chatScroll.current.scrollHeight;
       } catch (err) {}
     }, 20);
-  }
+  };
 
   close = () => {
     this.props.closeBtn(undefined);
@@ -168,6 +170,7 @@ class ChatHandsFree extends Component {
           isRecordMute: true,
         });
       }
+      this.setState({ startRecord: true });
       this.setState({ isRecog: true });
     } else if (
       data.text.includes("막둥아 발표") ||

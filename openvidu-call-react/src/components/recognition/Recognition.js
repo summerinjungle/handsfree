@@ -37,7 +37,6 @@ class Recognition extends Component {
         };
         // 막둥이 로직추가
         this.props.parentFunction(sttData);
-        console.log(this.state.transcript);
       }
       this.setState({ transcript: "" });
       recognition.start();
@@ -48,7 +47,7 @@ class Recognition extends Component {
       if (sound_detect_check !== true) {
         texts = "";
         this.state.start_time = new Date().getTime();
-          // this.props.duringTime + (new Date().getTime() - this.props.enterTime);
+        // this.props.duringTime + (new Date().getTime() - this.props.enterTime);
         sound_detect_check = true;
       }
       let texts = Array.from(event.results)

@@ -9,6 +9,7 @@ import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "../toolbar/ToolbarComponent";
 import { connect } from "react-redux";
+import ChatComponent from "../chat/ChatComponent";
 
 var localUser = new UserModel();
 
@@ -641,6 +642,11 @@ class VideoRoomHandsFree extends Component {
               rootFunction={this.getMessageList}
               terminate={this.state.terminate}
             />
+            {/* <ChatComponent
+              localUser={localUser}
+              rootFunction={this.getMessageList}
+              terminate={this.state.terminate}
+            /> */}
             {this.props.isPublisher ? (
               <button id='exit' onClick={this.meetingEnd}>
                 회의종료
