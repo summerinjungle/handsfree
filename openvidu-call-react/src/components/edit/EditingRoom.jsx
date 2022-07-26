@@ -17,7 +17,7 @@ import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "../../main/cookie";
-import VoiceRoom from "../voiceroom/VoiceRoom";
+import VoiceRoom from "../voiceRoom/VoiceRoom";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -86,8 +86,9 @@ const EditingRoom = ({ sessionId }) => {
       //   wavesurfer.current.load(recordFile.url);
       // wavesurfer.current.load(testMp3File)
       wavesurfer.current.load(
-        "https://eehnoeg.shop/openvidu/recordings/" +
-          sessionId +
+        "https://hyunseokmemo.shop/openvidu/recordings/" +
+          // sessionId +
+          "liplrmkl"+
           "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
     }
@@ -232,7 +233,7 @@ const EditingRoom = ({ sessionId }) => {
             {chatList &&
               chatList.map((recordItem) => (
                 <ChatItem
-                  key={recordItem.id}
+                  key={recordItem._id}
                   id={recordItem.id}
                   userName={recordItem.nickname}
                   time={recordItem.time}
