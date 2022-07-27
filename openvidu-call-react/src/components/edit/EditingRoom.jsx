@@ -146,7 +146,7 @@ const EditingRoom = ({ sessionId }) => {
             time: parseFloat(starList[i].startTime - sessionStartTime) / 1000,
             label: "",
             size:100,
-            color: "red",
+            color: "#ed7785",
             position: "top",
           });
         }
@@ -201,9 +201,10 @@ const EditingRoom = ({ sessionId }) => {
   return (
     <div id='editingroom-container'>
       <div className='header'>
-        <div className='header-contents'>
+        <span className='header-contents'>
           <img className='header-logo' src={mainLogo} />
-        </div>
+          {/* <div>현재 참여자 :</div> */}
+        </span>
         <div className='header-contents text-right'>
           <button
             className='exit'
@@ -233,7 +234,6 @@ const EditingRoom = ({ sessionId }) => {
           <Button type="primary" className='ant1' shape="round" icon={<DownloadOutlined /> } onClick={() => {
             saveButton(saveMemo(), "메모")
           }}> 다운로드</Button>
-
           <div className="textedit" >
             <TextEditor sessionId={sessionId} />
           </div>

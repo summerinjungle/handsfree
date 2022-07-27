@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import playButtonImg from "../../../assets/images/playButton.png";
 import markerImg from "../../../assets/images/markerImg.png";
 import { insertText } from "../TextEditor"
+import './Chatitem.css'
 
 const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playTimeWaveSurfer, deleteChatItem }) => {
 
@@ -19,6 +20,18 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
     const handleEdit = () => {
         toggleIsEdit(); // 수정하고 나면 수정폼은 닫아줌
     }
+
+    const autoResizeTextarea = () => {
+        let textarea = document.querySelector('.autoTextarea');
+    
+        if (textarea) {
+          textarea.style.height = 'auto';
+          var height = textarea.scrollHeight; // 높이
+          textarea.style.height = `${height + 8}px`;
+        }
+      };
+
+      
 
     return (
         <div key={key} className="relative mb-20">
@@ -53,11 +66,11 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
                         { // 수정중인 상태면 ? 수정완료,취소버튼 보이게. 수정중인 상태가 아니면 : 수정, 삭제 버튼 보이게
                             isEdit
                                 ? (<>
-                                    <button onClick={handleEdit} className="chattime-buttons">수정완료</button>
+                                    <button onClick={handleEdit} className="saveChat">저장</button>
                                 </>)
                                 : <>
 
-                                    <button onClick={toggleIsEdit} className="chattime-buttons">수정</button>
+                                    <button onClick={() => {toggleIsEdit(); autoResizeTextarea();}} className="chattime-buttons">수정</button>
                                 </>
                         }
                         <button onClick={() => deleteChatItem(id)} className="chattime-buttons">삭제</button>
@@ -70,11 +83,17 @@ const ChatItem = ({ key, id, userName, time, startTime, isMarker, message, playT
                 <div className="relative">
                     <div className="message">
                         { // 수정중인 상태면 ? 수정폼을 보여주고, 수정중인 상태가 아니면 : 작성한 컨텐츠를 보여줌
+    
                             isEdit
                                 ? (<>
                                     <textarea
+                                        maxLength="1200"
+                                        className="autoTextarea"
                                         ref={localInput}
                                         value={localContent} // 수정내용 기본값 설정
+                                        onKeyDown={autoResizeTextarea}  // keydown이되엇을때마다 autoResizeTextarea실행
+                                        onKeyUp={autoResizeTextarea} // keyup이되엇을때마다 autoResizeTextarea실행
+                                        onClick={autoResizeTextarea}
                                         onChange={(e) => { setLocalContent(e.target.value) }} />
                                 </>)
                                 : <>
