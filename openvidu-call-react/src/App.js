@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import "./App.css";
 import VideoRoomHandsFree from "./components/videoroom/VideoRoomHandsFree";
 import Main from "./main/main";
@@ -27,30 +27,35 @@ const App = () => {
   let meetingPath = "/meeting/" + sessionId;
   let editPath = meetingPath + "/edit";
   let isLogin = getTokenInCookie();
-  console.log("Asdasdasdas", isLogin)
+  console.log("Asdasdasdas", isLogin);
   return (
     <div className='App'>
       <Routes>
-        {
-          isLogin === undefined ?
-          <Route path='/*' element={<Main username={username} />} />:
+        {isLogin === undefined ? (
+          <Route path='/*' element={<Main username={username} />} />
+        ) : (
           <>
             <Route
-            path='/meeting'
-            element={<VideoRoomHandsFree user={username} navigate={navigate} />}
-          >
+              path='/meeting'
+              element={
+                <VideoRoomHandsFree user={username} navigate={navigate} />
+              }
+            >
+              <Route
+                path={sessionId}
+                element={
+                  <VideoRoomHandsFree user={username} navigate={navigate} />
+                }
+              />
+            </Route>
+
             <Route
-              path={sessionId}
-              element={<VideoRoomHandsFree user={username} navigate={navigate} />}
-            />
-          </Route>
-          <Route
-            path={editPath}
-            element={<EditingRoom sessionId={sessionId} />}
-          ></Route>
+              path={editPath}
+              element={<EditingRoom sessionId={sessionId} />}
+            ></Route>
             <Route path={"/*"} element={<> 없는페이지 입니다. </>} />
           </>
-        }
+        )}
         <Route path='/' element={<Main username={username} />} />
       </Routes>
     </div>

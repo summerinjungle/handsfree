@@ -35,7 +35,6 @@ class ChatHandsFree extends PureComponent {
         this.setState({ startRecord: data.startRecord });
 
         console.log("잡담 구간 = ", this.state.recordMuteList);
-
         if (data.isRecord === false) return;
 
         if (this.state.isRecordMute === true) {
@@ -49,7 +48,7 @@ class ChatHandsFree extends PureComponent {
             isRecordMute: !prevState.isRecordMute,
           }));
         }
-        if (this.state.startRecord == true) {
+        if (this.state.startRecord === true) {
           this.setState((prevState) => ({
             startRecord: !prevState.startRecord,
           }));
@@ -102,8 +101,21 @@ class ChatHandsFree extends PureComponent {
       });
   }
 
-  componentWillUnmount() {
-    // this.parentFunction();
+  componentDidUpdate(prevProps) {
+    if (prevProps.terminate !== this.props.terminate) {
+      if (this.state.isRecog === false) {
+        this.state.recordMuteList.push({
+          left: this.state.left,
+          right: new Date().getTime(),
+        });
+      }
+      const chatInfo = {
+        messageList: this.state.messageList,
+        starList: this.state.starList,
+        recordMuteList: this.state.recordMuteList,
+      };
+      this.props.rootFunction(chatInfo);
+    }
   }
 
   sendMessage = () => {
@@ -147,13 +159,17 @@ class ChatHandsFree extends PureComponent {
   };
 
   parentFunction = (data) => {
-    this.state.message = data.text;
-    this.state.startTime = data.startTime;
+    this.setState({
+      message: data.text,
+      startTime: data.startTime,
+    });
     console.log("text = ", data.text);
     if (
       data.text.includes("막둥아 기록 중지") ||
       data.text.includes("막둥아 기록중지") ||
-      data.text.includes("기록 중지") ||
+      data.text.includes("박동화 기록 중지") ||
+      data.text.includes("박정화 기록 중지") ||
+      data.text.includes("막둥아  중지") ||
       data.text.includes("박종화 기록 중지")
     ) {
       if (this.state.isRecog === true) {
@@ -167,8 +183,9 @@ class ChatHandsFree extends PureComponent {
     } else if (
       data.text.includes("막둥아 기록 시작") ||
       data.text.includes("막둥아 기록시작") ||
-      data.text.includes("기록시작") ||
-      data.text.includes("기록 시작")
+      data.text.includes("박종화 기록 시작") ||
+      data.text.includes("박동화 기록 시작") ||
+      data.text.includes("박정화 기록 시작")
     ) {
       if (this.state.isRecog === false) {
         this.setState((prevState) => ({
@@ -203,22 +220,7 @@ class ChatHandsFree extends PureComponent {
 
   render() {
     console.log("채팅 컴포넌트 호출 ! ");
-    if (this.props.terminate === true) {
-      if (this.state.isRecog === false) {
-        this.setState({
-          recordMuteList: this.state.recordMuteList.concat({
-            left: this.state.left,
-            right: new Date().getTime(),
-          }),
-        });
-      }
-      const chatInfo = {
-        messageList: this.state.messageList,
-        starList: this.state.starList,
-        recordMuteList: this.state.recordMuteList,
-      };
-      this.props.rootFunction(chatInfo);
-    }
+
     return (
       <div className='status-container'>
         {/* <div className='isRecog'>
@@ -248,6 +250,7 @@ class ChatHandsFree extends PureComponent {
             </div>
             <div className='inline-block vertical-align mr-8'>
               <img
+                alt='막둥이'
                 src={this.state.isRecog ? isWriting : isNotWriting}
                 height={this.state.isRecog ? "40" : "20"}
                 width={this.state.isRecog ? "42" : "22"}
