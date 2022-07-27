@@ -96,8 +96,8 @@ const EditingRoom = ({ sessionId }) => {
     if (wavesurfer) {
       wavesurfer.current.load(
         "https://hyunseokmemo.shop/openvidu/recordings/" +
-          sessionId +
-          "/ownweapon.webm"
+        sessionId +
+        "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
       wavesurfer.current.on("loading", (data) => {
         console.log("녹음 데이터~~", data);
@@ -297,10 +297,7 @@ const EditingRoom = ({ sessionId }) => {
         </div>
 
         <div className='audio-container'>
-          {/* <div className='track-name'>The name of the track</div> */}
-          <div className='audiobar'>
-            <div className='audio'></div>
-          </div>
+          <div className='audio'></div>
           <div className='buttons'>
             <span
               className={"play-btn btn" + (isPlay === true ? " playing" : "")}
