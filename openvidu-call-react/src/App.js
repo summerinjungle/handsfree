@@ -25,7 +25,7 @@ const App = () => {
     sessionId = data.sessionId;
     dispatch(changeSession(sessionId));
     dispatch(changeIsPublisher(data.isPublisher));
-    dispatch(changeUserName(getUserNameInCookie()));
+    dispatch(changeUserName(user));
   }
   let meetingPath = "/meeting/" + sessionId;
   let editPath = meetingPath + "/edit";

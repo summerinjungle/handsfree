@@ -28,7 +28,6 @@ class VoiceRoom extends Component {
   }
 
   componentDidMount() {
-    console.log("server url = ", this.OPENVIDU_SERVER_URL);
     this.joinSession();
   }
 
@@ -38,7 +37,6 @@ class VoiceRoom extends Component {
 
   joinSession = () => {
     this.OV = new OpenVidu();
-    console.log("open vidu ==> ", this.OV);
 
     this.OV.setAdvancedConfiguration({
       publisherSpeakingEventsOptions: {
@@ -60,13 +58,10 @@ class VoiceRoom extends Component {
 
   connectToSession = () => {
     if (this.props.token !== undefined) {
-      console.log("token received: ", this.props.token);
-      console.log("방이름 received: ", this.props.sessionId);
       this.connect(this.props.token);
     } else {
       this.getToken()
         .then((token) => {
-          console.log(token);
           this.connect(token);
         })
         .catch((error) => {
@@ -232,7 +227,6 @@ class VoiceRoom extends Component {
   subscribeToStreamDestroyed() {
     // On every Stream destroyed...
     this.state.session.on("streamDestroyed", (event) => {
-      console.log("Destroyed", this.state.localUser.connectionId);
 
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
@@ -247,7 +241,6 @@ class VoiceRoom extends Component {
       remoteUsers.forEach((user) => {
         if (user.getConnectionId() === event.from.connectionId) {
           const data = JSON.parse(event.data);
-          console.log("EVENTO REMOTE: ", event.data);
           if (data.isAudioActive !== undefined) {
             user.setAudioActive(data.isAudioActive);
           }
@@ -285,7 +278,6 @@ class VoiceRoom extends Component {
   createSession(sessionId) {
     var today = new Date();
     var timeString = today.getTime();
-    console.log("CreateAt", timeString);
 
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({
@@ -359,7 +351,6 @@ class VoiceRoom extends Component {
           }
         )
         .then((response) => {
-          console.log("TOKEN", response);
           resolve(response.data.token);
         })
         .catch((error) => reject(error));
@@ -368,7 +359,6 @@ class VoiceRoom extends Component {
 
   render() {
     const localUser = this.state.localUser;
-    console.log("방장여부 ", this.props.isPublisher);
 
     return (
       <div className='container' id='container' style={{ display: "none" }}>

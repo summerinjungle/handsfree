@@ -7,20 +7,24 @@ import { changeSession, changeIsPublisher, changeUserName } from "../store.js";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { getTokenInCookie } from "./cookie";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import { removeTokenInCookie } from "./cookie";
 import swal from "sweetalert"
 
 const Main = ({ username }) => {
-  console.log("main js ");
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [enterCode, setEnterCode] = useState("");
   const [isLogin, setIsLogin] = useState(false);
   const cookie = getTokenInCookie();
 
+  let reduxCheck = useSelector((state) => {
+    return state;
+  });
   useMemo(() => {
     if (cookie) {
       setIsLogin(true);
+      // removeTokenInCookie(); //테스트를 위한 코드//
     }
   }, [cookie]);
 
@@ -41,6 +45,7 @@ const Main = ({ username }) => {
         navigate("/meeting/" + response.data.roomId);
       })
       .catch(function (error) {
+
       });
   };
 
@@ -67,19 +72,6 @@ const Main = ({ username }) => {
             sessionId: enterCode,
           };
           localStorage.setItem("redux", JSON.stringify(obj));
-          // navigator.mediaDevices
-          //   .getUserMedia({
-          //     audio: true,
-          //     video: { width: 640, height: 360 },
-          //   })
-          //   .then((stream) => {
-          //     enterMeeting();
-          //   })
-          //   .catch(() => {
-          //     alert(
-          //       "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다."
-          //     );
-          //   });
           navigate("/meeting/" + enterCode);
         } else {
           swal("실패", "초대 코드를 다시 입력해주세요", "warning");

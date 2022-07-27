@@ -58,13 +58,7 @@ const EditingRoom = ({ sessionId }) => {
     setIsPlay(false);
   };
 
-  const changeVolume = (event) => {
-    setVolume(event.target.valueAsNumber);
-    wavesurfer.current.setVolume(volume);
-  };
-
   useEffect(() => {
-    console.log("sessionId 입니다", sessionId);
     loadAllRecord(); // 회의에서 저장된 기록들 가져오기
 
     wavesurfer.current = WaveSurfer.create({
@@ -101,7 +95,6 @@ const EditingRoom = ({ sessionId }) => {
         "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
       wavesurfer.current.on("loading", (data) => {
-        console.log("녹음 데이터~~", data);
         if (data >= 100) {
           setIsLoading(false);
         }
@@ -109,14 +102,7 @@ const EditingRoom = ({ sessionId }) => {
     }
   }, []);
 
-  /**
-   * [GET] http://{BASE_URL}/api/rooms/{roomId}/editingroom
-   *
-   * 잡담구간, 별표표시, 음성기록에 필요한 정보들 받아와
-   * WaveSurfer에 뿌려줌
-   *
-   * TODO: 아래 for 반복문 2개 함수로 분리
-   */
+
   async function loadAllRecord() {
     await axios
       .get("/api/rooms/" + sessionId + "/editingroom") // this.state.roomId 맞나요?
@@ -124,10 +110,6 @@ const EditingRoom = ({ sessionId }) => {
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
         setChatList(chatList);
-        console.log(" ----- editingroom response : ", response);
-
-        // [잡담 구간] 표시
-        console.log("RecordMuteList", recordMuteList);
         for (let i = 0; i < recordMuteList.length; i++) {
           let currLeft, currRight;
           if (recordMuteList[i].left == 0) {
@@ -138,9 +120,6 @@ const EditingRoom = ({ sessionId }) => {
           }
           currRight =
             parseFloat(recordMuteList[i].right - sessionStartTime) / 1000;
-
-          console.log("left!!!!!!", currLeft);
-          console.log("right!!!!!!", currRight);
 
           wavesurfer.current.regions.add({
             start: currLeft,
@@ -153,7 +132,6 @@ const EditingRoom = ({ sessionId }) => {
         }
 
         // [막둥아 별표] 표시
-        console.log("starList", starList);
         for (let i = 0; i < starList.length; i++) {
           wavesurfer.current.addMarker({
             time: parseFloat(starList[i].startTime - sessionStartTime) / 1000,
@@ -199,12 +177,12 @@ const EditingRoom = ({ sessionId }) => {
     let ns = new XMLSerializer();
     let korean = `<meta charset="utf-8" />`;
     let targetString = ns.serializeToString(
-      // document.querySelector(".ql-editor")
       document.querySelector(".contents-right")
     );
     targetString = targetString.replace("음성 기록", "<h2>음성 기록</h2>");
     targetString = targetString.replace(/▶︎/g, "");
     targetString = targetString.replace(/수정/g, "");
+    targetString = targetString.replace(/다운로드/g, "");
     targetString = targetString.replace(/삭제/g, "");
     targetString = targetString.replace(/메모장에 추가/g, "");
     return korean + targetString;
@@ -234,16 +212,6 @@ const EditingRoom = ({ sessionId }) => {
         <div className='contents'>
           <div className='contents-left'>
             <div className='contents-label'>메모장&nbsp;</div>
-            {/* <DownloadOutlined onClick={ () =>{
-            saveButton(saveMemo(), "메모")
-          }}/> */}
-            {/* <InstagramOutlined /> */}
-            {/* <button
-            className='download'
-            onClick={() => saveButton(saveMemo(), "메모")}
-          >
-            Download
-          </button> */}
             <Button
               type='primary'
               className='ant1'

@@ -14,12 +14,10 @@ function getTime() {
 
 //방 생성 API
 exports.createRoom = async (req, res, next) => {
-  console.log("방 만들기!");
   try {
     var roomId = Math.random().toString(36).slice(-8);
     publisher = "A"; //임의
     const isVaild = await roomServices.validateRoomId(roomId); // 같은 이름의 방이 있는지 검증하는 로직
-    console.log("isVaild!!!", isVaild);
     timeString = getTime();
     if (isVaild == true) {
       await roomServices.createRoom({ roomId, publisher, timeString });
@@ -30,7 +28,6 @@ exports.createRoom = async (req, res, next) => {
         createdAt: timeString,
       });
     } else {
-      console.log("방이름이 중복됩니다.");
       res.status(CREATED).json({
         message: "방생성 실패",
       });
@@ -54,17 +51,13 @@ exports.joinRoom = async (req, res, next) => {
       });
     }
     else {
-      console.log("방찾음!!", foundRoom)
-      console.log(foundRoom.isEnd);
       if(foundRoom.isEnd) {
-        console.log("종료된 회의!!");
         res.status(CREATED).json({
           message: "종료된 회의 입니다.",
           isValidRoom: true,
           isEnd: true
         });
       } else {
-        console.log("안종료된 회의!!");
         // 같은 방이 있으면
         //방 시작시간을 알려주는 로직이 들어가야 함
         const createTime = await roomServices.findRoomResponseTime(roomId);
@@ -84,9 +77,7 @@ exports.joinRoom = async (req, res, next) => {
 exports.getEditingRoom = async (req, res, next) => {
   const roomId = req.params.roomId;
   const editingRoom = await roomServices.toEditingRoom(roomId);
-  console.log("방 정보 == ", editingRoom);
   if (!editingRoom) {
-    console.log("nono room");
     res.status(BAD_REQUEST).json({
       message: "잘못된 접근입니다",
     });
