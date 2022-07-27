@@ -3,18 +3,23 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    height: 100px;
+    /* height: 70px; */
+    height: 30%;
     width: 100%;
     background: transparent;
     gap : 2rem
 }
 
 .wave {
-     width: 100%;
-     height: 90px;
+    position: absolute;
+    width: 100%;
+    bottom: 20%;
+    margin-top: 10px;
+    /* padding-top: 20px; */
+    /* height: fit-content; */
 }
 
-button {
+/* button {
     display: flex;
     justify-content: center;
     align-items: center; 
@@ -26,4 +31,4 @@ button {
     outline: none;
     cursor: pointer;
     padding-bottom: 3px;
-}
+} */

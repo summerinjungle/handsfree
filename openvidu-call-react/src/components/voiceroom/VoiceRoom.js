@@ -21,6 +21,7 @@ class VoiceRoom extends Component {
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
       : "https://onxmoreplz.shop:443";
+      // : "";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
