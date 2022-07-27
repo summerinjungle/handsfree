@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "./edit.css";
-import "./wave.css";
-import testMp3File from "./track1.mp3";
 import mainLogo from "../../assets/images/mainLogo.png";
 import ChatItem from "../edit/chat/ChatItem";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -16,11 +14,12 @@ import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
+import VolumeUp from "@material-ui/icons/VolumeUp";
+import VolumeOff from "@material-ui/icons/VolumeOff";
 // import { getUserNameInCookie } from "../../main/cookie";
-import VoiceRoom from "../voiceRoom/VoiceRoom.js"
-import { Button, Radio } from 'antd';
+import { Button, Radio } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-
+import VoiceRoom from "../voiceroom/VoiceRoom";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -35,7 +34,9 @@ const EditingRoom = ({ sessionId }) => {
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
   const [volume, setVolume] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const [chatList, setChatList] = useState([]); // 음성 기록들
 
   const playButton = () => {
     wavesurfer.current.playPause();
@@ -54,8 +55,6 @@ const EditingRoom = ({ sessionId }) => {
     setVolume(event.target.valueAsNumber);
     wavesurfer.current.setVolume(volume);
   };
-
-  const [chatList, setChatList] = useState([]); // 음성 기록들
 
   useEffect(() => {
     console.log("sessionId 입니다", sessionId);
@@ -86,14 +85,17 @@ const EditingRoom = ({ sessionId }) => {
 
   useEffect(() => {
     if (wavesurfer) {
-      console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
-      //   wavesurfer.current.load(recordFile.url);
-      // wavesurfer.current.load(testMp3File)
       wavesurfer.current.load(
         "https://hyunseokmemo.shop/openvidu/recordings/" +
           sessionId +
           "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
+      wavesurfer.current.on("loading", (data) => {
+        console.log("녹음 데이터~~", data);
+        if (data >= 100) {
+          setIsLoading(false);
+        }
+      });
     }
   }, []);
 
@@ -121,14 +123,15 @@ const EditingRoom = ({ sessionId }) => {
           if (recordMuteList[i].left == 0) {
             currLeft = 0;
           } else {
-            currLeft = parseFloat(recordMuteList[i].left - sessionStartTime) / 1000;
+            currLeft =
+              parseFloat(recordMuteList[i].left - sessionStartTime) / 1000;
           }
-          currRight = parseFloat(recordMuteList[i].right - sessionStartTime) / 1000;
+          currRight =
+            parseFloat(recordMuteList[i].right - sessionStartTime) / 1000;
 
           console.log("left!!!!!!", currLeft);
           console.log("right!!!!!!", currRight);
 
-          
           wavesurfer.current.regions.add({
             start: currLeft,
             end: currRight,
@@ -197,114 +200,137 @@ const EditingRoom = ({ sessionId }) => {
     console.log(targetString);
     return korean + targetString;
   }
+  console.log("편집 실 랜더링");
 
   return (
-    <div id='editingroom-container'>
-      <div className='header'>
-        <span className='header-contents'>
-          <img className='header-logo' src={mainLogo} />
-          {/* <div>현재 참여자 :</div> */}
-        </span>
-        <div className='header-contents text-right'>
-          <button
-            className='exit'
-            onClick={() => {
-              navigate("/");
-              window.location.reload();
-            }}
-          >
-            나가기
-          </button>
+    <>
+      <div id='editingroom-container'>
+        <div className='header'>
+          <span className='header-contents'>
+            <img className='header-logo' src={mainLogo} />
+            {/* <div>현재 참여자 :</div> */}
+          </span>
+          <div className='header-contents text-right'>
+            <button
+              className='exit'
+              onClick={() => {
+                navigate("/");
+                window.location.reload();
+              }}
+            >
+              나가기
+            </button>
+          </div>
         </div>
-      </div>
-      <hr className='my-0'></hr>
-      <div className='contents'>
-        <div className='contents-left'>
-          <div className='contents-label'>메모장&nbsp;</div>
-          {/* <DownloadOutlined onClick={ () =>{
+        <hr className='my-0'></hr>
+        <div className='contents'>
+          <div className='contents-left'>
+            <div className='contents-label'>메모장&nbsp;</div>
+            {/* <DownloadOutlined onClick={ () =>{
             saveButton(saveMemo(), "메모")
           }}/> */}
-          {/* <InstagramOutlined /> */}
-          {/* <button
+            {/* <InstagramOutlined /> */}
+            {/* <button
             className='download'
             onClick={() => saveButton(saveMemo(), "메모")}
           >
             Download
           </button> */}
-          <Button type="primary" className='ant1' shape="round" icon={<DownloadOutlined /> } onClick={() => {
-            saveButton(saveMemo(), "메모")
-          }}> 다운로드</Button>
-          <div className="textedit" >
-            <TextEditor sessionId={sessionId} />
+            <Button
+              type='primary'
+              className='ant1'
+              shape='round'
+              icon={<DownloadOutlined />}
+              onClick={() => {
+                saveButton(saveMemo(), "메모");
+              }}
+            >
+              {" "}
+              다운로드
+            </Button>
+            <div className='textedit'>
+              <TextEditor sessionId={sessionId} />
+            </div>
           </div>
-
-        </div>
-        <div className='contents-right'>
-          <div className='contents-label'>&nbsp;&nbsp;&nbsp;음성 기록&nbsp;</div>
-          <Button type="primary" className='antsound' shape="round" icon={<DownloadOutlined /> } onClick={() => {
-            saveButton(saveSoundMemo(), "음성 기록")
-          }}> 다운로드</Button>
-          {/* <button
+          <div className='contents-right'>
+            <div className='contents-label'>
+              &nbsp;&nbsp;&nbsp;음성 기록&nbsp;
+            </div>
+            <Button
+              type='primary'
+              className='antsound'
+              shape='round'
+              icon={<DownloadOutlined />}
+              onClick={() => {
+                saveButton(saveSoundMemo(), "음성 기록");
+              }}
+            >
+              {" "}
+              다운로드
+            </Button>
+            {/* <button
             className='download2'
             onClick={() => saveButton(saveSoundMemo(), "음성 기록")}
           >
             Download
           </button> */}
-          <div className='recorditems'>
-            {chatList &&
-              chatList.map((recordItem) => (
-                <ChatItem
-                  key={recordItem._id}
-                  id={recordItem.id}
-                  userName={recordItem.nickname}
-                  time={recordItem.time}
-                  startTime={recordItem.startTime}
-                  isMarker={recordItem.marker}
-                  message={recordItem.message}
-                  playTimeWaveSurfer={playTimeWaveSurfer}
-                  deleteChatItem={deleteChatItem}
-                />
-              ))}
+            <div className='recorditems'>
+              {chatList &&
+                chatList.map((recordItem) => (
+                  <ChatItem
+                    key={recordItem._id}
+                    id={recordItem.id}
+                    userName={recordItem.nickname}
+                    time={recordItem.time}
+                    startTime={recordItem.startTime}
+                    isMarker={recordItem.marker}
+                    message={recordItem.message}
+                    playTimeWaveSurfer={playTimeWaveSurfer}
+                    deleteChatItem={deleteChatItem}
+                  />
+                ))}
+            </div>
           </div>
         </div>
-      </div>
-      <div className='audio-container'>
-        {/* <div className='track-name'>The name of the track</div> */}
-        {/* <div className='audiobar'> */}
-          <div className='audio'></div>
-        {/* </div> */}
-        <div className='buttons'>
-          <span
-            className={"play-btn btn" + (isPlay === true ? " playing" : "")}
-            onClick={playButton}
-          >
-            <PlayArrowIcon className='fas fa-play' />
-            <PauseIcon className='fas fa-pause' />
-          </span>
 
-          <span className='stop-btn btn' onClick={stopButton}>
-            <Stop className='fas fa-stop' />
-          </span>
+        <div className='audio-container'>
+          {/* <div className='track-name'>The name of the track</div> */}
+          <div className='audiobar'>
+            <div className='audio'></div>
+          </div>
+          <div className='buttons'>
+            <span
+              className={"play-btn btn" + (isPlay === true ? " playing" : "")}
+              onClick={playButton}
+            >
+              <PlayArrowIcon className='fas fa-play' />
+              <PauseIcon className='fas fa-pause' />
+            </span>
 
-          {/* <span className={"mute-btn btn" + (!volume ? " muted" : "")}>
-            <VolumeUp className='fas fa-volume-up' />
-            <VolumeOff className='fas fa-volume-mute' />
-          </span> */}
+            <span className='stop-btn btn' onClick={stopButton}>
+              <Stop className='fas fa-stop' />
+            </span>
 
-          {/* <input
-            type='range'
-            min={0}
-            max={20}
-            step={1}
-            value={volume}
-            className='volume-slider'
-            onChange={changeVolume}
-            readOnly
-          /> */}
+            <span className={"mute-btn btn" + (!volume ? " muted" : "")}>
+              <VolumeUp className='fas fa-volume-up' />
+              <VolumeOff className='fas fa-volume-mute' />
+            </span>
+
+            <input
+              type='range'
+              min={0}
+              max={20}
+              step={1}
+              value={volume}
+              className='volume-slider'
+              onChange={changeVolume}
+              readOnly
+            />
+          </div>
         </div>
+        <VoiceRoom sessionId={newSessionId} />
       </div>
-      <VoiceRoom sessionId={newSessionId} />
-    </div>
+    </>
   );
 };
 

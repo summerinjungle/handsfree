@@ -13,6 +13,14 @@
   display: inline-block;
 }
 
+.f-right {
+  float: right;
+}
+
+.f-left {
+  float: left;
+}
+
 .vertical-align {
   vertical-align: middle;
 }
@@ -166,9 +174,6 @@
     background-color: #f6f2ed;
     width: auto;
     max-width: 80%;
-    
-    
-    float: right;
     border: 2px solid;
     border-color: #eeab46;
   }
