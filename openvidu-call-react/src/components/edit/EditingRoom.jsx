@@ -17,10 +17,9 @@ import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
 // import { getUserNameInCookie } from "../../main/cookie";
-import VoiceRoom from "../VoiceRoom/VoiceRoom"
-import { Button, Radio } from 'antd';
+import VoiceRoom from "../voiceroom/VoiceRoom";
+import { Button, Radio } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -142,7 +141,7 @@ const EditingRoom = ({ sessionId }) => {
           wavesurfer.current.addMarker({
             time: parseFloat(starList[i].startTime - sessionStartTime) / 1000,
             label: "",
-            size:100,
+            size: 100,
             color: "red",
             position: "top",
           });
@@ -194,7 +193,7 @@ const EditingRoom = ({ sessionId }) => {
     console.log(targetString);
     return korean + targetString;
   }
-
+  console.log("편집 실 랜더링")
   return (
     <div id='editingroom-container'>
       <div className='header'>
@@ -227,20 +226,39 @@ const EditingRoom = ({ sessionId }) => {
           >
             Download
           </button> */}
-          <Button type="primary" className='ant1' shape="round" icon={<DownloadOutlined /> } onClick={() => {
-            saveButton(saveMemo(), "메모")
-          }}> 다운로드</Button>
+          <Button
+            type='primary'
+            className='ant1'
+            shape='round'
+            icon={<DownloadOutlined />}
+            onClick={() => {
+              saveButton(saveMemo(), "메모");
+            }}
+          >
+            {" "}
+            다운로드
+          </Button>
 
-          <div className="textedit" >
+          <div className='textedit'>
             <TextEditor sessionId={sessionId} />
           </div>
-
         </div>
         <div className='contents-right'>
-          <div className='contents-label'>&nbsp;&nbsp;&nbsp;음성 기록&nbsp;</div>
-          <Button type="primary" className='antsound' shape="round" icon={<DownloadOutlined /> } onClick={() => {
-            saveButton(saveSoundMemo(), "음성 기록")
-          }}> 다운로드</Button>
+          <div className='contents-label'>
+            &nbsp;&nbsp;&nbsp;음성 기록&nbsp;
+          </div>
+          <Button
+            type='primary'
+            className='antsound'
+            shape='round'
+            icon={<DownloadOutlined />}
+            onClick={() => {
+              saveButton(saveSoundMemo(), "음성 기록");
+            }}
+          >
+            {" "}
+            다운로드
+          </Button>
           {/* <button
             className='download2'
             onClick={() => saveButton(saveSoundMemo(), "음성 기록")}
@@ -268,7 +286,7 @@ const EditingRoom = ({ sessionId }) => {
       <div className='audio-container'>
         {/* <div className='track-name'>The name of the track</div> */}
         {/* <div className='audiobar'> */}
-          <div className='audio'></div>
+        <div className='audio'></div>
         {/* </div> */}
         <div className='buttons'>
           <span

@@ -45,8 +45,9 @@ class Recognition extends PureComponent {
     recognition.onresult = (event) => {
       if (sound_detect_check !== true) {
         texts = "";
-        this.state.start_time = new Date().getTime();
-        // this.props.duringTime + (new Date().getTime() - this.props.enterTime);
+        this.setState({
+          start_time: new Date().getTime(),
+        });
         sound_detect_check = true;
       }
       let texts = Array.from(event.results)
