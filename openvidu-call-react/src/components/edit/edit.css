@@ -216,6 +216,8 @@
 
 #editingroom-container .contents {
 	display: flex;
+	height: 77.5%;
+	/* background-color: blueviolet; */
 	/* padding: 0px 6px; */
 	/* width: 100vw; */
 }
@@ -225,7 +227,7 @@
 	margin-top: 15px;
 	margin-bottom: 20px;
 	font-weight: 700;
-	font-size: 20px;
+	font-size: 22px;
 }
 
 #editingroom-container .contents-left {
@@ -246,13 +248,16 @@
 #editingroom-container .contents-right {
 	display: inline-block;
 	position: absolute;
+	/* background-color: yellowgreen; */
 	left: 61.5%;
+	height: 77.5%;
 	/* padding: 6px 75px 6px 70px; */
 	width: 23%;
 }
 
 #editingroom-container .contents-right .recorditems{
-	max-height: 470px;
+	height: 84.4%;
+	/* background-color: #6A573D; */
 	overflow:scroll;
 }
 
@@ -298,11 +303,12 @@
 	color: white;
 	border:0px;
 	border-radius:6px;
+	font-weight: bold;
 	/* float: center; */
 	/* top: 1%; */
 	position: relative;
 	bottom: 2.1px;
-	padding: 5px 10px 5px 10px;
+	padding: 5px 14px;
 	/* background-color: #1e072f; */
 }
 
@@ -314,6 +320,8 @@
 	color: white;
 	position: relative;
 	top: -0.4%;
+		font-weight: bold;
+	padding: 5px 14px;
 }
 
 .antsound:hover{

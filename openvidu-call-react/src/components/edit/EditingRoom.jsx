@@ -17,8 +17,13 @@ import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
 // import { getUserNameInCookie } from "../../main/cookie";
+<<<<<<< HEAD
 import VoiceRoom from "../voiceroom/VoiceRoom";
 import { Button, Radio } from "antd";
+=======
+import VoiceRoom from "../voiceRoom/VoiceRoom.js"
+import { Button, Radio } from 'antd';
+>>>>>>> 00daf1f08360072eb962cba9dbcd415caba840ba
 import { DownloadOutlined } from "@ant-design/icons";
 
 const EditingRoom = ({ sessionId }) => {
@@ -111,23 +116,26 @@ const EditingRoom = ({ sessionId }) => {
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
         setChatList(chatList);
-        console.log("editingroom response : ", response);
+        console.log(" ----- editingroom response : ", response);
 
         // [잡담 구간] 표시
         console.log("RecordMuteList", recordMuteList);
         for (let i = 0; i < recordMuteList.length; i++) {
-          console.log(
-            "left!!!!!!",
-            (recordMuteList[i].left - sessionStartTime) / 1000
-          );
-          console.log(
-            "right!!!!!!",
-            (recordMuteList[i].right - sessionStartTime) / 1000
-          );
+          let currLeft, currRight;
+          if (recordMuteList[i].left == 0) {
+            currLeft = 0;
+          } else {
+            currLeft = parseFloat(recordMuteList[i].left - sessionStartTime) / 1000;
+          }
+          currRight = parseFloat(recordMuteList[i].right - sessionStartTime) / 1000;
 
+          console.log("left!!!!!!", currLeft);
+          console.log("right!!!!!!", currRight);
+
+          
           wavesurfer.current.regions.add({
-            start: parseFloat(recordMuteList[i].left - sessionStartTime) / 1000,
-            end: parseFloat(recordMuteList[i].right - sessionStartTime) / 1000,
+            start: currLeft,
+            end: currRight,
             // color: "#CEBFAC",
             color: "rgba(228, 209, 185, 0.7)",
             drag: false,
@@ -141,8 +149,8 @@ const EditingRoom = ({ sessionId }) => {
           wavesurfer.current.addMarker({
             time: parseFloat(starList[i].startTime - sessionStartTime) / 1000,
             label: "",
-            size: 100,
-            color: "red",
+            size:100,
+            color: "#ed7785",
             position: "top",
           });
         }
@@ -197,9 +205,10 @@ const EditingRoom = ({ sessionId }) => {
   return (
     <div id='editingroom-container'>
       <div className='header'>
-        <div className='header-contents'>
+        <span className='header-contents'>
           <img className='header-logo' src={mainLogo} />
-        </div>
+          {/* <div>현재 참여자 :</div> */}
+        </span>
         <div className='header-contents text-right'>
           <button
             className='exit'
@@ -226,20 +235,10 @@ const EditingRoom = ({ sessionId }) => {
           >
             Download
           </button> */}
-          <Button
-            type='primary'
-            className='ant1'
-            shape='round'
-            icon={<DownloadOutlined />}
-            onClick={() => {
-              saveButton(saveMemo(), "메모");
-            }}
-          >
-            {" "}
-            다운로드
-          </Button>
-
-          <div className='textedit'>
+          <Button type="primary" className='ant1' shape="round" icon={<DownloadOutlined /> } onClick={() => {
+            saveButton(saveMemo(), "메모")
+          }}> 다운로드</Button>
+          <div className="textedit" >
             <TextEditor sessionId={sessionId} />
           </div>
         </div>
