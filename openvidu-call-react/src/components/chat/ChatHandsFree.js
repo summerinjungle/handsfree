@@ -35,6 +35,7 @@ class ChatHandsFree extends PureComponent {
           isRecog: data.isRecord,
           isStar: data.isStar,
           isRecordMute: data.isRecordMute,
+          startRecord: data.startRecord,
         });
 
         if (data.isRecord === false) return;
@@ -44,8 +45,8 @@ class ChatHandsFree extends PureComponent {
             recordMuteList: this.state.recordMuteList.concat({
               left: this.state.left,
               right: this.state.right,
-              isRecordMute: false,
             }),
+            isRecordMute: false,
           });
         }
 
@@ -116,6 +117,7 @@ class ChatHandsFree extends PureComponent {
         const data = {
           isRecordMute: this.state.isRecordMute,
           isRecord: this.state.isRecog,
+          startRecord: this.state.startRecord,
           isStar: this.state.isStar,
           time: date.getHours() + ":" + date.getMinutes(),
           message: message,
