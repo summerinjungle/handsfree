@@ -133,7 +133,7 @@ const EditingRoom = ({ sessionId }) => {
             start: currLeft,
             end: currRight,
             // color: "#CEBFAC",
-            color: "rgba(228, 209, 185, 0.7)",
+            color: "rgba(96, 95, 95, 0.85)",
             drag: false,
             resize: false,
           });
@@ -146,7 +146,7 @@ const EditingRoom = ({ sessionId }) => {
             time: parseFloat(starList[i].startTime - sessionStartTime) / 1000,
             label: "",
             size:100,
-            color: "#ed7785",
+            color: "red",
             position: "top",
           });
         }
