@@ -44,15 +44,16 @@ class Recognition extends PureComponent {
     // 음성감지 된경우 시작시간을 등록한다
     recognition.onresult = (event) => {
       if (sound_detect_check !== true) {
-        texts = "";
-        this.state.start_time = new Date().getTime();
-        // this.props.duringTime + (new Date().getTime() - this.props.enterTime);
+        this.setState({
+          start_time: new Date().getTime(),
+        });
         sound_detect_check = true;
       }
-      let texts = Array.from(event.results)
-        .map((res) => res[0].transcript)
-        .join("");
-      this.setState({ transcript: texts });
+      this.setState({
+        transcript: Array.from(event.results)
+          .map((res) => res[0].transcript)
+          .join(""),
+      });
     };
   }
   render() {

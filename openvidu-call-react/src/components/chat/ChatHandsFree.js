@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import Star from "@material-ui/icons/Star";
-import "./ChatComponent.css";
+import "./ChatHandsFree.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 import isWriting from "../../assets/images/isWriting.png";
@@ -35,7 +35,6 @@ class ChatHandsFree extends PureComponent {
         this.setState({ startRecord: data.startRecord });
 
         console.log("잡담 구간 = ", this.state.recordMuteList);
-
         if (data.isRecord === false) return;
 
         if (this.state.isRecordMute === true) {
@@ -45,16 +44,16 @@ class ChatHandsFree extends PureComponent {
               right: this.state.right,
             }),
           });
-          this.setState({
-            isRecordMute: false,
-          });
+          this.setState((prevState) => ({
+            isRecordMute: !prevState.isRecordMute,
+          }));
         }
-        if (this.state.startRecord == true) {
-          this.setState({ startRecord: false });
+        if (this.state.startRecord === true) {
+          this.setState((prevState) => ({
+            startRecord: !prevState.startRecord,
+          }));
           return;
         }
-
-        console.log("잡담구간 확인", this.state.isRecordMute);
 
         if (this.state.isRecog === true) {
           if (this.state.isStar === true && length > 0) {
@@ -65,8 +64,18 @@ class ChatHandsFree extends PureComponent {
                 id: this.state.msgIndex - 1,
               }),
             });
-            this.setState({ isStar: false });
+
+            this.setState((prevState) => ({
+              isStar: !prevState.isStar,
+            }));
+
             this.state.messageList[length - 1].marker = true;
+            // let msgCopy = this.state.messageList.slice();
+            // msgCopy[length - 1].marker = true;
+            // this.setState({
+            //   messageList: msgCopy,
+            // });
+
             this.forceUpdate();
             return;
           }
@@ -86,15 +95,27 @@ class ChatHandsFree extends PureComponent {
             messageList: addMsg,
           }));
 
-          console.log("마커 리스트", this.state.starList);
           console.log("메세지 리스트", this.state.messageList);
           this.scrollToBottom();
         }
       });
   }
 
-  componentWillUnmount() {
-    // this.parentFunction();
+  componentDidUpdate(prevProps) {
+    if (prevProps.terminate !== this.props.terminate) {
+      if (this.state.isRecog === false) {
+        this.state.recordMuteList.push({
+          left: this.state.left,
+          right: new Date().getTime(),
+        });
+      }
+      const chatInfo = {
+        messageList: this.state.messageList,
+        starList: this.state.starList,
+        recordMuteList: this.state.recordMuteList,
+      };
+      this.props.rootFunction(chatInfo);
+    }
   }
 
   sendMessage = () => {
@@ -129,7 +150,7 @@ class ChatHandsFree extends PureComponent {
       try {
         this.chatScroll.current.scrollTop =
           this.chatScroll.current.scrollHeight;
-      } catch (err) { }
+      } catch (err) {}
     }, 20);
   };
 
@@ -138,14 +159,17 @@ class ChatHandsFree extends PureComponent {
   };
 
   parentFunction = (data) => {
-    this.state.message = data.text;
-    this.state.startTime = data.startTime;
+    this.setState({
+      message: data.text,
+      startTime: data.startTime,
+    });
     console.log("text = ", data.text);
-    console.log("chat_comp startTime = ", data.startTime);
     if (
       data.text.includes("막둥아 기록 중지") ||
       data.text.includes("막둥아 기록중지") ||
-      data.text.includes("기록 중지") ||
+      data.text.includes("박동화 기록 중지") ||
+      data.text.includes("박정화 기록 중지") ||
+      data.text.includes("막둥아  중지") ||
       data.text.includes("박종화 기록 중지")
     ) {
       if (this.state.isRecog === true) {
@@ -153,21 +177,26 @@ class ChatHandsFree extends PureComponent {
           left: new Date().getTime() + 1000,
         });
       }
-      this.setState({ isRecog: false });
+      this.setState((prevState) => ({
+        isRecog: !prevState.isRecog,
+      }));
     } else if (
       data.text.includes("막둥아 기록 시작") ||
       data.text.includes("막둥아 기록시작") ||
-      data.text.includes("기록시작") ||
-      data.text.includes("기록 시작")
+      data.text.includes("박종화 기록 시작") ||
+      data.text.includes("박동화 기록 시작") ||
+      data.text.includes("박정화 기록 시작")
     ) {
       if (this.state.isRecog === false) {
-        this.setState({
+        this.setState((prevState) => ({
           right: new Date().getTime() + 1000,
-          isRecordMute: true,
-        });
+          isRecordMute: !prevState.isRecordMute,
+        }));
       }
-      this.setState({ startRecord: true });
-      this.setState({ isRecog: true });
+      this.setState((prevState) => ({
+        isRecog: !prevState.isRecog,
+        startRecord: !prevState.startRecord,
+      }));
     } else if (
       data.text.includes("막둥아 발표") ||
       data.text.includes("막둥아 대표") ||
@@ -179,34 +208,21 @@ class ChatHandsFree extends PureComponent {
       data.text.includes("박종화 대표") ||
       data.text.includes("박종화 별표")
     ) {
-      this.setState({ isStar: true });
+      this.setState((prevState) => ({
+        isStar: !prevState.isStar,
+      }));
     }
 
     this.sendMessage();
   };
 
-  // speechProps = this.parentFunction.bind(this);
+  speechProps = this.parentFunction.bind(this);
 
   render() {
     console.log("채팅 컴포넌트 호출 ! ");
-    if (this.props.terminate === true) {
-      if (this.state.isRecog === false) {
-        this.state.recordMuteList.push({
-          left: this.state.left,
-          right: new Date().getTime(),
-        });
-      }
-      const chatInfo = {
-        messageList: this.state.messageList,
-        starList: this.state.starList,
-        recordMuteList: this.state.recordMuteList,
-      };
-      this.props.rootFunction(chatInfo);
-    }
+
     return (
-
-
-      <div className="status-container">
+      <div className='status-container'>
         {/* <div className='isRecog'>
           <div className="writingStatus mb-5">
             <div className={`inline-block ${this.state.isRecog? "colorBlue": "colorRed"}`}>
@@ -230,8 +246,13 @@ class ChatHandsFree extends PureComponent {
                 this.state.isRecog ? "ON" : "OFF"
               }
             </div>
-            <div className="inline-block vertical-align mr-8">
-              <img src={this.state.isRecog ? isWriting : isNotWriting} height={this.state.isRecog ? "40" : "20"} width={this.state.isRecog ? "42" : "22"} />
+            <div className='inline-block vertical-align mr-8'>
+              <img
+                alt='막둥이'
+                src={this.state.isRecog ? isWriting : isNotWriting}
+                height={this.state.isRecog ? "40" : "20"}
+                width={this.state.isRecog ? "42" : "22"}
+              />
             </div>
             <div className="inline-block vertical-align" style={{ marginBottom: 4 }}>
               {this.state.isRecog ? "막둥이가 지금 기록중이에요!" : " 막둥이를 불러주세요!   "}
@@ -288,7 +309,10 @@ class ChatHandsFree extends PureComponent {
                       {/* <span className='triangle' /> */}
                       <p className='text'>
                         {data.marker ? (
-                          <Star className="starInChat" style={{ color: yellow[800] }} />
+                          <Star
+                            className='starInChat'
+                            style={{ color: yellow[800] }}
+                          />
                         ) : null}
 
                         {data.message}
@@ -301,9 +325,9 @@ class ChatHandsFree extends PureComponent {
               ))}
             </div>
           </div>
-          <Recognition parentFunction={this.parentFunction} />
+          <Recognition parentFunction={this.speechProps} />
         </div>
-      </div >
+      </div>
     );
   }
 }
