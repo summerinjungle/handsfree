@@ -170,11 +170,7 @@ class VideoRoomHandsFree extends PureComponent {
 
   connectWebCam = async () => {
     var devices = await this.OV.getDevices();
-    // console.log("디바이스 정보 = ", devices);
     var videoDevices = devices.filter((device) => device.kind === "videoinput");
-    const dv = this.getCamerasList();
-    console.log("디바이스 정보1 =", dv);
-    console.log("디바이스 정보2 =", devices);
 
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: undefined,
@@ -317,13 +313,12 @@ class VideoRoomHandsFree extends PureComponent {
   copyUrl = async () => {
     try {
       await navigator.clipboard.writeText(this.props.sessionId);
-      
-      alert('방 코드가 복사되었습니다.');
+
+      alert("방 코드가 복사되었습니다.");
     } catch (error) {
-      alert('복사 실패!');
+      alert("복사 실패!");
     }
   };
-
 
   camStatusChanged = () => {
     console.log("local User = ", localUser);
@@ -366,8 +361,8 @@ class VideoRoomHandsFree extends PureComponent {
       if (
         window.confirm(
           "방장이 회의를 종료하였습니다.\n" +
-          "편집실로 아동하시겠습니까?\n" +
-          "[취소]를 누르시면 메인 페이지로 이동합니다."
+            "편집실로 아동하시겠습니까?\n" +
+            "[취소]를 누르시면 메인 페이지로 이동합니다."
         )
       ) {
         // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
@@ -518,16 +513,16 @@ class VideoRoomHandsFree extends PureComponent {
             console.log(error);
             console.warn(
               "No connection to OpenVidu Server. This may be a certificate error at " +
-              this.OPENVIDU_SERVER_URL
+                this.OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                this.OPENVIDU_SERVER_URL +
-                '"\n\nClick OK to navigate and accept it. ' +
-                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                this.OPENVIDU_SERVER_URL +
-                '"'
+                  this.OPENVIDU_SERVER_URL +
+                  '"\n\nClick OK to navigate and accept it. ' +
+                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                  this.OPENVIDU_SERVER_URL +
+                  '"'
               )
             ) {
               window.location.assign(
@@ -545,9 +540,9 @@ class VideoRoomHandsFree extends PureComponent {
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
-          "/openvidu/api/sessions/" +
-          sessionId +
-          "/connection",
+            "/openvidu/api/sessions/" +
+            sessionId +
+            "/connection",
           data,
           {
             headers: {
@@ -645,17 +640,17 @@ class VideoRoomHandsFree extends PureComponent {
 
           {this.state.subscribers
             ? this.state.subscribers.map((sub, i) => (
-              <div
-                key={i}
-                className='OT_root OT_publisher custom-class'
-                id='remoteUsers'
-              >
-                <StreamHandFree
-                  user={sub}
-                  streamId={sub.streamManager.stream.streamId}
-                />
-              </div>
-            ))
+                <div
+                  key={i}
+                  className='OT_root OT_publisher custom-class'
+                  id='remoteUsers'
+                >
+                  <StreamHandFree
+                    user={sub}
+                    streamId={sub.streamManager.stream.streamId}
+                  />
+                </div>
+              ))
             : null}
         </div>
 

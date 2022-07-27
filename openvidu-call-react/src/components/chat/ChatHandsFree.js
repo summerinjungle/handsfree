@@ -29,25 +29,25 @@ class ChatHandsFree extends PureComponent {
       .stream.session.on("signal:chat", (event) => {
         const data = JSON.parse(event.data);
         let length = this.state.messageList.length;
-        this.setState({ isRecog: data.isRecord });
-        this.setState({ isStar: data.isStar });
-        this.setState({ isRecordMute: data.isRecordMute });
-        this.setState({ startRecord: data.startRecord });
-
+        this.setState({
+          isRecog: data.isRecord,
+          isStar: data.isStar,
+          isRecordMute: data.isRecordMute,
+          startRecord: data.startRecord,
+        });
         console.log("잡담 구간 = ", this.state.recordMuteList);
         if (data.isRecord === false) return;
 
         if (this.state.isRecordMute === true) {
-          this.setState({
+          this.setState((prevState) => ({
+            isRecordMute: !prevState.isRecordMute,
             recordMuteList: this.state.recordMuteList.concat({
               left: this.state.left,
               right: this.state.right,
             }),
-          });
-          this.setState((prevState) => ({
-            isRecordMute: !prevState.isRecordMute,
           }));
         }
+
         if (this.state.startRecord === true) {
           this.setState((prevState) => ({
             startRecord: !prevState.startRecord,
@@ -57,16 +57,13 @@ class ChatHandsFree extends PureComponent {
 
         if (this.state.isRecog === true) {
           if (this.state.isStar === true && length > 0) {
-            this.setState({
+            this.setState((prevState) => ({
+              isStar: !prevState.isStar,
               starList: this.state.starList.concat({
                 message: this.state.messageList[length - 1].message,
                 startTime: this.state.messageList[length - 1].startTime,
                 id: this.state.msgIndex - 1,
               }),
-            });
-
-            this.setState((prevState) => ({
-              isStar: !prevState.isStar,
             }));
 
             this.state.messageList[length - 1].marker = true;
