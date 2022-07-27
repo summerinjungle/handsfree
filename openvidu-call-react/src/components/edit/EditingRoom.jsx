@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "./edit.css";
 import mainLogo from "../../assets/images/mainLogo.png";
@@ -14,8 +14,6 @@ import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
-import VolumeUp from "@material-ui/icons/VolumeUp";
-import VolumeOff from "@material-ui/icons/VolumeOff";
 // import { getUserNameInCookie } from "../../main/cookie";
 import { Button, Radio } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
@@ -159,7 +157,7 @@ const EditingRoom = ({ sessionId }) => {
           wavesurfer.current.addMarker({
             time: parseFloat(starList[i].startTime - sessionStartTime) / 1000,
             label: "",
-            size:100,
+            size: 100,
             color: "red",
             position: "top",
           });
@@ -279,12 +277,6 @@ const EditingRoom = ({ sessionId }) => {
               {" "}
               다운로드
             </Button>
-            {/* <button
-            className='download2'
-            onClick={() => saveButton(saveSoundMemo(), "음성 기록")}
-          >
-            Download
-          </button> */}
             <div className='recorditems'>
               {chatList &&
                 chatList.map((recordItem) => (
@@ -321,22 +313,6 @@ const EditingRoom = ({ sessionId }) => {
             <span className='stop-btn btn' onClick={stopButton}>
               <Stop className='fas fa-stop' />
             </span>
-
-            <span className={"mute-btn btn" + (!volume ? " muted" : "")}>
-              <VolumeUp className='fas fa-volume-up' />
-              <VolumeOff className='fas fa-volume-mute' />
-            </span>
-
-            <input
-              type='range'
-              min={0}
-              max={20}
-              step={1}
-              value={volume}
-              className='volume-slider'
-              onChange={changeVolume}
-              readOnly
-            />
           </div>
         </div>
         <VoiceRoom sessionId={newSessionId} />
