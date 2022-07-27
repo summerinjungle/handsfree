@@ -220,28 +220,14 @@ class ChatHandsFree extends PureComponent {
 
     return (
       <div className='status-container'>
-        {/* <div className='isRecog'>
-          <div className="writingStatus mb-5">
-            <div className={`inline-block ${this.state.isRecog? "colorBlue": "colorRed"}`}>
-              {
-                this.state.isRecog ? "ON" : "OFF"
-              }
-            </div>
-            <div className="inline-block">
-              <img src={this.state.isRecog ? isWriting : isNotWriting} height="30" width="30" />
-            </div>
-            <div className="inline-block"> 
-              {this.state.isRecog ? "🔵 막둥이가 지금 기록중이에요!" : "막둥이를 불러주세요!"}
-            </div>
-          </div>
-        </div> */}
-
         <div className='isRecog'>
-          <div className="writingStatus">
-            <div className={`inline-block vertical-align mr-20 ${this.state.isRecog ? "colorYellow" : "colorRed"}`}>
-              {
-                this.state.isRecog ? "ON" : "OFF"
-              }
+          <div className='writingStatus'>
+            <div
+              className={`inline-block vertical-align mr-20 ${
+                this.state.isRecog ? "colorYellow" : "colorRed"
+              }`}
+            >
+              {this.state.isRecog ? "ON" : "OFF"}
             </div>
             <div className='inline-block vertical-align mr-8'>
               <img
@@ -251,27 +237,16 @@ class ChatHandsFree extends PureComponent {
                 width={this.state.isRecog ? "42" : "22"}
               />
             </div>
-            <div className="inline-block vertical-align" style={{ marginBottom: 4 }}>
-              {this.state.isRecog ? "막둥이가 지금 기록중이에요!" : " 막둥이를 불러주세요!   "}
+            <div
+              className='inline-block vertical-align'
+              style={{ marginBottom: 4 }}
+            >
+              {this.state.isRecog
+                ? "막둥이가 기록 중이에요!"
+                : " 막둥이를 불러주세요!   "}
             </div>
           </div>
         </div>
-
-        {/* <div className='isRecog'>
-          <div className="writingStatus">
-            <div className={`inline-block vertical-align mr-20 ${!this.state.isRecog? "colorYellow": "colorRed"}`}>
-              {
-                !this.state.isRecog ? "ON" : "OFF"
-              }
-            </div>
-            <div className="inline-block vertical-align mr-8">
-              <img src={!this.state.isRecog ? isWriting : isNotWriting} height={!this.state.isRecog ? "40" : "20"} width={!this.state.isRecog ? "42" : "22"} />
-            </div>
-            <div className="inline-block vertical-align"> 
-              {!this.state.isRecog ? "막둥이가 기록중이에요!" : " 막둥이를 불러주세요!   "}
-            </div>
-          </div>
-        </div> */}
 
         <div id='chatContainer'>
           <div id='chatComponent'>
@@ -282,10 +257,10 @@ class ChatHandsFree extends PureComponent {
                   id='remoteUsers'
                   className={
                     "message" +
-                    (data.connectionId !== this.props.localUser.getConnectionId()
+                    (data.connectionId !==
+                    this.props.localUser.getConnectionId()
                       ? " left"
-                      : " right"
-                    )
+                      : " right")
                   }
                 >
                   <div className='msg-detail'>
@@ -296,13 +271,16 @@ class ChatHandsFree extends PureComponent {
                       </p>
                     </div>
 
-                    <div className={
-                      `
-                      ${data.connectionId !== this.props.localUser.getConnectionId()
-                        ? " f-left"
-                        : " f-right"} ${data.marker ? 'msg-content-star' : 'msg-content'}
-                      `
-                    }>
+                    <div
+                      className={`
+                      ${
+                        data.connectionId !==
+                        this.props.localUser.getConnectionId()
+                          ? " f-left"
+                          : " f-right"
+                      } ${data.marker ? "msg-content-star" : "msg-content"}
+                      `}
+                    >
                       {/* <span className='triangle' /> */}
                       <p className='text'>
                         {data.marker ? (

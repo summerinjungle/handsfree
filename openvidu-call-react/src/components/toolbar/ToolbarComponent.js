@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import "./ToolbarComponent.css";
-
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-
 import Mic from "@material-ui/icons/Mic";
 import MicOff from "@material-ui/icons/MicOff";
 import Videocam from "@material-ui/icons/Videocam";
@@ -34,20 +32,10 @@ export default class ToolbarComponent extends Component {
   };
 
   render() {
-    const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
     return (
       <AppBar className='toolbar' id='header'>
         <Toolbar className='toolbar'>
-          <div id='navSessionInfo'>
-            {/* <img id='header_img' alt='OpenVidu Logo' src={logo} /> */}
-            {/* {this.props.sessionId && (
-              <div id='titleContent'>
-                <span id='session-title'>{mySessionId}</span>
-              </div>
-            )} */}
-          </div>
-
           <div className='buttonsContent'>
             <IconButton
               color='inherit'
