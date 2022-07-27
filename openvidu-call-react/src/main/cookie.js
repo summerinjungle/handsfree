@@ -8,7 +8,7 @@ export const getTokenInCookie = () => {
 };
 
 export const getUserNameInCookie = () => {
-  console.log("name from google! : ", Cookies.get(name));
+//   console.log("name from google! : ", Cookies.get(name));
   return Cookies.get(name);
 };
 

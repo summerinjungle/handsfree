@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import Star from "@material-ui/icons/Star";
-import "./ChatComponent.css";
+import "./ChatHandsFree.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
+import isWriting from "../../assets/images/isWriting.png";
+import isNotWriting from "../../assets/images/isNotWriting.png";
 import { connect } from "react-redux";
 
 class ChatHandsFree extends Component {
@@ -20,11 +22,7 @@ class ChatHandsFree extends Component {
     msgIndex: 0,
   };
   chatScroll = React.createRef();
-  constructor(props) {
-    super(props);
-    console.log("11111", this.props.localUser.getStreamManager());
-    console.log("2222", this.props.localUser.getStreamManager());
-  }
+
   // 컴포넌트가 웹 브라우저 상에 나타난 후 호출하는 메서드입니다.
   componentDidMount() {
     this.props.localUser
@@ -36,8 +34,6 @@ class ChatHandsFree extends Component {
         this.setState({ isRecog: data.isRecord });
         this.setState({ isStar: data.isStar });
         this.setState({ isRecordMute: data.isRecordMute });
-
-        console.log("잡담구간 체크 = ", this.state.isRecordMute);
 
         if (data.isRecord === false) return;
 
@@ -56,12 +52,7 @@ class ChatHandsFree extends Component {
         )
           return;
 
-        console.log("잡담구간 확인", this.state.isRecordMute);
-
         if (this.state.isRecog === true) {
-          // 막둥아 별표 시간 : duringTime + (new Date().getTime() - entertime)
-          console.log("그 전 데이터  = ", messageList[length - 1]);
-          console.log("막둥아 별표 = ", data.isStar);
           if (this.state.isStar === true && length > 0) {
             const stars = {
               message: messageList[length - 1].message,
@@ -86,9 +77,6 @@ class ChatHandsFree extends Component {
           this.setState({
             msgIndex: this.state.msgIndex + 1,
           });
-
-          console.log("마커 리스트", this.state.starList);
-          console.log("메세지 리스트", this.state.messageList);
           this.setState({ messageList: messageList });
           this.scrollToBottom();
         }
@@ -97,6 +85,23 @@ class ChatHandsFree extends Component {
 
   componentWillUnmount() {
     // this.parentFunction();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.terminate !== this.props.terminate) {
+      if (this.state.isRecog === false) {
+        this.state.recordMuteList.push({
+          left: this.state.left,
+          right: new Date().getTime() + 20000,
+        });
+      }
+      const chatInfo = {
+        messageList: this.state.messageList,
+        starList: this.state.starList,
+        recordMuteList: this.state.recordMuteList,
+      };
+      this.props.rootFunction(chatInfo);
+    }
   }
 
   sendMessage = () => {
@@ -142,8 +147,6 @@ class ChatHandsFree extends Component {
   parentFunction = (data) => {
     this.state.message = data.text;
     this.state.startTime = data.startTime;
-    console.log("text = ", data.text);
-    console.log("chat_comp startTime = ", data.startTime);
     if (
       data.text.includes("막둥아 기록 중지") ||
       data.text.includes("막둥아 기록중지") ||
@@ -187,41 +190,36 @@ class ChatHandsFree extends Component {
   };
 
   render() {
-    if (this.props.terminate === true) {
-      if (this.state.isRecog === false) {
-        this.state.recordMuteList.push({
-          left: this.state.left,
-          right: new Date().getTime(),
-        });
-      }
-      const chatInfo = {
-        messageList: this.state.messageList,
-        starList: this.state.starList,
-        recordMuteList: this.state.recordMuteList,
-      };
-      this.props.rootFunction(chatInfo);
-    }
     return (
-      <div>
+      <div className='status-container'>
         <div className='isRecog'>
-          {this.state.isRecog ? (
-            <h1
-              style={{
-                color: "skyblue",
-                fontSize: "25px",
-                textAlign: "center",
-              }}
+          <div className='writingStatus'>
+            <div
+              className={`inline-block vertical-align mr-20 ${
+                this.state.isRecog ? "colorYellow" : "colorRed"
+              }`}
             >
-              🔵 기록중 🔵
-            </h1>
-          ) : (
-            <h1
-              style={{ color: "pink", fontSize: "25px", textAlign: "center" }}
+              {this.state.isRecog ? "ON" : "OFF"}
+            </div>
+            <div className='inline-block vertical-align mr-8'>
+              <img
+                alt='막둥이'
+                src={this.state.isRecog ? isWriting : isNotWriting}
+                height={this.state.isRecog ? "40" : "20"}
+                width={this.state.isRecog ? "42" : "22"}
+              />
+            </div>
+            <div
+              className='inline-block vertical-align'
+              style={{ marginBottom: 4 }}
             >
-              ❌ 기록중지 ❌
-            </h1>
-          )}
+              {this.state.isRecog
+                ? "막둥이가 기록 중이에요!"
+                : " 막둥이를 불러주세요!   "}
+            </div>
+          </div>
         </div>
+
         <div id='chatContainer'>
           <div id='chatComponent'>
             <div className='message-wrap' ref={this.chatScroll}>
@@ -245,12 +243,25 @@ class ChatHandsFree extends Component {
                       </p>
                     </div>
 
-                    <div className='msg-content'>
+                    <div
+                      className={`
+                      ${
+                        data.connectionId !==
+                        this.props.localUser.getConnectionId()
+                          ? " f-left"
+                          : " f-right"
+                      } ${data.marker ? "msg-content-star" : "msg-content"}
+                      `}
+                    >
                       {/* <span className='triangle' /> */}
                       <p className='text'>
                         {data.marker ? (
-                          <Star style={{ color: yellow[800] }} />
+                          <Star
+                            className='starInChat'
+                            style={{ color: yellow[800] }}
+                          />
                         ) : null}
+
                         {data.message}
                       </p>
                     </div>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./StreamComponent.css";
 import OvVideoComponent from "./OvVideo";
-import VideoStream from "./VideoStream";
+
 export default class StreamComponent extends Component {
   state = {
     nickname: this.props.user.getNickname(),

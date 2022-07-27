@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./VideoRoomHandsFree.css";
 import { OpenVidu } from "openvidu-browser";
-// import { OpenViduLogger } from "OpenViduLogger";
 import StreamHandFree from "../stream/StreamHandFree";
 import DialogExtensionComponent from "../dialog-extension/DialogExtension";
 import ChatHandsFree from "../chat/ChatHandsFree";
@@ -10,7 +9,11 @@ import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "../toolbar/ToolbarComponent";
 import { connect } from "react-redux";
-import { OpenViduLoggerConfiguration } from "openvidu-browser/lib/OpenViduInternal/Logger/OpenViduLoggerConfiguration";
+import {
+  ToastsContainer,
+  ToastsStore,
+  ToastsContainerPosition,
+} from "react-toasts";
 
 var localUser = new UserModel();
 
@@ -41,7 +44,6 @@ class VideoRoomHandsFree extends Component {
   }
 
   componentDidMount = () => {
-    console.log("server url = ", this.OPENVIDU_SERVER_URL);
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -86,8 +88,6 @@ class VideoRoomHandsFree extends Component {
 
   joinSession = () => {
     this.OV = new OpenVidu();
-    console.log("open vidu ==> ", this.OV);
-
     this.OV.setAdvancedConfiguration({
       publisherSpeakingEventsOptions: {
         interval: 100, // Frequency of the polling of audio streams in ms (default 100)
@@ -108,13 +108,10 @@ class VideoRoomHandsFree extends Component {
 
   connectToSession = () => {
     if (this.props.token !== undefined) {
-      console.log("token received: ", this.props.token);
-      console.log("방이름 received: ", this.props.sessionId);
       this.connect(this.props.token);
     } else {
       this.getToken()
         .then((token) => {
-          console.log(token);
           this.connect(token);
         })
         .catch((error) => {
@@ -159,10 +156,21 @@ class VideoRoomHandsFree extends Component {
         );
       });
   };
+  /** SessionID 복사 함수 */
+  copyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(this.props.sessionId);
+    } catch (error) {
+      alert("복사 실패!");
+    }
+  };
+
+  onClickToastPopup() {
+    ToastsStore.info("초대코드를 복사 하였습니다.");
+  }
 
   connectWebCam = async () => {
     var devices = await this.OV.getDevices();
-    // console.log("디바이스 정보 = ", devices);
     var videoDevices = devices.filter((device) => device.kind === "videoinput");
 
     let publisher = this.OV.initPublisher(undefined, {
@@ -237,7 +245,6 @@ class VideoRoomHandsFree extends Component {
   };
 
   getMessageList = async (chatData) => {
-    console.log("채팅 정보 == ", chatData);
     await axios
       .post(`/api/rooms/${this.props.sessionId}/chat`, {
         chatList: chatData.messageList,
@@ -245,7 +252,6 @@ class VideoRoomHandsFree extends Component {
         recordMuteList: chatData.recordMuteList,
       })
       .then((res) => {
-        console.log("회의 종료!! 데이터 보냄 res = ", res);
       })
       .catch((err) => {
         console.log("err === ", err);
@@ -273,16 +279,6 @@ class VideoRoomHandsFree extends Component {
   };
 
   meetingEnd = async () => {
-    // ****************** 꼼수 ********************
-    if (this.props.isPublisher) {
-      // setScreenShareActive(true);
-      this.state.localUser.setScreenShareActive(true);
-    } else {
-      this.state.localUser.setScreenShareActive(false);
-      // this.state.localUser.screenShareActive = false;
-    }
-    // ********************************************
-
     if (this.props.isPublisher) {
       this.forceDisconnect(this.props.sessionId);
       this.startRecordingChk(this.props.sessionId);
@@ -315,7 +311,6 @@ class VideoRoomHandsFree extends Component {
   };
 
   camStatusChanged = () => {
-    console.log("local User = ", localUser);
     localUser.setVideoActive(!localUser.isVideoActive());
     localUser.getStreamManager().publishVideo(localUser.isVideoActive());
     this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
@@ -342,13 +337,6 @@ class VideoRoomHandsFree extends Component {
       });
     }
 
-    console.log("-------deleteSubscriber------------", stream);
-    console.log(
-      "-------deleteSubscriber 2------------",
-      remoteUsers.filter((user) => user.getStreamManager().stream === stream)
-    );
-    console.log(userStream, index);
-    console.log("Important", userStream.screenShareActive);
     if (userStream.screenShareActive) {
       // 회의 종료 알림창 확인창
       if (
@@ -368,7 +356,6 @@ class VideoRoomHandsFree extends Component {
   };
 
   subscribeToStreamCreated = () => {
-    console.log("-------subscribeToStreamCreated------------");
     this.state.session.on("streamCreated", (event) => {
       const subscriber = this.state.session.subscribe(event.stream, undefined);
       // var subscribers = this.state.subscribers;
@@ -391,12 +378,9 @@ class VideoRoomHandsFree extends Component {
   };
 
   subscribeToStreamDestroyed = () => {
-    console.log("-------subscribeToStreamDestroyed------------");
     // On every Stream destroyed...
     this.startRecordingChk(this.props.sessionId);
     this.state.session.on("streamDestroyed", (event) => {
-      console.log("Destroyed", this.state.localUser);
-      console.log("Destroyed", event);
 
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
@@ -406,13 +390,11 @@ class VideoRoomHandsFree extends Component {
   };
 
   subscribeToUserChanged = () => {
-    console.log("-------subscribeToUserChanged------------");
     this.state.session.on("signal:userChanged", (event) => {
       let remoteUsers = this.state.subscribers;
       remoteUsers.forEach((user) => {
         if (user.getConnectionId() === event.from.connectionId) {
           const data = JSON.parse(event.data);
-          console.log("EVENTO REMOTE: ", event.data);
           if (data.isAudioActive !== undefined) {
             user.setAudioActive(data.isAudioActive);
           }
@@ -440,7 +422,6 @@ class VideoRoomHandsFree extends Component {
   };
 
   sendSignalUserChanged = (data) => {
-    console.log("-------sendSignalUserChanged------------");
     const signalOptions = {
       data: JSON.stringify(data),
       type: "userChanged",
@@ -546,7 +527,7 @@ class VideoRoomHandsFree extends Component {
           }
         )
         .then((response) => {
-          console.log("TOKEN", response);
+          console.log("TOKEN", response.data.token);
           resolve(response.data.token);
         })
         .catch((error) => reject(error));
@@ -565,7 +546,6 @@ class VideoRoomHandsFree extends Component {
         this.OPENVIDU_SERVER_URL + "/openvidu/api/recordings/stop/" + sessionId //sessionId랑 recordingId랑 똑같음 그래서 걍 sessionId 씀
       )
       .then((response) => {
-        console.log("STOP_RECORDING", response);
         // this.props.getRecordFile(response.data.url);
         // resolve(response.data.token);
       })
@@ -580,7 +560,6 @@ class VideoRoomHandsFree extends Component {
    * @param {*} sessionId
    */
   forceDisconnect = async (sessionId) => {
-    console.log("forceDisconnect 함수 진입");
     await axios
       .delete(this.OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId, {
         headers: {
@@ -614,7 +593,6 @@ class VideoRoomHandsFree extends Component {
 
   render() {
     const localUser = this.state.localUser;
-    console.log("방장여부 ", this.props.isPublisher);
 
     return (
       <div className='container' id='container'>
@@ -655,15 +633,24 @@ class VideoRoomHandsFree extends Component {
               rootFunction={this.getMessageList}
               terminate={this.state.terminate}
             />
-            {this.props.isPublisher ? (
-              <button id='exit' onClick={this.meetingEnd}>
-                회의종료
-              </button>
-            ) : (
-              <button id='exit' onClick={this.meetingEnd}>
-                나가기
-              </button>
-            )}
+
+            <div
+              className='copy'
+              onClick={() => {
+                this.copyUrl();
+                this.onClickToastPopup();
+              }}
+            >
+              초대코드 복사
+            </div>
+            <div className='exitt' onClick={this.meetingEnd}>
+              {this.props.isPublisher ? "회의종료" : "나가기"}
+            </div>
+            <ToastsContainer
+              position={ToastsContainerPosition.BOTTOM_CENTER}
+              store={ToastsStore}
+              lightBackground
+            />
           </div>
         )}
         <ToolbarComponent

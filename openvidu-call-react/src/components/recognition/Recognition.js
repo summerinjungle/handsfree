@@ -21,8 +21,6 @@ class Recognition extends Component {
 
     recognition.start();
     const date = new Date();
-    const meeting_start_time = date.getTime();
-    console.log("회의시작 시간 :", meeting_start_time);
 
     // 음성인식 시작 로그 찍어야함
     recognition.onstart = () => {
@@ -37,7 +35,6 @@ class Recognition extends Component {
         };
         // 막둥이 로직추가
         this.props.parentFunction(sttData);
-        console.log(this.state.transcript);
       }
       this.setState({ transcript: "" });
       recognition.start();

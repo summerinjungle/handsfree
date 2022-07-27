@@ -22,7 +22,7 @@ const GoogleLoginButton = () => {
       }
     }).then(response => response.json())
     .then(({success}) => {
-      console.log("success", success);
+      // console.log("success", success);
     });
     swal("성공", "로그인에 성공하였습니다.", "success");
     navigate("/")
@@ -30,7 +30,7 @@ const GoogleLoginButton = () => {
 
   const onError = (res) => {
     alert("로그인에 실패하였습니다");
-    console.log("err", res);
+    // console.log("err", res);
   };
 
   return (
