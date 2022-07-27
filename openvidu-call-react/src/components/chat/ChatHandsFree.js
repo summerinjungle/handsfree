@@ -1,13 +1,12 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Star from "@material-ui/icons/Star";
 import "./ChatHandsFree.css";
 import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 import isWriting from "../../assets/images/isWriting.png";
 import isNotWriting from "../../assets/images/isNotWriting.png";
-import { connect } from "react-redux";
 
-class ChatHandsFree extends Component {
+class ChatHandsFree extends PureComponent {
   state = {
     messageList: [],
     starList: [],
@@ -15,6 +14,7 @@ class ChatHandsFree extends Component {
     message: "",
     isRecog: false,
     isStar: false,
+    startRecord: false,
     isRecordMute: false,
     startTime: "",
     left: 0,
@@ -31,26 +31,30 @@ class ChatHandsFree extends Component {
         const data = JSON.parse(event.data);
         let messageList = this.state.messageList;
         let length = messageList.length;
-        this.setState({ isRecog: data.isRecord });
-        this.setState({ isStar: data.isStar });
-        this.setState({ isRecordMute: data.isRecordMute });
+        this.setState({
+          isRecog: data.isRecord,
+          isStar: data.isStar,
+          isRecordMute: data.isRecordMute,
+        });
 
         if (data.isRecord === false) return;
 
         if (this.state.isRecordMute === true) {
-          this.state.recordMuteList.push({
-            left: this.state.left,
-            right: this.state.right,
-          });
           this.setState({
-            isRecordMute: false,
+            recordMuteList: this.state.recordMuteList.concat({
+              left: this.state.left,
+              right: this.state.right,
+              isRecordMute: false,
+            }),
           });
         }
-        if (
-          data.message.includes("막둥아 기록 시작") ||
-          data.message.includes("막둥아 기록시작")
-        )
+
+        if (this.state.startRecord === true) {
+          this.setState({
+            startRecord: false,
+          });
           return;
+        }
 
         if (this.state.isRecog === true) {
           if (this.state.isStar === true && length > 0) {
@@ -65,7 +69,7 @@ class ChatHandsFree extends Component {
             this.forceUpdate();
             return;
           }
-          messageList.push({
+          var addMsg = this.state.messageList.concat({
             connectionId: event.from.connectionId,
             nickname: data.nickname,
             message: data.message,
@@ -76,8 +80,8 @@ class ChatHandsFree extends Component {
           });
           this.setState({
             msgIndex: this.state.msgIndex + 1,
+            messageList: addMsg,
           });
-          this.setState({ messageList: messageList });
           this.scrollToBottom();
         }
       });
@@ -123,10 +127,7 @@ class ChatHandsFree extends Component {
           data: JSON.stringify(data),
           type: "chat",
         });
-        // this.props.localUser.getStreamManager().stream
       }
-      this.props.localUser.getStreamManager().stream.session.connection.disposed =
-        this.state.isRecog;
     }
     this.setState({ message: "" });
   };
@@ -145,12 +146,17 @@ class ChatHandsFree extends Component {
   };
 
   parentFunction = (data) => {
-    this.state.message = data.text;
-    this.state.startTime = data.startTime;
+    console.log("text ==", data.text);
+    this.setState({
+      message: data.text,
+      startTime: data.startTime,
+    });
     if (
       data.text.includes("막둥아 기록 중지") ||
       data.text.includes("막둥아 기록중지") ||
-      data.text.includes("기록 중지") ||
+      data.text.includes("박동화 기록 중지") ||
+      data.text.includes("박정화 기록 중지") ||
+      data.text.includes("막둥아  중지") ||
       data.text.includes("박종화 기록 중지")
     ) {
       if (this.state.isRecog === true) {
@@ -162,8 +168,10 @@ class ChatHandsFree extends Component {
     } else if (
       data.text.includes("막둥아 기록 시작") ||
       data.text.includes("막둥아 기록시작") ||
-      data.text.includes("기록시작") ||
-      data.text.includes("기록 시작")
+      data.text.includes("박종화 기록 시작") ||
+      data.text.includes("박동화 기록 시작") ||
+      data.text.includes("막둥아  시작") ||
+      data.text.includes("박정화 기록 시작")
     ) {
       if (this.state.isRecog === false) {
         this.setState({
@@ -171,7 +179,7 @@ class ChatHandsFree extends Component {
           isRecordMute: true,
         });
       }
-      this.setState({ isRecog: true });
+      this.setState({ isRecog: true, startRecord: true });
     } else if (
       data.text.includes("막둥아 발표") ||
       data.text.includes("막둥아 대표") ||
@@ -279,11 +287,4 @@ class ChatHandsFree extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    // duringTime: state.user.duringTime,
-    // enterTime: state.user.enterTime,
-  };
-};
-
-export default connect(mapStateToProps)(ChatHandsFree);
+export default ChatHandsFree;

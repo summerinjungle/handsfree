@@ -1,38 +1,38 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { QuillBinding } from 'y-quill'
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { WebrtcProvider } from 'y-webrtc';
-import * as Y from 'yjs';
-import { getUserNameInCookie } from '../../main/cookie';
+import React from "react";
+import { useEffect } from "react";
+import { QuillBinding } from "y-quill";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { WebrtcProvider } from "y-webrtc";
+import * as Y from "yjs";
+import { getUserNameInCookie } from "../../main/cookie";
 
-import Quill from 'quill';
-import QuillCursors from 'quill-cursors';
+import Quill from "quill";
+import QuillCursors from "quill-cursors";
 
-Quill.register('modules/cursors', QuillCursors);
+Quill.register("modules/cursors", QuillCursors);
 
 export let quillRef = null;
 
-export function TextEditor ({sessionId}) {
+export function TextEditor({ sessionId }) {
   let reactQuillRef = null;
   const yDoc = new Y.Doc();
 
   useEffect(() => {
     console.log("Text Editor에 있는 sessionId : ", sessionId);
     attachQuillRefs();
-    const provider = new WebrtcProvider("http://localhost:3000/meeting/" + sessionId + "/edit", yDoc);
+    const provider = new WebrtcProvider(
+      "http://localhost:3000/meeting/" + sessionId + "/edit",
+      yDoc
+    );
     const ytext = yDoc.getText("quill");
 
-    let user = Math.random().toString(36);
-
-    provider.awareness.setLocalStateField('user', {
+    provider.awareness.setLocalStateField("user", {
       name: getUserNameInCookie(),
-      color: 'blue'
-    })
+      color: "blue",
+    });
 
     const binding = new QuillBinding(ytext, quillRef, provider.awareness);
-
   }, []);
 
   const attachQuillRefs = () => {
@@ -48,10 +48,10 @@ export function TextEditor ({sessionId}) {
         { list: "ordered" },
         { list: "bullet" },
         { indent: "-1" },
-        { indent: "+1" }
+        { indent: "+1" },
       ],
       ["link", "image"],
-      ["clean"]
+      ["clean"],
     ],
     cursors: {
       transformOnTextChange: true,
@@ -65,7 +65,7 @@ export function TextEditor ({sessionId}) {
         style={{
           width: "640px",
           height: "430px",
-          backgroundColor:"#E3DDD5"
+          backgroundColor: "#E3DDD5",
         }}
         ref={(el) => {
           reactQuillRef = el;
@@ -75,13 +75,12 @@ export function TextEditor ({sessionId}) {
       />
     </div>
   );
-};
-
+}
 
 export function insertText(text) {
   var range = quillRef.getSelection();
   let position = range ? range.index : 0;
   quillRef.insertText(position, text);
-};
+}
 
 export default TextEditor;

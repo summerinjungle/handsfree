@@ -15,9 +15,9 @@ import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
-import { Button, Radio } from "antd";
+import { Button } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-import VoiceRoom from "../voiceroom/VoiceRoom";
+import VoiceRoom from "../VoiceRoom/VoiceRoom";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -91,8 +91,8 @@ const EditingRoom = ({ sessionId }) => {
         // sessionId +
         // "/ownweapon.webm"
         "https://onxmoreplz.shop/openvidu/recordings/" +
-        sessionId +
-        "/ownweapon.webm"
+          sessionId +
+          "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
       wavesurfer.current.on("loading", (data) => {
         if (data >= 100) {
@@ -101,7 +101,6 @@ const EditingRoom = ({ sessionId }) => {
       });
     }
   }, []);
-
 
   async function loadAllRecord() {
     await axios
