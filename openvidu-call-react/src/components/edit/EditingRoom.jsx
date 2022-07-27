@@ -46,6 +46,17 @@ const EditingRoom = ({ sessionId }) => {
       setIsPlay(false);
     }
   };
+
+  const playButtonFromWaveSurfer = (startTime) => {
+    wavesurfer.current.playPause();
+    if (wavesurfer.current.isPlaying()) {
+      setIsPlay(true);
+      wavesurfer.current.play(parseFloat(startTime - sessionStartTime) / 1000);
+    } else {
+      setIsPlay(false);
+    }
+  };
+
   const stopButton = () => {
     wavesurfer.current.stop();
     setIsPlay(false);
@@ -285,7 +296,7 @@ const EditingRoom = ({ sessionId }) => {
                     startTime={recordItem.startTime}
                     isMarker={recordItem.marker}
                     message={recordItem.message}
-                    playTimeWaveSurfer={playTimeWaveSurfer}
+                    playTimeWaveSurfer={playButtonFromWaveSurfer}
                     deleteChatItem={deleteChatItem}
                   />
                 ))}
