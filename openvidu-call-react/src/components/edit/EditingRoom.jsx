@@ -107,6 +107,7 @@ const EditingRoom = ({ sessionId }) => {
     await axios
       .get("/api/rooms/" + sessionId + "/editingroom") // this.state.roomId 맞나요?
       .then(function (response) {
+        console.log("EditingRoom", response.data.editingRoom);
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
         setChatList(chatList);

@@ -245,6 +245,7 @@ class VideoRoomHandsFree extends Component {
   };
 
   getMessageList = async (chatData) => {
+    console.log("#@@@@@@@ getMessage", chatData);
     await axios
       .post(`/api/rooms/${this.props.sessionId}/chat`, {
         chatList: chatData.messageList,
@@ -252,6 +253,7 @@ class VideoRoomHandsFree extends Component {
         recordMuteList: chatData.recordMuteList,
       })
       .then((res) => {
+        console.log(res.data);
       })
       .catch((err) => {
         console.log("err === ", err);
