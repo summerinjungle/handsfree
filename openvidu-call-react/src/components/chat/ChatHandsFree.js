@@ -14,6 +14,7 @@ class ChatHandsFree extends Component {
     recordMuteList: [],
     message: "",
     isRecog: false,
+    startRecord: false,
     isStar: false,
     isRecordMute: false,
     startTime: "",
@@ -48,11 +49,12 @@ class ChatHandsFree extends Component {
             isRecordMute: false,
           });
         }
-        if (
-          data.message.includes("막둥아 기록 시작") ||
-          data.message.includes("막둥아 기록시작")
-        )
+        if (this.state.startRecord === true) {
+          this.setState({
+            startRecord: false,
+          })
           return;
+        }
 
         if (this.state.isRecog === true) {
           if (this.state.isStar === true && length > 0) {
@@ -115,6 +117,7 @@ class ChatHandsFree extends Component {
         const data = {
           isRecordMute: this.state.isRecordMute,
           isRecord: this.state.isRecog,
+          startRecord: this.state.startRecord,
           isStar: this.state.isStar,
           time: date.getHours() + ":" + date.getMinutes(),
           message: message,
@@ -153,7 +156,9 @@ class ChatHandsFree extends Component {
     if (
       data.text.includes("막둥아 기록 중지") ||
       data.text.includes("막둥아 기록중지") ||
-      data.text.includes("기록 중지") ||
+      data.text.includes("박동화 기록 중지") ||
+      data.text.includes("통화 기록 중지") ||
+      data.text.includes("막둥아 중지") ||
       data.text.includes("박종화 기록 중지")
     ) {
       if (this.state.isRecog === true) {
@@ -165,8 +170,10 @@ class ChatHandsFree extends Component {
     } else if (
       data.text.includes("막둥아 기록 시작") ||
       data.text.includes("막둥아 기록시작") ||
-      data.text.includes("기록시작") ||
-      data.text.includes("기록 시작")
+      data.text.includes("박동화 기록 시작") ||
+      data.text.includes("통화 기록 시작") ||
+      data.text.includes("막둥아 시작") ||
+      data.text.includes("박종화 기록 시작")
     ) {
       if (this.state.isRecog === false) {
         this.setState({
@@ -174,7 +181,10 @@ class ChatHandsFree extends Component {
           isRecordMute: true,
         });
       }
-      this.setState({ isRecog: true });
+      this.setState({
+        isRecog: true,
+        startRecord: true,
+      });
     } else if (
       data.text.includes("막둥아 발표") ||
       data.text.includes("막둥아 대표") ||
