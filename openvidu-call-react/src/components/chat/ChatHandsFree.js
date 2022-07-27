@@ -106,7 +106,7 @@ class ChatHandsFree extends PureComponent {
       if (this.state.isRecog === false) {
         this.state.recordMuteList.push({
           left: this.state.left,
-          right: new Date().getTime(),
+          right: new Date().getTime() + 20000,
         });
       }
       const chatInfo = {
