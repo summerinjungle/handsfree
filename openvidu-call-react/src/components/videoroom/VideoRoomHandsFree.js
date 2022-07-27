@@ -9,6 +9,11 @@ import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "../toolbar/ToolbarComponent";
 import { connect } from "react-redux";
+import {
+  ToastsContainer,
+  ToastsStore,
+  ToastsContainerPosition,
+} from "react-toasts";
 
 var localUser = new UserModel();
 
@@ -81,6 +86,10 @@ class VideoRoomHandsFree extends PureComponent {
   onbeforeunload = (event) => {
     // this.meetingEnd();
   };
+
+  onClickToastPopup() {
+    ToastsStore.info("초대코드를 복사 하였습니다.");
+  }
 
   async getCamerasList() {
     if (!this.OV) {
@@ -313,7 +322,6 @@ class VideoRoomHandsFree extends PureComponent {
   copyUrl = async () => {
     try {
       await navigator.clipboard.writeText(this.props.sessionId);
-
       alert("방 코드가 복사되었습니다.");
     } catch (error) {
       alert("복사 실패!");
@@ -663,12 +671,23 @@ class VideoRoomHandsFree extends PureComponent {
               terminate={this.state.terminate}
             />
 
-            <div className='copy' onClick={this.copyUrl}>
-              방코드 복사
+            <div
+              className='copy'
+              onClick={() => {
+                this.copyUrl();
+                this.onClickToastPopup();
+              }}
+            >
+              초대코드 복사
             </div>
             <div className='exitt' onClick={this.meetingEnd}>
               {this.props.isPublisher ? "회의종료" : "나가기"}
             </div>
+            <ToastsContainer
+              position={ToastsContainerPosition.BOTTOM_CENTER}
+              store={ToastsStore}
+              lightBackground
+            />
           </div>
         )}
         <ToolbarComponent

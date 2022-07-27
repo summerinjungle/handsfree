@@ -103,7 +103,7 @@ class ChatHandsFree extends PureComponent {
       if (this.state.isRecog === false) {
         this.state.recordMuteList.push({
           left: this.state.left,
-          right: new Date().getTime(),
+          right: new Date().getTime() + 20000,
         });
       }
       const chatInfo = {
@@ -237,13 +237,11 @@ class ChatHandsFree extends PureComponent {
         </div> */}
 
         <div className='isRecog'>
-          <div className='writingStatus'>
-            <div
-              className={`inline-block vertical-align mr-20 ${
-                this.state.isRecog ? "colorYellow" : "colorRed"
-              }`}
-            >
-              {this.state.isRecog ? "ON" : "OFF"}
+          <div className="writingStatus">
+            <div className={`inline-block vertical-align mr-20 ${this.state.isRecog ? "colorYellow" : "colorRed"}`}>
+              {
+                this.state.isRecog ? "ON" : "OFF"
+              }
             </div>
             <div className='inline-block vertical-align mr-8'>
               <img
@@ -253,13 +251,8 @@ class ChatHandsFree extends PureComponent {
                 width={this.state.isRecog ? "42" : "22"}
               />
             </div>
-            <div
-              className='inline-block vertical-align'
-              style={{ marginBottom: 4 }}
-            >
-              {this.state.isRecog
-                ? "막둥이가 지금 기록중이에요!"
-                : " 막둥이를 불러주세요!   "}
+            <div className="inline-block vertical-align" style={{ marginBottom: 4 }}>
+              {this.state.isRecog ? "막둥이가 지금 기록중이에요!" : " 막둥이를 불러주세요!   "}
             </div>
           </div>
         </div>
@@ -289,10 +282,10 @@ class ChatHandsFree extends PureComponent {
                   id='remoteUsers'
                   className={
                     "message" +
-                    (data.connectionId !==
-                    this.props.localUser.getConnectionId()
+                    (data.connectionId !== this.props.localUser.getConnectionId()
                       ? " left"
-                      : " right")
+                      : " right"
+                    )
                   }
                 >
                   <div className='msg-detail'>
@@ -303,11 +296,13 @@ class ChatHandsFree extends PureComponent {
                       </p>
                     </div>
 
-                    <div
-                      className={
-                        data.marker ? "msg-content-star" : "msg-content"
-                      }
-                    >
+                    <div className={
+                      `
+                      ${data.connectionId !== this.props.localUser.getConnectionId()
+                        ? " f-left"
+                        : " f-right"} ${data.marker ? 'msg-content-star' : 'msg-content'}
+                      `
+                    }>
                       {/* <span className='triangle' /> */}
                       <p className='text'>
                         {data.marker ? (
@@ -316,6 +311,7 @@ class ChatHandsFree extends PureComponent {
                             style={{ color: yellow[800] }}
                           />
                         ) : null}
+
                         {data.message}
                       </p>
                     </div>

@@ -9,6 +9,7 @@ import { getTokenInCookie } from "./cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { removeTokenInCookie } from "./cookie";
+import swal from "sweetalert"
 
 const Main = ({ username }) => {
   console.log("main js ");
@@ -53,7 +54,7 @@ const Main = ({ username }) => {
 
   const enterMeeting = async () => {
     if (enterCode.length === 0) {
-      alert("입장 코드를 입력하세요");
+      swal("실패", "초대 코드를 입력하세요", "warning");
       return;
     }
     await axios
@@ -63,7 +64,7 @@ const Main = ({ username }) => {
         // 입장가능한 방일때
         if (response.data.isValidRoom) {
           if (response.data.isEnd) {
-            alert("종료된 회의입니다.");
+            swal("실패", "종료된 회의 입니다.", "warning");
             return;
           }
 
@@ -91,7 +92,7 @@ const Main = ({ username }) => {
           //   });
           navigate("/meeting/" + enterCode);
         } else {
-          alert("입장 코드를 다시 입력해주세요");
+          swal("실패", "초대 코드를 다시 입력해주세요", "warning");
         }
       })
       .catch(function (err) {
@@ -118,9 +119,7 @@ const Main = ({ username }) => {
                     createMeeting();
                   })
                   .catch(() => {
-                    alert(
-                      "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다."
-                    );
+                    swal("실패", "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다.", "warning");
                     createMeeting();
                   });
               }}

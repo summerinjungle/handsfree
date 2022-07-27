@@ -2,9 +2,10 @@ import React  from "react";
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from "react-router-dom";
+import swal from "sweetalert"
+
 
 require("dotenv").config();
-
 
 const GoogleLoginButton = () => {
 
@@ -23,9 +24,11 @@ const GoogleLoginButton = () => {
     .then(({success}) => {
       console.log("success", success);
     });
-    alert("구글 로그인에 성공하였습니다");
+    // alert("구글 로그인에 성공하였습니다");
+    // action();
+    swal("성공", "구글 로그인에 성공하였습니다.", "success");
     navigate("/")
-    window.location.reload();
+    // window.location.reload();
   }
 
   const onError = (res) => {
