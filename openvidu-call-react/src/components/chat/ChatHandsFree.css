@@ -76,18 +76,19 @@
   }
   
   #chatComponent {
+    
     background-color: white;
     position: absolute;
     z-index: 99999;
     /* display: none; */
-    top: -9%;
+    top: -8.7%;
     /* left: ; */
     right: 3.8%;
     /* bottom: 0; */
     /* margin: auto; */
     /* margin-left: 3.7%; */
     /* margin-top: -4.2vh; */
-    height: 107.3%;
+    height: 97.3%;
     width: 92.6%;
     /* width: calc(100% - 25px); */
     border-radius: 20px;
@@ -100,14 +101,16 @@
   .isRecog{
     position:relative;
     height: 50%;
+    /* left: -350%; */
     left: 3.7%;
-    text-align: center;
-    width: 92.6%;
-    align-items: center;
+    width: 92.7%;
+    /* text-align: center; */
+    /* width: 446.3%; */
+    /* align-items: center; */
     /* margin-left: 1%; */
     /* margin-right: 3.3%; */
     /* padding-right: 5px; */
-    border-radius: 15px;
+    border-radius: 10px;
     background-color: #675743;
     
     /* margin-bottom: 20px; */
@@ -117,8 +120,9 @@
 
 
   .message-wrap {
-    border-radius: 20px;
-    background-color: #fff;
+    border-radius: 10px;
+    background-color: #eeeee4;
+    /* background-color: #fffcf8 ; */
     /* background-color: #81e9b0; */
     /* padding: 0 15px; */
     height: calc(100%);

@@ -210,14 +210,15 @@ class ChatHandsFree extends PureComponent {
               className={`inline-block vertical-align mr-20 ${this.state.isRecog ? "colorYellow" : "colorRed"
                 }`}
             >
-              {this.state.isRecog ? "ON" : "OFF"}
+              {this.state.isRecog ? "ON " : "OFF"}
             </div>
             <div className='inline-block vertical-align mr-8'>
               <img
                 alt='막둥이'
                 src={this.state.isRecog ? isWriting : isNotWriting}
                 height={this.state.isRecog ? "40" : "20"}
-                width={this.state.isRecog ? "42" : "22"}
+                width={this.state.isRecog ? "40" : "20"}
+                // size={100}
               />
             </div>
             <div
@@ -226,9 +227,35 @@ class ChatHandsFree extends PureComponent {
             >
               {this.state.isRecog
                 ? "막둥이가 기록 중이에요!"
-                : " 막둥이를 불러주세요!   "}
+                : " 막둥이를 불러주세요!  "}
             </div>
           </div>
+
+          {/* <div className='writingStatus'>
+            <div
+              className={`inline-block vertical-align mr-20 ${!this.state.isRecog ? "colorYellow" : "colorRed"
+                }`}
+            >
+              {!this.state.isRecog ? "ON " : "OFF"}
+            </div>
+            <div className='inline-block vertical-align mr-8'>
+              <img
+                alt='막둥이'
+                src={!this.state.isRecog ? isWriting : isNotWriting}
+                height={!this.state.isRecog ? "60" : "60"}
+                width={!this.state.isRecog ? "60" : "360"}
+                // size={100}
+              />
+            </div>
+            <div
+              className='inline-block vertical-align'
+              style={{ marginBottom: 4 }}
+            >
+              {!this.state.isRecog
+                ? "막둥이가 기록 중이에요!"
+                : " 막둥이를 불러주세요!  "}
+            </div>
+          </div> */}
         </div>
 
         <div id='chatContainer'>

@@ -14,6 +14,7 @@ import {
   ToastsStore,
   ToastsContainerPosition,
 } from "react-toasts";
+import swal from "sweetalert"
 
 var localUser = new UserModel();
 
@@ -273,11 +274,20 @@ class VideoRoomHandsFree extends Component {
       localUser: undefined,
     });
 
-    if (window.confirm("편집실로 가시겠습니까?")) {
-      this.props.navigate("meeting/" + this.props.sessionId + "/edit");
-    } else {
-      this.props.navigate("/");
-    }
+    swal({
+      title: "회의종료",
+      text: "편집실로 가시겠습니까?",
+      icon: "warning",
+      buttons: true,
+      // dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        this.props.navigate("meeting/" + this.props.sessionId + "/edit");
+      } else {
+        this.props.navigate("/");
+      }
+    });
   };
 
   meetingEnd = async () => {
@@ -636,7 +646,7 @@ class VideoRoomHandsFree extends Component {
               terminate={this.state.terminate}
             />
 
-            <div
+            <button
               className='copy'
               onClick={() => {
                 this.copyUrl();
@@ -644,10 +654,23 @@ class VideoRoomHandsFree extends Component {
               }}
             >
               초대코드 복사
-            </div>
-            <div className='exitt' onClick={this.meetingEnd}>
+            </button>
+            <button className='exitt' onClick={() => {
+              swal({
+                title: "나가기",
+                text: "정말로 나가시겠습니까",
+                icon: "warning",
+                buttons: true,
+                // dangerMode: true,
+              })
+              .then((willDelete) => {
+                if (willDelete) {
+                  this.meetingEnd();
+                }
+              });
+              }}>
               {this.props.isPublisher ? "회의종료" : "나가기"}
-            </div>
+            </button>
             <ToastsContainer
               position={ToastsContainerPosition.BOTTOM_CENTER}
               store={ToastsStore}
