@@ -52,6 +52,9 @@ const roomSchema = new Schema({
       time: {
         type: String,
       },
+      play: {
+        type: Boolean,
+      },
     }),
   ],
 

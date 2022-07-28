@@ -6,9 +6,11 @@ import "react-quill/dist/quill.snow.css";
 import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
 import { getUserNameInCookie } from "../../main/cookie";
-
+import { Button } from "antd";
 import Quill from "quill";
 import QuillCursors from "quill-cursors";
+import { DownloadOutlined } from "@ant-design/icons";
+import saveButton from "./docx";
 
 Quill.register("modules/cursors", QuillCursors);
 
@@ -27,6 +29,8 @@ export function TextEditor({ sessionId }) {
     );
     const ytext = yDoc.getText("quill");
 
+    let user = Math.random().toString(36);
+
     provider.awareness.setLocalStateField("user", {
       name: getUserNameInCookie(),
       color: "blue",
@@ -38,6 +42,15 @@ export function TextEditor({ sessionId }) {
   const attachQuillRefs = () => {
     if (typeof reactQuillRef.getEditor !== "function") return;
     quillRef = reactQuillRef.getEditor();
+  };
+
+  const saveMemo = () => {
+    let ns = new XMLSerializer();
+    let korean = `<meta charset="utf-8" />`;
+    let targetString = ns.serializeToString(
+      document.querySelector(".ql-editor")
+    );
+    return korean + targetString;
   };
 
   const modulesRef = {
@@ -61,6 +74,20 @@ export function TextEditor({ sessionId }) {
 
   return (
     <div>
+      <div className='contents-label'>
+        <h2>메모장&nbsp;</h2>
+        <Button
+          type='primary'
+          className='ant1'
+          shape='round'
+          icon={<DownloadOutlined />}
+          onClick={() => {
+            saveButton(saveMemo(), "메모");
+          }}
+        >
+          다운로드
+        </Button>
+      </div>
       <ReactQuill
         style={{
           width: "640px",
