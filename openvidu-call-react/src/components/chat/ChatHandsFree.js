@@ -13,6 +13,7 @@ class ChatHandsFree extends PureComponent {
     recordMuteList: [],
     message: "",
     isRecog: false,
+    startRecord: false,
     isStar: false,
     startRecord: false,
     isRecordMute: false,
@@ -105,6 +106,7 @@ class ChatHandsFree extends PureComponent {
         starList: this.state.starList,
         recordMuteList: this.state.recordMuteList,
       };
+      console.log("@@@ - componentDidUpdate", chatInfo);
       this.props.rootFunction(chatInfo);
     }
   }
@@ -139,7 +141,7 @@ class ChatHandsFree extends PureComponent {
       try {
         this.chatScroll.current.scrollTop =
           this.chatScroll.current.scrollHeight;
-      } catch (err) {}
+      } catch (err) { }
     }, 20);
   }
 
@@ -205,9 +207,8 @@ class ChatHandsFree extends PureComponent {
         <div className='isRecog'>
           <div className='writingStatus'>
             <div
-              className={`inline-block vertical-align mr-20 ${
-                this.state.isRecog ? "colorYellow" : "colorRed"
-              }`}
+              className={`inline-block vertical-align mr-20 ${this.state.isRecog ? "colorYellow" : "colorRed"
+                }`}
             >
               {this.state.isRecog ? "ON" : "OFF"}
             </div>
@@ -240,7 +241,7 @@ class ChatHandsFree extends PureComponent {
                   className={
                     "message" +
                     (data.connectionId !==
-                    this.props.localUser.getConnectionId()
+                      this.props.localUser.getConnectionId()
                       ? " left"
                       : " right")
                   }
@@ -255,12 +256,11 @@ class ChatHandsFree extends PureComponent {
 
                     <div
                       className={`
-                      ${
-                        data.connectionId !==
-                        this.props.localUser.getConnectionId()
+                      ${data.connectionId !==
+                          this.props.localUser.getConnectionId()
                           ? " f-left"
                           : " f-right"
-                      } ${data.marker ? "msg-content-star" : "msg-content"}
+                        } ${data.marker ? "msg-content-star" : "msg-content"}
                       `}
                     >
                       {/* <span className='triangle' /> */}
