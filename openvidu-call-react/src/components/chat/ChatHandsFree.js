@@ -52,7 +52,7 @@ class ChatHandsFree extends Component {
         if (this.state.startRecord === true) {
           this.setState({
             startRecord: false,
-          })
+          });
           return;
         }
 
@@ -77,6 +77,7 @@ class ChatHandsFree extends Component {
             startTime: data.startTime,
             marker: this.state.isStar,
             id: this.state.msgIndex,
+            play: false,
           });
           this.setState({
             msgIndex: this.state.msgIndex + 1,
@@ -142,7 +143,7 @@ class ChatHandsFree extends Component {
       try {
         this.chatScroll.current.scrollTop =
           this.chatScroll.current.scrollHeight;
-      } catch (err) { }
+      } catch (err) {}
     }, 20);
   }
 
@@ -151,6 +152,8 @@ class ChatHandsFree extends Component {
   };
 
   parentFunction = (data) => {
+    console.log("data = ", data);
+    console.log("아이디 식별자", this.props.localUser.getConnectionId());
     this.state.message = data.text;
     this.state.startTime = data.startTime;
     if (
@@ -208,8 +211,9 @@ class ChatHandsFree extends Component {
         <div className='isRecog'>
           <div className='writingStatus'>
             <div
-              className={`inline-block vertical-align mr-20 ${this.state.isRecog ? "colorYellow" : "colorRed"
-                }`}
+              className={`inline-block vertical-align mr-20 ${
+                this.state.isRecog ? "colorYellow" : "colorRed"
+              }`}
             >
               {this.state.isRecog ? "ON" : "OFF"}
             </div>
@@ -242,7 +246,7 @@ class ChatHandsFree extends Component {
                   className={
                     "message" +
                     (data.connectionId !==
-                      this.props.localUser.getConnectionId()
+                    this.props.localUser.getConnectionId()
                       ? " left"
                       : " right")
                   }
@@ -257,11 +261,12 @@ class ChatHandsFree extends Component {
 
                     <div
                       className={`
-                      ${data.connectionId !==
-                          this.props.localUser.getConnectionId()
+                      ${
+                        data.connectionId !==
+                        this.props.localUser.getConnectionId()
                           ? " f-left"
                           : " f-right"
-                        } ${data.marker ? "msg-content-star" : "msg-content"}
+                      } ${data.marker ? "msg-content-star" : "msg-content"}
                       `}
                     >
                       {/* <span className='triangle' /> */}

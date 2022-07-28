@@ -144,6 +144,7 @@
 
 .inline-block {
 	display: inline-block;
+	/* display: block; */
 }
 
 .t-40{
@@ -261,7 +262,7 @@
 	overflow:scroll;
 }
 
-#editingroom-container .contents-right .recorditems .chattime-buttons {
+#editingroom-container .contents-right .recorditems  {
 	color: #6A573D;
 } 
 
@@ -334,15 +335,7 @@
 	color: black;
 }
 
-.chattime-buttons{
-	padding-bottom: 3px;
-	/* border-radius:4px; */
-	border:1px solid whitesmoke;
-	font-weight:bold;
-	background-color:#F7F2EC;
-	/* margin-left: 2px; */
-	/* color: #337bc4; */
-}
+
 
 .chattime-buttons:hover{
 	background-color:blanchedalmond;
