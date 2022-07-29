@@ -94,14 +94,12 @@ const ChatItem = ({
               }
               <DeleteOutlineIcon
                 onClick={() => deleteChatItem(id)}
-                className='chattime-buttons'/
-              > 
-        
+                className='chattime-buttons'
+              /> 
               <PostAddIcon
                 onClick={() => insertText(localContent)}
                 className='chattime-buttons'
               />
-      
           </div>
         </div>
         <div className='relative'>

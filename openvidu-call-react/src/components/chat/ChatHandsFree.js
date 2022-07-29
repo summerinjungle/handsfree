@@ -207,17 +207,17 @@ class ChatHandsFree extends PureComponent {
         <div className='isRecog'>
           <div className='writingStatus'>
             <div
-              className={`mackdoong-switch ${this.state.isRecog ? "colorYellow" : "colorRed"
-                }`}
+              // className={`mackdoong-switch ${this.state.isRecog ? "colorYellow" : "colorRed"
+              //   }`}
             >
-              {this.state.isRecog ? "ON" : "OFF"}
+              {/* {this.state.isRecog ? "ON" : "OFF"} */}
             </div>
             <div className='mackdoong-logo'>
               <img
                 alt='막둥이'
                 src={this.state.isRecog ? isWriting : isNotWriting}
-                height={this.state.isRecog ? "90" : "90"}
-                width={this.state.isRecog ? "90" : "90"}
+                height={this.state.isRecog ? "100" : "90"}
+                width={this.state.isRecog ? "130" : "117"}
               />
             </div>
             <div
@@ -226,7 +226,7 @@ class ChatHandsFree extends PureComponent {
             >
               {this.state.isRecog
                 ? "막둥이가 기록 중이에요!"
-                : "막둥이를 불러주세요!  "}
+                : "막둥이를 불러주세요!   "}
             </div>
           </div>
         </div>

@@ -216,7 +216,7 @@ const EditingRoom = ({ sessionId }) => {
         <div className='contents'>
           <div className='contents-left'>
             <PostAddIcon/>
-            <div className='contents-label'>메모장&nbsp;</div>
+            <div className='contents-label' >메모장&nbsp;</div>
             <Button
               type='primary'
               className='ant1'
