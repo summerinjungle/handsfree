@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import VideoRoomHandsFree from "./components/videoroom/VideoRoomHandsFree";
 import Main from "./main/main";
-import EditingRoom from "./components/edit/EditingRoom";
+import EditingRoom from "./components/edit/EditingRoom.jsx";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "./main/cookie";
 import { useSelector, useDispatch } from "react-redux";

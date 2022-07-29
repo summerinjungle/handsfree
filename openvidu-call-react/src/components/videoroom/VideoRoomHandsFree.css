@@ -11,19 +11,22 @@
 }
 
 #header {
-  color: #ffffff;
+  /* color: #ffffff; */
   background-color: #333333;
   padding: 0 14px 0 0;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 999999;
-  min-width: 400px !important;
+  /* z-index: 999999; */
+  /* width: 20%; */
+  /* background-color: #02a1de; */
+  /* min-width: 400px !important; */
 }
 
 .toolbar{
   min-height: 40px !important;
-
+  /* background-color: #494949; */
+  /* border-radius: 10%; */
 }
 
 
@@ -68,8 +71,8 @@
   bottom: 8.6%;
   /* top: 10px; */
   /* bottom: 120px; */
-  /* height: 90.1%; */
-  height: 81.5%;
+  height: 90.1%;
+  /* height: 81.5%; */
   /* min-width: 400px !important; */
   /* width: inherit; */
 }

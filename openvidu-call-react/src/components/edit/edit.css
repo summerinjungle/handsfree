@@ -124,37 +124,7 @@
   }
 
 
-  .container {
-	display: flex;
-	flex-direction: row;
-	flex: 5 1 ;
-  }
 
-   .contents {
-   	height: 77.5%;
-   	background-color: rgb(195, 206, 168);
-   	/* padding: 0px 6px; */
-   	width: 100%
-   }
-
-   .chat-item-list{
-	width: 100%;
-   }
-
-  #editingroom-container .contents-left .textarea {
-  	width: 100%;
-  }
-
-
-  #editingroom-container .contents-right {
-  	display: inline-block;
-  	position: absolute;
-  	/* background-color: yellowgreen; */
-  	left: 61.5%;
-  	height: 77.5%;
-  	/* padding: 6px 75px 6px 70px; */
-  	width: 23%;
-  }
 
 
 
@@ -174,7 +144,6 @@
 
 .inline-block {
 	display: inline-block;
-	/* display: block; */
 }
 
 .t-40{
@@ -187,7 +156,9 @@
 }
 
 .my-0 {
-	border: 4px solid #e9d3b0;;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	border: 1px solid #F5F0E8;;
 }
 
 .mb-20 {
@@ -207,24 +178,25 @@
 	height: 400px;
 }
  
- .header {
-	width: 100%;
-}
 
 .header-logo {
 	/* width: 10%; */
-	height: 65px;
+	height: 30px;
 	margin-top: 8px;
 	margin-left: 31%;
 }
 
- .header-contents {
-	display: block;
-	/* width: 50%; */
+/* .header-logo {
+	position: relative;
+	height: 30px;
+	left: 20%;
+	margin-top: 8px;
+} */
+
+
+.text-right {
+	text-align: right;
 }
-
-
-
 
 
 #editingroom-container {
@@ -232,10 +204,23 @@
 	height: 100vh;
 }
 
+#editingroom-container .header {
+	/* padding: 6px; */
+	width: 100%;
+}
 
+#editingroom-container .header .header-contents {
+	display: inline-block;
+	width: 50%;
+}
 
-
-
+#editingroom-container .contents {
+	display: flex;
+	height: 77.5%;
+	/* background-color: blueviolet; */
+	/* padding: 0px 6px; */
+	/* width: 100vw; */
+}
 
 #editingroom-container .contents-label {
 	display: inline-block;
@@ -255,6 +240,20 @@
 	/* border-color: #F5F0E8; */
 }
 
+#editingroom-container .contents-left .textarea{
+	width: 100%;
+}
+
+
+#editingroom-container .contents-right {
+	display: inline-block;
+	position: absolute;
+	/* background-color: yellowgreen; */
+	left: 61.5%;
+	height: 77.5%;
+	/* padding: 6px 75px 6px 70px; */
+	width: 23%;
+}
 
 #editingroom-container .contents-right .recorditems{
 	height: 84.4%;
@@ -262,7 +261,7 @@
 	overflow:scroll;
 }
 
-#editingroom-container .contents-right .recorditems  {
+#editingroom-container .contents-right .recorditems .chattime-buttons {
 	color: #6A573D;
 } 
 
@@ -335,7 +334,15 @@
 	color: black;
 }
 
-
+.chattime-buttons{
+	/* padding-bottom: 10px; */
+	/* border-radius:4px; */
+	border:1px solid whitesmoke;
+	font-weight:bold;
+	/* background-color:#F7F2EC; */
+	/* margin-left: 2px; */
+	/* color: #337bc4; */
+}
 
 .chattime-buttons:hover{
 	background-color:blanchedalmond;
