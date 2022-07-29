@@ -18,13 +18,12 @@ import { useNavigate } from "react-router-dom";
 import { getUserNameInCookie } from "../../main/cookie";
 import { Button, Radio } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-import VoiceRoom from "../voiceroom/VoiceRoom";
+import Voicechat from "../chat/Voicechat";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
     return state;
   });
-  let newSessionId = "edit" + sessionId;
   // let gap = parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) / 1000 -1;
   const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1100;
 
@@ -91,7 +90,9 @@ const EditingRoom = ({ sessionId }) => {
         // "https://hyunseokmemo.shop/openvidu/recordings/" +
         // sessionId +
         // "/ownweapon.webm"
-        "https://onxmoreplz.shop/openvidu/recordings/" +
+        // "https://onxmoreplz.shop/openvidu/recordings/" +
+        "https://eehnoeg.shop/openvidu/recordings/" +
+        // "https://onxmoreplz.shop/openvidu/recordings/" +
         sessionId +
         "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
@@ -281,7 +282,8 @@ const EditingRoom = ({ sessionId }) => {
             </span>
           </div>
         </div>
-        <VoiceRoom sessionId={newSessionId} />
+        {/* <VoiceRoom sessionId={newSessionId} /> */}
+        <Voicechat userName={getUserNameInCookie()} roomId={sessionId}/>
       </div>
     </>
   );
