@@ -6,6 +6,7 @@ import mainLogo from "../../assets/images/mainLogo.png";
 import ChatItem from "../edit/chat/ChatItem";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Stop from "@material-ui/icons/Stop";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
@@ -15,15 +16,18 @@ import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
-import { getUserNameInCookie } from "../../main/cookie";
-import { Button, Radio } from "antd";
+import { Button } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-import Voicechat from "../chat/Voicechat";
+import PostAddIcon from "@material-ui/icons/PostAdd";
+import Voicechat from "./chat/Voicechat";
+import { getUserNameInCookie } from "../../main/cookie";
+
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
     return state;
   });
+  let newSessionId = "edit" + sessionId;
   // let gap = parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) / 1000 -1;
   const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1100;
 
@@ -90,11 +94,9 @@ const EditingRoom = ({ sessionId }) => {
         // "https://hyunseokmemo.shop/openvidu/recordings/" +
         // sessionId +
         // "/ownweapon.webm"
-        // "https://onxmoreplz.shop/openvidu/recordings/" +
-        "https://eehnoeg.shop/openvidu/recordings/" +
-        // "https://onxmoreplz.shop/openvidu/recordings/" +
-        sessionId +
-        "/ownweapon.webm"
+        "https://onxmoreplz.shop/openvidu/recordings/" +
+          sessionId +
+          "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
       wavesurfer.current.on("loading", (data) => {
         if (data >= 100) {
@@ -103,7 +105,6 @@ const EditingRoom = ({ sessionId }) => {
       });
     }
   }, []);
-
 
   async function loadAllRecord() {
     await axios
@@ -202,6 +203,7 @@ const EditingRoom = ({ sessionId }) => {
           <div className='header-contents text-right'>
             <button
               className='exit'
+              icon={<ExitToAppIcon />}
               onClick={() => {
                 navigate("/");
                 window.location.reload();
@@ -214,7 +216,11 @@ const EditingRoom = ({ sessionId }) => {
         <hr className='my-0'></hr>
         <div className='contents'>
           <div className='contents-left'>
-            <div className='contents-label'>메모장&nbsp;</div>
+              <Voicechat userName={getUserNameInCookie()} roomId={sessionId}/>
+          </div>
+          <div className='contents-middle'>
+            <PostAddIcon/>
+            <div className='contents-label' >메모장&nbsp;</div>
             <Button
               type='primary'
               className='ant1'
@@ -282,8 +288,6 @@ const EditingRoom = ({ sessionId }) => {
             </span>
           </div>
         </div>
-        {/* <VoiceRoom sessionId={newSessionId} /> */}
-        <Voicechat userName={getUserNameInCookie()} roomId={sessionId}/>
       </div>
     </>
   );

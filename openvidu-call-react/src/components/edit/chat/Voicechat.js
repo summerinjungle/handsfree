@@ -1,6 +1,9 @@
 import React from "react";
 import { useRef, useEffect, useState } from "react";
 import Peer from "peerjs";
+import { Button } from "antd";
+import "./Voicechat.css";
+
 const { io } = require("socket.io-client");
 
 export default function Voicechat({userName, roomId}) {
@@ -89,20 +92,25 @@ export default function Voicechat({userName, roomId}) {
 
     return (
         <div>
-            <div>
+            <div className='contents-label' >참여자&nbsp;</div>
                 {startChat ? 
-                <button disabled={true}>참여완료!</button>
+                    <Button
+                    type='primary'
+                    className='ant1'
+                    shape='round'
+                    disabled={true}
+                >참여완료</Button>
                 : 
-                <button disabled={disable} onClick={() => {
+                <Button
+                    type='primary'
+                    className='ant1'
+                    shape='round'
+                    disabled={disable} onClick={() => {
                     setDisable(true);
                     startVoiceChat();
-                }}>
-                참여해보자!
-                </button>
+                }}>참여해보자</Button>
                 }
-            </div>
-            <div>
-            <p>hi</p>
+            <div className='on-the-list'>
             {usersPeerId?.length ? 
                 usersPeerId.map((userPeerId, idx) => {
                     if(userPeerId != myId) {
@@ -111,9 +119,13 @@ export default function Voicechat({userName, roomId}) {
                             <div style={{ display: 'none' }}>
                                 <video ref={el => (remoteVoiceRefs.current[idx] = el)} />
                             </div>
-                            <div>
-                                <p>{users[idx]}</p>
-                            </div>
+                            <Button
+                                type='primary'
+                                className='ant-people-element'
+                                shape='round'
+                            >
+                            {users[idx]}
+                            </Button>
                             </div>
                         );
                          
@@ -123,12 +135,19 @@ export default function Voicechat({userName, roomId}) {
                             <div style={{ display: 'none' }}>
                                 <video ref={el => (remoteVoiceRefs.current[idx] = el)} muted/>
                             </div>
-                            <p>{users[idx]}</p>
+                            <Button
+                                type='primary'
+                                className='ant-people-element'
+                                shape='round'
+                            >
+                            {users[idx]}
+                            </Button>
                             </div>
                         );
                     }
                 })
-            :   <p>no user</p>
+            :    
+            <></>
             }
             </div>
         </div>    
