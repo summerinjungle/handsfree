@@ -5,7 +5,6 @@ import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 import isWriting from "../../assets/images/isWriting.png";
 import isNotWriting from "../../assets/images/isNotWriting.png";
-import { connect } from "react-redux";
 import Balloons from "../../assets/images/Balloons.png";
 
 class ChatHandsFree extends Component {
@@ -210,20 +209,14 @@ class ChatHandsFree extends Component {
     return (
       <div className='status-container'>
         <div className='recording'>
-
-
           <div className='writingStatus'>
             <div
             // className={`mackdoong-switch ${this.state.isRecog ? "colorYellow" : "colorRed"
             //   }`}
             >
               {/* {this.state.isRecog ? "ON" : "OFF"} */}
-
-
             </div>
-            <img className='balloon'
-                src={Balloons}
-              />
+            <img className='balloon' src={Balloons} />
             <div className='mackdoong-logo'>
               <img
                 alt='막둥이'
@@ -292,7 +285,7 @@ class ChatHandsFree extends Component {
               ))}
             </div>
           </div>
-          {/* <Recognition parentFunction={this.parentFunction} /> */}
+          <Recognition parentFunction={this.parentFunction} />
         </div>
       </div>
     );
