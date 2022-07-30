@@ -142,7 +142,7 @@ class ChatHandsFree extends Component {
       try {
         this.chatScroll.current.scrollTop =
           this.chatScroll.current.scrollHeight;
-      } catch (err) {}
+      } catch (err) { }
     }, 20);
   }
 
@@ -151,10 +151,11 @@ class ChatHandsFree extends Component {
   };
 
   parentFunction = (data) => {
-    console.log("data = ", data);
-    console.log("아이디 식별자", this.props.localUser.getConnectionId());
-    this.state.message = data.text;
-    this.state.startTime = data.startTime;
+    console.log("text ==", data.text);
+    this.setState({
+      message: data.text,
+      startTime: data.startTime,
+    });
     if (
       data.text.includes("막둥아 기록 중지") ||
       data.text.includes("막둥아 기록중지") ||
@@ -211,27 +212,39 @@ class ChatHandsFree extends Component {
         <div className='recording'>
           <div className='writingStatus'>
             <div
-              className={`inline-block vertical-align mr-20 ${
-                this.state.isRecog ? "colorYellow" : "colorRed"
-              }`}
+              // className={`mackdoong-switch ${this.state.isRecog ? "colorYellow" : "colorRed"
+              //   }`}
             >
+<<<<<<< HEAD
               {this.state.isRecog ? "ON" : "OFF"}
+=======
+              {/* {this.state.isRecog ? "ON" : "OFF"} */}
+>>>>>>> 9ba88c2d55d4da2b7322b3bfeb795f26a6ae9996
             </div>
-            <div className='inline-block vertical-align mr-8'>
+            <div className='mackdoong-logo'>
               <img
                 alt='막둥이'
                 src={this.state.isRecog ? isWriting : isNotWriting}
+<<<<<<< HEAD
                 height={this.state.isRecog ? "40" : "20"}
                 width={this.state.isRecog ? "42" : "22"}
+=======
+                height={this.state.isRecog ? "100" : "90"}
+                width={this.state.isRecog ? "130" : "117"}
+>>>>>>> 9ba88c2d55d4da2b7322b3bfeb795f26a6ae9996
               />
             </div>
             <div
-              className='inline-block vertical-align'
+              className='mackdoong-txt'
               style={{ marginBottom: 4 }}
             >
               {this.state.isRecog
                 ? "막둥이가 기록 중이에요!"
+<<<<<<< HEAD
                 : " 막둥이를 불러주세요!   "}
+=======
+                : "막둥이를 불러주세요!   "}
+>>>>>>> 9ba88c2d55d4da2b7322b3bfeb795f26a6ae9996
             </div>
           </div>
         </div>
@@ -246,7 +259,7 @@ class ChatHandsFree extends Component {
                   className={
                     "message" +
                     (data.connectionId !==
-                    this.props.localUser.getConnectionId()
+                      this.props.localUser.getConnectionId()
                       ? " left"
                       : " right")
                   }
@@ -261,12 +274,11 @@ class ChatHandsFree extends Component {
 
                     <div
                       className={`
-                      ${
-                        data.connectionId !==
-                        this.props.localUser.getConnectionId()
+                      ${data.connectionId !==
+                          this.props.localUser.getConnectionId()
                           ? " f-left"
                           : " f-right"
-                      } ${data.marker ? "msg-content-star" : "msg-content"}
+                        } ${data.marker ? "msg-content-star" : "msg-content"}
                       `}
                     >
                       {/* <span className='triangle' /> */}
@@ -295,6 +307,7 @@ class ChatHandsFree extends Component {
   }
 }
 
+<<<<<<< HEAD
 const mapStateToProps = (state) => {
   return {
     // duringTime: state.user.duringTime,
@@ -303,3 +316,6 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(ChatHandsFree);
+=======
+export default ChatHandsFree;
+>>>>>>> 9ba88c2d55d4da2b7322b3bfeb795f26a6ae9996

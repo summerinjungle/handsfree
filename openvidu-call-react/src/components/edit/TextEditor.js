@@ -6,11 +6,9 @@ import "react-quill/dist/quill.snow.css";
 import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
 import { getUserNameInCookie } from "../../main/cookie";
-import { Button } from "antd";
+
 import Quill from "quill";
 import QuillCursors from "quill-cursors";
-import { DownloadOutlined } from "@ant-design/icons";
-import saveButton from "./docx";
 
 Quill.register("modules/cursors", QuillCursors);
 
@@ -29,8 +27,6 @@ export function TextEditor({ sessionId }) {
     );
     const ytext = yDoc.getText("quill");
 
-    let user = Math.random().toString(36);
-
     provider.awareness.setLocalStateField("user", {
       name: getUserNameInCookie(),
       color: "blue",
@@ -42,15 +38,6 @@ export function TextEditor({ sessionId }) {
   const attachQuillRefs = () => {
     if (typeof reactQuillRef.getEditor !== "function") return;
     quillRef = reactQuillRef.getEditor();
-  };
-
-  const saveMemo = () => {
-    let ns = new XMLSerializer();
-    let korean = `<meta charset="utf-8" />`;
-    let targetString = ns.serializeToString(
-      document.querySelector(".ql-editor")
-    );
-    return korean + targetString;
   };
 
   const modulesRef = {
@@ -74,6 +61,7 @@ export function TextEditor({ sessionId }) {
 
   return (
     <div>
+<<<<<<< HEAD
       <div>
         <h2>
           메모장&nbsp;
@@ -90,6 +78,8 @@ export function TextEditor({ sessionId }) {
           </Button>
         </h2>
       </div>
+=======
+>>>>>>> 9ba88c2d55d4da2b7322b3bfeb795f26a6ae9996
       <ReactQuill
         style={{
           width: "720px",

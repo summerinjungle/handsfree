@@ -81,7 +81,7 @@
     position: absolute;
     z-index: 99999;
     /* display: none; */
-    top: -8.7%;
+    top: 1%;
     /* left: ; */
     right: 3.8%;
     /* bottom: 0; */
@@ -100,7 +100,7 @@
 
   .recording{
     position:relative;
-    height: 50%;
+    height: 103%;
     /* left: -350%; */
     left: 3.7%;
     width: 92.7%;
@@ -302,3 +302,32 @@
     background-color: #eeeeee !important;
   }
   
+
+.mackdoong-switch{
+  position: absolute;
+  left: 5%;
+  /* display: none; */
+  font-size: 25px;
+}
+  
+
+.mackdoong-logo{
+  /* size: 40px; */
+  /* width: 40px; */
+  margin-top: 1%;
+  left: 14%;
+  position: absolute;
+  font-weight: bold;
+  /* height: 40px; */
+  /* width: 30px */
+}
+
+
+.mackdoong-txt{
+  /* display: none; */
+  position: absolute;
+  bottom: 26%;
+  right: 7%;
+  size: 30px;
+  width: 100px;
+}

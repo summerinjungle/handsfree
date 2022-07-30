@@ -18,7 +18,7 @@
 .LogInBtnStyle{
   position: absolute;
   left: 44%;
-	top: 70%;
+	top: 50%;
   width: 200px;
 }
 
@@ -99,7 +99,8 @@ input {
 
 
 .anon-logo{
-  position: absolute;
+  /* position: absolute;
 	left: 30%;
-  top: 30%;
+  top: 24%; */
+	margin-top: 12.3%;
 }

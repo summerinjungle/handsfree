@@ -21,6 +21,7 @@
 .saveChat:hover{
 	background-color:blanchedalmond;
   color: black;
+<<<<<<< HEAD
 }
 
 .chattime-buttons {
@@ -100,4 +101,6 @@
 
 .relative {
   position: relative;
+=======
+>>>>>>> 9ba88c2d55d4da2b7322b3bfeb795f26a6ae9996
 }
