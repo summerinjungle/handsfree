@@ -3,7 +3,7 @@ import axios from "axios";
 import "./edit.css";
 import "./wave.css";
 import mainLogo from "../../assets/images/mainLogo.png";
-import ChatItem from "../edit/chat/ChatItem";
+import ChatItem from "../edit/chat/ChatItem.jsx";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -22,7 +22,6 @@ import PostAddIcon from "@material-ui/icons/PostAdd";
 import Voicechat from "./chat/Voicechat";
 import { getUserNameInCookie } from "../../main/cookie";
 import VoiceRoom from "../voiceroom/VoiceRoom";
-
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -217,11 +216,11 @@ const EditingRoom = ({ sessionId }) => {
         <hr className='my-0'></hr>
         <div className='contents'>
           <div className='contents-left'>
-              <Voicechat userName={getUserNameInCookie()} roomId={sessionId}/>
+            <Voicechat userName={getUserNameInCookie()} roomId={sessionId} />
           </div>
           <div className='contents-middle'>
-            <PostAddIcon/>
-            <div className='contents-label' >메모장&nbsp;</div>
+            <PostAddIcon />
+            <div className='contents-label'>메모장&nbsp;</div>
             <Button
               type='primary'
               className='ant1'

@@ -1,9 +1,9 @@
 .autoTextarea {
-  width: 100%;
+  width: 80%;
   height: 62px;
   padding: 10px;
   box-sizing: border-box;
-  border: solid 2px #1E90FF;
+  border: solid 2px #b9b996;
   border-radius: 5px;
   font-size: 15px;
   resize: both;
