@@ -42,7 +42,7 @@ export default class ToolbarComponent extends Component {
     const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
     return (
-      <AppBar className='toolbar' id='header'>
+      // <AppBar className='toolbar' id='header'>
         <Toolbar className='toolbar'>
           {/* <div id='navSessionInfo'>
             <img id='header_img' alt='OpenVidu Logo' src={logo} />
@@ -54,6 +54,7 @@ export default class ToolbarComponent extends Component {
           </div> */}
 
           <div className='buttonsContent'>
+            
             <IconButton
               color='inherit'
               className='navButton'
@@ -61,9 +62,9 @@ export default class ToolbarComponent extends Component {
               onClick={this.micStatusChanged}
             >
               {localUser !== undefined && localUser.isAudioActive() ? (
-                <Mic />
+                <Mic className='navBtn'/>
               ) : (
-                <MicOff color='secondary' />
+                <MicOff className='navBtn' color='secondary' />
               )}
             </IconButton>
 
@@ -74,14 +75,14 @@ export default class ToolbarComponent extends Component {
               onClick={this.camStatusChanged}
             >
               {localUser !== undefined && localUser.isVideoActive() ? (
-                <Videocam />
+                <Videocam className='navBtn' />
               ) : (
-                <VideocamOff style={{ color: red[800] }} />
+                <VideocamOff className='navBtn' style={{ color: red[800] }} />
               )}
             </IconButton>
           </div>
         </Toolbar>
-      </AppBar>
+      // </AppBar>
     );
   }
 }

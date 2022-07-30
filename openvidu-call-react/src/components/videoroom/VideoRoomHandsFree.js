@@ -14,7 +14,7 @@ import {
   ToastsStore,
   ToastsContainerPosition,
 } from "react-toasts";
-import swal from "sweetalert"
+import swal from "sweetalert";
 
 var localUser = new UserModel();
 
@@ -40,8 +40,8 @@ class VideoRoomHandsFree extends Component {
       ? this.props.openviduServerUrl
       // : "https://eehnoeg.shop:443";
       : "https://hyunseokmemo.shop:443";
-      // : "https://onxmoreplz.shop:443";
-      // : "https://" + window.location.hostname + ":4443";
+    // : "https://onxmoreplz.shop:443";
+    // : "https://" + window.location.hostname + ":4443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
@@ -256,15 +256,12 @@ class VideoRoomHandsFree extends Component {
         starList: chatData.starList,
         recordMuteList: chatData.recordMuteList,
       })
-      .then((res) => {
-        console.log(res.data);
-      })
+      .then((res) => {})
       .catch((err) => {
         console.log("err === ", err);
       });
 
     const mySession = this.state.session;
-
     if (mySession) {
       mySession.disconnect();
     }
@@ -283,8 +280,7 @@ class VideoRoomHandsFree extends Component {
       icon: "warning",
       buttons: true,
       // dangerMode: true,
-    })
-    .then((willDelete) => {
+    }).then((willDelete) => {
       if (willDelete) {
         this.props.navigate("meeting/" + this.props.sessionId + "/edit");
       } else {
@@ -396,7 +392,6 @@ class VideoRoomHandsFree extends Component {
     // On every Stream destroyed...
     this.startRecordingChk(this.props.sessionId);
     this.state.session.on("streamDestroyed", (event) => {
-
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream);
       event.preventDefault();
@@ -658,20 +653,22 @@ class VideoRoomHandsFree extends Component {
             >
               초대코드 복사
             </button>
-            <button className='exitt' onClick={() => {
-              swal({
-                title: "나가기",
-                text: "정말로 나가시겠습니까",
-                icon: "warning",
-                buttons: true,
-                // dangerMode: true,
-              })
-              .then((willDelete) => {
-                if (willDelete) {
-                  this.meetingEnd();
-                }
-              });
-              }}>
+            <button
+              className='exitt'
+              onClick={() => {
+                swal({
+                  title: "나가기",
+                  text: "정말로 나가시겠습니까",
+                  icon: "warning",
+                  buttons: true,
+                  // dangerMode: true,
+                }).then((willDelete) => {
+                  if (willDelete) {
+                    this.meetingEnd();
+                  }
+                });
+              }}
+            >
               {this.props.isPublisher ? "회의종료" : "나가기"}
             </button>
             <ToastsContainer

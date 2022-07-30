@@ -3,7 +3,7 @@ import axios from "axios";
 import "./edit.css";
 import "./wave.css";
 import mainLogo from "../../assets/images/mainLogo.png";
-import ChatItem from "../edit/chat/ChatItem";
+import ChatItem from "../edit/chat/ChatItem.jsx";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -18,11 +18,10 @@ import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-import PostAddIcon from "@material-ui/icons/PostAdd";
 import Voicechat from "./chat/Voicechat";
 import { getUserNameInCookie } from "../../main/cookie";
 import VoiceRoom from "../voiceroom/VoiceRoom";
-
+import Spinner from "./Spinner";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -34,7 +33,6 @@ const EditingRoom = ({ sessionId }) => {
 
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
-  const [volume, setVolume] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const [chatList, setChatList] = useState([]); // 음성 기록들
@@ -48,7 +46,12 @@ const EditingRoom = ({ sessionId }) => {
     }
   };
 
-  const playButtonFromWaveSurfer = (startTime) => {
+  const playButtonFromWaveSurfer = (startTime, id) => {
+    setChatList((chatList) =>
+      chatList.map((list) =>
+        list.id == id ? { ...list, play: !list.play } : list
+      )
+    );
     wavesurfer.current.playPause();
     if (wavesurfer.current.isPlaying()) {
       setIsPlay(true);
@@ -69,7 +72,7 @@ const EditingRoom = ({ sessionId }) => {
     wavesurfer.current = WaveSurfer.create({
       container: ".audio",
       waveColor: "#F7F2EC",
-      progressColor: "#FF7833",
+      progressColor: "#ffd6cd",
       barWidth: 3,
       height: 65,
       plugins: [
@@ -92,12 +95,12 @@ const EditingRoom = ({ sessionId }) => {
   useEffect(() => {
     if (wavesurfer) {
       wavesurfer.current.load(
-        // "https://hyunseokmemo.shop/openvidu/recordings/" +
-        // sessionId +
-        // "/ownweapon.webm"
-        "https://onxmoreplz.shop/openvidu/recordings/" +
+        "https://hyunseokmemo.shop/openvidu/recordings/" +
           sessionId +
           "/ownweapon.webm"
+        // "https://onxmoreplz.shop/openvidu/recordings/" +
+        // sessionId +
+        // "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
       wavesurfer.current.on("loading", (data) => {
         if (data >= 100) {
@@ -116,21 +119,19 @@ const EditingRoom = ({ sessionId }) => {
           response.data.editingRoom;
         setChatList(chatList);
         for (let i = 0; i < recordMuteList.length; i++) {
-          let currLeft, currRight;
+          let currLeft;
           if (recordMuteList[i].left == 0) {
             currLeft = 0;
           } else {
             currLeft =
               parseFloat(recordMuteList[i].left - sessionStartTime) / 1000;
           }
-          currRight =
-            parseFloat(recordMuteList[i].right - sessionStartTime) / 1000;
 
           wavesurfer.current.regions.add({
             start: currLeft,
-            end: currRight,
+            end: parseFloat(recordMuteList[i].right - sessionStartTime) / 1000,
             // color: "#CEBFAC",
-            color: "rgba(96, 95, 95, 0.85)",
+            color: "rgba(206, 191, 172, 0.85)",
             drag: false,
             resize: false,
           });
@@ -195,9 +196,15 @@ const EditingRoom = ({ sessionId }) => {
 
   return (
     <>
-      <div id='editingroom-container'>
+      <div
+        id='editingroom-container'
+        style={
+          //   isLoading ? { backgroundColor: "rgba(192, 206, 180, 0.2)" } : null
+          isLoading ? { opacity: 0.2 } : null
+        }
+      >
         <div className='header'>
-          <span className='header-contents'>
+          <span className='header-contents vertical-align-middle'>
             <img className='header-logo' src={mainLogo} />
             {/* <div>현재 참여자 :</div> */}
           </span>
@@ -217,62 +224,57 @@ const EditingRoom = ({ sessionId }) => {
         <hr className='my-0'></hr>
         <div className='contents'>
           <div className='contents-left'>
-              <Voicechat userName={getUserNameInCookie()} roomId={sessionId}/>
+            {/* <Voicechat userName={getUserNameInCookie()} roomId={sessionId} /> */}
           </div>
           <div className='contents-middle'>
-            <PostAddIcon/>
-            <div className='contents-label' >메모장&nbsp;</div>
-            <Button
-              type='primary'
-              className='ant1'
-              shape='round'
-              icon={<DownloadOutlined />}
-              onClick={() => {
-                saveButton(saveMemo(), "메모");
-              }}
-            >
-              {" "}
-              다운로드
-            </Button>
+            <div className='contents-middle-wrap'>
+              <div className='contents-label'>메모장&nbsp;</div>
+              <Button
+                type='primary'
+                className='ant1'
+                shape='round'
+                icon={<DownloadOutlined />}
+                onClick={() => {
+                  saveButton(saveMemo(), "메모");
+                }}
+              >
+                다운로드
+              </Button>
+            </div>
             <div className='textedit'>
               <TextEditor sessionId={sessionId} />
             </div>
           </div>
           <div className='contents-right'>
-            <div className='contents-label'>
-              &nbsp;&nbsp;&nbsp;음성 기록&nbsp;
+            <div className='contents-right-wrap'>
+              <div className='contents-label'>
+                &nbsp;&nbsp;&nbsp;음성 기록&nbsp;
+              </div>
+              <Button
+                type='primary'
+                className='antsound'
+                shape='round'
+                icon={<DownloadOutlined />}
+                onClick={() => {
+                  saveButton(saveSoundMemo(), "음성 기록");
+                }}
+              >
+                다운로드
+              </Button>
             </div>
-            <Button
-              type='primary'
-              className='antsound'
-              shape='round'
-              icon={<DownloadOutlined />}
-              onClick={() => {
-                saveButton(saveSoundMemo(), "음성 기록");
-              }}
-            >
-              {" "}
-              다운로드
-            </Button>
             <div className='recorditems'>
               {chatList &&
                 chatList.map((recordItem) => (
                   <ChatItem
-                    key={recordItem._id}
-                    id={recordItem.id}
-                    userName={recordItem.nickname}
-                    time={recordItem.time}
-                    startTime={recordItem.startTime}
-                    isMarker={recordItem.marker}
-                    message={recordItem.message}
+                    recordItem={recordItem}
                     playTimeWaveSurfer={playButtonFromWaveSurfer}
                     deleteChatItem={deleteChatItem}
                   />
                 ))}
             </div>
           </div>
+          {isLoading && <Spinner />}
         </div>
-
         <div className='audio-container'>
           <div className='audio'></div>
           <div className='buttons'>
@@ -283,7 +285,6 @@ const EditingRoom = ({ sessionId }) => {
               <PlayArrowIcon className='fas fa-play' />
               <PauseIcon className='fas fa-pause' />
             </span>
-
             <span className='stop-btn btn' onClick={stopButton}>
               <Stop className='fas fa-stop' />
             </span>

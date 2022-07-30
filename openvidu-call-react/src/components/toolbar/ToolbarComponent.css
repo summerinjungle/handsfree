@@ -92,3 +92,9 @@
       display: none;
   }
 }
+
+.navBtn {
+  border-radius: 50%;
+  padding: 6px;
+  border: 1px solid;
+}
