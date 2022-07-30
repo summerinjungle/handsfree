@@ -63,8 +63,8 @@ export function TextEditor({ sessionId }) {
     <div>
       <ReactQuill
         style={{
-          width: "720px",
-          height: "530px",
+          width: "760px",
+          height: "480px",
           backgroundColor: "#E3DDD5",
           // backgroundColor: "#a9af9",
         }}

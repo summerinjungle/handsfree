@@ -68,7 +68,7 @@ const EditingRoom = ({ sessionId }) => {
     wavesurfer.current = WaveSurfer.create({
       container: ".audio",
       waveColor: "#F7F2EC",
-      progressColor: "#FF7833",
+      progressColor: "#ffd6cd",
       barWidth: 3,
       height: 65,
       plugins: [
@@ -91,12 +91,12 @@ const EditingRoom = ({ sessionId }) => {
   useEffect(() => {
     if (wavesurfer) {
       wavesurfer.current.load(
-        // "https://hyunseokmemo.shop/openvidu/recordings/" +
+        "https://hyunseokmemo.shop/openvidu/recordings/" +
+        sessionId +
+        "/ownweapon.webm"
+        // "https://onxmoreplz.shop/openvidu/recordings/" +
         // sessionId +
         // "/ownweapon.webm"
-        "https://onxmoreplz.shop/openvidu/recordings/" +
-          sessionId +
-          "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
       wavesurfer.current.on("loading", (data) => {
         if (data >= 100) {
@@ -129,7 +129,7 @@ const EditingRoom = ({ sessionId }) => {
             start: currLeft,
             end: currRight,
             // color: "#CEBFAC",
-            color: "rgba(96, 95, 95, 0.85)",
+            color: "rgba(206, 191, 172, 0.85)",
             drag: false,
             resize: false,
           });
@@ -196,7 +196,7 @@ const EditingRoom = ({ sessionId }) => {
     <>
       <div id='editingroom-container'>
         <div className='header'>
-          <span className='header-contents'>
+          <span className='header-contents vertical-align-middle'>
             <img className='header-logo' src={mainLogo} />
             {/* <div>현재 참여자 :</div> */}
           </span>
@@ -219,40 +219,44 @@ const EditingRoom = ({ sessionId }) => {
             <Voicechat userName={getUserNameInCookie()} roomId={sessionId} />
           </div>
           <div className='contents-middle'>
-            <PostAddIcon />
-            <div className='contents-label'>메모장&nbsp;</div>
-            <Button
-              type='primary'
-              className='ant1'
-              shape='round'
-              icon={<DownloadOutlined />}
-              onClick={() => {
-                saveButton(saveMemo(), "메모");
-              }}
-            >
-              {" "}
-              다운로드
-            </Button>
+            {/* <PostAddIcon /> */}
+            <div className="contents-middle-wrap">
+              <div className='contents-label'>메모장&nbsp;</div>
+              <Button
+                type='primary'
+                className='ant1'
+                shape='round'
+                icon={<DownloadOutlined />}
+                onClick={() => {
+                  saveButton(saveMemo(), "메모");
+                }}
+              >
+                {" "}
+                다운로드
+              </Button>
+            </div>
             <div className='textedit'>
               <TextEditor sessionId={sessionId} />
             </div>
           </div>
           <div className='contents-right'>
-            <div className='contents-label'>
-              &nbsp;&nbsp;&nbsp;음성 기록&nbsp;
+            <div className="contents-right-wrap">
+              <div className='contents-label'>
+                &nbsp;&nbsp;&nbsp;음성 기록&nbsp;
+              </div>
+              <Button
+                type='primary'
+                className='antsound'
+                shape='round'
+                icon={<DownloadOutlined />}
+                onClick={() => {
+                  saveButton(saveSoundMemo(), "음성 기록");
+                }}
+              >
+                {" "}
+                다운로드
+              </Button>
             </div>
-            <Button
-              type='primary'
-              className='antsound'
-              shape='round'
-              icon={<DownloadOutlined />}
-              onClick={() => {
-                saveButton(saveSoundMemo(), "음성 기록");
-              }}
-            >
-              {" "}
-              다운로드
-            </Button>
             <div className='recorditems'>
               {chatList &&
                 chatList.map((recordItem) => (

@@ -6,7 +6,7 @@ import "./Voicechat.css";
 
 const { io } = require("socket.io-client");
 
-export default function Voicechat({userName, roomId}) {
+export default function Voicechat({ userName, roomId }) {
     const [myId, setMyId] = useState('');
     const [usersPeerId, setUsersPeerId] = useState([]);
     const [users, setUsers] = useState([]);
@@ -16,8 +16,8 @@ export default function Voicechat({userName, roomId}) {
     const [startChat, setStartChat] = useState(false);
     const [disable, setDisable] = React.useState(false);
     let peer = null;
-  
-    useEffect(()=> {
+
+    useEffect(() => {
         console.log("제이름은", userName);
         socketRef.current = io.connect("https://bongbong.me/");
         // socketRef.current = io.connect("http://localhost:5000");
@@ -26,8 +26,8 @@ export default function Voicechat({userName, roomId}) {
             console.log("My Peer ID", myId)
             setMyId(myId);
         });
-        
-        socketRef.current.on("userJoined",  (newUser, users, usersPeerId) => {
+
+        socketRef.current.on("userJoined", (newUser, users, usersPeerId) => {
             console.log("hello", newUser);
             console.log("now in : ", users);
             console.log("now peers : ", usersPeerId);
@@ -39,10 +39,10 @@ export default function Voicechat({userName, roomId}) {
         peer.on('call', (call) => { //전화 받을 때 
             let getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-            getUserMedia({video: false, audio: true}, (mediaStream) => {
+            getUserMedia({ video: false, audio: true }, (mediaStream) => {
                 call.answer(mediaStream); //give your mediastream
                 call.on('stream', (remoteStream) => {
-                    remoteVoiceRefs.current.forEach(remoteVoiceRef=> {
+                    remoteVoiceRefs.current.forEach(remoteVoiceRef => {
                         remoteVoiceRef.srcObject = remoteStream;
                         remoteVoiceRef.play();
                     })
@@ -62,7 +62,7 @@ export default function Voicechat({userName, roomId}) {
     const call = (memberRef, remotePeerId) => {
         let getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-        getUserMedia({video: false, audio: true}, (mediaStream) => {
+        getUserMedia({ video: false, audio: true }, (mediaStream) => {
 
             // userAudioRef.current.srcObject = mediaStream;
             // userAudioRef.current.play();
@@ -72,84 +72,86 @@ export default function Voicechat({userName, roomId}) {
 
                 memberRef.srcObject = remoteStream;
                 memberRef.play();
-               
+
             });
-          }, function(err) {
-            console.log('Failed to get local stream' ,err);
-          });
+        }, function (err) {
+            console.log('Failed to get local stream', err);
+        });
     }
 
     useEffect(() => {
-        if(startChat) {
-            for (let i = 0; i< usersPeerId.length; i++) {
-                if(usersPeerId[i] !== myId) {
+        if (startChat) {
+            for (let i = 0; i < usersPeerId.length; i++) {
+                if (usersPeerId[i] !== myId) {
                     call(remoteVoiceRefs.current[i], usersPeerId[i]);
                 }
-                    
+
             }
         }
     }, [usersPeerId, startChat]);
 
     return (
         <div>
-            <div className='contents-label' >참여자&nbsp;</div>
-                {startChat ? 
+            <div className="voicechat-header-wrap">
+                <div className='contents-label'>보이스콜&nbsp;</div>
+                {startChat ?
                     <Button
-                    type='primary'
-                    className='ant1'
-                    shape='round'
-                    disabled={true}
-                >참여완료</Button>
-                : 
-                <Button
-                    type='primary'
-                    className='ant1'
-                    shape='round'
-                    disabled={disable} onClick={() => {
-                    setDisable(true);
-                    startVoiceChat();
-                }}>참여해보자</Button>
+                        type='primary'
+                        className='ant1'
+                        shape='round'
+                        disabled={true}
+                    >참여완료</Button>
+                    :
+                    <Button
+                        type='primary'
+                        className='ant1'
+                        shape='round'
+                        disabled={disable} onClick={() => {
+                            setDisable(true);
+                            startVoiceChat();
+                        }}>참여하기</Button>
                 }
-            <div className='on-the-list'>
-            {usersPeerId?.length ? 
-                usersPeerId.map((userPeerId, idx) => {
-                    if(userPeerId != myId) {
-                        return(
-                            <div>
-                            <div style={{ display: 'none' }}>
-                                <video ref={el => (remoteVoiceRefs.current[idx] = el)} />
-                            </div>
-                            <Button
-                                type='primary'
-                                className='ant-people-element'
-                                shape='round'
-                            >
-                            {users[idx]}
-                            </Button>
-                            </div>
-                        );
-                         
-                    } else {
-                        return(
-                            <div>
-                            <div style={{ display: 'none' }}>
-                                <video ref={el => (remoteVoiceRefs.current[idx] = el)} muted/>
-                            </div>
-                            <Button
-                                type='primary'
-                                className='ant-people-element'
-                                shape='round'
-                            >
-                            {users[idx]}
-                            </Button>
-                            </div>
-                        );
-                    }
-                })
-            :    
-            <></>
-            }
             </div>
-        </div>    
+            <div className='on-the-list'>
+                {usersPeerId?.length ?
+                    usersPeerId.map((userPeerId, idx) => {
+                        if (userPeerId != myId) {
+                            return (
+                                <div>
+                                    <div style={{ display: 'none' }}>
+                                        <video ref={el => (remoteVoiceRefs.current[idx] = el)} />
+                                    </div>
+                                    <Button
+                                        type='primary'
+                                        className='ant-people-element'
+                                        shape='round'
+                                    >
+                                        {users[idx]}
+                                    </Button>
+                                </div>
+                            );
+
+                        } else {
+                            return (
+                                <div>
+                                    <div style={{ display: 'none' }}>
+                                        <video ref={el => (remoteVoiceRefs.current[idx] = el)} muted />
+                                    </div>
+                                    <Button
+                                        type='primary'
+                                        className='ant-people-element'
+                                        shape='round'
+                                    >
+                                        {users[idx]}
+                                    </Button>
+                                </div>
+                            );
+                        }
+                    })
+                    :
+                    <></>
+                }
+            </div>
+        </div>
     );
 }
