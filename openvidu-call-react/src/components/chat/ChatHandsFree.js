@@ -5,6 +5,7 @@ import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 import isWriting from "../../assets/images/isWriting.png";
 import isNotWriting from "../../assets/images/isNotWriting.png";
+import Balloons from "../../assets/images/Balloons.png";
 
 class ChatHandsFree extends Component {
   state = {
@@ -215,6 +216,7 @@ class ChatHandsFree extends Component {
             >
               {/* {this.state.isRecog ? "ON" : "OFF"} */}
             </div>
+            <img className='balloon' src={Balloons} />
             <div className='mackdoong-logo'>
               <img
                 alt='막둥이'
@@ -225,8 +227,8 @@ class ChatHandsFree extends Component {
             </div>
             <div className='mackdoong-txt' style={{ marginBottom: 4 }}>
               {this.state.isRecog
-                ? "막둥이가 기록 중이에요!"
-                : "막둥이를 불러주세요!   "}
+                ? "막둥이는 기록시작!"
+                : "막둥이는 기록중지!   "}
             </div>
           </div>
         </div>

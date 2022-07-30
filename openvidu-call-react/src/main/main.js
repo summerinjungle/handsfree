@@ -10,12 +10,14 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { removeTokenInCookie } from "./cookie";
 import swal from "sweetalert";
+import Loading from "../components/edit/Loading";
 
 const Main = ({ username }) => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [enterCode, setEnterCode] = useState("");
   const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const cookie = getTokenInCookie();
 
   let reduxCheck = useSelector((state) => {
@@ -89,7 +91,6 @@ const Main = ({ username }) => {
 
   function debouce(cb, delay = 1000) {
     let timer;
-
     return (...args) => {
       clearTimeout(timer);
       timer = setTimeout(() => {
@@ -97,13 +98,14 @@ const Main = ({ username }) => {
       }, delay);
     };
   }
-
+  console.log("로딩~~~~", isLoading);
   return (
     <div className='main-bg'>
       <h1 className='main-label'>화상회의 자동 작성 웹서비스</h1>
       <img className='main-logo' src={mainLogo} />
       {isLogin ? (
         <div>
+          {isLoading && <Loading />}
           <p>
             <button
               className='myButton'
@@ -114,6 +116,7 @@ const Main = ({ username }) => {
                     video: { width: 640, height: 360 },
                   })
                   .then((stream) => {
+                    setIsLoading(true);
                     createDebounceRoom();
                   })
                   .catch(() => {
@@ -122,6 +125,7 @@ const Main = ({ username }) => {
                       "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다.",
                       "warning"
                     );
+                    setIsLoading(true);
                     createDebounceRoom();
                   });
               }}
@@ -134,7 +138,13 @@ const Main = ({ username }) => {
               placeholder='참여코드를 입력하세요.'
               onChange={(event) => setEnterCode(event.target.value)}
             ></input>
-            <button className='myButton2' onClick={enterMeeting}>
+            <button
+              className='myButton2'
+              onClick={() => {
+                setIsLoading(true);
+                enterDebounceRoom();
+              }}
+            >
               회의 참여하기
             </button>
           </p>

@@ -41,17 +41,28 @@
 }
 
 .buttonsContent{
-	height: 40px !important;
-	text-align: center;
-	margin: auto;
-  min-width: 200px;
+	/* height: 40px !important; */
+	/* text-align: center; */
+	/* margin: auto; */
+  /* position: absolute; */
+  position: relative;
+  /* top: 1660%; */
+  left: 45.5%;
+  margin-top: 54.7%;
+  /* border: 6px solid; */
+  /* background-color: #02a1de; */
+  /* min-width: 200px; */
 }
 .navButton{
-	height: 40px !important;
-	width : 40px !important;
+	/* height: 40px !important; */
+	/* width : 40px !important; */
+  background-color: #02a1de;
+  /* border: 6px solid; */
 }
 
 #navChatButton{
+  /* border: 6px solid; */
+  background-color: #02a1de;
   position: absolute;
   right: 0;
 }
@@ -928,7 +939,7 @@
   position: absolute;
   width: 45%;
   height: 39px;
-  top: 91.6%;
+  top: 91.5%;
   text-align: center;
   background-color: #cd3b33;
   right: 4%;
@@ -956,7 +967,7 @@
   position: absolute;
   width: 45%;
   height: 39px;
-  top: 91.6%;
+  top: 91.5%;
   text-align: center;
   background-color: #675743;
   left: 4%;
