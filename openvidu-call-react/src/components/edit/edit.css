@@ -183,7 +183,7 @@
 	/* width: 10%; */
 	height: 30px;
 	margin-top: 8px;
-	margin-left: 31%;
+	margin-left: 15%;
 }
 
 /* .header-logo {
@@ -230,29 +230,41 @@
 	font-size: 22px;
 }
 
+
+/* 참여자 위치 */
 #editingroom-container .contents-left {
 	display: inline-block;
 	margin-bottom: 10px;
-	position: relative;
-	left: 15.5%;
+	position: absolute;
+	left: 7.5%;
+	width: 20%; 
+}
+
+/* 메모장 위치 */
+#editingroom-container .contents-middle {
+	display: inline-block;
+	margin-bottom: 10px;
+	position: absolute;
+	left: 25%;
 	width: 40%;
 	/* border-right: 2px solid #000000; */
 	/* border-color: #F5F0E8; */
 }
 
-#editingroom-container .contents-left .textarea{
+#editingroom-container .contents-middle .textarea{
 	width: 100%;
 }
 
 
+/* 음성기록박스  */
 #editingroom-container .contents-right {
 	display: inline-block;
 	position: absolute;
 	/* background-color: yellowgreen; */
-	left: 61.5%;
+	left: 70%;
 	height: 77.5%;
 	/* padding: 6px 75px 6px 70px; */
-	width: 23%;
+	width: 20%;
 }
 
 #editingroom-container .contents-right .recorditems{
