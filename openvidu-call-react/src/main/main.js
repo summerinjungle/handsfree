@@ -41,7 +41,6 @@ const Main = ({ username }) => {
           sessionId: response.data.roomId,
         };
         localStorage.setItem("redux", JSON.stringify(obj));
-        console.log("방만들기 클릭 이벤트 ", response);
         navigate("/meeting/" + response.data.roomId);
       })
       .catch(function (error) {
@@ -80,6 +79,25 @@ const Main = ({ username }) => {
       .catch(function (err) {});
   };
 
+  const createDebounceRoom = debouce(() => {
+    createMeeting();
+  });
+
+  const enterDebounceRoom = debouce(() => {
+    enterMeeting();
+  });
+
+  function debouce(cb, delay = 1000) {
+    let timer;
+
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        cb(...args);
+      }, delay);
+    };
+  }
+
   return (
     <div className='main-bg'>
       <h1 className='main-label'>화상회의 자동 작성 웹서비스</h1>
@@ -96,7 +114,7 @@ const Main = ({ username }) => {
                     video: { width: 640, height: 360 },
                   })
                   .then((stream) => {
-                    createMeeting();
+                    createDebounceRoom();
                   })
                   .catch(() => {
                     swal(
@@ -104,7 +122,7 @@ const Main = ({ username }) => {
                       "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다.",
                       "warning"
                     );
-                    createMeeting();
+                    createDebounceRoom();
                   });
               }}
             >

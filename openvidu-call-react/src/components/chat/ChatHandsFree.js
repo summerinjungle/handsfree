@@ -5,7 +5,6 @@ import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 import isWriting from "../../assets/images/isWriting.png";
 import isNotWriting from "../../assets/images/isNotWriting.png";
-import { connect } from "react-redux";
 
 class ChatHandsFree extends Component {
   state = {
