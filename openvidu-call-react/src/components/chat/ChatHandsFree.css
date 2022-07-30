@@ -332,8 +332,45 @@
   width: 70px;
 }
 
+
+.mackdoong-txt2{
+  /* display: none; */
+  position: absolute;
+  bottom: 50%;
+  right: 13%;
+  size: 30px;
+  width: 70px;
+}
+
+
 .balloon{
   position: absolute;
-  width: 50%;
-  left: 50%;
+  width: 40%;
+  left: 55%;
+  height: 79%;
+
+}
+
+
+.mackdoong-txt-rec{
+  color: #DBDF00;
+  position: absolute;
+  bottom: 24%;
+  right: 12%;
+  size: 30px;
+
+  font-size: large;
+  width: 80px;
+  font-weight: bold;
+}
+
+.mackdoong-txt-noRec{
+  color: hotpink;
+  position: absolute;
+  bottom: 24%;
+  right: 12%;
+  size: 30px;
+  font-size: large;
+  width: 80px;
+  font-weight: bold;
 }

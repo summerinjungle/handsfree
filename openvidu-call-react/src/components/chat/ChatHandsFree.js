@@ -210,16 +210,12 @@ class ChatHandsFree extends Component {
     return (
       <div className='status-container'>
         <div className='recording'>
-
-
           <div className='writingStatus'>
             <div
-            // className={`mackdoong-switch ${this.state.isRecog ? "colorYellow" : "colorRed"
-            //   }`}
+            className={`mackdoong-txt ${this.state.isRecog ? "colorYellow" : "colorRed"
+              }`}
             >
               {/* {this.state.isRecog ? "ON" : "OFF"} */}
-
-
             </div>
             <img className='balloon'
                 src={Balloons}
@@ -228,18 +224,28 @@ class ChatHandsFree extends Component {
               <img
                 alt='막둥이'
                 src={this.state.isRecog ? isWriting : isNotWriting}
-                height={this.state.isRecog ? "100" : "90"}
-                width={this.state.isRecog ? "130" : "117"}
+                height={this.state.isRecog ? "90" : "80"}
+                width={this.state.isRecog ? "120" : "115"}
               />
             </div>
-            <div className='mackdoong-txt' style={{ marginBottom: 4 }}>
-              {this.state.isRecog
-                ? "막둥이는 기록시작!"
-                : "막둥이는 기록중지!   "}
-            </div>
+            <div className='mackdoong-txt2'>막둥이는</div>
+            {
+              this.state.isRecog ? (
+                <div className='mackdoong-txt-rec' style={{ marginBottom: 4 }}>
+                  기록시작
+                </div>
+                ):(
+                <div className='mackdoong-txt-noRec' style={{ marginBottom: 4 }}>
+                  기록중지
+                </div>
+                )
+            }
           </div>
         </div>
-
+        {/* <button onClick={() => {
+          this.state.isRecog? this.setState({ isRecog: false }):this.setState({ isRecog: true })
+          console.log("change")
+        }}>onoasd</button> */}
         <div id='chatContainer'>
           <div id='chatComponent'>
             <div className='wrap' ref={this.chatScroll}>

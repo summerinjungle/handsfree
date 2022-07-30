@@ -44,11 +44,11 @@
 	/* height: 40px !important; */
 	/* text-align: center; */
 	/* margin: auto; */
-  /* position: absolute; */
-  position: relative;
-  /* top: 1660%; */
-  left: 45.5%;
-  margin-top: 54.7%;
+  position: absolute;
+  /* position: relative; */
+  top: 1645%;
+  left: 75.5vh;
+  /* margin-top: 54.7%; */
   /* border: 6px solid; */
   /* background-color: #02a1de; */
   /* min-width: 200px; */
