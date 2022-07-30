@@ -41,12 +41,12 @@ class ChatHandsFree extends Component {
         if (data.isRecord === false) return;
 
         if (this.state.isRecordMute === true) {
-          this.state.recordMuteList.push({
-            left: this.state.left,
-            right: this.state.right,
-          });
           this.setState({
             isRecordMute: false,
+            recordMuteList: this.state.recordMuteList.concat({
+              left: this.state.left,
+              right: this.state.right,
+            }),
           });
         }
         if (this.state.startRecord === true) {
@@ -58,18 +58,19 @@ class ChatHandsFree extends Component {
 
         if (this.state.isRecog === true) {
           if (this.state.isStar === true && length > 0) {
-            const stars = {
-              message: messageList[length - 1].message,
-              startTime: messageList[length - 1].startTime,
-              id: this.state.msgIndex - 1,
-            };
-            this.state.starList.push(stars);
-            this.setState({ isStar: false });
+            this.setState({
+              isStar: false,
+              starList: this.state.starList.concat({
+                message: this.state.messageList[length - 1].message,
+                startTime: this.state.messageList[length - 1].startTime,
+                id: this.state.msgIndex - 1,
+              }),
+            });
             messageList[length - 1].marker = true;
             this.forceUpdate();
             return;
           }
-          messageList.push({
+          var addMsg = this.state.messageList.concat({
             connectionId: event.from.connectionId,
             nickname: data.nickname,
             message: data.message,
@@ -78,10 +79,11 @@ class ChatHandsFree extends Component {
             marker: this.state.isStar,
             id: this.state.msgIndex,
           });
-          this.setState({
-            msgIndex: this.state.msgIndex + 1,
-          });
-          this.setState({ messageList: messageList });
+
+          this.setState(() => (prevState) => ({
+            msgIndex: prevState.msgIndex + 1,
+            messageList: addMsg,
+          }));
           this.scrollToBottom();
         }
       });
@@ -134,17 +136,16 @@ class ChatHandsFree extends Component {
       this.props.localUser.getStreamManager().stream.session.connection.disposed =
         this.state.isRecog;
     }
-    this.setState({ message: "" });
   };
 
-  scrollToBottom() {
+  scrollToBottom = () => {
     setTimeout(() => {
       try {
         this.chatScroll.current.scrollTop =
           this.chatScroll.current.scrollHeight;
-      } catch (err) { }
+      } catch (err) {}
     }, 20);
-  }
+  };
 
   close = () => {
     this.props.closeBtn(undefined);
@@ -212,39 +213,23 @@ class ChatHandsFree extends Component {
         <div className='recording'>
           <div className='writingStatus'>
             <div
-              // className={`mackdoong-switch ${this.state.isRecog ? "colorYellow" : "colorRed"
-              //   }`}
+            // className={`mackdoong-switch ${this.state.isRecog ? "colorYellow" : "colorRed"
+            //   }`}
             >
-<<<<<<< HEAD
-              {this.state.isRecog ? "ON" : "OFF"}
-=======
               {/* {this.state.isRecog ? "ON" : "OFF"} */}
->>>>>>> 9ba88c2d55d4da2b7322b3bfeb795f26a6ae9996
             </div>
             <div className='mackdoong-logo'>
               <img
                 alt='막둥이'
                 src={this.state.isRecog ? isWriting : isNotWriting}
-<<<<<<< HEAD
-                height={this.state.isRecog ? "40" : "20"}
-                width={this.state.isRecog ? "42" : "22"}
-=======
                 height={this.state.isRecog ? "100" : "90"}
                 width={this.state.isRecog ? "130" : "117"}
->>>>>>> 9ba88c2d55d4da2b7322b3bfeb795f26a6ae9996
               />
             </div>
-            <div
-              className='mackdoong-txt'
-              style={{ marginBottom: 4 }}
-            >
+            <div className='mackdoong-txt' style={{ marginBottom: 4 }}>
               {this.state.isRecog
                 ? "막둥이가 기록 중이에요!"
-<<<<<<< HEAD
-                : " 막둥이를 불러주세요!   "}
-=======
                 : "막둥이를 불러주세요!   "}
->>>>>>> 9ba88c2d55d4da2b7322b3bfeb795f26a6ae9996
             </div>
           </div>
         </div>
@@ -259,7 +244,7 @@ class ChatHandsFree extends Component {
                   className={
                     "message" +
                     (data.connectionId !==
-                      this.props.localUser.getConnectionId()
+                    this.props.localUser.getConnectionId()
                       ? " left"
                       : " right")
                   }
@@ -274,11 +259,12 @@ class ChatHandsFree extends Component {
 
                     <div
                       className={`
-                      ${data.connectionId !==
-                          this.props.localUser.getConnectionId()
+                      ${
+                        data.connectionId !==
+                        this.props.localUser.getConnectionId()
                           ? " f-left"
                           : " f-right"
-                        } ${data.marker ? "msg-content-star" : "msg-content"}
+                      } ${data.marker ? "msg-content-star" : "msg-content"}
                       `}
                     >
                       {/* <span className='triangle' /> */}
@@ -307,15 +293,4 @@ class ChatHandsFree extends Component {
   }
 }
 
-<<<<<<< HEAD
-const mapStateToProps = (state) => {
-  return {
-    // duringTime: state.user.duringTime,
-    // enterTime: state.user.enterTime,
-  };
-};
-
-export default connect(mapStateToProps)(ChatHandsFree);
-=======
 export default ChatHandsFree;
->>>>>>> 9ba88c2d55d4da2b7322b3bfeb795f26a6ae9996

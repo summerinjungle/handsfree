@@ -39,11 +39,8 @@ class VideoRoomHandsFree extends Component {
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
       : "https://hyunseokmemo.shop:443";
-<<<<<<< HEAD
-=======
-      // : "https://onxmoreplz.shop:443";
-      // : "https://" + window.location.hostname + ":4443";
->>>>>>> 9ba88c2d55d4da2b7322b3bfeb795f26a6ae9996
+    // : "https://onxmoreplz.shop:443";
+    // : "https://" + window.location.hostname + ":4443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";

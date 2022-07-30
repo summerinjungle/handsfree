@@ -61,25 +61,6 @@ export function TextEditor({ sessionId }) {
 
   return (
     <div>
-<<<<<<< HEAD
-      <div>
-        <h2>
-          메모장&nbsp;
-          <Button
-            type='primary'
-            className='ant1'
-            shape='round'
-            icon={<DownloadOutlined />}
-            onClick={() => {
-              saveButton(saveMemo(), "메모");
-            }}
-          >
-            다운로드
-          </Button>
-        </h2>
-      </div>
-=======
->>>>>>> 9ba88c2d55d4da2b7322b3bfeb795f26a6ae9996
       <ReactQuill
         style={{
           width: "720px",
