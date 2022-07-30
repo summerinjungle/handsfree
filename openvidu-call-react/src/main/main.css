@@ -1,71 +1,181 @@
-.main-bg {
-  /* background-color: #eeeee4; */
-  background-color: #fffcf8;
+.main-bg-before-login {
+	display: grid;
+	grid-template-columns: repeat(15, 1fr);
+	grid-template-rows: repeat(20, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+		
+	background-color: #FFFCF8;
 	width: 100%;
-  height: 100vh;
-  text-align: center;
+	height: 100vh;
+	text-align: center;
+}
+
+.main-bg-after-login {
+	display: grid;
+	grid-template-columns: repeat(15, 1fr);
+	grid-template-rows: repeat(20, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+		
+	/* background-color: #fffcf8; */
+	background-color: #FFFCF8;
+	width: 100%;
+	height: 100vh;
+	text-align: center;
+}
+
+.header {
+	/* background-color: red; */
+	grid-area: 1 / 1 / 2 / 16;
+}
+
+.header-logo {
+	float: left;
+	margin-left: auto;
+	display: block;
 }
 
 .main-label {
-	margin-top: 8%;
+	/* margin-top: 8%; */
+	/* background-color: red; */
+	/* grid-area: 7 / 8 / 10 / 12; */
+	grid-area: 7 / 8 / 10 / 14;
+	/* grid-area: 10 / 8 / 12 / 11; */
+	line-height: 20px;
+	text-align: left;
+}
+
+.main-label-txt1 {
+	margin-top: 10px;
+	float: left;
+	font-size: 30px;
+	font-weight: bold;
+	font-family: 'Cafe24Ssurround';
+	color: #6A573D;
+}
+
+.main-label-txt2 {
+	font-family: 'Cafe24Ssurround';
+	margin-top: 10px;
+	float: left;
+	font-size: 30px;
+	/* font-weight: bold; */
+	/* color: white; */
+	/* color: #F6DBD1; */
+	color: #93897D;
+	/* color: #6A573D */
+}
+
+.main-logo-area {
+	/* background-color: aqua; */
+	grid-area: 7 / 7 / 9 / 10;
 }
 
 .main-logo { 
-  /* margin-top: 10%; */
-  width: 500px;
+  width: 300px;
+  float: middle;
 }
 
-.LogInBtnStyle{
-  position: absolute;
-  left: 44%;
-	top: 50%;
-  width: 200px;
+.main-character-area {
+	/* background-color: aqua; */
+	grid-area: 7 / 5 / 12 / 8; 
 }
 
-.myButton {
-	background-color:#966c38;
-	border-radius:6px;
-	border:0px solid #6A573D;
-	/* display:inline-block; */
-	/* cursor:pointer; */
-	color:#ffffff;
-	/* font-family:Arial; */
-	font-size:14px;
-	font-weight:bold;
-	padding:8px 24px;
-}
-.myButton:hover {
-	background-color:#DFB48E;
-	color: black;
+.main-character { 
+	width: 260px;
+	float: left;
+  }
+
+.login-btn-shadow{
+	/* background-color: #6A573D; */
+	grid-area: 10 / 8 / 12 / 11;
+	text-align: center; 
 }
 
-.myButton2 {
+.login-btn{
+	/* background-color: #6A573D; */
+	grid-area: 10 / 8 / 12 / 11;
+	text-align: center; 
+	display: block;
+	margin-top: 10%;
+  	/* position: absolute;
+  	left: 44.25%;
+	top: 50%; */
+}
+
+.make-conference-btn-area {
+	/* background-color: purple; */
+	grid-area: 10 / 6 / 11 / 7;
+	font-family: 'Cafe24Ssurround';
+
+}
+
+
+.make-conference-btn {
 	background-color:#6A573D;
 	border-radius:6px;
 	border:0px solid #6A573D;
+	font-family: 'Cafe24SsurroundAir';
 	/* display:inline-block; */
 	/* cursor:pointer; */
 	color:#ffffff;
+	height: 40px;
 	/* font-family:Arial; */
-	font-size:14px;
+	font-size: 15px;
 	font-weight:bold;
 	padding:8px 24px;
-	margin-top: 40px;
 }
-.myButton2:hover {
-	background-color:#DFB48E;
+
+.make-conference-btn:hover {
+	background-color:#93897D;
+}
+
+
+.attend-meeting-btn-area {
+	/* background-color: rebeccapurple; */
+	grid-area: 10 / 7 / 11 / 11;
+	outline: 1px solid black;
+	border-radius:6px;
+}
+
+
+.attend-meeting-input-area {
+	float: left;
+	width: 115%;
+	/* background-color: green; */
+	grid-area: 10 / 7 / 11 / 10;
+}
+
+.attend-meeting-btn {
+	float: right;
+	background-color: white;
+	/* background-color: yellow; */
+	border:0px solid black;
+	border-radius:6px;
+	width: 30px;
+	height: 38px;
+	position: absolute;
+	left: 64.6%;
+  	top: 45%;
+	grid-area: 10 / 10 / 11 / 11;
+}
+
+.attend-meeting-btn:hover {
+	background-color:#F6DBD1;
 	color: black;
 }
 
 
 input {
-  width: 200px;
+  font-family: 'Cafe24SsurroundAir';
+  width: 200px; 
   height: 36px;
   font-size: 15px;
   border: 0;
   border-radius: 5px;
-  outline: none;
-  margin-right: 5px;
+  outline: none; 
+  margin-right: 5px; 
   padding-left: 10px;
   background-color: #fffffff2;
 }

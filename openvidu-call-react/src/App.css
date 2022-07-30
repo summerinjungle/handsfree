@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'Cafe24Ssurround';
+	src: url("./font/Cafe24Ssurround.woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cafe24SsurroundAir';
+	src: url("./font/Cafe24SsurroundAir.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
 .App {
     width: 100vw;
     height: 100vh;
