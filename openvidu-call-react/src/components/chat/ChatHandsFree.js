@@ -79,6 +79,7 @@ class ChatHandsFree extends Component {
                 message: data.message,
                 time: data.time,
                 startTime: data.startTime,
+                endTime: data.endTime,
                 marker: this.state.isStar,
                 id: this.state.msgIndex,
                 play: false,
@@ -127,6 +128,7 @@ class ChatHandsFree extends Component {
           nickname: this.props.localUser.getNickname(),
           streamId: this.props.localUser.getStreamManager().stream.streamId,
           startTime: this.state.startTime,
+          endTime: this.state.endTime,
         };
         this.props.localUser.getStreamManager().stream.session.signal({
           data: JSON.stringify(data),

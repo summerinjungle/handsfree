@@ -10,7 +10,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { removeTokenInCookie } from "./cookie";
 import swal from "sweetalert";
-import Loading from "../components/edit/Loading";
+import Loading from "./Loading";
 
 const Main = ({ username }) => {
   let navigate = useNavigate();
@@ -98,7 +98,6 @@ const Main = ({ username }) => {
       }, delay);
     };
   }
-  console.log("로딩~~~~", isLoading);
   return (
     <div className='main-bg'>
       <h1 className='main-label'>화상회의 자동 작성 웹서비스</h1>

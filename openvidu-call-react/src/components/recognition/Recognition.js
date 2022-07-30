@@ -6,7 +6,7 @@ const SpeechRecognition =
 
 const recognition = new SpeechRecognition();
 recognition.continuous = false;
-recognition.interimResults = true;
+recognition.interimResults = false;
 recognition.lang = "ko-KR";
 
 class Recognition extends PureComponent {

@@ -46,6 +46,9 @@ const roomSchema = new Schema({
       startTime: {
         type: String,
       },
+      endTime:{
+        type :String,
+      }
       marker: {
         type: Boolean,
       },
