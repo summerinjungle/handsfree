@@ -54,6 +54,7 @@ class Recognition extends PureComponent {
     };
   }
   render() {
+    console.log("음성 인식 컴포넌트 !");
     return (
       <div>
         <script></script>

@@ -205,6 +205,7 @@ class ChatHandsFree extends Component {
   };
 
   render() {
+    console.log("채팅 컴포넌트 호출");
     return (
       <div className='status-container'>
         <div className='recording'>
