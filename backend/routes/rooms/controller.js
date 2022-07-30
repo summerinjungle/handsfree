@@ -81,10 +81,8 @@ exports.getEditingRoom = async (req, res, next) => {
     res.status(BAD_REQUEST).json({
       message: "잘못된 접근입니다",
     });
-    console.log("!!!!!ㅔ--- getEditingRoom", res.data);
     return;
   }
-  console.log("!!!!!ㅔ--- getEditingRoom", res.data);
   res.status(OK).json({
     editingRoom,
   });

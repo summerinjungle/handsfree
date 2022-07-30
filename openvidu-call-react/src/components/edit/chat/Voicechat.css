@@ -1,0 +1,23 @@
+.on-the-list{
+	background-color: #ffffff;
+    margin-top: 0.625rem;
+    width: 80%; 
+	/* width: 250px;*/
+	height: 471px;
+    position: absolute;
+    margin-top: 0px;
+}
+
+
+.ant-people-element {
+    display: block;
+	padding: 5px 10px 5px 10px;
+    margin: 10px;
+    width: 90%;
+    background-color:#F7F2EC;
+	border-radius:6px;
+	border:0px;
+	font-weight: bold;
+}
+
+
