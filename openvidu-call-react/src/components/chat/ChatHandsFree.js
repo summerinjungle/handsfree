@@ -5,7 +5,6 @@ import Recognition from "../recognition/Recognition";
 import yellow from "@material-ui/core/colors/yellow";
 import isWriting from "../../assets/images/isWriting.png";
 import isNotWriting from "../../assets/images/isNotWriting.png";
-import { connect } from "react-redux";
 import Balloons from "../../assets/images/Balloons.png";
 
 class ChatHandsFree extends Component {
@@ -217,9 +216,7 @@ class ChatHandsFree extends Component {
             >
               {/* {this.state.isRecog ? "ON" : "OFF"} */}
             </div>
-            <img className='balloon'
-                src={Balloons}
-              />
+            <img className='balloon' src={Balloons} />
             <div className='mackdoong-logo'>
               <img
                 alt='막둥이'

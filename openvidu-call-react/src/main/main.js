@@ -10,12 +10,14 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { removeTokenInCookie } from "./cookie";
 import swal from "sweetalert";
+import Loading from "../components/edit/Loading";
 
 const Main = ({ username }) => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [enterCode, setEnterCode] = useState("");
   const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const cookie = getTokenInCookie();
 
   let reduxCheck = useSelector((state) => {
@@ -41,7 +43,6 @@ const Main = ({ username }) => {
           sessionId: response.data.roomId,
         };
         localStorage.setItem("redux", JSON.stringify(obj));
-        console.log("방만들기 클릭 이벤트 ", response);
         navigate("/meeting/" + response.data.roomId);
       })
       .catch(function (error) {
@@ -80,12 +81,31 @@ const Main = ({ username }) => {
       .catch(function (err) {});
   };
 
+  const createDebounceRoom = debouce(() => {
+    createMeeting();
+  });
+
+  const enterDebounceRoom = debouce(() => {
+    enterMeeting();
+  });
+
+  function debouce(cb, delay = 1000) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        cb(...args);
+      }, delay);
+    };
+  }
+  console.log("로딩~~~~", isLoading);
   return (
     <div className='main-bg'>
       <h1 className='main-label'>화상회의 자동 작성 웹서비스</h1>
       <img className='main-logo' src={mainLogo} />
       {isLogin ? (
         <div>
+          {isLoading && <Loading />}
           <p>
             <button
               className='myButton'
@@ -96,7 +116,8 @@ const Main = ({ username }) => {
                     video: { width: 640, height: 360 },
                   })
                   .then((stream) => {
-                    createMeeting();
+                    setIsLoading(true);
+                    createDebounceRoom();
                   })
                   .catch(() => {
                     swal(
@@ -104,7 +125,8 @@ const Main = ({ username }) => {
                       "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다.",
                       "warning"
                     );
-                    createMeeting();
+                    setIsLoading(true);
+                    createDebounceRoom();
                   });
               }}
             >
@@ -116,7 +138,13 @@ const Main = ({ username }) => {
               placeholder='참여코드를 입력하세요.'
               onChange={(event) => setEnterCode(event.target.value)}
             ></input>
-            <button className='myButton2' onClick={enterMeeting}>
+            <button
+              className='myButton2'
+              onClick={() => {
+                setIsLoading(true);
+                enterDebounceRoom();
+              }}
+            >
               회의 참여하기
             </button>
           </p>
