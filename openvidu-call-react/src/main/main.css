@@ -209,8 +209,9 @@ input {
 
 
 .anon-logo{
-  /* position: absolute;
+  position: absolute;
 	left: 30%;
-  top: 24%; */
+  /* top: 24%; */
 	margin-top: 12.3%;
+	text-align: center;
 }
