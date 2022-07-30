@@ -22,6 +22,7 @@ import Voicechat from "./chat/Voicechat";
 import { getUserNameInCookie } from "../../main/cookie";
 import VoiceRoom from "../voiceroom/VoiceRoom";
 import Spinner from "./Spinner";
+import swal from "sweetalert";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -213,8 +214,18 @@ const EditingRoom = ({ sessionId }) => {
               className='exit'
               icon={<ExitToAppIcon />}
               onClick={() => {
-                navigate("/");
-                window.location.reload();
+                swal({
+                  title: "나가기",
+                  text: "편집을 종료하시겠습니까?",
+                  icon: "warning",
+                  buttons: true,
+                  // dangerMode: true,
+                }).then((willDelete) => {
+                  if (willDelete) {
+                    navigate("/");
+                    window.location.reload();
+                  }
+                });
               }}
             >
               나가기
