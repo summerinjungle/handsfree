@@ -19,6 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import PostAddIcon from "@material-ui/icons/PostAdd";
+import Voicechat from "./chat/Voicechat";
+import { getUserNameInCookie } from "../../main/cookie";
 import VoiceRoom from "../voiceroom/VoiceRoom";
 
 const EditingRoom = ({ sessionId }) => {
@@ -214,6 +216,9 @@ const EditingRoom = ({ sessionId }) => {
         <hr className='my-0'></hr>
         <div className='contents'>
           <div className='contents-left'>
+            <Voicechat userName={getUserNameInCookie()} roomId={sessionId} />
+          </div>
+          <div className='contents-middle'>
             <PostAddIcon />
             <div className='contents-label'>메모장&nbsp;</div>
             <Button
@@ -283,7 +288,6 @@ const EditingRoom = ({ sessionId }) => {
             </span>
           </div>
         </div>
-        <VoiceRoom sessionId={newSessionId} />
       </div>
     </>
   );
