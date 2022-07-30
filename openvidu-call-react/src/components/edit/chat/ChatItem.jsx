@@ -59,10 +59,10 @@ const ChatItem = ({
       </div>
       <div className='pl-20'>
         <div>
-          <div className='inline-block align-middle margin-auto'>
-            <div className='inline-block margin-auto bold'>{userName}</div>
+          <div className='inline-block vertical-align-middle margin-auto'>
+            <div className='message-username inline-block margin-auto bold'>{userName}</div>
             <div className='message-time inline-block margin-auto mx-10'>{time}</div>
-            <div className="inline-block align-middle">
+            <div className="inline-block vertical-align-middle">
               <PlayArrowIcon
                 onClick={() => playTimeWaveSurfer(startTime)}
                 className='chattime-buttons'
