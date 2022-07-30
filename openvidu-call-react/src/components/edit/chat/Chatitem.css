@@ -1,9 +1,9 @@
 .autoTextarea {
-  width: 100%;
+  width: 80%;
   height: 62px;
   padding: 10px;
   box-sizing: border-box;
-  border: solid 2px #1E90FF;
+  border: solid 2px #b9b996;
   border-radius: 5px;
   font-size: 15px;
   resize: both;
@@ -30,4 +30,74 @@
   /* background-color: #e4ddd4; */
   /* margin-left: 2px; */
   /* color: #337bc4; */
+}
+
+.msg-time {
+  font-size: 14px;
+  color: #B5B5B5
+}
+
+
+.relative {
+  width: 80%;
+/* border: 2px solid rgb(179, 54, 123); */
+}
+
+.msg{
+  font-size: 17px;
+  font-weight: bolder;
+  box-sizing: border-box;
+}
+
+.msg:hover{
+  /* border: 2px solid rgb(189, 197, 115); */
+  color: #c78830;
+    
+}
+
+.mb-20 {
+  /* border: 1px solid rgb(119, 201, 130); */
+  margin: 10px;
+  padding: 5px;
+  
+}
+
+.mx-10 {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.t-40 {
+  top: 30px;
+  position: absolute;
+}
+
+.pl-20 {
+  padding-left: 25px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.chattime-buttons {
+  padding-bottom: 3px;
+  /* border-radius:4px; */
+  border: 1px solid whitesmoke;
+  font-weight: bold;
+  /* background-color: #F7F2EC; */
+  /* margin-left: 2px; */
+  /* color: #337bc4; */
+}
+
+.chattime-buttons:hover {
+  background-color: blanchedalmond;
+}
+
+.relative {
+  position: relative;
 }

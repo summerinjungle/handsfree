@@ -14,6 +14,7 @@ import TextEditor from "./TextEditor";
 import VoiceRoom from "../voiceroom/VoiceRoom";
 import Header from "./Header";
 import ChatItemList from "./chat/ChatItemList";
+
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
     return state;
@@ -149,9 +150,9 @@ const EditingRoom = ({ sessionId }) => {
   return (
     <>
       <Header />
-      <hr className='my-0'></hr>
+      {/* <hr className='my-0'></hr> */}
       <div className='container'>
-        <div>
+        <div className='text-editor'>
           <TextEditor sessionId={sessionId} />
         </div>
         <div className='chat-item-list'>
@@ -170,7 +171,7 @@ const EditingRoom = ({ sessionId }) => {
             className={"play-btn btn" + (isPlay === true ? " playing" : "")}
             onClick={playButton}
           >
-            <PlayArrowIcon className='fas fa-play' />
+            <PlayArrowIcon fontsize='large' className='fas fa-play' />
             <PauseIcon className='fas fa-pause' />
           </span>
 

@@ -1,5 +1,5 @@
 import React from "react";
-import "../edit.css";
+import "./ChatItemList.css";
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import saveButton from "../docx";
@@ -27,36 +27,34 @@ const ChatItemList = ({
   };
 
   return (
-    <div className='contents'>
+    <div>
       <div>
-        <div>
-          <h2>
-            &nbsp;&nbsp;&nbsp;음성 기록&nbsp;{" "}
-            <Button
-              type='primary'
-              className='antsound'
-              shape='round'
-              icon={<DownloadOutlined />}
-              onClick={() => {
-                saveButton(saveSoundMemo(), "음성 기록");
-              }}
-            >
-              다운로드
-            </Button>
-          </h2>
-        </div>
+        <h2>
+          &nbsp;&nbsp;&nbsp;음성 기록&nbsp;{" "}
+          <Button
+            type='primary'
+            className='antsound'
+            shape='round'
+            icon={<DownloadOutlined />}
+            onClick={() => {
+              saveButton(saveSoundMemo(), "음성 기록");
+            }}
+          >
+            다운로드
+          </Button>
+        </h2>
+      </div>
 
-        <div className='recorditems'>
-          {chatList &&
-            chatList.map((recordItem) => (
-              <ChatItem
-                recordItem={recordItem}
-                playTimeWaveSurfer={playTimeWaveSurfer}
-                isPlay={isPlay}
-                deleteChatItem={deleteChatItem}
-              />
-            ))}
-        </div>
+      <div className='recorditems'>
+        {chatList &&
+          chatList.map((recordItem) => (
+            <ChatItem
+              recordItem={recordItem}
+              playTimeWaveSurfer={playTimeWaveSurfer}
+              isPlay={isPlay}
+              deleteChatItem={deleteChatItem}
+            />
+          ))}
       </div>
     </div>
   );

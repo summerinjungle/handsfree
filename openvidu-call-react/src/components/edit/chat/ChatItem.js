@@ -2,28 +2,18 @@ import React from "react";
 import { useRef, useState } from "react";
 import markerImg from "../../../assets/images/markerImg.png";
 import { insertText } from "../TextEditor";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import PostAddIcon from "@material-ui/icons/PostAdd";
-import BookmarksIcon from "@material-ui/icons/Bookmarks";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import CheckIcon from "@material-ui/icons/Check";
-import DoneIcon from "@material-ui/icons/Done";
 import EditIcon from "@material-ui/icons/Edit";
 import "./Chatitem.css";
 
-const ChatItem = ({
-  recordItem,
-  playTimeWaveSurfer,
-  isPlay,
-  deleteChatItem,
-}) => {
+const ChatItem = ({ recordItem, playTimeWaveSurfer, deleteChatItem }) => {
   const localInput = useRef();
   const [isEdit, setIsEdit] = useState(false); // 수정버튼 스위치 state
   const [localContent, setLocalContent] = useState(recordItem.message); // state기본값을 content로 설정하여, 수정눌렀을때 작성했던 내용을 그대로 불러옴
-
   const toggleIsEdit = () => setIsEdit(!isEdit); // toggleIsEdit()이 호출이 되면 setIsEdit()이 되고 !(
   const handleEdit = () => {
     toggleIsEdit(); // 수정하고 나면 수정폼은 닫아줌
@@ -41,23 +31,18 @@ const ChatItem = ({
 
   return (
     <div key={recordItem.key} className='relative mb-20'>
-      <div>
-        <div className='absolute t-40'>
-          {recordItem.marker ? (
-            <>
-              <img src={markerImg} alt='막둥이' height='12' width='12' />
-            </>
-          ) : (
-            <>{/* 마커 없는 경우 -> 아무것도 안 찍힘 */}</>
-          )}
-        </div>
+      <div className='absolute t-40'>
+        {recordItem.marker ? (
+          <>
+            <img src={markerImg} alt='막둥이' height='20' width='20' />
+          </>
+        ) : null}
       </div>
+
       <div className='pl-20'>
         <div>
           <div className='inline-block bold'>{recordItem.userName}</div>
-          <div className='message-time inline-block mx-10'>
-            {recordItem.time}
-          </div>
+          <div className='msg-time inline-block mx-10'>{recordItem.time}</div>
           <div className='inline-block mx-10'>
             {recordItem.play ? (
               <PauseIcon
@@ -105,7 +90,7 @@ const ChatItem = ({
           </div>
         </div>
         <div className='relative'>
-          <div className='message'>
+          <div className='msg'>
             {isEdit ? (
               <textarea
                 maxLength='1200'

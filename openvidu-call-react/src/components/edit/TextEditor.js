@@ -74,25 +74,28 @@ export function TextEditor({ sessionId }) {
 
   return (
     <div>
-      <div className='contents-label'>
-        <h2>메모장&nbsp;</h2>
-        <Button
-          type='primary'
-          className='ant1'
-          shape='round'
-          icon={<DownloadOutlined />}
-          onClick={() => {
-            saveButton(saveMemo(), "메모");
-          }}
-        >
-          다운로드
-        </Button>
+      <div>
+        <h2>
+          메모장&nbsp;
+          <Button
+            type='primary'
+            className='ant1'
+            shape='round'
+            icon={<DownloadOutlined />}
+            onClick={() => {
+              saveButton(saveMemo(), "메모");
+            }}
+          >
+            다운로드
+          </Button>
+        </h2>
       </div>
       <ReactQuill
         style={{
-          width: "640px",
-          height: "430px",
+          width: "720px",
+          height: "530px",
           backgroundColor: "#E3DDD5",
+          // backgroundColor: "#a9af9",
         }}
         ref={(el) => {
           reactQuillRef = el;
