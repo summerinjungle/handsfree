@@ -97,10 +97,10 @@ export default function Voicechat({ userName, roomId }) {
                 {startChat ?
                     <Button
                         type='primary'
-                        className='ant1'
+                        className='ant1-clicked'
                         shape='round'
                         disabled={true}
-                    >참여완료</Button>
+                    >참여중</Button>
                     :
                     <Button
                         type='primary'

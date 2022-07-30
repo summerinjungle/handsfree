@@ -365,6 +365,18 @@
 	padding: 5px 14px;
 }
 
+.ant1-clicked {
+	padding: 5px 10px 5px 10px;
+	background-color: #256116;
+	border-radius: 6px;
+	border: 0px;
+	color: white;
+	position: relative;
+	top: -0.4%;
+	font-weight: bold;
+	padding: 5px 14px;
+}
+
 .antsound:hover {
 	background-color: #DFB48E;
 	color: black;

@@ -129,7 +129,7 @@ const EditingRoom = ({ sessionId }) => {
             start: currLeft,
             end: currRight,
             // color: "#CEBFAC",
-            color: "rgba(206, 191, 172, 0.85)",
+            color: "rgba(216, 207, 182, 0.85)",
             drag: false,
             resize: false,
           });
