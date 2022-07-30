@@ -205,7 +205,14 @@
 }
 
 
-#editingroom-container {
+#editingroom-container  {
+	width: 100vw;
+	height: 103vh;
+	
+}
+
+
+#editingroom-container  {
 	width: 100vw;
 	height: 103vh;
 }

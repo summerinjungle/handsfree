@@ -18,10 +18,10 @@ import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-import PostAddIcon from "@material-ui/icons/PostAdd";
 import Voicechat from "./chat/Voicechat";
 import { getUserNameInCookie } from "../../main/cookie";
 import VoiceRoom from "../voiceroom/VoiceRoom";
+import Spinner from "./Spinner";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -33,7 +33,6 @@ const EditingRoom = ({ sessionId }) => {
 
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
-  const [volume, setVolume] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const [chatList, setChatList] = useState([]); // 음성 기록들
@@ -47,7 +46,12 @@ const EditingRoom = ({ sessionId }) => {
     }
   };
 
-  const playButtonFromWaveSurfer = (startTime) => {
+  const playButtonFromWaveSurfer = (startTime, id) => {
+    setChatList((chatList) =>
+      chatList.map((list) =>
+        list.id == id ? { ...list, play: !list.play } : list
+      )
+    );
     wavesurfer.current.playPause();
     if (wavesurfer.current.isPlaying()) {
       setIsPlay(true);
@@ -92,8 +96,8 @@ const EditingRoom = ({ sessionId }) => {
     if (wavesurfer) {
       wavesurfer.current.load(
         "https://hyunseokmemo.shop/openvidu/recordings/" +
-        sessionId +
-        "/ownweapon.webm"
+          sessionId +
+          "/ownweapon.webm"
         // "https://onxmoreplz.shop/openvidu/recordings/" +
         // sessionId +
         // "/ownweapon.webm"
@@ -115,19 +119,17 @@ const EditingRoom = ({ sessionId }) => {
           response.data.editingRoom;
         setChatList(chatList);
         for (let i = 0; i < recordMuteList.length; i++) {
-          let currLeft, currRight;
+          let currLeft;
           if (recordMuteList[i].left == 0) {
             currLeft = 0;
           } else {
             currLeft =
               parseFloat(recordMuteList[i].left - sessionStartTime) / 1000;
           }
-          currRight =
-            parseFloat(recordMuteList[i].right - sessionStartTime) / 1000;
 
           wavesurfer.current.regions.add({
             start: currLeft,
-            end: currRight,
+            end: parseFloat(recordMuteList[i].right - sessionStartTime) / 1000,
             // color: "#CEBFAC",
             color: "rgba(206, 191, 172, 0.85)",
             drag: false,
@@ -194,7 +196,13 @@ const EditingRoom = ({ sessionId }) => {
 
   return (
     <>
-      <div id='editingroom-container'>
+      <div
+        id='editingroom-container'
+        style={
+          //   isLoading ? { backgroundColor: "rgba(192, 206, 180, 0.2)" } : null
+          isLoading ? { opacity: 0.2 } : null
+        }
+      >
         <div className='header'>
           <span className='header-contents vertical-align-middle'>
             <img className='header-logo' src={mainLogo} />
@@ -216,11 +224,10 @@ const EditingRoom = ({ sessionId }) => {
         <hr className='my-0'></hr>
         <div className='contents'>
           <div className='contents-left'>
-            <Voicechat userName={getUserNameInCookie()} roomId={sessionId} />
+            {/* <Voicechat userName={getUserNameInCookie()} roomId={sessionId} /> */}
           </div>
           <div className='contents-middle'>
-            {/* <PostAddIcon /> */}
-            <div className="contents-middle-wrap">
+            <div className='contents-middle-wrap'>
               <div className='contents-label'>메모장&nbsp;</div>
               <Button
                 type='primary'
@@ -231,7 +238,6 @@ const EditingRoom = ({ sessionId }) => {
                   saveButton(saveMemo(), "메모");
                 }}
               >
-                {" "}
                 다운로드
               </Button>
             </div>
@@ -240,7 +246,7 @@ const EditingRoom = ({ sessionId }) => {
             </div>
           </div>
           <div className='contents-right'>
-            <div className="contents-right-wrap">
+            <div className='contents-right-wrap'>
               <div className='contents-label'>
                 &nbsp;&nbsp;&nbsp;음성 기록&nbsp;
               </div>
@@ -253,7 +259,6 @@ const EditingRoom = ({ sessionId }) => {
                   saveButton(saveSoundMemo(), "음성 기록");
                 }}
               >
-                {" "}
                 다운로드
               </Button>
             </div>
@@ -261,21 +266,15 @@ const EditingRoom = ({ sessionId }) => {
               {chatList &&
                 chatList.map((recordItem) => (
                   <ChatItem
-                    key={recordItem._id}
-                    id={recordItem.id}
-                    userName={recordItem.nickname}
-                    time={recordItem.time}
-                    startTime={recordItem.startTime}
-                    isMarker={recordItem.marker}
-                    message={recordItem.message}
+                    recordItem={recordItem}
                     playTimeWaveSurfer={playButtonFromWaveSurfer}
                     deleteChatItem={deleteChatItem}
                   />
                 ))}
             </div>
           </div>
+          {isLoading && <Spinner />}
         </div>
-
         <div className='audio-container'>
           <div className='audio'></div>
           <div className='buttons'>
@@ -286,7 +285,6 @@ const EditingRoom = ({ sessionId }) => {
               <PlayArrowIcon className='fas fa-play' />
               <PauseIcon className='fas fa-pause' />
             </span>
-
             <span className='stop-btn btn' onClick={stopButton}>
               <Stop className='fas fa-stop' />
             </span>
