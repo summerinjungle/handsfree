@@ -146,6 +146,15 @@
 	display: inline-block;
 }
 
+.align-middle {
+	display: flex;
+  	justify-content : center;
+}
+
+.margin-auto {
+	margin: auto;
+}
+
 .t-40{
 	top: 30px;
 }

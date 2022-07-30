@@ -59,47 +59,41 @@ const ChatItem = ({
       </div>
       <div className='pl-20'>
         <div>
-       
-          {/* <div className='inline-block mx-10'>
-           
-          </div> */}
-        
-          <div className='inline-block'>
-           
-            <div className='inline-block bold'>{userName}</div>
-          <div className='message-time inline-block mx-10'>{time}</div>
-      
-      
-            <PlayArrowIcon
+          <div className='inline-block align-middle margin-auto'>
+            <div className='inline-block margin-auto bold'>{userName}</div>
+            <div className='message-time inline-block margin-auto mx-10'>{time}</div>
+            <div className="inline-block align-middle">
+              <PlayArrowIcon
                 onClick={() => playTimeWaveSurfer(startTime)}
                 className='chattime-buttons'
               />
               {
                 // 수정중인 상태면 ? 수정완료,취소버튼 보이게. 수정중인 상태가 아니면 : 수정, 삭제 버튼 보이게
                 isEdit ? (
-              
-                <CheckIcon onClick={handleEdit} className='saveChat' />
-                  
+
+                  <CheckIcon onClick={handleEdit} className='saveChat' />
+
                 ) : (
-                
-                    <EditIcon
-                      onClick={() => {
-                        toggleIsEdit();
-                        autoResizeTextarea();
-                      }}
-                      className='chattime-buttons'
-                    />
-                
+
+                  <EditIcon
+                    onClick={() => {
+                      toggleIsEdit();
+                      autoResizeTextarea();
+                    }}
+                    className='chattime-buttons'
+                  />
+
                 )
               }
               <DeleteOutlineIcon
                 onClick={() => deleteChatItem(id)}
                 className='chattime-buttons'
-              /> 
+              />
               <PostAddIcon
                 onClick={() => insertText(localContent)}
                 className='chattime-buttons'
               />
+            </div>
           </div>
         </div>
         <div className='relative'>
