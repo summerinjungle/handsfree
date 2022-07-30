@@ -79,6 +79,7 @@ class ChatHandsFree extends Component {
                 message: data.message,
                 time: data.time,
                 startTime: data.startTime,
+                endTime: data.endTime,
                 marker: this.state.isStar,
                 id: this.state.msgIndex,
                 play: false,
@@ -127,6 +128,7 @@ class ChatHandsFree extends Component {
           nickname: this.props.localUser.getNickname(),
           streamId: this.props.localUser.getStreamManager().stream.streamId,
           startTime: this.state.startTime,
+          endTime: this.state.endTime,
         };
         this.props.localUser.getStreamManager().stream.session.signal({
           data: JSON.stringify(data),
@@ -211,8 +213,8 @@ class ChatHandsFree extends Component {
         <div className='recording'>
           <div className='writingStatus'>
             <div
-            // className={`mackdoong-switch ${this.state.isRecog ? "colorYellow" : "colorRed"
-            //   }`}
+            className={`mackdoong-txt ${this.state.isRecog ? "colorYellow" : "colorRed"
+              }`}
             >
               {/* {this.state.isRecog ? "ON" : "OFF"} */}
             </div>
@@ -221,18 +223,28 @@ class ChatHandsFree extends Component {
               <img
                 alt='막둥이'
                 src={this.state.isRecog ? isWriting : isNotWriting}
-                height={this.state.isRecog ? "100" : "90"}
-                width={this.state.isRecog ? "130" : "117"}
+                height={this.state.isRecog ? "90" : "80"}
+                width={this.state.isRecog ? "120" : "115"}
               />
             </div>
-            <div className='mackdoong-txt' style={{ marginBottom: 4 }}>
-              {this.state.isRecog
-                ? "막둥이는 기록시작!"
-                : "막둥이는 기록중지!   "}
-            </div>
+            <div className='mackdoong-txt2'>막둥이는</div>
+            {
+              this.state.isRecog ? (
+                <div className='mackdoong-txt-rec' style={{ marginBottom: 4 }}>
+                  기록시작
+                </div>
+                ):(
+                <div className='mackdoong-txt-noRec' style={{ marginBottom: 4 }}>
+                  기록중지
+                </div>
+                )
+            }
           </div>
         </div>
-
+        {/* <button onClick={() => {
+          this.state.isRecog? this.setState({ isRecog: false }):this.setState({ isRecog: true })
+          console.log("change")
+        }}>onoasd</button> */}
         <div id='chatContainer'>
           <div id='chatComponent'>
             <div className='wrap' ref={this.chatScroll}>

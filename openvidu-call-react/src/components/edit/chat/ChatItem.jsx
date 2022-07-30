@@ -8,23 +8,13 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import CheckIcon from "@material-ui/icons/Check";
 import EditIcon from "@material-ui/icons/Edit";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import PauseIcon from "@material-ui/icons/Pause";
 
-
-const ChatItem = ({
-  key,
-  id,
-  userName,
-  time,
-  startTime,
-  isMarker,
-  message,
-  playTimeWaveSurfer,
-  deleteChatItem,
-}) => {
+const ChatItem = ({ recordItem, playTimeWaveSurfer, deleteChatItem }) => {
   const localInput = useRef();
 
   const [isEdit, setIsEdit] = useState(false); // 수정버튼 스위치 state
-  const [localContent, setLocalContent] = useState(message); // state기본값을 content로 설정하여, 수정눌렀을때 작성했던 내용을 그대로 불러옴
+  const [localContent, setLocalContent] = useState(recordItem.message); // state기본값을 content로 설정하여, 수정눌렀을때 작성했던 내용을 그대로 불러옴
 
   const toggleIsEdit = () => setIsEdit(!isEdit); // toggleIsEdit()이 호출이 되면 setIsEdit()이 되고 !(Not)연산을 통해 isEdit이 true면 false로, false면 true로 바꿔줌
 
@@ -45,10 +35,10 @@ const ChatItem = ({
   };
 
   return (
-    <div key={key} className='relative mb-20'>
+    <div key={recordItem.key} className='relative mb-20'>
       <div>
         <div className='absolute t-40'>
-          {isMarker ? (
+          {recordItem.isMarker ? (
             <>
               <img src={markerImg} alt='막둥이' height='12' width='12' />
             </>
@@ -60,21 +50,34 @@ const ChatItem = ({
       <div className='pl-20'>
         <div>
           <div className='inline-block vertical-align-middle margin-auto'>
-            <div className='message-username inline-block margin-auto bold'>{userName}</div>
-            <div className='message-time inline-block margin-auto mx-10'>{time}</div>
-            <div className="inline-block vertical-align-middle">
-              <PlayArrowIcon
-                onClick={() => playTimeWaveSurfer(startTime)}
-                className='chattime-buttons'
-              />
+            <div className='message-username inline-block margin-auto bold'>
+              {recordItem.userName}
+            </div>
+            <div className='message-time inline-block margin-auto mx-10'>
+              {recordItem.time}
+            </div>
+            <div className='inline-block vertical-align-middle'>
+              {recordItem.play ? (
+                <PauseIcon
+                  onClick={() =>
+                    playTimeWaveSurfer(recordItem.startTime, recordItem.id)
+                  }
+                  className='chattime-buttons'
+                />
+              ) : (
+                <PlayArrowIcon
+                  onClick={() =>
+                    playTimeWaveSurfer(recordItem.startTime, recordItem.id)
+                  }
+                  className='chattime-buttons'
+                />
+              )}
+
               {
                 // 수정중인 상태면 ? 수정완료,취소버튼 보이게. 수정중인 상태가 아니면 : 수정, 삭제 버튼 보이게
                 isEdit ? (
-
                   <CheckIcon onClick={handleEdit} className='saveChat' />
-
                 ) : (
-
                   <EditIcon
                     onClick={() => {
                       toggleIsEdit();
@@ -82,11 +85,10 @@ const ChatItem = ({
                     }}
                     className='chattime-buttons'
                   />
-
                 )
               }
               <DeleteOutlineIcon
-                onClick={() => deleteChatItem(id)}
+                onClick={() => deleteChatItem(recordItem.id)}
                 className='chattime-buttons'
               />
               <PostAddIcon

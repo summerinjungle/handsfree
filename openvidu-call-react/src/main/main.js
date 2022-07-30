@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from "react";
 import "./main.css";
 import mainLogo from "../assets/images/mainLogo.png";
+import mainCharacter from "../assets/images/mainCharacter.png";
+import mainCharacterBorder from "../assets/images/mainCharacterBorder.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { changeSession, changeIsPublisher, changeUserName } from "../store.js";
@@ -10,7 +12,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { removeTokenInCookie } from "./cookie";
 import swal from "sweetalert";
-import Loading from "../components/edit/Loading";
+import Loading from "./Loading";
 
 const Main = ({ username }) => {
   let navigate = useNavigate();
@@ -98,17 +100,22 @@ const Main = ({ username }) => {
       }, delay);
     };
   }
-  console.log("로딩~~~~", isLoading);
   return (
-    <div className='main-bg'>
-      <h1 className='main-label'>화상회의 자동 작성 웹서비스</h1>
-      <img className='main-logo' src={mainLogo} />
+ 
+      <>
       {isLogin ? (
-        <div>
-          {isLoading && <Loading />}
-          <p>
-            <button
-              className='myButton'
+        <>
+        {/* {isLoading && <Loading />} */}
+        <div className='main-bg-after-login'>
+          <div className="header">
+            <img className='header-logo' src={mainLogo} />
+          </div>
+          <div className='main-logo-area'>
+            <img className='main-logo' src={mainLogo} />
+          </div>
+          <div className='make-conference-btn-area'>
+          <button
+              className='make-conference-btn'
               onClick={() => {
                 navigator.mediaDevices
                   .getUserMedia({
@@ -130,43 +137,51 @@ const Main = ({ username }) => {
                   });
               }}
             >
-              회의 만들기
-            </button>
-          </p>
-          <p>
-            <input
-              placeholder='참여코드를 입력하세요.'
+              새 회의
+          </button>
+          </div>
+          <div className='attend-meeting-btn-area'>
+          </div>
+          <>
+            <input className='attend-meeting-input-area'
+              placeholder='참여코드 입력'
               onChange={(event) => setEnterCode(event.target.value)}
             ></input>
-            <button
-              className='myButton2'
-              onClick={() => {
-                setIsLoading(true);
-                enterDebounceRoom();
-              }}
-            >
-              회의 참여하기
+             <button className='attend-meeting-btn' onClick={enterMeeting}>
+                →
             </button>
-          </p>
-          <p>
-            <button
-              className='logOut'
-              onClick={() => {
-                removeTokenInCookie();
-                window.location.reload();
-              }}
-            >
-              로그아웃
-            </button>
-          </p>
+          </>
         </div>
+        </>
       ) : (
-        <div className='LogInBtnStyle'>
-          <GoogleLoginButton />
-        </div>
+        <>
+        <div className='main-bg-before-login'>
+          <div className="header">
+          <img className='header-logo' src={mainLogo} />
+          </div>
+          <div className='main-character-area '>
+            <img className='main-character' src={mainCharacterBorder} />
+            {/* <img className='main-character' src={mainCharacter} /> */}
+          </div>
+          <div className='main-label'> 
+            <p className='main-label-txt1'>
+              화상회의록 자동작성 웹서비스
+            </p>
+            <p className='main-label-txt2'>
+              "회의록 작성은 막둥이에게 맡겨주세요"
+            </p>
+          </div>
+          <div className='main-labe2'> 
+          </div>
+          <div className='login-btn-shadow'></div>
+            <div className='login-btn'>
+              <GoogleLoginButton className='login-btn'/>
+            </div>
+          </div>
+        </>
       )}
-      {/* <button className='asdf' onClick={() => navigate("/meeting")}>그냥 입장하기</button> */}
-    </div>
+        {/* <button className='asdf' onClick={() => navigate("/meeting")}>그냥 입장하기</button> */} 
+    </>
   );
 };
 
