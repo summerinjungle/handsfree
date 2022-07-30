@@ -11,6 +11,7 @@ import {
   changeIsPublisher,
   changeUserName,
 } from "./store.js";
+import Anon from "./main/anon"
 
 const App = () => {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const App = () => {
           path={editPath}
           element={<EditingRoom sessionId={sessionId} />}
         ></Route>
-        <Route path={"/*"} element={<div> 없는페이지 입니다. </div>} />
+        <Route path={"/*"} element={<Anon />} />
       </Routes>
     </div>
   );

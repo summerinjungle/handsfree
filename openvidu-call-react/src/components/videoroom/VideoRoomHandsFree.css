@@ -11,19 +11,22 @@
 }
 
 #header {
-  color: #ffffff;
+  /* color: #ffffff; */
   background-color: #333333;
   padding: 0 14px 0 0;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 999999;
-  min-width: 400px !important;
+  /* z-index: 999999; */
+  /* width: 20%; */
+  /* background-color: #02a1de; */
+  /* min-width: 400px !important; */
 }
 
 .toolbar{
   min-height: 40px !important;
-
+  /* background-color: #494949; */
+  /* border-radius: 10%; */
 }
 
 
@@ -58,16 +61,18 @@
 
 
 .bounds {
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: black;
   overflow: hidden;
   position: absolute;
   width: 77%;
   left: 15px;
   right: 0;
-  top: 10px;
-  bottom: 120px;
+  bottom: 8.6%;
+  /* top: 10px; */
+  /* bottom: 120px; */
   height: 90.1%;
+  /* height: 81.5%; */
   /* min-width: 400px !important; */
   /* width: inherit; */
 }
@@ -922,8 +927,8 @@
 .exitt{
   position: absolute;
   width: 45%;
-  height: 24px;
-  top: 91.7%;
+  height: 39px;
+  top: 91.6%;
   text-align: center;
   background-color: #cd3b33;
   right: 4%;
@@ -937,7 +942,7 @@
 	font-size:15px;
 	font-weight:bold;
   padding-top: 10px;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
 	/* text-decoration:none; */
 	/* text-shadow:0px 1px 0px #528ecc; */
 }
@@ -950,8 +955,8 @@
 .copy{
   position: absolute;
   width: 45%;
-  height: 24px;
-  top: 91.7%;
+  height: 39px;
+  top: 91.6%;
   text-align: center;
   background-color: #675743;
   left: 4%;
@@ -966,7 +971,7 @@
 	font-weight:bold;
 	/* padding:7px 0px; */
   padding-top: 10px;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
 	text-decoration:none;
 	/* text-shadow:0px 1px 0px #528ecc; */
 }

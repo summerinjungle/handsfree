@@ -21,6 +21,7 @@ import { DownloadOutlined } from "@ant-design/icons";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import Voicechat from "./chat/Voicechat";
 import { getUserNameInCookie } from "../../main/cookie";
+import VoiceRoom from "../voiceroom/VoiceRoom";
 
 
 const EditingRoom = ({ sessionId }) => {

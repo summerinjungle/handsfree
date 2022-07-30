@@ -3,6 +3,12 @@ import { useRef, useState } from "react";
 import markerImg from "../../../assets/images/markerImg.png";
 import { insertText } from "../TextEditor";
 import "./Chatitem.css";
+import PostAddIcon from "@material-ui/icons/PostAdd";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import CheckIcon from "@material-ui/icons/Check";
+import EditIcon from "@material-ui/icons/Edit";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+
 
 const ChatItem = ({
   key,
@@ -53,53 +59,47 @@ const ChatItem = ({
       </div>
       <div className='pl-20'>
         <div>
-          <div className='inline-block bold'>{userName}</div>
-          <div className='message-time inline-block mx-10'>{time}</div>
-          <div className='inline-block mx-10'>
-            <button
-              onClick={() => playTimeWaveSurfer(startTime)}
-              className='chattime-buttons'
-            >
-              {/* <img src={playButtonImg} height="12" width="10" /> */}
-              ▶︎
-            </button>
-          </div>
+       
+          {/* <div className='inline-block mx-10'>
+           
+          </div> */}
+        
           <div className='inline-block'>
-            {
-              // 수정중인 상태면 ? 수정완료,취소버튼 보이게. 수정중인 상태가 아니면 : 수정, 삭제 버튼 보이게
-              isEdit ? (
-                <>
-                  <button onClick={handleEdit} className='saveChat'>
-                    저장
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => {
-                      toggleIsEdit();
-                      autoResizeTextarea();
-                    }}
-                    className='chattime-buttons'
-                  >
-                    수정
-                  </button>
-                </>
-              )
-            }
-            <button
-              onClick={() => deleteChatItem(id)}
-              className='chattime-buttons'
-            >
-              삭제
-            </button>
-            <button
-              onClick={() => insertText(localContent)}
-              className='chattime-buttons'
-            >
-              메모장에 추가
-            </button>
-            <div></div>
+           
+            <div className='inline-block bold'>{userName}</div>
+          <div className='message-time inline-block mx-10'>{time}</div>
+      
+      
+            <PlayArrowIcon
+                onClick={() => playTimeWaveSurfer(startTime)}
+                className='chattime-buttons'
+              />
+              {
+                // 수정중인 상태면 ? 수정완료,취소버튼 보이게. 수정중인 상태가 아니면 : 수정, 삭제 버튼 보이게
+                isEdit ? (
+              
+                <CheckIcon onClick={handleEdit} className='saveChat' />
+                  
+                ) : (
+                
+                    <EditIcon
+                      onClick={() => {
+                        toggleIsEdit();
+                        autoResizeTextarea();
+                      }}
+                      className='chattime-buttons'
+                    />
+                
+                )
+              }
+              <DeleteOutlineIcon
+                onClick={() => deleteChatItem(id)}
+                className='chattime-buttons'
+              /> 
+              <PostAddIcon
+                onClick={() => insertText(localContent)}
+                className='chattime-buttons'
+              />
           </div>
         </div>
         <div className='relative'>
