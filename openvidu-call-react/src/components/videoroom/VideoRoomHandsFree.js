@@ -255,15 +255,12 @@ class VideoRoomHandsFree extends Component {
         starList: chatData.starList,
         recordMuteList: chatData.recordMuteList,
       })
-      .then((res) => {
-        console.log(res.data);
-      })
+      .then((res) => {})
       .catch((err) => {
         console.log("err === ", err);
       });
 
     const mySession = this.state.session;
-
     if (mySession) {
       mySession.disconnect();
     }

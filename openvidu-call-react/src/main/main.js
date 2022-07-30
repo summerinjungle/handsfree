@@ -9,7 +9,7 @@ import { getTokenInCookie } from "./cookie";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { removeTokenInCookie } from "./cookie";
-import swal from "sweetalert"
+import swal from "sweetalert";
 
 const Main = ({ username }) => {
   let navigate = useNavigate();
@@ -41,11 +41,11 @@ const Main = ({ username }) => {
           sessionId: response.data.roomId,
         };
         localStorage.setItem("redux", JSON.stringify(obj));
-
+        console.log("방만들기 클릭 이벤트 ", response);
         navigate("/meeting/" + response.data.roomId);
       })
       .catch(function (error) {
-
+        console.log("방만들기 오류", error);
       });
   };
 
@@ -77,8 +77,7 @@ const Main = ({ username }) => {
           swal("실패", "초대 코드를 다시 입력해주세요", "warning");
         }
       })
-      .catch(function (err) {
-      });
+      .catch(function (err) {});
   };
 
   return (
@@ -100,7 +99,11 @@ const Main = ({ username }) => {
                     createMeeting();
                   })
                   .catch(() => {
-                    swal("실패", "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다.", "warning");
+                    swal(
+                      "실패",
+                      "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다.",
+                      "warning"
+                    );
                     createMeeting();
                   });
               }}
@@ -118,7 +121,8 @@ const Main = ({ username }) => {
             </button>
           </p>
           <p>
-            <button className='logOut'
+            <button
+              className='logOut'
               onClick={() => {
                 removeTokenInCookie();
                 window.location.reload();
@@ -133,7 +137,7 @@ const Main = ({ username }) => {
           <GoogleLoginButton />
         </div>
       )}
-        {/* <button className='asdf' onClick={() => navigate("/meeting")}>그냥 입장하기</button> */}
+      {/* <button className='asdf' onClick={() => navigate("/meeting")}>그냥 입장하기</button> */}
     </div>
   );
 };

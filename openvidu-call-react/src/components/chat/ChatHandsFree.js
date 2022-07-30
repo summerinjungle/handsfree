@@ -30,14 +30,13 @@ class ChatHandsFree extends Component {
       .getStreamManager()
       .stream.session.on("signal:chat", (event) => {
         const data = JSON.parse(event.data);
-        let messageList = this.state.messageList;
-        let length = messageList.length;
+        let length = this.state.messageList.length;
         this.setState({
           isRecog: data.isRecord,
           isStar: data.isStar,
           isRecordMute: data.isRecordMute,
+          startRecord: data.startRecord,
         });
-
         if (data.isRecord === false) return;
 
         if (this.state.isRecordMute === true) {
@@ -66,23 +65,25 @@ class ChatHandsFree extends Component {
                 id: this.state.msgIndex - 1,
               }),
             });
-            messageList[length - 1].marker = true;
+            this.state.messageList[length - 1].marker = true;
             this.forceUpdate();
             return;
           }
-          var addMsg = this.state.messageList.concat({
-            connectionId: event.from.connectionId,
-            nickname: data.nickname,
-            message: data.message,
-            time: data.time,
-            startTime: data.startTime,
-            marker: this.state.isStar,
-            id: this.state.msgIndex,
-          });
-
-          this.setState(() => (prevState) => ({
+          this.setState((prevState) => ({
             msgIndex: prevState.msgIndex + 1,
-            messageList: addMsg,
+            messageList: [
+              ...prevState.messageList,
+              {
+                connectionId: event.from.connectionId,
+                nickname: data.nickname,
+                message: data.message,
+                time: data.time,
+                startTime: data.startTime,
+                marker: this.state.isStar,
+                id: this.state.msgIndex,
+                play: false,
+              },
+            ],
           }));
           this.scrollToBottom();
         }
@@ -131,10 +132,7 @@ class ChatHandsFree extends Component {
           data: JSON.stringify(data),
           type: "chat",
         });
-        // this.props.localUser.getStreamManager().stream
       }
-      this.props.localUser.getStreamManager().stream.session.connection.disposed =
-        this.state.isRecog;
     }
   };
 
@@ -237,7 +235,7 @@ class ChatHandsFree extends Component {
         <div id='chatContainer'>
           <div id='chatComponent'>
             <div className='wrap' ref={this.chatScroll}>
-              {this.state.messageList.map((data, i) => (
+              {this.state.messageList?.map((data, i) => (
                 <div
                   key={i}
                   id='remoteUsers'

@@ -15,9 +15,6 @@ class Recognition extends PureComponent {
     start_time: "",
   };
   componentDidMount() {
-    const recognition = new SpeechRecognition();
-    recognition.interimResults = true;
-
     recognition.start();
 
     // 음성인식 시작 로그 찍어야함
@@ -25,6 +22,7 @@ class Recognition extends PureComponent {
       sound_detect_check = false;
     };
 
+    // 음성 인식 서비스의 견결이 끊겼을 때 실행된다.
     recognition.onend = () => {
       if (this.state.transcript !== "") {
         const sttData = {
@@ -38,6 +36,7 @@ class Recognition extends PureComponent {
       recognition.start();
     };
 
+    //  음성 인식 서비스가 결과를 반환할 때 발생합니다.
     // 음성감지 된경우 시작시간을 등록한다
     recognition.onresult = (event) => {
       if (sound_detect_check !== true) {
