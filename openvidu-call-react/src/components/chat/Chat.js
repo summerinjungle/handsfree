@@ -13,8 +13,8 @@ import { getUserNameInCookie } from "../../main/cookie";
 
 const Chat = function(localUser, rootFunction, terminate) {
   const socketRef = useRef();
-  // socketRef.current = io.connect("http://localhost:5000");
-  socketRef.current = io.connect("https://openvidu.shop/");
+  socketRef.current = io.connect("http://localhost:5000");
+  // socketRef.current = io.connect("https://openvidu.shop/");
   const reduxCheck = useSelector((state) => { return state; });
   const myId = getUserNameInCookie();
   const scrollRef = React.useRef();
@@ -55,7 +55,7 @@ const Chat = function(localUser, rootFunction, terminate) {
 
     return () => {
       console.log("forceDisconnect")
-      socketRef.current.emit("forceDisconnect");
+      socketRef.current.emit("forceDisconnect", reduxCheck.user.sessionId);
     }
   }, [])
 
@@ -65,7 +65,7 @@ const Chat = function(localUser, rootFunction, terminate) {
       {
         userId: reduxCheck.user.userName,
         text: data.text,
-        talkTime: data.time,
+        startTime: data.time,
         time: data.now,
         star: false
       }

@@ -1,28 +1,12 @@
 let roomToIsRecog = {};
-
-let starList = [];
-let recordMuteList = [];
-let chatList = [];
-
-let star = { time: 0 };
-let starZero = { time: 0 };
-
-let recordMute = { left: 0, right: 0 };
-let recordMuteZero = { left : 0, right: 0 };
-
-let chat = {
-  id: 0,
-  marker: false,
-  message: "",
-  nickname: "",
-  play: false,
-  startTime: 0,
-  time:""
-};
+let roomToStarList = {};
+let roomToMuteList = {};
+let roomToChatList = {};
+let roomToMute = {};
+let mute = { left: 0, right: 0 };
 
 
 const chatSocket = (io, socket) => {
-  // 방생성여부
   function publicRooms() {
     const {
       sockets: {
@@ -38,7 +22,6 @@ const chatSocket = (io, socket) => {
     return publicRooms;
   }
 
-  // 방인원수
   function countRoom(roomName) {
     return io.sockets.adapter.rooms.get(roomName)?.size;
   }
@@ -50,97 +33,79 @@ const chatSocket = (io, socket) => {
 
   
   socket.on("enterRoom", (sessionId) => {
-    // console.log(sessionId)
     if (!publicRooms().includes(sessionId)) {
+      console.log("방장입장 - 리스트 초기화", sessionId)
       socket[sessionId] = sessionId;
       roomToIsRecog[sessionId] = true;
-      recordMuteList = [];
-      starList = [];
-      chatList = []
-      recordMute = {left : 0, right : 0}
+      roomToChatList[sessionId] = [];
+      roomToStarList[sessionId] = [];
+      roomToMuteList[sessionId] = [];
+      roomToMute[sessionId] = mute;
     }
-
     socket.join(sessionId);
-    // console.log(roomToIsRecog[sessionId])
     socket.nsp.to(sessionId).emit("welcome", roomToIsRecog[sessionId]);
   });
 
 
   socket.on("newMessage", (msg, sessionId) => {
-  console.log(msg)
+
   if (msg.text === "기록시작@") {
-    // 기록중지 중일때만 시작 등록
     if (!roomToIsRecog[sessionId]) {
-      // console.log("기록시작");
-      recordMute.right = msg.time
-      recordMuteList.push(recordMute);
-      recordMute = recordMuteZero;
-      chat = {nickname : msg.userId, message: msg.text, startTime: msg.time};
-      // chatList.push(chat);
-      // console.log(chat);
+      roomToMute[sessionId].right = msg.startTime;
+      roomToMuteList[sessionId].push(roomToMute[sessionId]);
+      roomToMute[sessionId] = mute;
     }
     roomToIsRecog[sessionId] = true;
     socket.nsp.to(sessionId).emit("serverToClient", msg, roomToIsRecog[sessionId]);
-    console.log(msg.text)
     return;
   }
-      
 
   if (msg.text === "기록중지@") {
-    // 기록중 일때만 중지 등록
     if (roomToIsRecog[sessionId]) {
-      // console.log("기록중지");
-      // 기록중지 시간등록
-      recordMute.left = msg.time;
-      chat = {nickname : msg.userId, message: msg.message, startTime: msg.time};
-      // chatList.push(chat);
-      // console.log(chat);
+      roomToMute[sessionId].left = msg.startTime;
     }
     roomToIsRecog[sessionId] = false;
     socket.nsp.to(sessionId).emit("serverToClient", msg, roomToIsRecog[sessionId]);
-    console.log(msg.text)
     return;
   }
 
-
-  // 기록중 일때만 별표 등록
   if (roomToIsRecog[sessionId]) {
     if (msg.text === "별표&") {
-      // console.log("별표");
-      star.time = chatList[chatList.length - 1].time;
-      star.message = chatList[chatList.length - 1].message;
-      star.id = chatList.length - 1;
-      starList.push[star];
-      // console.log(star);
-      star = starZero;
+      const chatList = roomToChatList[sessionId]
+      const time = chatList[chatList.length - 1].startTime;
+      roomToStarList[sessionId].push({ time : time })
       msg.star = true
+      roomToChatList[sessionId][roomToChatList[sessionId].length - 1].marker = true;
       msg.text = chatList[chatList.length - 1].message;
-
+      socket.nsp.to(sessionId).emit("serverToClient", msg, roomToIsRecog[sessionId]);
+      return;
     }
     // 채팅리스트 등록
     socket.nsp.to(sessionId).emit("serverToClient", msg, roomToIsRecog[sessionId]);
-    console.log(msg.text)
-    chat = {nickname : msg.userId, message: msg.text, startTime: msg.time};
-    chatList.push(chat);
+    const chatItem ={
+      id: roomToChatList[sessionId].length,
+      marker: false,
+      message: msg.text,
+      nickname: msg.userId,
+      play: false,
+      startTime: msg.startTime,
+      time:msg.time
+    };
+    roomToChatList[sessionId].push(chatItem);
   }
   });
 
 
-  // 연결종료
-  socket.on("disconnecting", () => {
-    if (countRoom(socket["sessionId"]) === 1) {
-      console.log(recordMuteList)
-      console.log(starList)
-      console.log(chatList)
-      delete roomToIsRecog[socket["sessionId"]];
-      recordMuteList = [];
-      starList = [];
-      chatList = []
-    }
-  });
-
-
-  socket.on('forceDisconnect', function() {
+  socket.on('forceDisconnect', (sessionId) => {
+    console.log("남은 사람 : ", countRoom(sessionId));
+    console.log("chatList", roomToChatList[sessionId])
+    console.log("starList", roomToStarList[sessionId])
+    console.log("muteList", roomToMuteList[sessionId])
+    delete roomToIsRecog[sessionId];
+    delete roomToChatList[sessionId];
+    delete roomToStarList[sessionId];
+    delete roomToMuteList[sessionId];
+    delete roomToMute[sessionId];
     socket.disconnect();
   });
 }

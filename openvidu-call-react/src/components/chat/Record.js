@@ -91,6 +91,13 @@ class Record extends Component {
 
   }
 
+  componentWillUnmount() {
+    console.log("component!!!");
+    recognition.onend = () => {
+      
+    };
+  }
+
   render() {
     return (
       <div>
