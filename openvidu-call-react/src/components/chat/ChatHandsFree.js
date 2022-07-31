@@ -231,11 +231,11 @@ class ChatHandsFree extends Component {
             {
               this.state.isRecog ? (
                 <div className='mackdoong-txt-rec' style={{ marginBottom: 4 }}>
-                  기록시작
+                  기록중
                 </div>
                 ):(
                 <div className='mackdoong-txt-noRec' style={{ marginBottom: 4 }}>
-                  기록중지
+                  쉬는중
                 </div>
                 )
             }

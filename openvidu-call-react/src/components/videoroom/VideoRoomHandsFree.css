@@ -46,8 +46,8 @@
 	/* margin: auto; */
   position: absolute;
   /* position: relative; */
-  top: 1645%;
-  left: 75.5vh;
+  top: 92vh;
+  left: 65.1vh;
   /* margin-top: 54.7%; */
   /* border: 6px solid; */
   /* background-color: #02a1de; */
@@ -952,6 +952,7 @@
 	/* font-family:Arial; */
 	font-size:15px;
 	font-weight:bold;
+  font-family: 'Cafe24SsurroundAir';
   padding-top: 10px;
   padding-bottom: 10px;
 	/* text-decoration:none; */
@@ -971,13 +972,13 @@
   text-align: center;
   background-color: #675743;
   left: 4%;
+  font-family: 'Cafe24SsurroundAir';
   /* margin-right: 20px; */
   
 	border-radius:6px;
 	display:inline-block;
 	/* cursor:pointer; */
 	color:#ffffff;
-	font-family:Arial;
 	font-size:15px;
 	font-weight:bold;
 	/* padding:7px 0px; */
