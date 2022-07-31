@@ -125,7 +125,7 @@
     /* background-color: #fffcf8 ; */
     /* background-color: #81e9b0; */
     /* padding: 0 15px; */
-    height: calc(100%);
+    height: calc(103.1%);
     overflow: auto;
   }
   
@@ -155,7 +155,7 @@
   .msg-info p {
     font-size: 0.8em;
     color: #000000;
-    font-style: italic;
+    /* font-style: italic; */
   }
   
   .msg-content {
@@ -196,6 +196,7 @@
   .text {
     word-break: break-all;color: #000000;
     vertical-align: middle;
+    font-family: 'Cafe24SsurroundAir';
   }
 
   .starInChat {
@@ -330,16 +331,18 @@
   right: 13%;
   size: 30px;
   width: 70px;
+  font-family: 'Cafe24SsurroundAir';
 }
 
 
 .mackdoong-txt2{
   /* display: none; */
+  width: 70px;
   position: absolute;
   bottom: 50%;
   right: 13%;
+  font-family: 'Cafe24SsurroundAir';
   size: 30px;
-  width: 70px;
 }
 
 
@@ -362,6 +365,7 @@
   font-size: large;
   width: 80px;
   font-weight: bold;
+  font-family: 'Cafe24Ssurround';
 }
 
 .mackdoong-txt-noRec{
@@ -373,4 +377,5 @@
   font-size: large;
   width: 80px;
   font-weight: bold;
+  font-family: 'Cafe24Ssurround';
 }
