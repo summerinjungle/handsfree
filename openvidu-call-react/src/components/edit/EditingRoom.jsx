@@ -132,7 +132,7 @@ const EditingRoom = ({ sessionId }) => {
             start: currLeft,
             end: parseFloat(recordMuteList[i].right - sessionStartTime) / 1000,
             // color: "#CEBFAC",
-            color: "rgba(206, 191, 172, 0.85)",
+            color: "rgba(216, 207, 182, 0.85)",
             drag: false,
             resize: false,
           });
@@ -235,7 +235,7 @@ const EditingRoom = ({ sessionId }) => {
         <hr className='my-0'></hr>
         <div className='contents'>
           <div className='contents-left'>
-            {/* <Voicechat userName={getUserNameInCookie()} roomId={sessionId} /> */}
+            <Voicechat userName={getUserNameInCookie()} roomId={sessionId} />
           </div>
           <div className='contents-middle'>
             <div className='contents-middle-wrap'>
