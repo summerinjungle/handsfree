@@ -200,8 +200,9 @@ const EditingRoom = ({ sessionId }) => {
       <div
         id='editingroom-container'
         style={
-          //   isLoading ? { backgroundColor: "rgba(192, 206, 180, 0.2)" } : null
-          isLoading ? { opacity: 0.2 } : null
+          // isLoading ? { backgroundColor: "rgba(112,125,233,0.2)" } : null
+          isLoading ? { backgroundColor: "#73746033" } : null
+          // isLoading ? { opacity: 0.2 } : null
         }
       >
         <div className='header'>
