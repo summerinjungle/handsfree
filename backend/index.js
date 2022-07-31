@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const connect = require("./database/connection");
 const cookieParser = require("cookie-parser");
 const socketHandle = require("./socketHandle");
+const socketChat = require("./socket/socketChat");
 
 const apiRouter = require("./routes");
 
@@ -36,6 +37,7 @@ server.listen(port, () => {
 });
 
 io.on('connection', socket => {
-  console.log("socket handle start !! ");
+  // console.log("socket handle start !! ");
   socketHandle(io, socket);
+  socketChat(io, socket);
 })

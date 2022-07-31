@@ -107,7 +107,6 @@ const Main = ({ username }) => {
       <img className='header-left-logo' src={mainLogo} />
       {isLogin ? (
         <>
-          
           <div className='header-right-btn'>
           </div>
           <div className='logout-btn-area'>
@@ -161,9 +160,7 @@ const Main = ({ username }) => {
             </button>
           </div>
           <>
-           
           </>
-         
         </>
       ) : (
         <>

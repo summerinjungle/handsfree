@@ -5,13 +5,16 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store.js";
-
+import Chat from "./components/chat/Chat";
 
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <App />
+      {/* <Chat
+        localUser={"민성"}
+      /> */}
     </BrowserRouter>
   </Provider>,
   document.getElementById("root")

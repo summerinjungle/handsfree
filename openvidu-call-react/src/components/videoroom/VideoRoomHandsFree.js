@@ -15,6 +15,7 @@ import {
   ToastsContainerPosition,
 } from "react-toasts";
 import swal from "sweetalert";
+import Chat from "../chat/Chat"
 
 var localUser = new UserModel();
 
@@ -293,12 +294,26 @@ class VideoRoomHandsFree extends Component {
     });
   };
 
+
   meetingEnd = async () => {
     if (this.props.isPublisher) {
       this.forceDisconnect(this.props.sessionId);
       this.startRecordingChk(this.props.sessionId);
       this.setState({
         terminate: true,
+      });
+      swal({
+        title: "회의종료",
+        text: "편집실로 가시겠습니까?",
+        icon: "warning",
+        buttons: true,
+        // dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          this.props.navigate("meeting/" + this.props.sessionId + "/edit");
+        } else {
+          this.props.navigate("/");
+        }
       });
     } else {
       if (window.confirm("회의실에서 나가시겠습니까?")) {
@@ -319,11 +334,11 @@ class VideoRoomHandsFree extends Component {
         if (this.props.leaveSession) {
           this.props.leaveSession();
         }
-
         this.props.navigate("/");
       }
     }
   };
+
 
   camStatusChanged = () => {
     localUser.setVideoActive(!localUser.isVideoActive());
@@ -642,9 +657,14 @@ class VideoRoomHandsFree extends Component {
         <div className='soundScribe'></div>
         {localUser !== undefined && localUser.getStreamManager() !== undefined && (
           <div className='OT_root OT_publisher custom-class'>
-            <ChatHandsFree
+            {/* <ChatHandsFree
               localUser={localUser}
               rootFunction={this.getMessageList}
+              terminate={this.state.terminate}
+            /> */}
+            <Chat
+              localUser={localUser}
+              // rootFunction={this.getMessageList}
               terminate={this.state.terminate}
             />
 
