@@ -18,7 +18,6 @@ export default function Voicechat({ userName, roomId }) {
     let peer = null;
 
     useEffect(() => {
-        console.log("제이름은", userName);
         socketRef.current = io.connect("https://bongbong.me/");
         // socketRef.current = io.connect("http://localhost:5000");
         peer = new Peer();
