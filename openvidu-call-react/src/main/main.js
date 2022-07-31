@@ -105,25 +105,26 @@ const Main = ({ username }) => {
       <div className='main-bg'>
         <div className='header-left' />
         <img className='header-left-logo' src={mainLogo} />
+                 
         {isLogin ? (
           <>
+            <div className='logout-btn-area'></div>
             <div className='header-right-btn'></div>
-            <div className='logout-btn-area'>
-              <button
+            <button
                 className='logout-btn'
                 onClick={() => {
+                  console.log("logout!!");
                   removeTokenInCookie();
                   window.location.reload();
-                }}
-              >
+                }}>
                 로그아웃
-              </button>
-            </div>
+            </button>
             <div className='main-logo-area'>
               <img className='main-logo' src={mainLogo} />
               {isLoading && <Loading />}
             </div>
             <div className='make-conference-btn-area'>
+        
               <button
                 className='make-conference-btn'
                 onClick={() => {
