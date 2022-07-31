@@ -29,7 +29,7 @@ const EditingRoom = ({ sessionId }) => {
   });
   let newSessionId = "edit" + sessionId;
   // let gap = parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) / 1000 -1;
-  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1100;
+  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1400;
 
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
