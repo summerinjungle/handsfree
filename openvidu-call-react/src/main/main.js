@@ -102,11 +102,22 @@ const Main = ({ username }) => {
   }
   return (
     <>
-      {isLogin ? (
-        <>
-          <div className='main-bg-after-login'>
-            <div className='header'>
-              <img className='header-logo' src={mainLogo} />
+      <div className='main-bg'>
+        <div className='header-left' />
+        <img className='header-left-logo' src={mainLogo} />
+        {isLogin ? (
+          <>
+            <div className='header-right-btn'></div>
+            <div className='logout-btn-area'>
+              <button
+                className='logout-btn'
+                onClick={() => {
+                  removeTokenInCookie();
+                  window.location.reload();
+                }}
+              >
+                로그아웃
+              </button>
             </div>
             <div className='main-logo-area'>
               <img className='main-logo' src={mainLogo} />
@@ -139,8 +150,7 @@ const Main = ({ username }) => {
                 새 회의
               </button>
             </div>
-            <div className='attend-meeting-btn-area'></div>
-            <>
+            <div className='attend-meeting-btn-area'>
               <input
                 className='attend-meeting-input-area'
                 placeholder='참여코드 입력'
@@ -155,18 +165,13 @@ const Main = ({ username }) => {
               >
                 →
               </button>
-            </>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className='main-bg-before-login'>
-            <div className='header'>
-              <img className='header-logo' src={mainLogo} />
             </div>
+            <></>
+          </>
+        ) : (
+          <>
             <div className='main-character-area '>
               <img className='main-character' src={mainCharacterBorder} />
-              {/* <img className='main-character' src={mainCharacter} /> */}
             </div>
             <div className='main-label'>
               <p className='main-label-txt1'>화상회의록 자동작성 웹서비스</p>
@@ -179,10 +184,10 @@ const Main = ({ username }) => {
             <div className='login-btn'>
               <GoogleLoginButton className='login-btn' />
             </div>
-          </div>
-        </>
-      )}
-      {/* <button className='asdf' onClick={() => navigate("/meeting")}>그냥 입장하기</button> */}
+          </>
+        )}
+        {/* <button className='asdf' onClick={() => navigate("/meeting")}>그냥 입장하기</button> */}
+      </div>
     </>
   );
 };
