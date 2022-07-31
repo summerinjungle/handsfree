@@ -40,22 +40,31 @@ export function TextEditor({ sessionId }) {
     quillRef = reactQuillRef.getEditor();
   };
 
+  // [{ header: [1, 2, false] }],
+  // ["bold", "italic", "underline", "strike", "blockquote"],
+  // [
+  //   { list: "ordered" },
+  //   { list: "bullet" },
+  //   { indent: "-1" },
+  //   { indent: "+1" },
+  // ],
+  // ["link", "image"],
+  // ["clean"],
   const modulesRef = {
     toolbar: [
-      [{ header: [1, 2, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [
-        { list: "ordered" },
-        { list: "bullet" },
-        { indent: "-1" },
-        { indent: "+1" },
-      ],
-      ["link", "image"],
-      ["clean"],
+      [{ align: [] }],
+      [{ header: [1, 2, 3, false] }],
+      [{ font: [] }],
+      ["bold", "underline", { color: [] }, { background: [] }],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "+1" }, { indent: "-1" }],
+      ["link", "blockquote"],
     ],
     cursors: {
       transformOnTextChange: true,
-      toggleFlag: true,
+      hide: false,
+      selectionChangeSource: null,
+      transformOnTextChange: true,
     },
   };
 

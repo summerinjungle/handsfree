@@ -235,7 +235,7 @@ const EditingRoom = ({ sessionId }) => {
         <hr className='my-0'></hr>
         <div className='contents'>
           <div className='contents-left'>
-            {/* <Voicechat userName={getUserNameInCookie()} roomId={sessionId} /> */}
+            <Voicechat userName={getUserNameInCookie()} roomId={sessionId} />
           </div>
           <div className='contents-middle'>
             <div className='contents-middle-wrap'>
