@@ -3,9 +3,11 @@
     margin-top: 0.625rem;
     width: 100%; 
 	/* width: 250px;*/
-	height: 471px;
+	height: 522px;
     position: absolute;
     margin-top: 0px;
+    background-color:#DDDDDD;
+	border-radius:6px;
 }
 
 
@@ -14,7 +16,7 @@
 	padding: 5px 10px 5px 10px;
     margin: 10px;
     width: 90%;
-    background-color:#F7F2EC;
+    /* background-color:#F7F2EC; */
 	border-radius:6px;
 	border:0px;
 	font-weight: bold;

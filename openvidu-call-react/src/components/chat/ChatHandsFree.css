@@ -128,10 +128,15 @@
     height: calc(103.1%);
     overflow: auto;
   }
+
+  .message-username {
+    font-family: 'Cafe24Ssurround';
+  }
   
   .message {
     position: relative;
     padding: 7px 0;
+    font-family: 'Cafe24SsurroundAir';
   }
   .user-img {
     position: absolute;
