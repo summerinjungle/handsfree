@@ -103,13 +103,46 @@ const Main = ({ username }) => {
   return (
  
       <>
+      <div className='main-bg'>
+      <div className='header-left'/>
+      <img className='header-left-logo' src={mainLogo} />
       {isLogin ? (
         <>
-        {/* {isLoading && <Loading />} */}
-        <div className='main-bg-after-login'>
-          <div className="header">
-            <img className='header-logo' src={mainLogo} />
+          
+          <div className='header-right-btn'>
           </div>
+          <div className='logout-btn-area'>
+              <button className='logout-btn'
+              onClick={() => {
+                removeTokenInCookie();
+                window.location.reload();
+              }}
+            >
+              로그아웃
+            </button>
+          </div>
+
+
+           {/* <button 
+              onClick={() => {
+                removeTokenInCookie();
+                window.location.reload();
+              }}
+            >
+              로그아웃
+            </button> */}
+       
+          
+          {/* <div className="header">
+            <button className='logout'
+              onClick={() => {
+                removeTokenInCookie();
+                window.location.reload();
+              }}
+            >
+              로그아웃
+            </button>
+          </div> */}
           <div className='main-logo-area'>
             <img className='main-logo' src={mainLogo} />
           </div>
@@ -141,27 +174,23 @@ const Main = ({ username }) => {
           </button>
           </div>
           <div className='attend-meeting-btn-area'>
-          </div>
-          <>
             <input className='attend-meeting-input-area'
               placeholder='참여코드 입력'
               onChange={(event) => setEnterCode(event.target.value)}
             ></input>
-             <button className='attend-meeting-btn' onClick={enterMeeting}>
-                →
+            <button className='attend-meeting-btn' onClick={enterMeeting}>
+              →
             </button>
+          </div>
+          <>
+           
           </>
-        </div>
+         
         </>
       ) : (
         <>
-        <div className='main-bg-before-login'>
-          <div className="header">
-          <img className='header-logo' src={mainLogo} />
-          </div>
           <div className='main-character-area '>
             <img className='main-character' src={mainCharacterBorder} />
-            {/* <img className='main-character' src={mainCharacter} /> */}
           </div>
           <div className='main-label'> 
             <p className='main-label-txt1'>
@@ -177,10 +206,10 @@ const Main = ({ username }) => {
             <div className='login-btn'>
               <GoogleLoginButton className='login-btn'/>
             </div>
-          </div>
         </>
       )}
         {/* <button className='asdf' onClick={() => navigate("/meeting")}>그냥 입장하기</button> */} 
+    </div>
     </>
   );
 };
