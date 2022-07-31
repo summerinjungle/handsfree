@@ -6,7 +6,6 @@ import "react-quill/dist/quill.snow.css";
 import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
 import { getUserNameInCookie } from "../../main/cookie";
-
 import Quill from "quill";
 import QuillCursors from "quill-cursors";
 

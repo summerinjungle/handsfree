@@ -171,3 +171,7 @@
         opacity: 1;
     }
 }
+
+#loading-container {
+    top: 3%;
+}

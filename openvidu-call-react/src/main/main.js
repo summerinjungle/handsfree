@@ -146,7 +146,13 @@ const Main = ({ username }) => {
                 placeholder='참여코드 입력'
                 onChange={(event) => setEnterCode(event.target.value)}
               ></input>
-              <button className='attend-meeting-btn' onClick={enterMeeting}>
+              <button
+                className='attend-meeting-btn'
+                onClick={() => {
+                  setIsLoading(true);
+                  enterDebounceRoom();
+                }}
+              >
                 →
               </button>
             </>

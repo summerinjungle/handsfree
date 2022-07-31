@@ -35,31 +35,76 @@ const EditingRoom = ({ sessionId }) => {
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [prevId, setPrevId] = useState(-1);
+  const [recordId, setRecordId] = useState(-1);
+  const [playItem, setPlayItem] = useState(false);
   const navigate = useNavigate();
   const [chatList, setChatList] = useState([]); // 음성 기록들
 
   const playButton = () => {
     wavesurfer.current.playPause();
-    if (wavesurfer.current.isPlaying()) {
-      setIsPlay(true);
+    if (wavesurfer.current.isPlaying() || playItem === true) {
+      if (playItem) {
+        setChatList((chatList) =>
+          chatList.map((list) =>
+            list.id == recordId ? { ...list, play: !list.play } : list
+          )
+        );
+        setPlayItem(false);
+        setIsPlay(false);
+      } else {
+        setIsPlay(true);
+      }
     } else {
       setIsPlay(false);
     }
   };
 
+  const PlayingRecord = (startTime, id) => {
+    if (id === prevId) {
+      wavesurfer.current.playPause();
+      setChatList((chatList) =>
+        chatList.map((list) =>
+          list.id == id ? { ...list, play: !list.play } : list
+        )
+      );
+      setPlayItem(false);
+      setIsPlay(false);
+    } else {
+      setChatList((chatList) =>
+        chatList.map((list) =>
+          list.id == prevId ? { ...list, play: !list.play } : list
+        )
+      );
+
+      setChatList((chatList) =>
+        chatList.map((list) =>
+          list.id == id ? { ...list, play: !list.play } : list
+        )
+      );
+      wavesurfer.current.play(parseFloat(startTime - sessionStartTime) / 1000);
+      setPlayItem(true);
+      setIsPlay(true);
+    }
+  };
+
   const playButtonFromWaveSurfer = (startTime, id) => {
-    setChatList((chatList) =>
-      chatList.map((list) =>
-        list.id == id ? { ...list, play: !list.play } : list
-      )
-    );
-    wavesurfer.current.playPause();
     if (wavesurfer.current.isPlaying()) {
+      PlayingRecord(startTime, id);
+    } else {
+      wavesurfer.current.playPause();
+      setChatList((chatList) =>
+        chatList.map((list) =>
+          list.id == id ? { ...list, play: !list.play } : list
+        )
+      );
+      setPlayItem(true);
       setIsPlay(true);
       wavesurfer.current.play(parseFloat(startTime - sessionStartTime) / 1000);
-    } else {
-      setIsPlay(false);
     }
+
+    setRecordId(id);
+    setPrevId(id);
   };
 
   const stopButton = () => {
@@ -155,14 +200,14 @@ const EditingRoom = ({ sessionId }) => {
   }
 
   /* 음성기록 Item에서 [재생]버튼 클릭 시 실행 */
-  function playTimeWaveSurfer(startTime) {
-    if (startTime) {
-      console.log(parseFloat(startTime - sessionStartTime) / 1000);
-      wavesurfer.current.play(parseFloat(startTime - sessionStartTime) / 1000);
-    } else {
-      console.log("timeWaveSurfer 값이 존재하지 않습니다.");
-    }
-  }
+  // function playTimeWaveSurfer(startTime) {
+  //   if (startTime) {
+  //     console.log(parseFloat(startTime - sessionStartTime) / 1000);
+  //     wavesurfer.current.play(parseFloat(startTime - sessionStartTime) / 1000);
+  //   } else {
+  //     console.log("timeWaveSurfer 값이 존재하지 않습니다.");
+  //   }
+  // }
 
   /**
    * 음성기록 리스트 내 아이템 삭제 함수
@@ -194,7 +239,6 @@ const EditingRoom = ({ sessionId }) => {
     targetString = targetString.replace(/메모장에 추가/g, "");
     return korean + targetString;
   }
-
   return (
     <>
       <div
@@ -211,7 +255,7 @@ const EditingRoom = ({ sessionId }) => {
             {/* <div>현재 참여자 :</div> */}
           </span>
           <div className='header-contents text-right'>
-            <button
+            <Button
               className='exit'
               icon={<ExitToAppIcon />}
               onClick={() => {
@@ -230,7 +274,7 @@ const EditingRoom = ({ sessionId }) => {
               }}
             >
               나가기
-            </button>
+            </Button>
           </div>
         </div>
         <hr className='my-0'></hr>
@@ -280,6 +324,7 @@ const EditingRoom = ({ sessionId }) => {
                   <ChatItem
                     recordItem={recordItem}
                     playTimeWaveSurfer={playButtonFromWaveSurfer}
+                    prevId={prevId}
                     deleteChatItem={deleteChatItem}
                   />
                 ))}
