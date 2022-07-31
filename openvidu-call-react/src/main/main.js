@@ -83,15 +83,15 @@ const Main = ({ username }) => {
       .catch(function (err) {});
   };
 
-  const createDebounceRoom = debouce(() => {
+  const createDebounceRoom = debounce(() => {
     createMeeting();
   });
 
-  const enterDebounceRoom = debouce(() => {
+  const enterDebounceRoom = debounce(() => {
     enterMeeting();
   });
 
-  function debouce(cb, delay = 1000) {
+  function debounce(cb, delay = 1000) {
     let timer;
     return (...args) => {
       clearTimeout(timer);
@@ -101,7 +101,6 @@ const Main = ({ username }) => {
     };
   }
   return (
- 
       <>
       <div className='main-bg'>
       <div className='header-left'/>
@@ -121,30 +120,9 @@ const Main = ({ username }) => {
               로그아웃
             </button>
           </div>
-
-
-           {/* <button 
-              onClick={() => {
-                removeTokenInCookie();
-                window.location.reload();
-              }}
-            >
-              로그아웃
-            </button> */}
-       
-          
-          {/* <div className="header">
-            <button className='logout'
-              onClick={() => {
-                removeTokenInCookie();
-                window.location.reload();
-              }}
-            >
-              로그아웃
-            </button>
-          </div> */}
           <div className='main-logo-area'>
             <img className='main-logo' src={mainLogo} />
+            {isLoading && <Loading />}
           </div>
           <div className='make-conference-btn-area'>
           <button
@@ -204,7 +182,7 @@ const Main = ({ username }) => {
           </div>
           <div className='login-btn-shadow'></div>
             <div className='login-btn'>
-              <GoogleLoginButton className='login-btn'/>
+              <GoogleLoginButton className='login-btn' />
             </div>
         </>
       )}

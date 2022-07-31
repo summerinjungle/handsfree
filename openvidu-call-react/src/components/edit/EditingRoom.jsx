@@ -22,6 +22,7 @@ import Voicechat from "./chat/Voicechat";
 import { getUserNameInCookie } from "../../main/cookie";
 import VoiceRoom from "../voiceroom/VoiceRoom";
 import Spinner from "./Spinner";
+import swal from "sweetalert";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -132,7 +133,7 @@ const EditingRoom = ({ sessionId }) => {
             start: currLeft,
             end: parseFloat(recordMuteList[i].right - sessionStartTime) / 1000,
             // color: "#CEBFAC",
-            color: "rgba(206, 191, 172, 0.85)",
+            color: "rgba(216, 207, 182, 0.85)",
             drag: false,
             resize: false,
           });
@@ -200,8 +201,9 @@ const EditingRoom = ({ sessionId }) => {
       <div
         id='editingroom-container'
         style={
-          //   isLoading ? { backgroundColor: "rgba(192, 206, 180, 0.2)" } : null
-          isLoading ? { opacity: 0.2 } : null
+          // isLoading ? { backgroundColor: "rgba(112,125,233,0.2)" } : null
+          isLoading ? { backgroundColor: "#73746033" } : null
+          // isLoading ? { opacity: 0.2 } : null
         }
       >
         <div className='header'>
@@ -214,8 +216,18 @@ const EditingRoom = ({ sessionId }) => {
               className='exit'
               icon={<ExitToAppIcon />}
               onClick={() => {
-                navigate("/");
-                window.location.reload();
+                swal({
+                  title: "나가기",
+                  text: "편집을 종료하시겠습니까?",
+                  icon: "warning",
+                  buttons: true,
+                  // dangerMode: true,
+                }).then((willDelete) => {
+                  if (willDelete) {
+                    navigate("/");
+                    window.location.reload();
+                  }
+                });
               }}
             >
               나가기
@@ -225,7 +237,7 @@ const EditingRoom = ({ sessionId }) => {
         <hr className='my-0'></hr>
         <div className='contents'>
           <div className='contents-left'>
-            {/* <Voicechat userName={getUserNameInCookie()} roomId={sessionId} /> */}
+            <Voicechat userName={getUserNameInCookie()} roomId={sessionId} />
           </div>
           <div className='contents-middle'>
             <div className='contents-middle-wrap'>

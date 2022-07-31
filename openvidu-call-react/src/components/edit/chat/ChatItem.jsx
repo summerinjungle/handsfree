@@ -38,7 +38,7 @@ const ChatItem = ({ recordItem, playTimeWaveSurfer, deleteChatItem }) => {
     <div key={recordItem.key} className='relative mb-20'>
       <div>
         <div className='absolute t-40'>
-          {recordItem.isMarker ? (
+          {recordItem.marker ? (
             <>
               <img src={markerImg} alt='막둥이' height='12' width='12' />
             </>
@@ -51,7 +51,7 @@ const ChatItem = ({ recordItem, playTimeWaveSurfer, deleteChatItem }) => {
         <div>
           <div className='inline-block vertical-align-middle margin-auto'>
             <div className='message-username inline-block margin-auto bold'>
-              {recordItem.userName}
+              {recordItem.nickname}
             </div>
             <div className='message-time inline-block margin-auto mx-10'>
               {recordItem.time}
