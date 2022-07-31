@@ -141,8 +141,8 @@ const EditingRoom = ({ sessionId }) => {
   useEffect(() => {
     if (wavesurfer) {
       wavesurfer.current.load(
-        "https://eehnoeg.shop/openvidu/recordings/"+
-        // "https://hyunseokmemo.shop/openvidu/recordings/" +
+        //"https://eehnoeg.shop/openvidu/recordings/"+
+        "https://hyunseokmemo.shop/openvidu/recordings/" +
           sessionId +
           "/ownweapon.webm"
         // "https://onxmoreplz.shop/openvidu/recordings/" +
