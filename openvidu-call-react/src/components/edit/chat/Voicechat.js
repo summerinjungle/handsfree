@@ -93,7 +93,7 @@ export default function Voicechat({ userName, roomId }) {
     return (
         <div>
             <div className="voicechat-header-wrap">
-                <div className='contents-label'>보이스콜&nbsp;</div>
+                <div className='contents-label'>참여인원&nbsp;</div>
                 {startChat ?
                     <Button
                         type='primary'

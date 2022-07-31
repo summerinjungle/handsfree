@@ -10,16 +10,16 @@ import EditIcon from "@material-ui/icons/Edit";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 
-const ChatItem = ({ recordItem, playTimeWaveSurfer, deleteChatItem }) => {
+const ChatItem = ({
+  recordItem,
+  playTimeWaveSurfer,
+  deleteChatItem,
+  prevId,
+}) => {
   const localInput = useRef();
-
   const [isEdit, setIsEdit] = useState(false); // 수정버튼 스위치 state
   const [localContent, setLocalContent] = useState(recordItem.message); // state기본값을 content로 설정하여, 수정눌렀을때 작성했던 내용을 그대로 불러옴
-
-  const toggleIsEdit = () => setIsEdit(!isEdit); // toggleIsEdit()이 호출이 되면 setIsEdit()이 되고 !(Not)연산을 통해 isEdit이 true면 false로, false면 true로 바꿔줌
-
-  // 수정완료 눌렀을때
-  // 해당 id값과, 새로바뀔 컨텐츠인 localContent를 전달
+  const toggleIsEdit = () => setIsEdit(!isEdit);
   const handleEdit = () => {
     toggleIsEdit(); // 수정하고 나면 수정폼은 닫아줌
   };

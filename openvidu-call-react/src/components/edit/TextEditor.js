@@ -117,11 +117,8 @@ export function insertText(text) {
   quillRef.insertText(position, text);
 }
 
-  // width: 760px,
-  // height: 480px,
 const MouseBox = styled.div`
 
-  
   .ql-toolbar.ql-snow {
     border-radius: 5px 5px 0px 0px;
   }
