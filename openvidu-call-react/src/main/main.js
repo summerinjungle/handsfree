@@ -101,93 +101,93 @@ const Main = ({ username }) => {
     };
   }
   return (
-      <>
+    <>
       <div className='main-bg'>
-      <div className='header-left'/>
-      <img className='header-left-logo' src={mainLogo} />
-      {isLogin ? (
-        <>
-          
-          <div className='header-right-btn'>
-          </div>
-          <div className='logout-btn-area'>
-              <button className='logout-btn'
-              onClick={() => {
-                removeTokenInCookie();
-                window.location.reload();
-              }}
-            >
-              로그아웃
-            </button>
-          </div>
-          <div className='main-logo-area'>
-            <img className='main-logo' src={mainLogo} />
-            {isLoading && <Loading />}
-          </div>
-          <div className='make-conference-btn-area'>
-          <button
-              className='make-conference-btn'
-              onClick={() => {
-                navigator.mediaDevices
-                  .getUserMedia({
-                    audio: true,
-                    video: { width: 640, height: 360 },
-                  })
-                  .then((stream) => {
-                    setIsLoading(true);
-                    createDebounceRoom();
-                  })
-                  .catch(() => {
-                    swal(
-                      "실패",
-                      "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다.",
-                      "warning"
-                    );
-                    setIsLoading(true);
-                    createDebounceRoom();
-                  });
-              }}
-            >
-              새 회의
-          </button>
-          </div>
-          <div className='attend-meeting-btn-area'>
-            <input className='attend-meeting-input-area'
-              placeholder='참여코드 입력'
-              onChange={(event) => setEnterCode(event.target.value)}
-            ></input>
-            <button className='attend-meeting-btn' onClick={enterMeeting}>
-              →
-            </button>
-          </div>
+        <div className='header-left' />
+        <img className='header-left-logo' src={mainLogo} />
+        {isLogin ? (
           <>
-           
+            <div className='header-right-btn'></div>
+            <div className='logout-btn-area'>
+              <button
+                className='logout-btn'
+                onClick={() => {
+                  removeTokenInCookie();
+                  window.location.reload();
+                }}
+              >
+                로그아웃
+              </button>
+            </div>
+            <div className='main-logo-area'>
+              <img className='main-logo' src={mainLogo} />
+              {isLoading && <Loading />}
+            </div>
+            <div className='make-conference-btn-area'>
+              <button
+                className='make-conference-btn'
+                onClick={() => {
+                  navigator.mediaDevices
+                    .getUserMedia({
+                      audio: true,
+                      video: { width: 640, height: 360 },
+                    })
+                    .then((stream) => {
+                      setIsLoading(true);
+                      createDebounceRoom();
+                    })
+                    .catch(() => {
+                      swal(
+                        "실패",
+                        "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다.",
+                        "warning"
+                      );
+                      setIsLoading(true);
+                      createDebounceRoom();
+                    });
+                }}
+              >
+                새 회의
+              </button>
+            </div>
+            <div className='attend-meeting-btn-area'>
+              <input
+                className='attend-meeting-input-area'
+                placeholder='참여코드 입력'
+                onChange={(event) => setEnterCode(event.target.value)}
+              ></input>
+              <button
+                className='attend-meeting-btn'
+                onClick={() => {
+                  setIsLoading(true);
+                  enterDebounceRoom();
+                }}
+              >
+                →
+              </button>
+            </div>
+            <></>
           </>
-         
-        </>
-      ) : (
-        <>
-          <div className='main-character-area '>
-            <img className='main-character' src={mainCharacterBorder} />
-          </div>
-          <div className='main-label'> 
-            <p className='main-label-txt1'>
-              화상회의록 자동작성 웹서비스
-            </p>
-            <p className='main-label-txt2'>
-              "회의록 작성은 막둥이에게 맡겨주세요"
-            </p>
-          </div>
-          <div className='main-labe2'> 
-          </div>
-          <div className='login-btn-shadow'></div>
+        ) : (
+          <>
+            <div className='main-character-area '>
+              <img className='main-character' src={mainCharacterBorder} />
+            </div>
+            <div className='main-label'>
+              <p className='main-label-txt1'>화상회의록 자동작성 웹서비스</p>
+              <p className='main-label-txt2'>
+                "회의록 작성은 막둥이에게 맡겨주세요"
+              </p>
+            </div>
+            <div className='main-labe2'></div>
+            <div className='login-btn-shadow'></div>
             <div className='login-btn'>
               <GoogleLoginButton className='login-btn' />
             </div>
-        </>
-      )}
-        {/* <button className='asdf' onClick={() => navigate("/meeting")}>그냥 입장하기</button> */} 
-    </div>
+          </>
+        )}
+        {/* <button className='asdf' onClick={() => navigate("/meeting")}>그냥 입장하기</button> */}
+      </div>
     </>
   );
 };
