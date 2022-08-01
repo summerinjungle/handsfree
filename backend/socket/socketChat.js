@@ -25,7 +25,6 @@ const chatSocket = (io, socket) => {
     return io.sockets.adapter.rooms.get(roomName)?.size;
   }
 
-
   socket.onAny((event) => {
     console.log(`Socket Event : ${event}`);
   });
@@ -48,9 +47,7 @@ const chatSocket = (io, socket) => {
   socket.on("newMessage", (msg, sessionId) => {
     if (msg.text === "기록시작@") {
       if (!roomToIsRecog[sessionId]) {
-        console.log(msg)
         roomToRecord[sessionId][1] = msg.start;
-        console.log(roomToRecord[sessionId])
         createMuteTime(
           sessionId.substr(7),
           roomToRecord[sessionId][0],
@@ -104,22 +101,16 @@ const chatSocket = (io, socket) => {
         msg.start,
         msg.time
       );
-      console.log("createChat",       sessionId.substr(7),
-      roomToChatList[sessionId].length - 1,
-      msg.userId,
-      msg.text,
-      msg.start,
-      msg.time)
     }
   });
 
 
   socket.on('forceDisconnect', (sessionId, isPublisher) => {
-    // 기록 중지로 끝난경우
     try {
     if (isPublisher) {
       const date = new Date();
-      if (roomToRecord[sessionId][1] === 0) {
+      // 기록 중지로 끝난경우
+      if (roomToRecord[sessionId][1] === 0 && roomToRecord[sessionId][0] !== 0) {
         createMuteTime(
           sessionId.substr(7),
           roomToRecord[sessionId][0],
@@ -127,7 +118,6 @@ const chatSocket = (io, socket) => {
         );
       }
     }
-    // console.log(roomToRecord[sessionId]);
     } catch (err) {
       console.log(err);
     }
