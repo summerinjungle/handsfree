@@ -15,6 +15,7 @@ import {
   ToastsContainerPosition,
 } from "react-toasts";
 import swal from "sweetalert";
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg"
 
 var localUser = new UserModel();
 
@@ -297,6 +298,7 @@ class VideoRoomHandsFree extends Component {
     if (this.props.isPublisher) {
       this.forceDisconnect(this.props.sessionId);
       this.startRecordingChk(this.props.sessionId);
+      this.compressRecordingFile(this.props.sessionId);
       this.setState({
         terminate: true,
       });
@@ -603,6 +605,36 @@ class VideoRoomHandsFree extends Component {
       .catch((error) => {
         console.log("error !!", error);
       });
+  };
+
+  /* 녹음파일 압축하는 함수 */
+  compressRecordingFile = async (sessionId) => {
+    // FFmpeg를 로드한다
+    const ffmpeg = createFFmpeg({
+      log: true,
+      corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
+    });
+    await ffmpeg.load();
+  
+    // FFmpeg 세계에 파일을 만든다 - 실존하지는 않지만 브라우저 메모리에 저장된다
+    ffmpeg.FS("writeFile", "recordingTest.webm", await fetchFile("https://hyunseokmemo.shop/openvidu/recordings/" + sessionId + "/ownweapon.webm"));
+  
+    // 파일을 변환한다 (webm → mp4)
+    await ffmpeg.run("-i", "recordingTest.webm", "-r", "60", "output.mp4");
+  
+    // 파일 → blob → url
+    const mp4File = await ffmpeg.FS("readFile", "output.mp4");
+    const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" });
+    const mp4Url = URL.createObjectURL(mp4Blob);
+
+    console.log("Compress!!", mp4Url);
+  
+    // a.download 이용해 비디오 파일 다운로드
+    const a = document.createElement("a");
+    a.href = mp4Url;
+    a.download = "myRecording.mp4";
+    document.body.appendChild(a);
+    a.click();
   };
 
   render() {
