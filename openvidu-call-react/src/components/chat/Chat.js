@@ -181,7 +181,7 @@ const Chat = function(localUser, rootFunction, terminate) {
             ))}
           </div>
         </div>
-        {/* <Record parentFunction={parentFunction} /> */}
+        <Record parentFunction={parentFunction} />
       </div>
       {/* <div>
         <input className='attend-meeting-input-area'
