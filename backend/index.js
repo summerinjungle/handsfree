@@ -1,5 +1,5 @@
 const express = require("express");
-
+const { OK, CREATED, BAD_REQUEST } = require('./config/statusCode').statusCode;
 const bodyParser = require("body-parser");
 const connect = require("./database/connection");
 const cookieParser = require("cookie-parser");
@@ -38,4 +38,8 @@ server.listen(port, () => {
 io.on('connection', socket => {
   console.log("socket handle start !! ");
   socketHandle(io, socket);
+})
+
+app.use(function (error, req, res, next) {
+  res.status(BAD_REQUEST).json({ message: error.message })
 })
