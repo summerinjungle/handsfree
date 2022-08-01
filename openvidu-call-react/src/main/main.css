@@ -33,24 +33,28 @@
 }
 
 .logout-btn-area {
-	margin-top: 10px;
+	/* background-color: purple; */
 	grid-area: 1 / 15 / 2 / 16;
 }
 
 .logout-btn{ 
-	font-family: 'Cafe24SsurroundAir';
+	margin-top: 10px;
+	position: absolute;
+  	left: 95%;
+	font-family: 'Cafe24SsurroundAir'; 
 	background-color:#6A573D;
 	border-radius:6px;
 	border:0px solid #6A573D;
 	color:#ffffff;
 	font-size:14px;
 	font-weight:bold;
-	padding: 5px;
+	padding: 5px; 
 } 
 
-.logout:hover {
-	background-color:#DFB48E;
-	color: black;
+.logout-btn:hover {
+	opacity: 50%;
+	background-color:#F6DBD1;
+	color: #6A573D;
 }
 
 .main-label {
@@ -136,7 +140,9 @@
 }
 
 .make-conference-btn:hover {
-	background-color:#93897D;
+	opacity: 50%;
+	background-color:#F6DBD1;
+	color: #6A573D;
 }
 
 
@@ -174,7 +180,7 @@
 
 .attend-meeting-btn:hover {
 	background-color:#F6DBD1;
-	color: black;
+	color: #6A573D;
 }
 
 
