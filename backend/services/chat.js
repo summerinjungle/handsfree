@@ -32,9 +32,9 @@ exports.toEditingRoom = async(roomId) => {
       chatList = [];
     }
 
-    let markedList = [];
+    let starList = [];
     if(chatList) {
-        markedList = (await chatList).filter(chat => chat.marker);
+        starList = (await chatList).filter(chat => chat.marker);
     }
 
     let recordMuteList = [];
@@ -43,5 +43,5 @@ exports.toEditingRoom = async(roomId) => {
     } catch (err) {
       recordMuteList = [];
     }
-    return { chatList, markedList, recordMuteList };
+    return { chatList, starList, recordMuteList };
 }
