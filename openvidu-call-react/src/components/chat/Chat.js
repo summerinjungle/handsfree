@@ -20,8 +20,25 @@ const Chat = function(localUser, rootFunction, terminate) {
   const scrollRef = React.useRef();
   const [isRecog, setIsRecog] = useState(false);
   const [messageList, setMessageList] = useState([]);
-  const [message, setMessage] = useState("")
-
+  const [message, setMessage] = useState("");
+  const sessionId = "meeting" + reduxCheck.user.sessionId;
+  
+  // let [enterCode, setEnterCode] = useState("");
+  // const enterMeeting = () => {
+  //   setMessage(
+  //     {
+  //       userId: reduxCheck.user.userName,
+  //       text: enterCode,
+  //       startTime: new Date().getHours() + ":" + new Date().getMinutes(),
+  //       time: new Date().getTime,
+  //       star: false
+  //     }
+  //   )
+  // };
+  // const discon = () => {
+  //   socketRef.current.emit("forceDisconnect", reduxCheck.user.sessionId, reduxCheck.user.isPublisher);
+  // }
+  
   useEffect(() => {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messageList]);
@@ -29,7 +46,7 @@ const Chat = function(localUser, rootFunction, terminate) {
 
   useEffect(() => {
     console.log("enterRoom")
-    socketRef.current.emit("enterRoom",reduxCheck.user.sessionId);
+    socketRef.current.emit("enterRoom", sessionId);
 
     socketRef.current.on("welcome", (bool) =>{
       console.log("welcome");
@@ -55,7 +72,8 @@ const Chat = function(localUser, rootFunction, terminate) {
 
     return () => {
       console.log("forceDisconnect")
-      socketRef.current.emit("forceDisconnect", reduxCheck.user.sessionId);
+      socketRef.current.emit("forceDisconnect", sessionId, reduxCheck.user.isPublisher);
+      socketRef.current.disconnect();
     }
   }, [])
 
@@ -74,12 +92,15 @@ const Chat = function(localUser, rootFunction, terminate) {
 
   useEffect(() => {
     if (message !== ""){
-      socketRef.current.emit("newMessage", message, reduxCheck.user.sessionId);
+      socketRef.current.emit("newMessage", message, sessionId);
     } 
   },[message])
 
   return (
     <div className='status-container'>
+      {/* <button className='attend-meeting-btn' onClick={discon}>
+        연결끊기
+      </button> */}
        <div className='recording'>
           <div className='writingStatus'>
             <div
@@ -161,6 +182,15 @@ const Chat = function(localUser, rootFunction, terminate) {
         </div>
         <Record parentFunction={parentFunction} />
       </div>
+      {/* <div>
+        <input className='attend-meeting-input-area'
+          placeholder='참여코드 입력'
+          onChange={(event) => setEnterCode(event.target.value)}
+        ></input>
+        <button className='attend-meeting-btn' onClick={enterMeeting}>
+          →
+        </button>
+      </div> */}
     </div>
   );
 }
