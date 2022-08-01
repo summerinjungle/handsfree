@@ -31,6 +31,7 @@ exports.toEditingRoom = async(roomId) => {
     } catch (err) {
       chatList = [];
     }
+    console.log("나가는 chatList", chatList);
 
     let starList = [];
     if(chatList) {

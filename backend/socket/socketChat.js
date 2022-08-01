@@ -104,6 +104,12 @@ const chatSocket = (io, socket) => {
         msg.start,
         msg.time
       );
+      console.log("createChat",       sessionId.substr(7),
+      roomToChatList[sessionId].length - 1,
+      msg.userId,
+      msg.text,
+      msg.start,
+      msg.time)
     }
   });
 
