@@ -73,23 +73,23 @@ exports.createChat = async (roomId, chatListJson, starListJson, recordMuteListJs
   }
 
   let chatList = [];
-  if(!chatList) {
+  if (!chatList) {
     console.log("비었습니다!!!");
   }
   var keys = Object.keys(chatListJson);
-  keys.forEach(function(key){
+  keys.forEach(function (key) {
     chatList.push(chatListJson[key]);
   })
 
   let starList = [];
   var keys = Object.keys(starListJson);
-  keys.forEach(function(key){
+  keys.forEach(function (key) {
     starList.push(starListJson[key]);
   })
 
   let recordMuteList = [];
   var keys = Object.keys(recordMuteListJson);
-  keys.forEach(function(key){
+  keys.forEach(function (key) {
     recordMuteList.push(recordMuteListJson[key]);
   })
 
@@ -111,3 +111,27 @@ exports.findRoomResponseTime = async (roomId) => {
   return findRoom[1].createdAt;
   // console.log("findRoom[1]", findRoom[0].createdAt);
 };
+
+
+// exports.getMP3File = async (roomId) => {
+//   const targetWEBMFile = "https://hyunseokmemo.shop/openvidu/recordings/" + roomId + "/ownweapon.webm";  //영상 파일
+//   const convertedMP3File = './' + roomId + 'webm';  //오디오 파일
+
+//   return new ffmpeg(targetWEBMFile, (err, video) => {
+//     if (!err) {
+//       //#2. 동영상에서 이미지를 추출하기 (비동기 방식)
+//       video.fnExtractSoundToMP3(convertedMP3File, (error, files) => {
+//         if (!error) {
+//           console.log('finish audio!', files);
+//           // fs.open("../output_ffmpeg", )
+//         }
+//         else {
+//           console.log(error);
+//         }
+//       });
+//     }
+//     else {
+//       console.log("FFMpeg 에러!");
+//     }
+//   })
+// };

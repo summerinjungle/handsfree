@@ -141,7 +141,7 @@ const EditingRoom = ({ sessionId }) => {
   useEffect(() => {
     if (wavesurfer) {
       wavesurfer.current.load(
-        //"https://eehnoeg.shop/openvidu/recordings/"+
+        // "https://eehnoeg.shop/openvidu/recordings/"+
         "https://hyunseokmemo.shop/openvidu/recordings/" +
           sessionId +
           "/ownweapon.webm"
@@ -162,8 +162,8 @@ const EditingRoom = ({ sessionId }) => {
       .get("/api/rooms/" + sessionId + "/editingroom") // this.state.roomId 맞나요?
       .then(function (response) {
         console.log("EditingRoom", response.data.editingRoom);
-        const { chatList, starList, recordMuteList } =
-          response.data.editingRoom;
+        console.log("EditingRoom", response.data);
+        const { chatList, starList, recordMuteList } = response.data.editingRoom;
         setChatList(chatList);
         for (let i = 0; i < recordMuteList.length; i++) {
           let currLeft;

@@ -1,5 +1,5 @@
 const { OK, CREATED, BAD_REQUEST } =
-require("../../config/statusCode").statusCode;
+  require("../../config/statusCode").statusCode;
 require("dotenv").config();
 const roomServices = require("../../services/room");
 
@@ -42,47 +42,49 @@ exports.createRoom = async (req, res, next) => {
 //방 입장 API
 exports.joinRoom = async (req, res, next) => {
   // try {
-    const { roomId } = req.params;
-    const foundRoom = await roomServices.findByRoomId(roomId);
-    if(!foundRoom) {
+  const { roomId } = req.params;
+  const foundRoom = await roomServices.findByRoomId(roomId);
+  if (!foundRoom) {
+    res.status(CREATED).json({
+      message: "없는 방입니다",
+      isValidRoom: false,
+    });
+  }
+  else {
+    if (foundRoom.isEnd) {
       res.status(CREATED).json({
-        message: "없는 방입니다",
-        isValidRoom: false,
+        message: "종료된 회의 입니다.",
+        isValidRoom: true,
+        isEnd: true
+      });
+    } else {
+      // 같은 방이 있으면
+      //방 시작시간을 알려주는 로직이 들어가야 함
+      const createTime = await roomServices.findRoomResponseTime(roomId);
+      timeString = getTime();
+      res.status(CREATED).json({
+        message: "방입장 성공",
+        roomId: roomId,
+        createdAt: createTime,
+        enteredAt: timeString,
+        isValidRoom: true,
+        isEnd: false
       });
     }
-    else {
-      if(foundRoom.isEnd) {
-        res.status(CREATED).json({
-          message: "종료된 회의 입니다.",
-          isValidRoom: true,
-          isEnd: true
-        });
-      } else {
-        // 같은 방이 있으면
-        //방 시작시간을 알려주는 로직이 들어가야 함
-        const createTime = await roomServices.findRoomResponseTime(roomId);
-        timeString = getTime();
-        res.status(CREATED).json({
-          message: "방입장 성공",
-          roomId: roomId,
-          createdAt: createTime,
-          enteredAt: timeString,
-          isValidRoom: true,
-          isEnd: false
-        });
-      }
-    } 
+  }
 };
 
 exports.getEditingRoom = async (req, res, next) => {
   const roomId = req.params.roomId;
   const editingRoom = await roomServices.toEditingRoom(roomId);
+  // const mp3File = await roomServices.getMP3File(roomId); // Recording 파일 압축
   if (!editingRoom) {
     res.status(BAD_REQUEST).json({
       message: "잘못된 접근입니다",
     });
     return;
   }
+
   res.status(OK).json({
     editingRoom,
   });

@@ -56,6 +56,13 @@ class Recognition extends PureComponent {
     };
   }
 
+  componentWillUnmount() {
+    console.log("component!!!");
+    recognition.onend = () => {
+      
+    };
+  }
+
   // transcriptResult = () => {
   //   //  음성 인식 서비스가 결과를 반환할 때 발생합니다.
   //   // 음성감지 된경우 시작시간을 등록한다
