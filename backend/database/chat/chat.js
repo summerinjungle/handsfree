@@ -2,7 +2,6 @@ const express = require('express');
 const Chat = require('../../models/Chat');
 
 exports.createChat = async(roomId, id, nickname, message, startTime, time) => {
-    console.log("들어온정보", roomId, id, nickname, message, startTime, time)
     try {
         const chat = await Chat.create({
             id: id,
