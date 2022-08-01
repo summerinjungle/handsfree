@@ -7,16 +7,25 @@ import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
 import { getUserNameInCookie } from "../../main/cookie";
 
+import styled from "styled-components";
 import Quill from "quill";
 import QuillCursors from "quill-cursors";
 
-Quill.register("modules/cursors", QuillCursors);
+
+function getRandomColor() {
+	return "#" + Math.floor(Math.random() * 16777215).toString(16);
+}
 
 export let quillRef = null;
 
 export function TextEditor({ sessionId }) {
+
   let reactQuillRef = null;
   const yDoc = new Y.Doc();
+  Quill.register("modules/cursors", QuillCursors);
+
+  //추가
+  // const socketRef = useRef();
 
   useEffect(() => {
     console.log("Text Editor에 있는 sessionId : ", sessionId);
@@ -25,14 +34,33 @@ export function TextEditor({ sessionId }) {
       "http://localhost:3000/meeting/" + sessionId + "/edit",
       yDoc
     );
-    const ytext = yDoc.getText("quill");
+
+    // //추가
+    // socketRef.current = io();
+
+    // var x, y, prevX, prevY;
+    // var intervalID = window.setInterval(function(){
+      
+    //   if (prevX !== x || !prevY !== y) {
+    //     socket.emit('mouse_position', {mx : x, my : y});
+    //   }
+    //   prevX = x;
+    //   prevY = y;
+    // }, 500);
+
+    const ytext = yDoc.getText(sessionId);
+    
+    provider.awareness.on('change', changes => {
+      console.log(Array.from(provider.awareness.getStates().values()))
+    });
 
     provider.awareness.setLocalStateField("user", {
       name: getUserNameInCookie(),
-      color: "blue",
+      color: getRandomColor(),
     });
 
     const binding = new QuillBinding(ytext, quillRef, provider.awareness);
+    
   }, []);
 
   const attachQuillRefs = () => {
@@ -52,21 +80,26 @@ export function TextEditor({ sessionId }) {
       ],
       ["link", "image"],
       ["clean"],
+  
     ],
     cursors: {
       transformOnTextChange: true,
-      toggleFlag: true,
+      hide: false,
+      selectionChangeSource: null,
+      transformOnTextChange: true,
+    },
+    history: {
+      userOnly: true,
     },
   };
 
   return (
-    <div>
+    <MouseBox>
       <ReactQuill
         style={{
           width: "760px",
           height: "480px",
           backgroundColor: "#E3DDD5",
-          // backgroundColor: "#a9af9",
         }}
         ref={(el) => {
           reactQuillRef = el;
@@ -74,7 +107,7 @@ export function TextEditor({ sessionId }) {
         modules={modulesRef}
         theme={"snow"}
       />
-    </div>
+    </MouseBox>
   );
 }
 
@@ -83,5 +116,28 @@ export function insertText(text) {
   let position = range ? range.index : 0;
   quillRef.insertText(position, text);
 }
+
+const MouseBox = styled.div`
+
+  .ql-toolbar.ql-snow {
+    border-radius: 5px 5px 0px 0px;
+  }
+  .ql-container.ql-snow {
+    border-radius: 0 0 5px 5px;
+  }
+  .ql-editor strong {
+    font-weight: bold;
+  }
+  .q1-cursor {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  .ql-cursor-flag {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  .show-flag {
+  }
+`;
 
 export default TextEditor;
