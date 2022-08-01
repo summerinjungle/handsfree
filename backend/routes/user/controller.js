@@ -22,6 +22,3 @@ exports.setUser = async (req, res, next) => {
     });
   }
 };
-
-// exports.getCurrentUser = async (req, res, next) => {
-// };
