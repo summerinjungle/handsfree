@@ -25,18 +25,19 @@ const Chat = function(localUser, rootFunction, terminate) {
   
   // let [enterCode, setEnterCode] = useState("");
   // const enterMeeting = () => {
+  //   const date = new Date();
   //   setMessage(
   //     {
   //       userId: reduxCheck.user.userName,
   //       text: enterCode,
-  //       startTime: new Date().getHours() + ":" + new Date().getMinutes(),
-  //       time: new Date().getTime,
+  //       start: date.getTime(),
+  //       time: new Date().getHours() + ":" + new Date().getMinutes(),
   //       star: false
   //     }
   //   )
   // };
   // const discon = () => {
-  //   socketRef.current.emit("forceDisconnect", reduxCheck.user.sessionId, reduxCheck.user.isPublisher);
+  //   socketRef.current.emit("forceDisconnect", sessionId, reduxCheck.user.isPublisher);
   // }
   
   useEffect(() => {
@@ -46,7 +47,7 @@ const Chat = function(localUser, rootFunction, terminate) {
 
   useEffect(() => {
     console.log("enterRoom")
-    socketRef.current.emit("enterRoom", sessionId);
+    socketRef.current.emit("enterRoom", sessionId, reduxCheck.user.isPublisher);
 
     socketRef.current.on("welcome", (bool) =>{
       console.log("welcome");
@@ -83,7 +84,7 @@ const Chat = function(localUser, rootFunction, terminate) {
       {
         userId: reduxCheck.user.userName,
         text: data.text,
-        startTime: data.time,
+        start: data.time,
         time: data.now,
         star: false
       }
@@ -180,7 +181,7 @@ const Chat = function(localUser, rootFunction, terminate) {
             ))}
           </div>
         </div>
-        <Record parentFunction={parentFunction} />
+        {/* <Record parentFunction={parentFunction} /> */}
       </div>
       {/* <div>
         <input className='attend-meeting-input-area'
