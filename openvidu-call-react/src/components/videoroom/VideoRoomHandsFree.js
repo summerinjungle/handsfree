@@ -662,12 +662,7 @@ class VideoRoomHandsFree extends Component {
               rootFunction={this.getMessageList}
               terminate={this.state.terminate}
             /> */}
-            <Chat
-              localUser={localUser}
-              // rootFunction={this.getMessageList}
-              terminate={this.state.terminate}
-            />
-
+            <Chat />
             <button
               className='copy'
               onClick={() => {
