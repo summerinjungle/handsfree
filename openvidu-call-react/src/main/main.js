@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import "./main.css";
 import mainLogo from "../assets/images/mainLogo.png";
 import mainCharacter from "../assets/images/mainCharacter.png";
@@ -83,21 +83,19 @@ const Main = ({ username }) => {
       .catch(function (err) {});
   };
 
-  const createDebounceRoom = debounce(() => {
-    createMeeting();
-  });
+  const createDebounceRoom = useCallback(debounce(createMeeting), []);
 
-  const enterDebounceRoom = debounce(() => {
-    enterMeeting();
-  });
+  const enterDebounceRoom = useCallback(debounce(enterMeeting), []);
 
-  function debounce(cb, delay = 1000) {
+  function debounce(cb) {
     let timer;
     return (...args) => {
-      clearTimeout(timer);
+      const context = this;
+      if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
-        cb(...args);
-      }, delay);
+        timer = null;
+        cb.apply(context, args);
+      }, 500);
     };
   }
   return (
@@ -105,26 +103,26 @@ const Main = ({ username }) => {
       <div className='main-bg'>
         <div className='header-left' />
         <img className='header-left-logo' src={mainLogo} />
-                 
+
         {isLogin ? (
           <>
             <div className='logout-btn-area'></div>
             <div className='header-right-btn'></div>
             <button
-                className='logout-btn'
-                onClick={() => {
-                  console.log("logout!!");
-                  removeTokenInCookie();
-                  window.location.reload();
-                }}>
-                로그아웃
+              className='logout-btn'
+              onClick={() => {
+                console.log("logout!!");
+                removeTokenInCookie();
+                window.location.reload();
+              }}
+            >
+              로그아웃
             </button>
             <div className='main-logo-area'>
               <img className='main-logo' src={mainLogo} />
               {isLoading && <Loading />}
             </div>
             <div className='make-conference-btn-area'>
-        
               <button
                 className='make-conference-btn'
                 onClick={() => {

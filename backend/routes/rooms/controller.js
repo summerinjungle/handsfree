@@ -49,13 +49,12 @@ exports.joinRoom = async (req, res, next) => {
       message: "없는 방입니다",
       isValidRoom: false,
     });
-  }
-  else {
+  } else {
     if (foundRoom.isEnd) {
       res.status(CREATED).json({
         message: "종료된 회의 입니다.",
         isValidRoom: true,
-        isEnd: true
+        isEnd: true,
       });
     } else {
       // 같은 방이 있으면
@@ -68,7 +67,7 @@ exports.joinRoom = async (req, res, next) => {
         createdAt: createTime,
         enteredAt: timeString,
         isValidRoom: true,
-        isEnd: false
+        isEnd: false,
       });
     }
   }
@@ -77,7 +76,7 @@ exports.joinRoom = async (req, res, next) => {
 exports.getEditingRoom = async (req, res, next) => {
   const roomId = req.params.roomId;
   const editingRoom = await roomServices.toEditingRoom(roomId);
-  const mp3File = await roomServices.getMP3File(roomId); // Recording 파일 압축
+  // const mp3File = await roomServices.getMP3File(roomId); // Recording 파일 압축
   if (!editingRoom) {
     res.status(BAD_REQUEST).json({
       message: "잘못된 접근입니다",

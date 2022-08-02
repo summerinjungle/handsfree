@@ -7,12 +7,11 @@ const {
 // const { user } = require('../routes');
 const { to } = require("await-to-js");
 
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-const ffmpeg = require('fluent-ffmpeg');
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
+const ffmpeg = require("fluent-ffmpeg");
 ffmpeg.setFfmpegPath(ffmpegPath);
 
-const { exec } = require('child_process');
-
+const { exec } = require("child_process");
 
 exports.createRoom = async ({ roomId, publisher, timeString }) => {
   await createRoom({ roomId, publisher, timeString });
@@ -72,7 +71,12 @@ exports.toEditingRoom = async (roomId) => {
   return { chatList, starList, recordMuteList };
 };
 
-exports.createChat = async (roomId, chatListJson, starListJson, recordMuteListJson) => {
+exports.createChat = async (
+  roomId,
+  chatListJson,
+  starListJson,
+  recordMuteListJson
+) => {
   console.log("방 요청이 왔습니다!");
   const foundRoom = await findByRoomId(roomId);
   if (!foundRoom) {
@@ -86,19 +90,19 @@ exports.createChat = async (roomId, chatListJson, starListJson, recordMuteListJs
   var keys = Object.keys(chatListJson);
   keys.forEach(function (key) {
     chatList.push(chatListJson[key]);
-  })
+  });
 
   let starList = [];
   var keys = Object.keys(starListJson);
   keys.forEach(function (key) {
     starList.push(starListJson[key]);
-  })
+  });
 
   let recordMuteList = [];
   var keys = Object.keys(recordMuteListJson);
   keys.forEach(function (key) {
     recordMuteList.push(recordMuteListJson[key]);
-  })
+  });
 
   const filter = { roomId: roomId };
   const update = {
@@ -119,23 +123,22 @@ exports.findRoomResponseTime = async (roomId) => {
   // console.log("findRoom[1]", findRoom[0].createdAt);
 };
 
+// exports.getMP3File = async (roomId) => {
+//   const targetWEBMFile = "https://hyunseokmemo.shop/openvidu/recordings/" + roomId + "/ownweapon.webm";  //영상 파일
+//   const convertedMP3File = "./" + roomId + '.webm';  //오디오 파일
 
-exports.getMP3File = async (roomId) => {
-  const targetWEBMFile = "https://hyunseokmemo.shop/openvidu/recordings/" + roomId + "/ownweapon.webm";  //영상 파일
-  const convertedMP3File = "./" + roomId + '.webm';  //오디오 파일
+//   const commandExec = `ffmpeg -i ${targetWEBMFile} -vcodec libx264 -crf 24 ${convertedMP3File}`;
+//   console.log('Command execute : ', commandExec);
 
-  const commandExec = `ffmpeg -i ${targetWEBMFile} -vcodec libx264 -crf 24 ${convertedMP3File}`;
-  console.log('Command execute : ', commandExec);
-
-  exec(commandExec, (err, stdout, stderr) => {
-    if (err) {
-      console.log(`error: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.log(`stderr: ${stderr}`);
-      return;
-    }
-    console.log(`stdout: ${stdout}`);
-  });
-};
+//   exec(commandExec, (err, stdout, stderr) => {
+//     if (err) {
+//       console.log(`error: ${error.message}`);
+//       return;
+//     }
+//     if (stderr) {
+//       console.log(`stderr: ${stderr}`);
+//       return;
+//     }
+//     console.log(`stdout: ${stdout}`);
+//   });
+// };

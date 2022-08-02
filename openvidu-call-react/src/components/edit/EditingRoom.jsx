@@ -58,9 +58,12 @@ const EditingRoom = ({ sessionId }) => {
     } else {
       setIsPlay(false);
     }
+    setRecordId(-1);
+    setPrevId(-1);
   };
 
   const PlayingRecord = (startTime, id) => {
+    console.log("이거 확인 됨 ?", isPlay);
     if (id === prevId) {
       wavesurfer.current.playPause();
       setChatList((chatList) =>
@@ -163,7 +166,8 @@ const EditingRoom = ({ sessionId }) => {
       .then(function (response) {
         console.log("EditingRoom", response.data.editingRoom);
         console.log("EditingRoom", response.data);
-        const { chatList, starList, recordMuteList } = response.data.editingRoom;
+        const { chatList, starList, recordMuteList } =
+          response.data.editingRoom;
         setChatList(chatList);
         for (let i = 0; i < recordMuteList.length; i++) {
           let currLeft;
