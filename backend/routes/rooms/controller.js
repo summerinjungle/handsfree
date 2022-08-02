@@ -77,7 +77,7 @@ exports.joinRoom = async (req, res, next) => {
 exports.getEditingRoom = async (req, res, next) => {
   const roomId = req.params.roomId;
   const editingRoom = await roomServices.toEditingRoom(roomId);
-  // const mp3File = await roomServices.getMP3File(roomId); // Recording 파일 압축
+  const mp3File = await roomServices.getMP3File(roomId); // Recording 파일 압축
   if (!editingRoom) {
     res.status(BAD_REQUEST).json({
       message: "잘못된 접근입니다",

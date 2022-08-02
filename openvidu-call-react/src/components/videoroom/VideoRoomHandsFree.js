@@ -298,7 +298,7 @@ class VideoRoomHandsFree extends Component {
     if (this.props.isPublisher) {
       this.forceDisconnect(this.props.sessionId);
       this.startRecordingChk(this.props.sessionId);
-      this.compressRecordingFile(this.props.sessionId);
+      // this.compressRecordingFile(this.props.sessionId);
       this.setState({
         terminate: true,
       });
@@ -607,7 +607,7 @@ class VideoRoomHandsFree extends Component {
       });
   };
 
-  /* 녹음파일 압축하는 함수 */
+  /* 녹음파일 압축하는 함수 (사용 안 함) */
   compressRecordingFile = async (sessionId) => {
     // FFmpeg를 로드한다
     const ffmpeg = createFFmpeg({

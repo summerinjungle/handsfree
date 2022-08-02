@@ -22,11 +22,6 @@ const io = SocketIO(server, {
 const port = 5000;
 
 connect();
-app.use((req, res, next) => {
-  res.header("Cross-Origin-Embedder-Policy", "require-corp");
-  res.header("Cross-Origin-Opener-Policy", "same-origin");
-  next();
-});
 app.use(cors());
 //application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
