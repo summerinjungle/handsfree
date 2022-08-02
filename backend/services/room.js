@@ -7,8 +7,8 @@ const {
 // const { user } = require('../routes');
 const { to } = require("await-to-js");
 
-exports.createRoom = async ({ roomId, publisher, timeString }) => {
-  await createRoom({ roomId, publisher, timeString });
+exports.createRoom = async (roomId, publisher, timeString) => {
+  return await createRoom({ roomId, publisher, timeString });
 };
 
 exports.findByRoomId = async (roomId) => {

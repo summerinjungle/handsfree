@@ -32,7 +32,7 @@ exports.toEditingRoom = async(roomId) => {
       chatList = [];
     }
 
-    let markedList = [];
+    let markedList = []; 
     if(chatList) {
         markedList = (await chatList).filter(chat => chat.marker);
     }

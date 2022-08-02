@@ -21,7 +21,7 @@ exports.createRoom = async (req, res, next) => {
     const isVaild = await roomServices.validateRoomId(roomId); // 같은 이름의 방이 있는지 검증하는 로직
     timeString = getTime();
     if (isVaild == true) {
-      await roomServices.createRoom({ roomId, publisher, timeString });
+      await roomServices.createRoom(roomId, publisher, timeString);
 
       res.status(CREATED).json({
         message: "방생성 성공",

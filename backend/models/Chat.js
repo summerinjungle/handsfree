@@ -27,4 +27,6 @@ const chatSchema = new Schema({
     },
 });
 
+chatSchema.index({ roomId: 1, id: 1 });
+
 module.exports = model("Chat", chatSchema);
