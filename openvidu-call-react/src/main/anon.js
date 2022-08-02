@@ -1,7 +1,7 @@
 import React from "react";
 import "./main.css";
 import mainLogo from "../assets/images/mainLogo.png";
-import Spinner from "../components/edit/Spinner";
+// import Spinner from "../components/edit/Spinner";
 
 const Anon = () => {
   return (

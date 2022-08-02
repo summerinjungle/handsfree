@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
 import "./ChatHandsFree.css";
@@ -11,7 +11,7 @@ import Balloons from "../../assets/images/Balloons.png";
 import Record from "./Record";
 import { getUserNameInCookie } from "../../main/cookie";
 
-const Chat = function(localUser, rootFunction, terminate) {
+const Chat = function() {
   const socketRef = useRef();
   // socketRef.current = io.connect("http://localhost:5000");
   socketRef.current = io.connect("https://bongbong.me/");
@@ -22,7 +22,7 @@ const Chat = function(localUser, rootFunction, terminate) {
   const [messageList, setMessageList] = useState([]);
   const [message, setMessage] = useState("");
   const sessionId = "meeting" + reduxCheck.user.sessionId;
-  
+
   // let [enterCode, setEnterCode] = useState("");
   // const enterMeeting = () => {
   //   const date = new Date();
@@ -36,9 +36,6 @@ const Chat = function(localUser, rootFunction, terminate) {
   //     }
   //   )
   // };
-  // const discon = () => {
-  //   socketRef.current.emit("forceDisconnect", sessionId, reduxCheck.user.isPublisher);
-  // }
   
   useEffect(() => {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -46,15 +43,19 @@ const Chat = function(localUser, rootFunction, terminate) {
 
 
   useEffect(() => {
-    console.log("enterRoom")
-    socketRef.current.emit("enterRoom", sessionId, reduxCheck.user.isPublisher);
 
+    console.log("enterRoom")
+    // console.log('check 1', socketRef.current.connected);
+    socketRef.current.emit("enterRoom", sessionId, reduxCheck.user.isPublisher);
+    // console.log('check 2', socketRef.current.connected);
     socketRef.current.on("welcome", (bool) =>{
+      // console.log('check 3', socketRef.current.connected);
       console.log("welcome");
       setIsRecog(bool);
     });
 
     socketRef.current.on("serverToClient", (msg, bool) =>{
+
       console.log("serverToClient");
       console.log(msg.text);
       console.log(bool)
@@ -79,7 +80,6 @@ const Chat = function(localUser, rootFunction, terminate) {
   }, [])
 
   const parentFunction = (data) => {
-    // console.log("parentFx",data.text)
     setMessage(
       {
         userId: reduxCheck.user.userName,
@@ -93,15 +93,13 @@ const Chat = function(localUser, rootFunction, terminate) {
 
   useEffect(() => {
     if (message !== ""){
-      socketRef.current.emit("newMessage", message, sessionId);
+      console.log(message)
+      socketRef.current.emit("newMessage", message, sessionId, reduxCheck.user.isPublisher);
     } 
   },[message])
 
   return (
     <div className='status-container'>
-      {/* <button className='attend-meeting-btn' onClick={discon}>
-        연결끊기
-      </button> */}
        <div className='recording'>
           <div className='writingStatus'>
             <div
