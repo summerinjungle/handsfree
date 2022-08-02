@@ -88,6 +88,7 @@ exports.getEditingRoom = async (req, res, next) => {
   res.status(OK).json({
     editingRoom,
   });
+  res.sendFile(__dirname + '../output_ffmpeg/'+roomId+'.webm');
 };
 
 exports.createChat = async (req, res, next) => {
