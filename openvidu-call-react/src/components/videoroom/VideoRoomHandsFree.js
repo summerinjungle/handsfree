@@ -314,6 +314,7 @@ class VideoRoomHandsFree extends Component {
         } else {
           this.props.navigate("/");
         }
+        window.location.reload();
       });
     } else {
       if (window.confirm("회의실에서 나가시겠습니까?")) {
