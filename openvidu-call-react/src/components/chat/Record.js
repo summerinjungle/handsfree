@@ -62,9 +62,12 @@ class Record extends Component {
         ) {
           this.setState({ script: "별표&"});
         } 
+        const today = new Date();
+        const hour = ('0' + today.getHours()).slice(-2);
+        const min = ('0' + today.getMinutes()).slice(-2);
         const sttData = {
           text: this.state.script,
-          now: new Date().getHours() + ":" + new Date().getMinutes(),
+          now: hour + ":" + min,
           time: this.state.start_time
         };
         

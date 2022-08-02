@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
 import "./ChatHandsFree.css";
@@ -11,10 +11,10 @@ import Balloons from "../../assets/images/Balloons.png";
 import Record from "./Record";
 import { getUserNameInCookie } from "../../main/cookie";
 
-const Chat = function(localUser, rootFunction, terminate) {
+const Chat = function() {
   const socketRef = useRef();
-  // socketRef.current = io.connect("http://localhost:5000");
-  socketRef.current = io.connect("https://bongbong.me/");
+  socketRef.current = io.connect("http://localhost:5000");
+  // socketRef.current = io.connect("https://bongbong.me/");
   const reduxCheck = useSelector((state) => { return state; });
   const myId = getUserNameInCookie();
   const scrollRef = React.useRef();
@@ -79,7 +79,6 @@ const Chat = function(localUser, rootFunction, terminate) {
   }, [])
 
   const parentFunction = (data) => {
-    // console.log("parentFx",data.text)
     setMessage(
       {
         userId: reduxCheck.user.userName,
@@ -143,8 +142,6 @@ const Chat = function(localUser, rootFunction, terminate) {
                 className={
                   "message" +
                   (data.userId !== myId
-                    // localUser.getConnectionId()
-                    // "민성"
                     ? " left"
                     : " right")
                 }
@@ -159,8 +156,6 @@ const Chat = function(localUser, rootFunction, terminate) {
                   <div
                     className={`
                     ${data.userId !== myId
-                        // localUser.getConnectionId()
-                        // "민성"
                         ? " f-left"
                         : " f-right"
                       } ${data.star? "msg-content-star" : "msg-content"}
