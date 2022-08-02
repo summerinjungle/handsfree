@@ -30,7 +30,7 @@ const EditingRoom = ({ sessionId }) => {
   });
   let newSessionId = "edit" + sessionId;
   // let gap = parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) / 1000 -1;
-  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1400;
+  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1000;
 
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
@@ -171,16 +171,16 @@ const EditingRoom = ({ sessionId }) => {
         setChatList(chatList);
         for (let i = 0; i < recordMuteList.length; i++) {
           let currLeft;
-          if (recordMuteList[i].left == 0) {
+          if (recordMuteList[i].start == 0) {
             currLeft = 0;
           } else {
             currLeft =
-              parseFloat(recordMuteList[i].left - sessionStartTime) / 1000;
+              parseFloat(recordMuteList[i].start - sessionStartTime) / 1000;
           }
 
           wavesurfer.current.regions.add({
             start: currLeft,
-            end: parseFloat(recordMuteList[i].right - sessionStartTime) / 1000,
+            end: parseFloat(recordMuteList[i].end - sessionStartTime) / 1000,
             // color: "#CEBFAC",
             color: "rgba(216, 207, 182, 0.85)",
             drag: false,

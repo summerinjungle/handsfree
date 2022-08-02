@@ -1,7 +1,7 @@
 const {
   createRoom,
   findByRoomId,
-  findoneByRoomId,
+  findOneByRoomId,
   findRoomAndUpdate,
 } = require("../database/room");
 // const { user } = require('../routes');
@@ -31,8 +31,6 @@ exports.findByRoomId = async (roomId) => {
 
 exports.validateRoomId = async (roomId) => {
   const findRoom = await to(findByRoomId(roomId));
-  // console.log("!!!!@#!@#!@#", findRoom[1]);
-  // console.log(findRoom[1]);
   if (findRoom[1].length != 0) {
     console.log("존재하는 방");
     return false;
@@ -48,8 +46,8 @@ exports.toEditingRoom = async (roomId) => {
     return null;
   }
   const foundRoom = foundRoomRet[0];
+  
   let chatList = null;
-
   try {
     chatList = foundRoom.chatList;
   } catch (err) {
@@ -118,7 +116,7 @@ exports.createChat = async (
 };
 
 exports.findRoomResponseTime = async (roomId) => {
-  const findRoom = await to(findoneByRoomId(roomId));
+  const findRoom = await to(findOneByRoomId(roomId));
 
   return findRoom[1].createdAt;
   // console.log("findRoom[1]", findRoom[0].createdAt);

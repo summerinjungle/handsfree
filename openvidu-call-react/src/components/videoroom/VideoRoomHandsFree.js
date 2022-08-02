@@ -15,7 +15,8 @@ import {
   ToastsContainerPosition,
 } from "react-toasts";
 import swal from "sweetalert";
-import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg"
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+import Chat from "../chat/Chat";
 
 var localUser = new UserModel();
 
@@ -39,8 +40,8 @@ class VideoRoomHandsFree extends Component {
     super(props);
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
-      // : "https://oeg.shop:443";
-      : "https://hyunseokmemo.shop:443";
+      : // : "https://oeg.shop:443";
+        "https://hyunseokmemo.shop:443";
     // : "https://onxmoreplz.shop:443";
     // : "https://" + window.location.hostname + ":4443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
@@ -252,16 +253,13 @@ class VideoRoomHandsFree extends Component {
   getMessageList = async (chatData) => {
     console.log("#@@@@@@@ getMessage", chatData);
     await axios
-      .post(
-        `/api/rooms/${this.props.sessionId}/chat`,
-        {
-          chatList: chatData.messageList,
-          starList: chatData.starList,
-          recordMuteList: chatData.recordMuteList,
-          // recordingUrl: OPENVIDU_SERVER_URL + "/recordings/" + sessionId + "/ownweapon.webm",  추가됨
-        }
-      )
-      .then((res) => { })
+      .post(`/api/rooms/${this.props.sessionId}/chat`, {
+        chatList: chatData.messageList,
+        starList: chatData.starList,
+        recordMuteList: chatData.recordMuteList,
+        // recordingUrl: OPENVIDU_SERVER_URL + "/recordings/" + sessionId + "/ownweapon.webm",  추가됨
+      })
+      .then((res) => {})
       .catch((err) => {
         console.log("err === ", err);
       });
@@ -302,6 +300,20 @@ class VideoRoomHandsFree extends Component {
       this.setState({
         terminate: true,
       });
+      swal({
+        title: "회의종료",
+        text: "편집실로 가시겠습니까?",
+        icon: "warning",
+        buttons: true,
+        // dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          this.props.navigate("meeting/" + this.props.sessionId + "/edit");
+        } else {
+          this.props.navigate("/");
+        }
+        window.location.reload();
+      });
     } else {
       if (window.confirm("회의실에서 나가시겠습니까?")) {
         const mySession = this.state.session;
@@ -321,7 +333,6 @@ class VideoRoomHandsFree extends Component {
         if (this.props.leaveSession) {
           this.props.leaveSession();
         }
-
         this.props.navigate("/");
       }
     }
@@ -359,8 +370,8 @@ class VideoRoomHandsFree extends Component {
       if (
         window.confirm(
           "방장이 회의를 종료하였습니다.\n" +
-          "편집실로 아동하시겠습니까?\n" +
-          "[취소]를 누르시면 메인 페이지로 이동합니다."
+            "편집실로 아동하시겠습니까?\n" +
+            "[취소]를 누르시면 메인 페이지로 이동합니다."
         )
       ) {
         // [확인] 클릭 -> 다음 [편집실] 페이지로 이동
@@ -503,16 +514,16 @@ class VideoRoomHandsFree extends Component {
             console.log(error);
             console.warn(
               "No connection to OpenVidu Server. This may be a certificate error at " +
-              this.OPENVIDU_SERVER_URL
+                this.OPENVIDU_SERVER_URL
             );
             if (
               window.confirm(
                 'No connection to OpenVidu Server. This may be a certificate error at "' +
-                this.OPENVIDU_SERVER_URL +
-                '"\n\nClick OK to navigate and accept it. ' +
-                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
-                this.OPENVIDU_SERVER_URL +
-                '"'
+                  this.OPENVIDU_SERVER_URL +
+                  '"\n\nClick OK to navigate and accept it. ' +
+                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                  this.OPENVIDU_SERVER_URL +
+                  '"'
               )
             ) {
               window.location.assign(
@@ -530,9 +541,9 @@ class VideoRoomHandsFree extends Component {
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
-          "/openvidu/api/sessions/" +
-          sessionId +
-          "/connection",
+            "/openvidu/api/sessions/" +
+            sessionId +
+            "/connection",
           data,
           {
             headers: {
@@ -615,20 +626,28 @@ class VideoRoomHandsFree extends Component {
       corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
     });
     await ffmpeg.load();
-  
+
     // FFmpeg 세계에 파일을 만든다 - 실존하지는 않지만 브라우저 메모리에 저장된다
-    ffmpeg.FS("writeFile", "recordingTest.webm", await fetchFile("https://hyunseokmemo.shop/openvidu/recordings/" + sessionId + "/ownweapon.webm"));
-  
+    ffmpeg.FS(
+      "writeFile",
+      "recordingTest.webm",
+      await fetchFile(
+        "https://hyunseokmemo.shop/openvidu/recordings/" +
+          sessionId +
+          "/ownweapon.webm"
+      )
+    );
+
     // 파일을 변환한다 (webm → mp4)
     await ffmpeg.run("-i", "recordingTest.webm", "-r", "60", "output.mp4");
-  
+
     // 파일 → blob → url
     const mp4File = await ffmpeg.FS("readFile", "output.mp4");
     const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" });
     const mp4Url = URL.createObjectURL(mp4Blob);
 
     console.log("Compress!!", mp4Url);
-  
+
     // a.download 이용해 비디오 파일 다운로드
     const a = document.createElement("a");
     a.href = mp4Url;
@@ -657,29 +676,29 @@ class VideoRoomHandsFree extends Component {
 
           {this.state.subscribers
             ? this.state.subscribers.map((sub, i) => (
-              <div
-                key={i}
-                className='OT_root OT_publisher custom-class'
-                id='remoteUsers'
-              >
-                <StreamHandFree
-                  user={sub}
-                  streamId={sub.streamManager.stream.streamId}
-                />
-              </div>
-            ))
+                <div
+                  key={i}
+                  className='OT_root OT_publisher custom-class'
+                  id='remoteUsers'
+                >
+                  <StreamHandFree
+                    user={sub}
+                    streamId={sub.streamManager.stream.streamId}
+                  />
+                </div>
+              ))
             : null}
         </div>
 
         <div className='soundScribe'></div>
         {localUser !== undefined && localUser.getStreamManager() !== undefined && (
           <div className='OT_root OT_publisher custom-class'>
-            <ChatHandsFree
+            {/* <ChatHandsFree
               localUser={localUser}
               rootFunction={this.getMessageList}
               terminate={this.state.terminate}
-            />
-
+            /> */}
+            <Chat />
             <button
               className='copy'
               onClick={() => {

@@ -1,9 +1,10 @@
 const express = require("express");
-
+const { OK, CREATED, BAD_REQUEST } = require('./config/statusCode').statusCode;
 const bodyParser = require("body-parser");
 const connect = require("./database/connection");
 const cookieParser = require("cookie-parser");
 const socketHandle = require("./socketHandle");
+const socketChat = require("./socket/socketChat");
 
 const apiRouter = require("./routes");
 
@@ -36,8 +37,13 @@ server.listen(port, () => {
 });
 
 io.on('connection', socket => {
-  console.log("socket handle start !! ");
+  // console.log("socket handle start !! ");
   socketHandle(io, socket);
+  socketChat(io, socket);
+})
+
+app.use(function (error, req, res, next) {
+  res.status(BAD_REQUEST).json({ message: error.message })
 })
 
 

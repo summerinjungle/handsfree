@@ -6,12 +6,12 @@ const userToPeerId= {};
 const socketHandle = (io, socket)  => {
 
     socket.on("joinRoom", (userName, peerId, roomId) => {
-        console.log("새로운 유저가 들어왔습니다 : ", userName, " : ", roomId);
+        // console.log("새로운 유저가 들어왔습니다 : ", userName, " : ", roomId);
 
         if (users[roomId]) { // 이미 생성된 방이라면 
-            console.log("이미 생성된 방입니다 ", users[roomId]);
+            // console.log("이미 생성된 방입니다 ", users[roomId]);
             if (users[roomId].includes(userName)) {
-                console.log("아까 들어왔던 유저인데 새로고침 했나봄");
+                // console.log("아까 들어왔던 유저인데 새로고침 했나봄");
 
                 //기존 유저 정보 제거 
                 let prevPeerId = userToPeerId[userName]; 

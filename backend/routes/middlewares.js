@@ -10,6 +10,7 @@ exports.authCheck = async (req, res, next) => {
     if(err) {
       res.status(BAD_REQUEST);
       console.log(err.name);
+      next(err);
       return;
     }
     console.log(decoded);
