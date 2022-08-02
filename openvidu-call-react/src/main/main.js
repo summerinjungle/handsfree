@@ -95,7 +95,7 @@ const Main = ({ username }) => {
       timer = setTimeout(() => {
         timer = null;
         cb.apply(context, args);
-      }, 500);
+      }, 800);
     };
   }
   return (
