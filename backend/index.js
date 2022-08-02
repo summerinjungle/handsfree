@@ -24,7 +24,7 @@ const port = 5000;
 connect();
 app.use(cors());
 //application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 //application/json
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -39,3 +39,9 @@ io.on('connection', socket => {
   console.log("socket handle start !! ");
   socketHandle(io, socket);
 })
+
+
+
+
+app.use(express.urlencoded({ extended: false }))
+//create a bucket 

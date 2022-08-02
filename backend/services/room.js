@@ -12,6 +12,7 @@ const ffmpeg = require("fluent-ffmpeg");
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 const { exec } = require("child_process");
+const { doUpload } = require("./s3");
 
 exports.createRoom = async ({ roomId, publisher, timeString }) => {
   await createRoom({ roomId, publisher, timeString });
@@ -123,22 +124,27 @@ exports.findRoomResponseTime = async (roomId) => {
   // console.log("findRoom[1]", findRoom[0].createdAt);
 };
 
-// exports.getMP3File = async (roomId) => {
-//   const targetWEBMFile = "https://hyunseokmemo.shop/openvidu/recordings/" + roomId + "/ownweapon.webm";  //영상 파일
-//   const convertedMP3File = "./" + roomId + '.webm';  //오디오 파일
+exports.getMP3File = async (roomId) => {
+  const targetWEBMFile =
+    "https://hyunseokmemo.shop/openvidu/recordings/" +
+    roomId +
+    "/ownweapon.webm"; //영상 파일
+  const convertedMP3File = "../output_ffmpeg/" + roomId + ".webm"; //오디오 파일
 
-//   const commandExec = `ffmpeg -i ${targetWEBMFile} -vcodec libx264 -crf 24 ${convertedMP3File}`;
-//   console.log('Command execute : ', commandExec);
+  const commandExec = `ffmpeg -i ${targetWEBMFile} -vcodec libx264 -crf 24 ${convertedMP3File}`;
+  console.log("Command execute : ", commandExec);
 
-//   exec(commandExec, (err, stdout, stderr) => {
-//     if (err) {
-//       console.log(`error: ${error.message}`);
-//       return;
-//     }
-//     if (stderr) {
-//       console.log(`stderr: ${stderr}`);
-//       return;
-//     }
-//     console.log(`stdout: ${stdout}`);
-//   });
-// };
+  doUpload(roomId);
+
+  exec(commandExec, (err, stdout, stderr) => {
+    if (err) {
+      console.log(`error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.log(`stderr: ${stderr}`);
+      return;
+    }
+    console.log(`stdout: ${stdout}`);
+  });
+};
