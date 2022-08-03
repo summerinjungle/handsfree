@@ -91,7 +91,7 @@ const Main = ({ username }) => {
     enterMeeting();
   });
 
-  function debounce(cb, delay = 1000) {
+  function debounce(cb, delay = 800) {
     let timer;
     return (...args) => {
       clearTimeout(timer);
@@ -105,27 +105,27 @@ const Main = ({ username }) => {
       <div className='main-bg'>
         <div className='header-left' />
         <img className='header-left-logo' src={mainLogo} />
-                 
+
         {isLogin ? (
           <>
             <div className='logout-btn-area'></div>
             <div className='header-right-btn'></div>
             <button
-                className='logout-btn'
-                onClick={() => {
-                  console.log("logout!!");
-                  removeTokenInCookie();
-                  window.location.reload();
-                }}>
-                로그아웃
+              className='logout-btn'
+              onClick={() => {
+                console.log("logout!!");
+                removeTokenInCookie();
+                window.location.reload();
+              }}
+            >
+              로그아웃
             </button>
             <div className='main-logo-area'>
               <img className='main-logo' src={mainLogo} />
               {isLoading && <Loading />}
             </div>
             {/* <div className= 'div-to-fit-btn'>hello</div> */}
-            {/* <div className='make-conference-btn-area'> */}
-        
+            <div className='make-conference-btn-area'>
               <button
                 className='make-conference-btn'
                 onClick={() => {
@@ -151,7 +151,7 @@ const Main = ({ username }) => {
               >
                 새 회의
               </button>
-            {/* </div> */}
+            </div>
             <div className='attend-meeting-btn-area'>
               <input
                 className='attend-meeting-input-area'
