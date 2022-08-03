@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
 import "./ChatHandsFree.css";
@@ -11,7 +11,7 @@ import Balloons from "../../assets/images/Balloons.png";
 import Record from "./Record";
 import { getUserNameInCookie } from "../../main/cookie";
 
-const Chat = function(localUser, rootFunction, terminate) {
+const Chat = function() {
   const socketRef = useRef();
   // socketRef.current = io.connect("http://localhost:5000");
   socketRef.current = io.connect("https://bongbong.me/");
@@ -25,18 +25,19 @@ const Chat = function(localUser, rootFunction, terminate) {
   
   // let [enterCode, setEnterCode] = useState("");
   // const enterMeeting = () => {
+  //   const date = new Date();
   //   setMessage(
   //     {
   //       userId: reduxCheck.user.userName,
   //       text: enterCode,
-  //       startTime: new Date().getHours() + ":" + new Date().getMinutes(),
-  //       time: new Date().getTime,
+  //       start: date.getTime(),
+  //       time: new Date().getHours() + ":" + new Date().getMinutes(),
   //       star: false
   //     }
   //   )
   // };
   // const discon = () => {
-  //   socketRef.current.emit("forceDisconnect", reduxCheck.user.sessionId, reduxCheck.user.isPublisher);
+  //   socketRef.current.emit("forceDisconnect", sessionId, reduxCheck.user.isPublisher);
   // }
   
   useEffect(() => {
@@ -46,7 +47,7 @@ const Chat = function(localUser, rootFunction, terminate) {
 
   useEffect(() => {
     console.log("enterRoom")
-    socketRef.current.emit("enterRoom", sessionId);
+    socketRef.current.emit("enterRoom", sessionId, reduxCheck.user.isPublisher);
 
     socketRef.current.on("welcome", (bool) =>{
       console.log("welcome");
@@ -78,12 +79,11 @@ const Chat = function(localUser, rootFunction, terminate) {
   }, [])
 
   const parentFunction = (data) => {
-    // console.log("parentFx",data.text)
     setMessage(
       {
         userId: reduxCheck.user.userName,
         text: data.text,
-        startTime: data.time,
+        start: data.time,
         time: data.now,
         star: false
       }
@@ -142,8 +142,6 @@ const Chat = function(localUser, rootFunction, terminate) {
                 className={
                   "message" +
                   (data.userId !== myId
-                    // localUser.getConnectionId()
-                    // "민성"
                     ? " left"
                     : " right")
                 }
@@ -158,8 +156,6 @@ const Chat = function(localUser, rootFunction, terminate) {
                   <div
                     className={`
                     ${data.userId !== myId
-                        // localUser.getConnectionId()
-                        // "민성"
                         ? " f-left"
                         : " f-right"
                       } ${data.star? "msg-content-star" : "msg-content"}
