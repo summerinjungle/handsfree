@@ -125,7 +125,7 @@
     /* background-color: #fffcf8 ; */
     /* background-color: #81e9b0; */
     /* padding: 0 15px; */
-    height: calc(103.1%);
+    height: calc(105.5%);
     overflow: auto;
   }
 
@@ -354,9 +354,8 @@
 .balloon{
   position: absolute;
   width: 40%;
-  left: 55%;
+  left: 56%;
   height: 79%;
-
 }
 
 

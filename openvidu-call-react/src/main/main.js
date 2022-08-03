@@ -124,7 +124,7 @@ const Main = ({ username }) => {
               {isLoading && <Loading />}
             </div>
             {/* <div className= 'div-to-fit-btn'>hello</div> */}
-            <div className='make-conference-btn-area'>
+            {/* <div className='make-conference-btn-area'> */}
         
               <button
                 className='make-conference-btn'
@@ -151,7 +151,7 @@ const Main = ({ username }) => {
               >
                 새 회의
               </button>
-            </div>
+            {/* </div> */}
             <div className='attend-meeting-btn-area'>
               <input
                 className='attend-meeting-input-area'
