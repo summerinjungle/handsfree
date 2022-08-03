@@ -98,7 +98,7 @@ export function TextEditor({ sessionId }) {
       <ReactQuill
         style={{
           width: "760px",
-          height: "480px",
+          height: "598px",
           backgroundColor: "#E3DDD5",
         }}
         ref={(el) => {

@@ -52,7 +52,7 @@
 } 
 
 .logout-btn:hover {
-	opacity: 50%;
+	opacity: 100%;
 	background-color:#F6DBD1;
 	color: #6A573D;
 }
@@ -124,7 +124,18 @@
 
 }
 
+.div-to-fit-btn {
+	background-color: green;
+	/* grid-area: 10 / 6 / 11 / 7; */
+	font-family: 'Cafe24Ssurround';
+	position: absolute;
+	height: 45px;
+	left: 37%;
+  	top: 45.5%;
+}
+
 .make-conference-btn {
+	grid-area: 10 / 6 / 11 / 7;
 	background-color:#6A573D;
 	border-radius:6px;
 	border:0px solid #6A573D;
@@ -132,15 +143,16 @@
 	/* display:inline-block; */
 	/* cursor:pointer; */
 	color:#ffffff;
-	height: 40px;
+	height: 45px;
 	/* font-family:Arial; */
 	font-size: 15px;
 	font-weight:bold;
 	padding:8px 24px;
+	margin-right: 2px;
 }
 
 .make-conference-btn:hover {
-	opacity: 50%;
+	opacity: 100%;
 	background-color:#F6DBD1;
 	color: #6A573D;
 }
@@ -153,6 +165,7 @@
 	/* outline: 1px solid orangered; */
 	border-radius:6px;
 	border: 1px solid black;
+	margin-left: 2px;
 }
 
 

@@ -123,7 +123,8 @@ const Main = ({ username }) => {
               <img className='main-logo' src={mainLogo} />
               {isLoading && <Loading />}
             </div>
-            <div className='make-conference-btn-area'>
+            {/* <div className= 'div-to-fit-btn'>hello</div> */}
+            {/* <div className='make-conference-btn-area'> */}
         
               <button
                 className='make-conference-btn'
@@ -150,7 +151,7 @@ const Main = ({ username }) => {
               >
                 새 회의
               </button>
-            </div>
+            {/* </div> */}
             <div className='attend-meeting-btn-area'>
               <input
                 className='attend-meeting-input-area'
