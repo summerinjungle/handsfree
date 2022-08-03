@@ -6,7 +6,6 @@ import mainLogo from "../../assets/images/mainLogo.png";
 import ChatItem from "../edit/chat/ChatItem.jsx";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Stop from "@material-ui/icons/Stop";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
@@ -260,7 +259,6 @@ const EditingRoom = ({ sessionId }) => {
           <div className='header-contents text-right'>
             <Button
               className='exit'
-              icon={<ExitToAppIcon />}
               onClick={() => {
                 swal({
                   title: "나가기",

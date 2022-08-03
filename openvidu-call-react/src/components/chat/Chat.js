@@ -13,8 +13,8 @@ import { getUserNameInCookie } from "../../main/cookie";
 
 const Chat = function() {
   const socketRef = useRef();
-  socketRef.current = io.connect("http://localhost:5000");
-  // socketRef.current = io.connect("https://bongbong.me/");
+  // socketRef.current = io.connect("http://localhost:5000");
+  socketRef.current = io.connect("https://bongbong.me/");
   const reduxCheck = useSelector((state) => { return state; });
   const myId = getUserNameInCookie();
   const scrollRef = React.useRef();
