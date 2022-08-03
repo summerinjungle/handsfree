@@ -22,7 +22,7 @@ const socketChat = require("./socket/socketChat");
 
 // const port = 5000;
 
-const { test } = require("./test/test.js");
+const { test } = require("./test.js");
 connect();
 test();
 // app.use(cors());
