@@ -148,6 +148,7 @@
 	font-size: 15px;
 	font-weight:bold;
 	padding:8px 24px;
+	margin-right: 2px;
 }
 
 .make-conference-btn:hover {
@@ -164,6 +165,7 @@
 	/* outline: 1px solid orangered; */
 	border-radius:6px;
 	border: 1px solid black;
+	margin-left: 2px;
 }
 
 

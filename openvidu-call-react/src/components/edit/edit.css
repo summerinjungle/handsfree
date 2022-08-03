@@ -237,6 +237,7 @@
 	/* width: 100vw; */
 }
 
+
 #editingroom-container .contents-label {
 	display: inline-block;
 	margin-top: 21px;
@@ -409,8 +410,6 @@
 .chattime-buttons:hover {
 	background-color: blanchedalmond;
 }
-
-
 
 .textedit {
 	background-color: #E3DDD5;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRef, useState } from "react";
 import markerImg from "../../../assets/images/markerImg.png";
 import { insertText } from "../TextEditor";
@@ -11,18 +11,25 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 
 const ChatItem = ({
-  recordItem,
+  key,
+  id,
+  nickname,
+  time,
+  startTime,
+  isMarker,
+  message,
+  play,
   playTimeWaveSurfer,
-  deleteChatItem,
-  prevId,
+  deleteChatItem
 }) => {
   const localInput = useRef();
   const [isEdit, setIsEdit] = useState(false); // 수정버튼 스위치 state
-  const [localContent, setLocalContent] = useState(recordItem.message); // state기본값을 content로 설정하여, 수정눌렀을때 작성했던 내용을 그대로 불러옴
+  const [localContent, setLocalContent] = useState(message);  // state기본값을 content로 설정하여, 수정눌렀을때 작성했던 내용을 그대로 불러옴
   const toggleIsEdit = () => setIsEdit(!isEdit);
   const handleEdit = () => {
     toggleIsEdit(); // 수정하고 나면 수정폼은 닫아줌
   };
+
 
   const autoResizeTextarea = () => {
     let textarea = document.querySelector(".autoTextarea");
@@ -35,10 +42,10 @@ const ChatItem = ({
   };
 
   return (
-    <div key={recordItem.key} className='relative mb-20'>
+    <div key={key} className='relative mb-20'>
       <div>
         <div className='absolute t-40'>
-          {recordItem.marker ? (
+          {isMarker ? (
             <>
               <img src={markerImg} alt='막둥이' height='12' width='12' />
             </>
@@ -51,23 +58,23 @@ const ChatItem = ({
         <div>
           <div className='inline-block vertical-align-middle margin-auto'>
             <div className='message-username inline-block margin-auto bold'>
-              {recordItem.nickname}
+              {nickname}
             </div>
             <div className='message-time inline-block margin-auto mx-10'>
-              {recordItem.time}
+              {time}
             </div>
             <div className='inline-block vertical-align-middle'>
-              {recordItem.play ? (
+              {play ? (
                 <PauseIcon
                   onClick={() =>
-                    playTimeWaveSurfer(recordItem.startTime, recordItem.id)
+                    playTimeWaveSurfer(startTime, id)
                   }
                   className='chattime-buttons'
                 />
               ) : (
                 <PlayArrowIcon
                   onClick={() =>
-                    playTimeWaveSurfer(recordItem.startTime, recordItem.id)
+                    playTimeWaveSurfer(startTime, id)
                   }
                   className='chattime-buttons'
                 />
@@ -88,7 +95,10 @@ const ChatItem = ({
                 )
               }
               <DeleteOutlineIcon
-                onClick={() => deleteChatItem(recordItem.id)}
+                onClick={() => {
+                  deleteChatItem(id)
+                  setLocalContent(message)
+                }}
                 className='chattime-buttons'
               />
               <PostAddIcon
@@ -102,7 +112,6 @@ const ChatItem = ({
           <div className='message'>
             {
               // 수정중인 상태면 ? 수정폼을 보여주고, 수정중인 상태가 아니면 : 작성한 컨텐츠를 보여줌
-
               isEdit ? (
                 <>
                   <textarea

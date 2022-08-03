@@ -6,7 +6,6 @@ import mainLogo from "../../assets/images/mainLogo.png";
 import ChatItem from "../edit/chat/ChatItem.jsx";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Stop from "@material-ui/icons/Stop";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
@@ -325,9 +324,15 @@ const EditingRoom = ({ sessionId }) => {
               {chatList &&
                 chatList.map((recordItem) => (
                   <ChatItem
-                    recordItem={recordItem}
+                    key={recordItem._id}
+                    id={recordItem.id}
+                    nickname={recordItem.nickname}
+                    time={recordItem.time}
+                    startTime={recordItem.startTime}
+                    isMarker={recordItem.marker}
+                    message={recordItem.message}
+                    paly={recordItem.play}
                     playTimeWaveSurfer={playButtonFromWaveSurfer}
-                    prevId={prevId}
                     deleteChatItem={deleteChatItem}
                   />
                 ))}
