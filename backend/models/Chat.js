@@ -5,7 +5,7 @@ const chatSchema = new Schema({
     type: Number,
     },
     roomId: {
-    type: String,
+    type: Number,
     },
     nickname: {
     type: String,
@@ -26,5 +26,7 @@ const chatSchema = new Schema({
     type: Boolean,
     },
 });
+
+// chatSchema.index({ roomId: 1, id: 1 });
 
 module.exports = model("Chat", chatSchema);

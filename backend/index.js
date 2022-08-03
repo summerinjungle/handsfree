@@ -23,6 +23,7 @@ const io = SocketIO(server, {
 const port = 5000;
 
 connect();
+
 app.use(cors());
 //application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -45,3 +46,7 @@ io.on('connection', socket => {
 app.use(function (error, req, res, next) {
   res.status(BAD_REQUEST).json({ message: error.message })
 })
+
+
+// const { test } = require("./test.js");
+// test();
