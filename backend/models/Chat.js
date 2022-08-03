@@ -5,7 +5,7 @@ const chatSchema = new Schema({
     type: Number,
     },
     roomId: {
-    type: Number,
+    type: String,
     },
     nickname: {
     type: String,
