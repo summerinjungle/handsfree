@@ -58,6 +58,8 @@ const EditingRoom = ({ sessionId }) => {
     } else {
       setIsPlay(false);
     }
+    setRecordId(-1);
+    setPrevId(-1);
   };
 
   const PlayingRecord = (startTime, id) => {
