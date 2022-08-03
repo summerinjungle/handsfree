@@ -258,7 +258,7 @@ const EditingRoom = ({ sessionId }) => {
           <div className='header-contents text-right'>
             <Button
               className='exit'
-              icon={<ExitToAppIcon />}
+              // icon={<ExitToAppIcon />}
               onClick={() => {
                 swal({
                   title: "나가기",

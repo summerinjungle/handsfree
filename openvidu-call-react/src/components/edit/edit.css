@@ -239,7 +239,7 @@
 
 #editingroom-container .contents-label {
 	display: inline-block;
-	margin-top: 15px;
+	margin-top: 21px;
 	margin-bottom: 20px;
 	font-weight: 700;
 	font-size: 22px;
@@ -415,5 +415,5 @@
 .textedit {
 	background-color: #E3DDD5;
 	width: 760px;
-	height: 522px;
+	height: 640px;
 }
