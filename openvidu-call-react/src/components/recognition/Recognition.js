@@ -5,7 +5,7 @@ const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const recognition = new SpeechRecognition();
-recognition.continuous = true;
+recognition.continuous = false;
 recognition.interimResults = true;
 recognition.lang = "ko-KR";
 
@@ -17,6 +17,10 @@ class Recognition extends PureComponent {
 
   componentDidMount() {
     recognition.start();
+
+    recognition.onaudioend = () => {
+      this.componentDidMount();
+    };
 
     // 음성인식 시작 로그 찍어야함
     recognition.onstart = () => {
