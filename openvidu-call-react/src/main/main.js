@@ -157,6 +157,11 @@ const Main = ({ username }) => {
                 className='attend-meeting-input-area'
                 placeholder='참여코드 입력'
                 onChange={(event) => setEnterCode(event.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    enterDebounceRoom();
+                  }
+                }}
               ></input>
               <button
                 className='attend-meeting-btn'
