@@ -159,6 +159,7 @@ const Main = ({ username }) => {
                 onChange={(event) => setEnterCode(event.target.value)}
                 onKeyPress={(e) => {
                   if (e.key === "Enter") {
+                    setIsLoading(true);
                     enterDebounceRoom();
                   }
                 }}
