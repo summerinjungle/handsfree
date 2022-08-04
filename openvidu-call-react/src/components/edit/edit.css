@@ -263,7 +263,7 @@
 	display: inline-block;
 	margin-bottom: 10px;
 	position: absolute;
-	left: 23%;
+	left: 25%;
 	width: 40%;
 	/* border-right: 2px solid #000000; */
 	/* border-color: #F5F0E8; */
@@ -300,7 +300,7 @@
 }
 
 #editingroom-container .contents-right .recorditems {
-	height: 81%;
+	height: 88%;
 	/* background-color: #6A573D; */
 	overflow: scroll;
 }
