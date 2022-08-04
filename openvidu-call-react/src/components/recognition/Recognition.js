@@ -18,10 +18,6 @@ class Recognition extends PureComponent {
   componentDidMount() {
     recognition.start();
 
-    recognition.onaudioend = () => {
-      this.componentDidMount();
-    };
-
     // 음성인식 시작 로그 찍어야함
     recognition.onstart = () => {
       console.log("onstart 함수 ! ");
