@@ -378,6 +378,7 @@ class VideoRoomHandsFree extends Component {
         // [취소] 클릭 -> Lobby로 이동
         this.props.navigate("");
       }
+      window.location.reload();
     }
   };
 
@@ -658,7 +659,9 @@ class VideoRoomHandsFree extends Component {
               rootFunction={this.getMessageList}
               terminate={this.state.terminate}
             /> */}
-            <Chat />
+            {
+              !this.state.terminate?<Chat />:(null)
+            }
             <button
               className='copy'
               onClick={() => {
