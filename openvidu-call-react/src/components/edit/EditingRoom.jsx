@@ -331,7 +331,7 @@ const EditingRoom = ({ sessionId }) => {
                     startTime={recordItem.startTime}
                     isMarker={recordItem.marker}
                     message={recordItem.message}
-                    paly={recordItem.play}
+                    play={recordItem.play}
                     playTimeWaveSurfer={playButtonFromWaveSurfer}
                     deleteChatItem={deleteChatItem}
                   />
