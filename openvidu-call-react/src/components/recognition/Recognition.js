@@ -5,7 +5,7 @@ const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const recognition = new SpeechRecognition();
-recognition.continuous = false;
+recognition.continuous = true;
 recognition.interimResults = true;
 recognition.lang = "ko-KR";
 
