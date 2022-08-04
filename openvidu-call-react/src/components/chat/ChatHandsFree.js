@@ -18,8 +18,8 @@ class ChatHandsFree extends Component {
     isStar: false,
     isRecordMute: false,
     startTime: "",
-    left: 0,
-    right: "",
+    start: 0,
+    end: "",
     msgIndex: 0,
   };
   chatScroll = React.createRef();
@@ -43,8 +43,8 @@ class ChatHandsFree extends Component {
           this.setState({
             isRecordMute: false,
             recordMuteList: this.state.recordMuteList.concat({
-              left: this.state.left,
-              right: this.state.right,
+              start: this.state.start,
+              end: this.state.end,
             }),
           });
         }
@@ -99,8 +99,8 @@ class ChatHandsFree extends Component {
     if (prevProps.terminate !== this.props.terminate) {
       if (this.state.isRecog === false) {
         this.state.recordMuteList.push({
-          left: this.state.left,
-          right: new Date().getTime() + 20000,
+          start: this.state.start,
+          end: new Date().getTime() + 20000,
         });
       }
       const chatInfo = {
@@ -167,7 +167,7 @@ class ChatHandsFree extends Component {
     ) {
       if (this.state.isRecog === true) {
         this.setState({
-          left: new Date().getTime() + 1000,
+          start: new Date().getTime() + 1000,
         });
       }
       this.setState({ isRecog: false });
@@ -181,7 +181,7 @@ class ChatHandsFree extends Component {
     ) {
       if (this.state.isRecog === false) {
         this.setState({
-          right: new Date().getTime() + 1000,
+          end: new Date().getTime() + 1000,
           isRecordMute: true,
         });
       }
