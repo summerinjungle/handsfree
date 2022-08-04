@@ -67,10 +67,10 @@ const roomSchema = new Schema({
   ],
   recordMuteList: [
     new Schema({
-      left: {
+      start: {
         type: String,
       },
-      right: {
+      end: {
         type: String,
       },
     }),

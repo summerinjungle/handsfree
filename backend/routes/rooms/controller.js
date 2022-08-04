@@ -109,69 +109,70 @@ exports.createChat = async (req, res, next) => {
 };
 
 /* 새로 만든 채팅 서버 버전 아래 */
-exports.createChat = async (req, res, next) => {
-  const roomId = req.params.roomId;
-  try {
-    const chat = await chatServices.createChat(
-      roomId,
-      req.body.id,
-      req.body.nickname,
-      req.body.message,
-      req.body.startTime,
-      req.body.time
-    );
-    if (!chat) {
-      res.status(BAD_REQUEST).json({
-        message: "잘못된 접근입니다",
-      });
-      return;
-    }
-    res.status(CREATED).json({
-      message: "새로운 채팅이 저장되었습니다",
-    });
-  } catch (err) {
-    throw new Error("올바른 채팅 정보가 아닙니다");
-  }
-};
+// exports.createChat = async (req, res, next) => {
+//   const roomId = req.params.roomId;
+//   try {
+//     const chat = await chatServices.createChat(
+//       roomId,
+//       req.body.id,
+//       req.body.nickname,
+//       req.body.message,
+//       req.body.startTime,
+//       req.body.time
+//     );
+//     if (!chat) {
+//       res.status(BAD_REQUEST).json({
+//         message: "잘못된 접근입니다",
+//       });
+//       return;
+//     }
+//     res.status(CREATED).json({
+//       message: "새로운 채팅이 저장되었습니다",
+//     });
+//   } catch (err) {
+//     throw new Error("올바른 채팅 정보가 아닙니다");
+//   }
+// };
 
-exports.markChat = async (req, res, next) => {
-  const roomId = req.params.roomId;
-  const chatId = req.params.chatId;
-  chatServices.mark(roomId, chatId);
-}
+// exports.markChat = async (req, res, next) => {
+//   const roomId = req.params.roomId;
+//   const chatId = req.params.chatId;
+//   chatServices.mark(roomId, chatId);
+// }
 
 
-exports.createMuteTime = async (req, res, next) => {
-  const roomId = req.params.roomId;
-  const muteTime = await chatServices.createMuteTime(
-    roomId,
-    req.body.start,
-    req.body.end,
-  );
-  if (!muteTime) {
-    res.status(BAD_REQUEST).json({
-      message: "잘못된 접근입니다",
-    });
-    return;
-  }
-  res.status(CREATED).json({
-    message: "MUTE TIME이 저장되었습니다",
-  });
-};
+// exports.createMuteTime = async (req, res, next) => {
+//   const roomId = req.params.roomId;
+//   const muteTime = await chatServices.createMuteTime(
+//     roomId,
+//     req.body.start,
+//     req.body.end,
+//   );
+//   if (!muteTime) {
+//     res.status(BAD_REQUEST).json({
+//       message: "잘못된 접근입니다",
+//     });
+//     return;
+//   }
+//   res.status(CREATED).json({
+//     message: "MUTE TIME이 저장되었습니다",
+//   });
+// };
 
-exports.getEditingRoom = async (req, res, next) => {
-  const roomId = req.params.roomId;
-  const editingRoom = await chatServices.toEditingRoom(roomId);
-  if (!editingRoom) {
-    res.status(BAD_REQUEST).json({
-      message: "잘못된 접근입니다",
-    });
-    return;
-  }
-  res.status(OK).json({
-    editingRoom,
-  });
-};
+// exports.getEditingRoom = async (req, res, next) => {
+//   const roomId = req.params.roomId;
+//   const editingRoom = await chatServices.toEditingRoom(roomId);
+//   console.log("여기까지 왔습니다. 컨트롤러")
+//   if (!editingRoom) {
+//     res.status(BAD_REQUEST).json({
+//       message: "잘못된 접근입니다",
+//     });
+//     return;
+//   }
+//   res.status(OK).json({
+//     editingRoom,
+//   });
+// };
 
 
 

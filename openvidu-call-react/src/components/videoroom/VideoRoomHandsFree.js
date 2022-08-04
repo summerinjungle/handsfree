@@ -654,14 +654,14 @@ class VideoRoomHandsFree extends Component {
         <div className='soundScribe'></div>
         {localUser !== undefined && localUser.getStreamManager() !== undefined && (
           <div className='OT_root OT_publisher custom-class'>
-            {/* <ChatHandsFree
+            <ChatHandsFree
               localUser={localUser}
               rootFunction={this.getMessageList}
               terminate={this.state.terminate}
-            /> */}
-            {
+            />
+            {/* {
               !this.state.terminate?<Chat />:(null)
-            }
+            } */}
             <button
               className='copy'
               onClick={() => {
