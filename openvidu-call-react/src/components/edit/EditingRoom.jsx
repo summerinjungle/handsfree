@@ -90,8 +90,9 @@ const EditingRoom = ({ sessionId }) => {
   };
 
   const playButtonFromWaveSurfer = (startTime, id) => {
+    let floorStartTime = Math.floor(startTime)
     if (wavesurfer.current.isPlaying()) {
-      PlayingRecord(startTime, id);
+      PlayingRecord(floorStartTime, id);
     } else {
       wavesurfer.current.playPause();
       setChatList((chatList) =>
@@ -101,7 +102,7 @@ const EditingRoom = ({ sessionId }) => {
       );
       setPlayItem(true);
       setIsPlay(true);
-      wavesurfer.current.play(parseFloat(startTime - sessionStartTime) / 1000);
+      wavesurfer.current.play(parseFloat(floorStartTime - sessionStartTime) / 1000);
     }
 
     setRecordId(id);
