@@ -166,18 +166,23 @@ const EditingRoom = ({ sessionId }) => {
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
         setChatList(chatList);
+
         for (let i = 0; i < recordMuteList.length; i++) {
-          let currLeft;
-          if (recordMuteList[i].start == 0) {
+          let currLeft =
+            parseFloat(recordMuteList[i].start - sessionStartTime) / 1000;
+          let currRight =
+            parseFloat(recordMuteList[i].end - sessionStartTime) / 1000;
+
+          if (currLeft < 0) {
             currLeft = 0;
-          } else {
-            currLeft =
-              parseFloat(recordMuteList[i].start - sessionStartTime) / 1000;
+          }
+          if (currRight < 0) {
+            currRight = 0;
           }
 
           wavesurfer.current.regions.add({
             start: currLeft,
-            end: parseFloat(recordMuteList[i].end - sessionStartTime) / 1000,
+            end: currRight,
             // color: "#CEBFAC",
             color: "rgba(216, 207, 182, 0.85)",
             drag: false,

@@ -6,6 +6,8 @@ import yellow from "@material-ui/core/colors/yellow";
 import isWriting from "../../assets/images/isWriting.png";
 import isNotWriting from "../../assets/images/isNotWriting.png";
 import Balloons from "../../assets/images/Balloons.png";
+import { throttle } from "lodash";
+import { debounce } from "lodash";
 
 class ChatHandsFree extends Component {
   state = {
@@ -13,7 +15,7 @@ class ChatHandsFree extends Component {
     starList: [],
     recordMuteList: [],
     message: "",
-    isRecog: false,
+    isRecog: true,
     startRecord: false,
     isStar: false,
     isRecordMute: false,
@@ -37,6 +39,8 @@ class ChatHandsFree extends Component {
           isRecordMute: data.isRecordMute,
           startRecord: data.startRecord,
         });
+        console.log("막둥이 기록 상태1", this.state.isRecog);
+        console.log("막둥이 기록 상태2", data.isRecord);
         if (data.isRecord === false) return;
 
         if (this.state.isRecordMute === true) {
@@ -151,59 +155,226 @@ class ChatHandsFree extends Component {
     this.props.closeBtn(undefined);
   };
 
+  debounce = (cb, delay = 3500) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        cb(...args);
+      }, delay);
+    };
+  };
+  throttle = (cb, delay = 3500) => {
+    let shouldWait = false;
+    let waitingArgs;
+    const timeoutFunc = () => {
+      if (waitingArgs == null) {
+        shouldWait = false;
+      } else {
+        cb(...waitingArgs);
+        waitingArgs = null;
+        setTimeout(timeoutFunc, delay);
+      }
+    };
+
+    return (...args) => {
+      if (shouldWait) {
+        waitingArgs = args;
+        return;
+      }
+
+      cb(...args);
+      this.sendMessage();
+      shouldWait = true;
+      setTimeout(timeoutFunc, delay);
+    };
+  };
+
+  debouncedStopRecord = debounce(
+    () => {
+      this.stopRecording();
+    },
+    5000,
+    {
+      leading: true,
+      trailing: false,
+    }
+  );
+
+  debouncedStartRecord = debounce(
+    () => {
+      this.startRecording();
+    },
+    5000,
+    {
+      leading: true,
+      trailing: false,
+    }
+  );
+
+  debouncedMarkStar = debounce(
+    () => {
+      this.markStar();
+    },
+    5000,
+    {
+      leading: true,
+      trailing: false,
+    }
+  );
+
+  throttleStopRecord = throttle(() => {
+    this.stopRecording();
+  }, 5000);
+
+  throttleStartRecord = throttle(() => {
+    this.startRecording();
+  }, 5000);
+
+  throttleMarkStar = throttle(() => {
+    this.markStar();
+  }, 5000);
+
+  dobouncing = debounce(
+    (text) => {
+      console.log("디바운싱~");
+      if (
+        text.includes("막둥아 기록 중지") ||
+        text.includes("중지") ||
+        text.includes("박동화 기록 중지") ||
+        text.includes("기록 중지") ||
+        text.includes("막둥아 중지") ||
+        text.includes("박종화 기록 중지")
+      ) {
+        console.log("-1-1");
+        this.debouncedStopRecord();
+        // debounce(() => {
+        //   console.log("111");
+        //   this.stopRecording();
+        // }, 5000);
+      } else if (
+        text.includes("막둥아 기록 시작") ||
+        text.includes("시작") ||
+        text.includes("박동화 기록 시작") ||
+        text.includes("기록 시작") ||
+        text.includes("막둥아 시작") ||
+        text.includes("박종화 기록 시작")
+      ) {
+        this.debouncedStartRecord();
+        // debounce(() => {
+        //   this.startRecording();
+        // }, 5000);
+      } else if (
+        text.includes("막둥아 발표") ||
+        text.includes("막둥아 대표") ||
+        text.includes("막둥아 별표") ||
+        text.includes("박동화 발표") ||
+        text.includes("박동화 대표") ||
+        text.includes("박동화 별표") ||
+        text.includes("박종화 발표") ||
+        text.includes("박종화 대표") ||
+        text.includes("박종화 별표")
+      ) {
+        this.debouncedMarkStar();
+        // this.debounce(this.markStar());
+      }
+    },
+    3500,
+    {
+      leading: true,
+      trailing: false,
+    }
+  );
+
+  startRecording = () => {
+    if (this.state.isRecog === false) {
+      this.setState({
+        end: new Date().getTime() + 1000,
+        isRecordMute: true,
+      });
+    }
+    this.setState({
+      isRecog: true,
+      startRecord: true,
+    });
+    this.sendMessage();
+  };
+
+  stopRecording = () => {
+    console.log(11);
+    if (this.state.isRecog === true) {
+      this.setState({
+        start: new Date().getTime() + 1000,
+      });
+    }
+    console.log(22);
+    this.setState({ isRecog: false });
+    console.log(33);
+    this.sendMessage();
+    console.log(44);
+  };
+
+  markStar = () => {
+    this.setState({ isStar: true });
+    this.sendMessage();
+  };
+
   parentFunction = (data) => {
     console.log("text ==", data.text);
     this.setState({
       message: data.text,
       startTime: data.startTime,
     });
-    if (
-      data.text.includes("막둥아 기록 중지") ||
-      data.text.includes("막둥아 기록중지") ||
-      data.text.includes("박동화 기록 중지") ||
-      data.text.includes("통화 기록 중지") ||
-      data.text.includes("막둥아 중지") ||
-      data.text.includes("박종화 기록 중지")
-    ) {
-      if (this.state.isRecog === true) {
-        this.setState({
-          start: new Date().getTime() + 1000,
-        });
-      }
-      this.setState({ isRecog: false });
-    } else if (
-      data.text.includes("막둥아 기록 시작") ||
-      data.text.includes("막둥아 기록시작") ||
-      data.text.includes("박동화 기록 시작") ||
-      data.text.includes("통화 기록 시작") ||
-      data.text.includes("막둥아 시작") ||
-      data.text.includes("박종화 기록 시작")
-    ) {
-      if (this.state.isRecog === false) {
-        this.setState({
-          end: new Date().getTime() + 1000,
-          isRecordMute: true,
-        });
-      }
-      this.setState({
-        isRecog: true,
-        startRecord: true,
-      });
-    } else if (
-      data.text.includes("막둥아 발표") ||
-      data.text.includes("막둥아 대표") ||
-      data.text.includes("막둥아 별표") ||
-      data.text.includes("박동화 발표") ||
-      data.text.includes("박동화 대표") ||
-      data.text.includes("박동화 별표") ||
-      data.text.includes("박종화 발표") ||
-      data.text.includes("박종화 대표") ||
-      data.text.includes("박종화 별표")
-    ) {
-      this.setState({ isStar: true });
+
+    if (data.text.includes("막둥아")) {
+      this.dobouncing(data.text);
+    } else {
+      this.sendMessage();
     }
 
-    this.sendMessage();
+    //  if (
+    //    data.text.includes("막둥아 기록 중지") ||
+    //    data.text.includes("중지") ||
+    //    data.text.includes("박동화 기록 중지") ||
+    //    data.text.includes("기록 중지") ||
+    //    data.text.includes("막둥아 중지") ||
+    //    data.text.includes("박종화 기록 중지")
+    //  ) {
+    //    console.log("-1-1");
+    //    this.throttleStopRecord();
+    //    // this.debouncedStopRecord();
+    //    // debounce(() => {
+    //    //   console.log("111");
+    //    //   this.stopRecording();
+    //    // }, 5000);
+    //  } else if (
+    //    data.text.includes("막둥아 기록 시작") ||
+    //    data.text.includes("시작") ||
+    //    data.text.includes("박동화 기록 시작") ||
+    //    data.text.includes("기록 시작") ||
+    //    data.text.includes("막둥아 시작") ||
+    //    data.text.includes("박종화 기록 시작")
+    //  ) {
+    //    this.throttleStartRecord();
+    //    // this.debouncedStartRecord();
+    //    // debounce(() => {
+    //    //   this.startRecording();
+    //    // }, 5000);
+    //  } else if (
+    //    data.text.includes("막둥아 발표") ||
+    //    data.text.includes("막둥아 대표") ||
+    //    data.text.includes("막둥아 별표") ||
+    //    data.text.includes("박동화 발표") ||
+    //    data.text.includes("박동화 대표") ||
+    //    data.text.includes("박동화 별표") ||
+    //    data.text.includes("박종화 발표") ||
+    //    data.text.includes("박종화 대표") ||
+    //    data.text.includes("박종화 별표")
+    //  ) {
+    //    this.throttleMarkStar();
+    //    // this.debouncedMarkStar();
+    //    // this.debounce(this.markStar());
+    //  }
   };
 
   render() {
@@ -213,7 +384,8 @@ class ChatHandsFree extends Component {
         <div className='recording'>
           <div className='writingStatus'>
             <div
-            className={`mackdoong-txt ${this.state.isRecog ? "colorYellow" : "colorRed"
+              className={`mackdoong-txt ${
+                this.state.isRecog ? "colorYellow" : "colorRed"
               }`}
             >
               {/* {this.state.isRecog ? "ON" : "OFF"} */}
@@ -228,17 +400,15 @@ class ChatHandsFree extends Component {
               />
             </div>
             <div className='mackdoong-txt2'>막둥이는</div>
-            {
-              this.state.isRecog ? (
-                <div className='mackdoong-txt-rec' style={{ marginBottom: 4 }}>
-                  기록중
-                </div>
-                ):(
-                <div className='mackdoong-txt-noRec' style={{ marginBottom: 4 }}>
-                  쉬는중
-                </div>
-                )
-            }
+            {this.state.isRecog ? (
+              <div className='mackdoong-txt-rec' style={{ marginBottom: 4 }}>
+                기록중
+              </div>
+            ) : (
+              <div className='mackdoong-txt-noRec' style={{ marginBottom: 4 }}>
+                쉬는중
+              </div>
+            )}
           </div>
         </div>
         {/* <button onClick={() => {

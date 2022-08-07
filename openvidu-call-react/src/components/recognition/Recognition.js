@@ -20,13 +20,13 @@ class Recognition extends PureComponent {
 
     // 음성인식 시작 로그 찍어야함
     recognition.onstart = () => {
-      console.log("onstart 함수 ! ");
+      // console.log("onstart 함수 ! ");
       sound_detect_check = false;
     };
 
     // 음성 인식 서비스의 견결이 끊겼을 때 실행된다.
     recognition.onend = () => {
-      console.log(" end 함수 !!", recognition);
+      // console.log(" end 함수 !!", recognition);
       if (this.state.transcript !== "") {
         const sttData = {
           text: this.state.transcript,
@@ -40,8 +40,9 @@ class Recognition extends PureComponent {
       recognition.start();
     };
 
+    //  음성 인식 서비스가 결과를 반환할 때 발생합니다.
     recognition.onresult = (event) => {
-      console.log("result 함수 ");
+      // console.log("result 함수 ");
       if (sound_detect_check !== true) {
         this.setState({
           start_time: new Date().getTime(),
@@ -76,7 +77,6 @@ class Recognition extends PureComponent {
   // };
 
   render() {
-    console.log("음성 인식 컴포넌트 !");
     return (
       <div>
         <script></script>
