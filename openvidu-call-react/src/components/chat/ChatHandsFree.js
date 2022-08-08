@@ -8,6 +8,11 @@ import isNotWriting from "../../assets/images/isNotWriting.png";
 import Balloons from "../../assets/images/Balloons.png";
 import { throttle } from "lodash";
 import { debounce } from "lodash";
+import {
+  ToastsContainer,
+  ToastsStore,
+  ToastsContainerPosition,
+} from "react-toasts";
 
 class ChatHandsFree extends Component {
   state = {
@@ -39,8 +44,6 @@ class ChatHandsFree extends Component {
           isRecordMute: data.isRecordMute,
           startRecord: data.startRecord,
         });
-        console.log("막둥이 기록 상태1", this.state.isRecog);
-        console.log("막둥이 기록 상태2", data.isRecord);
         if (data.isRecord === false) return;
 
         if (this.state.isRecordMute === true) {
@@ -155,15 +158,6 @@ class ChatHandsFree extends Component {
     this.props.closeBtn(undefined);
   };
 
-  debounce = (cb, delay = 3500) => {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        cb(...args);
-      }, delay);
-    };
-  };
   throttle = (cb, delay = 3500) => {
     let shouldWait = false;
     let waitingArgs;
@@ -235,56 +229,89 @@ class ChatHandsFree extends Component {
     this.markStar();
   }, 5000);
 
-  dobouncing = debounce(
-    (text) => {
-      console.log("디바운싱~");
-      if (
-        text.includes("막둥아 기록 중지") ||
-        text.includes("중지") ||
-        text.includes("박동화 기록 중지") ||
-        text.includes("기록 중지") ||
-        text.includes("막둥아 중지") ||
-        text.includes("박종화 기록 중지")
-      ) {
-        console.log("-1-1");
-        this.debouncedStopRecord();
-        // debounce(() => {
-        //   console.log("111");
-        //   this.stopRecording();
-        // }, 5000);
-      } else if (
-        text.includes("막둥아 기록 시작") ||
-        text.includes("시작") ||
-        text.includes("박동화 기록 시작") ||
-        text.includes("기록 시작") ||
-        text.includes("막둥아 시작") ||
-        text.includes("박종화 기록 시작")
-      ) {
-        this.debouncedStartRecord();
-        // debounce(() => {
-        //   this.startRecording();
-        // }, 5000);
-      } else if (
-        text.includes("막둥아 발표") ||
-        text.includes("막둥아 대표") ||
-        text.includes("막둥아 별표") ||
-        text.includes("박동화 발표") ||
-        text.includes("박동화 대표") ||
-        text.includes("박동화 별표") ||
-        text.includes("박종화 발표") ||
-        text.includes("박종화 대표") ||
-        text.includes("박종화 별표")
-      ) {
-        this.debouncedMarkStar();
-        // this.debounce(this.markStar());
+  debounceLeading = (cb, leading = false) => {
+    let timer;
+    return (...args) => {
+      let callNow = leading && !timer;
+      const later = () => {
+        timer = null;
+        if (!leading) {
+          cb(...args);
+        }
+      };
+      clearTimeout(timer);
+      timer = setTimeout(later, 3500);
+      if (callNow) {
+        cb(...args);
       }
-    },
-    3500,
-    {
-      leading: true,
-      trailing: false,
+    };
+  };
+
+  myThrottle = (cb, delay = 2000) => {
+    let shouldWait = false;
+    let waitingArgs;
+    const timeoutFunc = () => {
+      if (waitingArgs == null) {
+        shouldWait = false;
+      } else {
+        cb(...waitingArgs);
+        waitingArgs = null;
+        setTimeout(timeoutFunc, delay);
+        ToastsStore.info("막둥이를 소중히 다뤄주세요.");
+      }
+    };
+
+    return (...args) => {
+      if (shouldWait) {
+        waitingArgs = args;
+        return;
+      }
+
+      cb(...args);
+      shouldWait = true;
+
+      setTimeout(timeoutFunc, delay);
+    };
+  };
+
+  makdoongDebounce = this.myThrottle((text) => {
+    this.debouncing(text);
+  });
+
+  debouncing = (text) => {
+    console.log("디바운싱~");
+
+    if (
+      text.includes(" 기록 중지") ||
+      text.includes("중지") ||
+      text.includes("정지")
+    ) {
+      // this.debouncedStopRecord();
+      this.stopRecording();
+      // debounce(() => {
+      //   console.log("111");
+      //   this.stopRecording();
+      // }, 5000);
+    } else if (
+      text.includes(" 시작") ||
+      text.includes(" 기록 시작") ||
+      text.includes(" 시작 ")
+    ) {
+      // this.debouncedStartRecord();
+      // debounce(() => {
+      this.startRecording();
+      // }, 5000);
+    } else if (
+      text.includes("발표") ||
+      text.includes("대표") ||
+      text.includes("별표")
+    ) {
+      this.markStar();
+      // this.debouncedMarkStar();
+      // this.debounce(this.markStar());
     }
-  );
+    // ToastsStore.info("막둥이를 소중히 다뤄주세요.");
+  };
 
   startRecording = () => {
     if (this.state.isRecog === false) {
@@ -301,17 +328,13 @@ class ChatHandsFree extends Component {
   };
 
   stopRecording = () => {
-    console.log(11);
     if (this.state.isRecog === true) {
       this.setState({
         start: new Date().getTime() + 1000,
       });
     }
-    console.log(22);
     this.setState({ isRecog: false });
-    console.log(33);
     this.sendMessage();
-    console.log(44);
   };
 
   markStar = () => {
@@ -326,59 +349,24 @@ class ChatHandsFree extends Component {
       startTime: data.startTime,
     });
 
-    if (data.text.includes("막둥아")) {
-      this.dobouncing(data.text);
+    if (
+      data.text.includes("막둥아") ||
+      data.text.includes("통화") ||
+      data.text.includes("박종화") ||
+      data.text.includes("박동화") ||
+      data.text.includes("박종학") ||
+      data.text.includes("박동하")
+    ) {
+      console.log("막둥이 로직");
+      this.makdoongDebounce(data.text);
+      // this.debounceLeading(this.debouncing(data.text));
+      // this.debouncing(data.text);
     } else {
       this.sendMessage();
     }
-
-    //  if (
-    //    data.text.includes("막둥아 기록 중지") ||
-    //    data.text.includes("중지") ||
-    //    data.text.includes("박동화 기록 중지") ||
-    //    data.text.includes("기록 중지") ||
-    //    data.text.includes("막둥아 중지") ||
-    //    data.text.includes("박종화 기록 중지")
-    //  ) {
-    //    console.log("-1-1");
-    //    this.throttleStopRecord();
-    //    // this.debouncedStopRecord();
-    //    // debounce(() => {
-    //    //   console.log("111");
-    //    //   this.stopRecording();
-    //    // }, 5000);
-    //  } else if (
-    //    data.text.includes("막둥아 기록 시작") ||
-    //    data.text.includes("시작") ||
-    //    data.text.includes("박동화 기록 시작") ||
-    //    data.text.includes("기록 시작") ||
-    //    data.text.includes("막둥아 시작") ||
-    //    data.text.includes("박종화 기록 시작")
-    //  ) {
-    //    this.throttleStartRecord();
-    //    // this.debouncedStartRecord();
-    //    // debounce(() => {
-    //    //   this.startRecording();
-    //    // }, 5000);
-    //  } else if (
-    //    data.text.includes("막둥아 발표") ||
-    //    data.text.includes("막둥아 대표") ||
-    //    data.text.includes("막둥아 별표") ||
-    //    data.text.includes("박동화 발표") ||
-    //    data.text.includes("박동화 대표") ||
-    //    data.text.includes("박동화 별표") ||
-    //    data.text.includes("박종화 발표") ||
-    //    data.text.includes("박종화 대표") ||
-    //    data.text.includes("박종화 별표")
-    //  ) {
-    //    this.throttleMarkStar();
-    //    // this.debouncedMarkStar();
-    //    // this.debounce(this.markStar());
-    //  }
   };
 
   render() {
-    console.log("채팅 컴포넌트 호출");
     return (
       <div className='status-container'>
         <div className='recording'>

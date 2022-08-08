@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { removeTokenInCookie } from "./cookie";
 import swal from "sweetalert";
 import Loading from "./Loading";
+import { debounce } from "lodash";
 
 const Main = ({ username }) => {
   let navigate = useNavigate();
@@ -83,13 +84,39 @@ const Main = ({ username }) => {
       .catch(function (err) {});
   };
 
-  const createDebounceRoom = debounce(() => {
-    createMeeting();
-  });
+  const createDebounceRoom = debounce(
+    () => {
+      createMeeting();
+    },
+    800,
+    {
+      leading: true,
+      trailing: false,
+    }
+  );
 
-  const enterDebounceRoom = debounce(() => {
+  const enterDebounceRoom = debounceLeading(() => {
     enterMeeting();
   });
+
+  function debounceLeading(cb, leading = false) {
+    let timer;
+    return (...args) => {
+      let callNow = leading && !timer;
+      const later = () => {
+        timer = null;
+        if (!leading) {
+          cb(...args);
+        }
+      };
+
+      clearTimeout(timer);
+      timer = setTimeout(later, 6000);
+      if (callNow) {
+        cb(...args);
+      }
+    };
+  }
 
   function debounce(cb, delay = 800) {
     let timer;

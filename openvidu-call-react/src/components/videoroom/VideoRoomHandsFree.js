@@ -250,13 +250,11 @@ class VideoRoomHandsFree extends Component {
   };
 
   getMessageList = async (chatData) => {
-    console.log("#@@@@@@@ getMessage", chatData);
     await axios
       .post(`/api/rooms/${this.props.sessionId}/chat`, {
         chatList: chatData.messageList,
         starList: chatData.starList,
         recordMuteList: chatData.recordMuteList,
-        // recordingUrl: OPENVIDU_SERVER_URL + "/recordings/" + sessionId + "/ownweapon.webm",  추가됨
       })
       .then((res) => {})
       .catch((err) => {
@@ -288,6 +286,7 @@ class VideoRoomHandsFree extends Component {
       } else {
         this.props.navigate("/");
       }
+      window.location.reload();
     });
   };
 
@@ -297,20 +296,6 @@ class VideoRoomHandsFree extends Component {
       this.startRecordingChk(this.props.sessionId);
       this.setState({
         terminate: true,
-      });
-      swal({
-        title: "회의종료",
-        text: "편집실로 가시겠습니까?",
-        icon: "warning",
-        buttons: true,
-        // dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
-          this.props.navigate("meeting/" + this.props.sessionId + "/edit");
-        } else {
-          this.props.navigate("/");
-        }
-        window.location.reload();
       });
     } else {
       if (window.confirm("회의실에서 나가시겠습니까?")) {
