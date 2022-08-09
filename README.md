@@ -52,7 +52,7 @@
 ![img width="230"](https://user-images.githubusercontent.com/70103130/183707890-093ae239-adb6-4f0f-b547-b8f8f326fb17.png) | 
 ![img width="230"](https://user-images.githubusercontent.com/70103130/183707492-3d754899-ca6d-418f-8214-785e7ca888eb.png) |
 ![img width="230"](https://user-images.githubusercontent.com/70103130/183708261-c8712785-ae37-4095-9a8d-2558bde6feb6.png) |
-| [zaehuun](https://github.com/zaehuun) | [connieya](https://github.com/connieya) | [Piousangel](https://github.com/Piousangel) | [hanbyeol](https://github.com/Narastro) |[minsung37](https://github.com/minsung37) | [onxmoreplz](https://github.com/onxmoreplz) |
+| [bong6981](https://github.com/bong6981) |[connieya](https://github.com/connieya)|[Piousangel](https://github.com/Piousangel)|[minsung37](https://github.com/minsung37) | [onxmoreplz](https://github.com/onxmoreplz) |
  
   </div>
 
