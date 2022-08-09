@@ -22,7 +22,7 @@
     </th>
     <th>
       <div>
-        <img src="https://user-images.githubusercontent.com/66074802/144662748-ef6b95fd-24d4-49ea-a11e-0f47821fc46a.gif" width="300" height="180">
+        <img src="https://user-images.githubusercontent.com/70103130/183706777-3b66bb7a-a0c3-4613-9578-21ec257288d5.gif" width="300" height="180">
       </div>
       음성과 채팅으로 대화를 나눠요!
     </th>
@@ -31,13 +31,13 @@
   <tr>
     <th>
       <div>
-        <img src="https://user-images.githubusercontent.com/66074802/145715161-51255c33-5c39-45ad-9235-91391536d47e.gif" width="300" height="180">
+        <img src="https://user-images.githubusercontent.com/70103130/183706955-ab534be4-199a-4d24-b8ad-37b5dbb662c2.gif" width="300" height="180">
       </div>
       온라인 불멍과 함께 캠프파이어를 체험해보세요!
     </th>
     <th>
       <div>
-       <img src="https://user-images.githubusercontent.com/66074802/145715158-766ec4dd-8e56-4695-8c90-6e14c0ad8523.gif" width="300" height="180">
+       <img src="https://user-images.githubusercontent.com/70103130/183707112-46d8891c-bd29-40bd-bd6b-261a26135039.gif" width="300" height="180">
       </div>
        직접 호스트가 되어 방을 운영해보세요!
     </th>
