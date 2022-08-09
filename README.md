@@ -1,11 +1,7 @@
 <div align="center">
   <img src="https://user-images.githubusercontent.com/70103130/183700606-a925c900-034c-4624-927d-f071818b8317.png" width="500">  
-  <h2>타닥타닥 모닥불 앞에서 타닥타닥 코딩하는 서비스</h2>
+  <h2>화상회의록 자동 작성  서비스</h2>
   <br>
-  <img style="vertical-align:middle" src="https://user-images.githubusercontent.com/66074802/139094873-47da92d6-ebd3-4307-b83e-08d6a648a62b.png" width="50"> 
-  <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fboostcampwm-2021%2Fweb15-TadakTadak&count_bg=%23FF2B03&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a> 
-  <img src="https://img.shields.io/badge/release-0.2.3-339933">  
-<!--   <img src="https://github.com/boostcampwm-2021/web15-TadakTadak/actions/workflows/<WORKFLOW_FILE>/badge.svg">   -->
   <br><br>
 </div>
 
