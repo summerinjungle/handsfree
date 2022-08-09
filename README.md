@@ -60,4 +60,6 @@
 ## 아키텍처
 ![infra](https://user-images.githubusercontent.com/70103130/183704016-48b5712f-1fdd-4262-8b2d-86d1f7dd8647.png)
 ## 포스터
-![infra](https://user-images.githubusercontent.com/70103130/183706421-aefc3283-f4fe-4223-9286-20bb279172a5.jpg)
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/70103130/183706421-aefc3283-f4fe-4223-9286-20bb279172a5.jpg"> 
+
