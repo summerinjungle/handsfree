@@ -16,13 +16,13 @@
   <tr>
     <th>
       <div>
-        <img src="https://user-images.githubusercontent.com/70103130/183704737-21032649-0a3d-492b-9f69-e01062a671a6.gif" width="300" height="180">
+        <img src="https://user-images.githubusercontent.com/70103130/183706777-3b66bb7a-a0c3-4613-9578-21ec257288d5.gif" width="300" height="180">
       </div>
       음성이 실시간으로 채팅으로 변환할 수 있습니다.
     </th>
     <th>
       <div>
-        <img src="https://user-images.githubusercontent.com/70103130/183706777-3b66bb7a-a0c3-4613-9578-21ec257288d5.gif" width="300" height="180">
+        <img src="https://user-images.githubusercontent.com/70103130/183704737-21032649-0a3d-492b-9f69-e01062a671a6.gif" width="300" height="180">
       </div>
       편집실에서 사람들과 음성통화를 할 수 있습니다
     </th>
