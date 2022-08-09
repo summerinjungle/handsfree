@@ -47,7 +47,11 @@
 
 | 김보경 | 박건희 | 양현석 | 지민성 | 함도영 |
 |:--------:|:--------:|:--------:|:--------:|:--------:|
-| ![img](https://avatars.githubusercontent.com/u/51132077?s=120&v=4) | ![img](https://avatars.githubusercontent.com/u/67041709?s=120&v=4) | ![img](https://avatars.githubusercontent.com/u/66074802?s=120&v=4) | ![img](https://avatars.githubusercontent.com/u/78056880?s=120&v=4)     |
+| ![img width="30"](https://user-images.githubusercontent.com/70103130/183707514-af75cc7c-d145-405a-9071-45a2e2f7d133.png) | 
+![img width="330"](https://user-images.githubusercontent.com/70103130/183707897-964e1b9a-8275-48e3-873c-22016a34f6a4.png) | 
+![img width="230"](https://user-images.githubusercontent.com/70103130/183707890-093ae239-adb6-4f0f-b547-b8f8f326fb17.png) | 
+![img width="230"](https://user-images.githubusercontent.com/70103130/183707492-3d754899-ca6d-418f-8214-785e7ca888eb.png) |
+![img width="230"](https://user-images.githubusercontent.com/70103130/183708261-c8712785-ae37-4095-9a8d-2558bde6feb6.png) |
 | [zaehuun](https://github.com/zaehuun) | [jiho-bae](https://github.com/jiho-bae) | [Dev-Beom](https://github.com/Dev-Beom) | [hanbyeol](https://github.com/Narastro) |[Dev-Beom](https://github.com/Dev-Beom) | [onxmoreplz](https://github.com/onxmoreplz) |
  
   </div>
