@@ -8,14 +8,6 @@
 <!--   <img src="https://github.com/boostcampwm-2021/web15-TadakTadak/actions/workflows/<WORKFLOW_FILE>/badge.svg">   -->
   <br><br>
 </div>
-<div align="center">
-  <img src="https://img.shields.io/badge/node-16.13.0-339933?logo=node.js"> 
-  <img src="https://img.shields.io/badge/NestJS-8.0.0-E0234E?logo=NestJS"> 
-  <img src="https://img.shields.io/badge/TypeScript-4.4.3-3178C6?logo=typescript"> 
-  <img src="https://img.shields.io/badge/React-17.0.0-61DAFB?logo=React"> 
-  <img src="https://img.shields.io/badge/Docker-20.10.7-2496ED?logo=Docker"> 
-  <img src="https://img.shields.io/badge/Nginx-1.10.3-009639?logo=Nginx"> 
-</div>
 
 
 ## 소개
