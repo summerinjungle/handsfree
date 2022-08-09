@@ -18,13 +18,13 @@
       <div>
         <img src="https://user-images.githubusercontent.com/70103130/183704737-21032649-0a3d-492b-9f69-e01062a671a6.gif" width="300" height="180">
       </div>
-      실시간으로 서로 학습하는 모습을 공유해요!
+      음성이 실시간으로 채팅으로 변환할 수 있습니다.
     </th>
     <th>
       <div>
         <img src="https://user-images.githubusercontent.com/70103130/183706777-3b66bb7a-a0c3-4613-9578-21ec257288d5.gif" width="300" height="180">
       </div>
-      음성과 채팅으로 대화를 나눠요!
+      편집실에서 사람들과 음성통화를 할 수 있습니다
     </th>
   </tr>
 </thead>
@@ -33,13 +33,13 @@
       <div>
         <img src="https://user-images.githubusercontent.com/70103130/183706955-ab534be4-199a-4d24-b8ad-37b5dbb662c2.gif" width="300" height="180">
       </div>
-      온라인 불멍과 함께 캠프파이어를 체험해보세요!
+      회의 내용을 동시에 편집 할 수 있습니다
     </th>
     <th>
       <div>
        <img src="https://user-images.githubusercontent.com/70103130/183707112-46d8891c-bd29-40bd-bd6b-261a26135039.gif" width="300" height="180">
       </div>
-       직접 호스트가 되어 방을 운영해보세요!
+       완성된 회의록을 문서로 다운로드 받을 수 있습니다
     </th>
   </tr>
 </tbody>
@@ -56,7 +56,6 @@
   </div>
 
 <details>
-<summary>✅ 모든 구현 기능 리스트</summary>
 <br>
   
 **메인 페이지**
