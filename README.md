@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/70103130/183700606-a925c900-034c-4624-927d-f071818b8317.png" width="500">  
+  <img src="https://user-images.githubusercontent.com/70103130/183700606-a925c900-034c-4624-927d-f071818b8317.png" width="600">  
   <h2>화상회의록 자동 작성  서비스</h2>
   <br>
   <br><br>
@@ -91,7 +91,7 @@
 </details>
 
 ## 아키텍처
-![infra](https://user-images.githubusercontent.com/66074802/141459748-2d7b50ed-04d6-45e7-a42e-43e24c993fae.png)
+![infra](https://user-images.githubusercontent.com/66074802/141459748-2d7b50ed-04d6-45e7-a42e-43e24c993fae.png](https://user-images.githubusercontent.com/70103130/183703595-416dc785-1e85-43f7-8890-4deba97bcb01.png)
 ## 포스터
 ![infra](https://user-images.githubusercontent.com/66074802/141459748-2d7b50ed-04d6-45e7-a42e-43e24c993fae.png)
 
