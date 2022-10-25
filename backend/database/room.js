@@ -26,16 +26,13 @@ exports.findByRoomId = async (roomId) => {
 
 }
 
-exports.findoneByRoomId = async (roomId) => {
+exports.findOneByRoomId = async (roomId) => {
   return await Room.findOne({ 'roomId': roomId }).lean();
 }
 
   
 exports.findRoomAndUpdate = async (filter, update) => {
   return await Room.findOneAndUpdate(filter, update).lean();
-  
-  // return findRoom.roomId;
-  // return await Room.findOne({ 'roomId': roomId }).exec();
 };
 
 

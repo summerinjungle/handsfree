@@ -1,0 +1,386 @@
+.mr-8 {
+  margin-right: 8px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+.mb-5 {
+  margin-bottom: 5px;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.f-right {
+  float: right;
+}
+
+.f-left {
+  float: left;
+}
+
+.vertical-align {
+  vertical-align: middle;
+}
+
+.writingStatus {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+}
+
+.colorRed {
+  color: red;
+  font-weight: bold;
+}
+
+.colorYellow {
+  color: yellow;
+  font-weight: bold;
+}
+
+#chatContainer {
+  position: absolute;
+  top: 110px;
+  z-index: 0;
+  width: 100%;
+  height: 76%;
+}
+
+  
+  #chatToolbar {
+    /* height: 0px; */
+    display: none;
+    background-color: #3d3d3d;
+    box-sizing: border-box;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 4px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    color: #ffffff;
+  }
+  
+  #closeButton {
+    position: absolute;
+    right: 0;
+    top: -8px;
+  }
+  
+  #chatComponent {
+    
+    background-color: white;
+    position: absolute;
+    z-index: 99999;
+    /* display: none; */
+    top: 1%;
+    /* left: ; */
+    right: 3.8%;
+    /* bottom: 0; */
+    /* margin: auto; */
+    /* margin-left: 3.7%; */
+    /* margin-top: -4.2vh; */
+    height: 97.3%;
+    width: 92.6%;
+    /* width: calc(100% - 25px); */
+    border-radius: 20px;
+  }
+
+  .status-container {
+    height: 100px;
+  }
+
+  .recording{
+    position:relative;
+    height: 103%;
+    /* left: -350%; */
+    left: 3.7%;
+    width: 92.7%;
+    /* text-align: center; */
+    /* width: 446.3%; */
+    /* align-items: center; */
+    /* margin-left: 1%; */
+    /* margin-right: 3.3%; */
+    /* padding-right: 5px; */
+    border-radius: 10px;
+    background-color: #675743;
+    
+    /* margin-bottom: 20px; */
+    /* size: 30%; */
+    /* margin-top: 10px; */
+  }
+
+
+  .wrap {
+    border-radius: 10px;
+    background-color: #eeeee4;
+    /* background-color: #fffcf8 ; */
+    /* background-color: #81e9b0; */
+    /* padding: 0 15px; */
+    height: calc(103.1%);
+    overflow: auto;
+  }
+
+  .message-username {
+    font-family: 'Cafe24Ssurround';
+  }
+  
+  .message {
+    position: relative;
+    padding: 7px 0;
+    font-family: 'Cafe24SsurroundAir';
+  }
+  .user-img {
+    position: absolute;
+    border-radius: 45px;
+    width: 60px;
+    height: 60px;
+    top: 15px;
+  }
+  
+  .msg-detail {
+    /* width: calc(100% - 65px); */
+    width: 97%;
+    display: inline-block;
+  }
+  
+  .msg-detail p {
+    margin: 0;
+    font-size: 15px;
+  }
+  
+  .msg-info p {
+    font-size: 0.8em;
+    color: #000000;
+    /* font-style: italic; */
+  }
+  
+  .msg-content {
+    position: relative;
+    margin-top: 5px;
+    border-radius: 5px;
+    padding: 8px;
+    color: #000000;
+    background-color: #f6f2ed;
+    width: auto;
+    max-width: 80%;
+  }
+
+  .msg-content-star{
+    position: relative;
+    margin-top: 5px;
+    border-radius: 5px;
+    padding: 8px;
+    color: #000000;
+    background-color: #f6f2ed;
+    width: auto;
+    max-width: 80%;
+    border: 2px solid;
+    border-color: #eeab46;
+  }
+  
+  span.triangle {
+    border-radius: 1px;
+    height: 11px;
+    width: 5px;
+    top: 15px;
+    display: block;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(125deg);
+    position: absolute;
+  }
+  
+  .text {
+    word-break: break-all;color: #000000;
+    vertical-align: middle;
+    font-family: 'Cafe24SsurroundAir';
+  }
+
+  .starInChat {
+    vertical-align: middle;
+  }
+  
+  /* Start message from other user */
+  
+  .message > .left .msg-detail .msg-info {
+    text-align: left;
+  }
+  
+  .message.left .msg-detail {
+    padding-left: 5px;
+  }
+  
+  .message.left .user-img {
+    left: -5px;
+    /* border: 1px solid #f0f0f094; */
+  }
+  
+  .message.left .msg-detail .msg-content {
+    background-color: #f0f0f0;
+    float: left;
+  }
+  
+  .message.left .msg-detail .msg-content span.triangle {
+    background-color: #f0f0f0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    left: -5px;
+  }
+  
+  /* End message from other user */
+  
+  /* Start my messages */
+  
+  .message.right .msg-detail .msg-info {
+    text-align: right;
+  }
+  .message.right .user-img {
+    right: -5px;
+    /* border: 1px solid #c8ffe8ab; */
+  }
+  
+  .message.right .msg-detail .msg-content {
+    background-color: #f6f2ed;
+    float: right;
+  }
+  .message.right .msg-detail .msg-content span.triangle {
+    background-color: #f6f2ed;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    right: -5px;
+  }
+  
+  /* End my messages */
+  
+  #messageInput {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    background-color: #ffffff;
+    text-align: center;
+    padding: 10px 0px;
+    height: 30px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+  #messageInput input {
+    width: 90%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    margin-left: -6%;
+    color: #000000;
+  }
+  
+  #sendButton {
+    background-color: #81e9b0;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border: 1px solid #7ae2a9;
+    box-shadow: none !important;
+  }
+  #sendButton {
+    margin-left: 3px !important;
+    margin-bottom: 2px !important;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #6b6b6b;
+  }
+  
+  .chatComponentLight ::-webkit-scrollbar-thumb {
+    background-color: #eeeeee !important;
+  }
+  
+
+.mackdoong-switch{
+  position: absolute;
+  left: 5%;
+  /* display: none; */
+  font-size: 25px;
+}
+  
+
+.mackdoong-logo{
+  /* size: 40px; */
+  /* width: 40px; */
+  margin-top: 1%;
+  left: 14%;
+  position: absolute;
+  font-weight: bold;
+  /* height: 40px; */
+  /* width: 30px */
+}
+
+
+.mackdoong-txt{
+  /* display: none; */
+  position: absolute;
+  bottom: 26%;
+  right: 13%;
+  size: 30px;
+  width: 70px;
+  font-family: 'Cafe24SsurroundAir';
+}
+
+
+.mackdoong-txt2{
+  /* display: none; */
+  width: 70px;
+  position: absolute;
+  bottom: 50%;
+  right: 13%;
+  font-family: 'Cafe24SsurroundAir';
+  size: 30px;
+}
+
+
+.balloon{
+  position: absolute;
+  width: 40%;
+  left: 55%;
+  height: 79%;
+
+}
+
+
+.mackdoong-txt-rec{
+  color: #DBDF00;
+  position: absolute;
+  bottom: 24%;
+  right: 12%;
+  size: 30px;
+
+  font-size: large;
+  width: 80px;
+  font-weight: bold;
+  font-family: 'Cafe24Ssurround';
+}
+
+.mackdoong-txt-noRec{
+  color: hotpink;
+  position: absolute;
+  bottom: 24%;
+  right: 12%;
+  size: 30px;
+  font-size: large;
+  width: 80px;
+  font-weight: bold;
+  font-family: 'Cafe24Ssurround';
+}

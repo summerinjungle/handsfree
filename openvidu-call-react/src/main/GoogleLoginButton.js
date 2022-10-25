@@ -1,13 +1,16 @@
 import React  from "react";
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-require("dotenv").config();
+import { useNavigate } from "react-router-dom";
+import swal from "sweetalert"
 
+
+require("dotenv").config();
 
 const GoogleLoginButton = () => {
 
   const clientId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
-  
+  let navigate = useNavigate();
   async function onSuccess(res) {
     const code = await fetch("/api/auth/google", {
       method: "POST",
@@ -19,15 +22,15 @@ const GoogleLoginButton = () => {
       }
     }).then(response => response.json())
     .then(({success}) => {
-      console.log("success", success);
+      // console.log("success", success);
     });
-    alert("구글 로그인에 성공하였습니다");
-    window.location.reload();
+    swal("성공", "로그인에 성공하였습니다.", "success");
+    navigate("/")
   }
 
   const onError = (res) => {
-    alert("구글 로그인에 실패하였습니다");
-    console.log("err", res);
+    alert("로그인에 실패하였습니다");
+    // console.log("err", res);
   };
 
   return (

@@ -1,28 +1,30 @@
 import React, { useState, useMemo } from "react";
 import "./main.css";
 import mainLogo from "../assets/images/mainLogo.png";
+import mainCharacter from "../assets/images/mainCharacter.png";
+import mainCharacterBorder from "../assets/images/mainCharacterBorder.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { changeSession, changeIsPublisher, changeUserName } from "../store.js";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { getTokenInCookie } from "./cookie";
 import axios from "axios";
-import { getUserNameInCookie } from "./cookie";
 import { useSelector } from "react-redux";
 import { removeTokenInCookie } from "./cookie";
+import swal from "sweetalert";
+import Loading from "./Loading";
 
-const Main = () => {
+const Main = ({ username }) => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [enterCode, setEnterCode] = useState("");
   const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const cookie = getTokenInCookie();
 
   let reduxCheck = useSelector((state) => {
     return state;
   });
-  const date = new Date();
-
   useMemo(() => {
     if (cookie) {
       setIsLogin(true);
@@ -30,151 +32,164 @@ const Main = () => {
     }
   }, [cookie]);
 
-  async function createMeeting() {
+  const createMeeting = async () => {
     await axios
       .post("/api/rooms/")
       .then(function (response) {
-        console.log(response.data);
         // sessionId값, 방장권한, 진행시간 0, 입장시간
         dispatch(changeSession(response.data.roomId));
         dispatch(changeIsPublisher(true));
-        dispatch(changeUserName(getUserNameInCookie()));
+        dispatch(changeUserName(username));
         const obj = {
           isPublisher: true,
           sessionId: response.data.roomId,
         };
         localStorage.setItem("redux", JSON.stringify(obj));
-        console.log("저장됨", obj);
-
         navigate("/meeting/" + response.data.roomId);
       })
       .catch(function (error) {
-        console.log(error);
+        console.log("방만들기 오류", error);
       });
-  }
+  };
 
-  async function enterMeeting() {
+  const enterMeeting = async () => {
+    if (enterCode.length === 0) {
+      swal("실패", "초대 코드를 입력하세요", "warning");
+      return;
+    }
     await axios
       .post("/api/rooms/" + String(enterCode) + "/join")
       .then(function (response) {
-        console.log(response.data);
         // 입장가능한 방일때
         if (response.data.isValidRoom) {
           if (response.data.isEnd) {
-            alert("종료된 회의입니다.");
+            swal("실패", "종료된 회의 입니다.", "warning");
             return;
           }
-          const time = date.getTime();
+
           dispatch(changeSession(enterCode));
           dispatch(changeIsPublisher(false));
-          dispatch(changeUserName(getUserNameInCookie()));
+          dispatch(changeUserName(username));
           const obj = {
             isPublisher: false,
             sessionId: enterCode,
           };
           localStorage.setItem("redux", JSON.stringify(obj));
-          console.log("저장됨", obj);
           navigate("/meeting/" + enterCode);
         } else {
-          alert("입장코드를 다시 입력해주세요");
+          swal("실패", "초대 코드를 다시 입력해주세요", "warning");
         }
       })
-      .catch(function (err) {
-        console.log("실패함", err);
-      });
-  }
+      .catch(function (err) {});
+  };
 
+  const createDebounceRoom = debounce(() => {
+    createMeeting();
+  });
+
+  const enterDebounceRoom = debounce(() => {
+    enterMeeting();
+  });
+
+  function debounce(cb, delay = 1000) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        cb(...args);
+      }, delay);
+    };
+  }
   return (
-    <div className='main-bg'>
-      <img className='main-logo' src={mainLogo} />
-      {isLogin ? (
-        <div>
-          <p>
-            {/* <button className='myButton'
-              onClick={() => {
-                createMeeting();
-              }} >회의 만들기</button> */}
+    <>
+      <div className='main-bg'>
+        <div className='header-left' />
+        <img className='header-left-logo' src={mainLogo} />
+                 
+        {isLogin ? (
+          <>
+            <div className='logout-btn-area'></div>
+            <div className='header-right-btn'></div>
             <button
-              className='myButton'
-              onClick={() => {
-                navigator.mediaDevices
-                  .getUserMedia({
-                    audio: true,
-                    video: { width: 640, height: 360 },
-                  })
-                  .then((stream) => {
-                    // console.log("입장 버튼 = >", stream);
-                    createMeeting();
-                  })
-                  .catch(() => {
-                    alert(
-                      "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다."
-                    );
-                    createMeeting();
-                  });
-              }}
-            >
-              회의 만들기
+                className='logout-btn'
+                onClick={() => {
+                  console.log("logout!!");
+                  removeTokenInCookie();
+                  window.location.reload();
+                }}>
+                로그아웃
             </button>
-          </p>
-          <p>
-            <input
-              placeholder='참여코드를 입력하세요.'
-              onChange={(event) => setEnterCode(event.target.value)}
-            ></input>
-            {/* <button className='myButton2'
-              onClick={() => {
-                enterCode === ""
-                  ? alert("올바른 참여코드를 입력하세요")
-                  : enterMeeting();
-              }}> 회의 참여하기</button> */}
-            <button
-              className='myButton2'
-              onClick={() => {
-                enterCode === ""
-                  ? alert("올바른 참여코드를 입력하세요")
-                  : navigator.mediaDevices
-                      .getUserMedia({
-                        audio: true,
-                        video: { width: 640, height: 360 },
-                      })
-                      .then((stream) => {
-                        enterMeeting();
-                      })
-                      .catch(() => {
-                        alert(
-                          "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다."
-                        );
-                        enterMeeting();
-                      });
-              }}
-            >
-              {" "}
-              회의 참여하기
-            </button>
-          </p>
-          {/* <p><button onClick={() => console.log(reduxCheck)}>리덕스 보기</button></p> */}
-          {/* <p><button onClick={() => console.log(getUserNameInCookie())}>이름 보기</button></p> */}
-          <p>
-            <button onClick={() => navigate("/meeting")}>그냥 입장하기</button>
-          </p>
-          <p>
-            <button
-              onClick={() => {
-                removeTokenInCookie();
-                window.location.reload();
-              }}
-            >
-              로그아웃
-            </button>
-          </p>
-        </div>
-      ) : (
-        <div className='LogInBtnStyle'>
-          <GoogleLoginButton />
-        </div>
-      )}
-    </div>
+            <div className='main-logo-area'>
+              <img className='main-logo' src={mainLogo} />
+              {isLoading && <Loading />}
+            </div>
+            <div className='make-conference-btn-area'>
+        
+              <button
+                className='make-conference-btn'
+                onClick={() => {
+                  navigator.mediaDevices
+                    .getUserMedia({
+                      audio: true,
+                      video: { width: 640, height: 360 },
+                    })
+                    .then((stream) => {
+                      setIsLoading(true);
+                      createDebounceRoom();
+                    })
+                    .catch(() => {
+                      swal(
+                        "실패",
+                        "미디어 접근이 거절되었습니다. 회의중 비디오가 안나올 수 있습니다.",
+                        "warning"
+                      );
+                      setIsLoading(true);
+                      createDebounceRoom();
+                    });
+                }}
+              >
+                새 회의
+              </button>
+            </div>
+            <div className='attend-meeting-btn-area'>
+              <input
+                className='attend-meeting-input-area'
+                placeholder='참여코드 입력'
+                onChange={(event) => setEnterCode(event.target.value)}
+              ></input>
+              <button
+                className='attend-meeting-btn'
+                onClick={() => {
+                  setIsLoading(true);
+                  enterDebounceRoom();
+                }}
+              >
+                →
+              </button>
+            </div>
+            <></>
+          </>
+        ) : (
+          <>
+            <div className='main-character-area '>
+              <img className='main-character' src={mainCharacterBorder} />
+            </div>
+            <div className='main-label'>
+              <p className='main-label-txt1'>화상회의록 자동작성 웹서비스</p>
+              <p className='main-label-txt2'>
+                "회의록 작성은 막둥이에게 맡겨주세요"
+              </p>
+            </div>
+            <div className='main-labe2'></div>
+            <div className='login-btn-shadow'></div>
+            <div className='login-btn'>
+              <GoogleLoginButton className='login-btn' />
+            </div>
+          </>
+        )}
+        {/* <button className='asdf' onClick={() => navigate("/meeting")}>그냥 입장하기</button> */}
+      </div>
+    </>
   );
 };
 

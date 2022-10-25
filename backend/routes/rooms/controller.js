@@ -2,6 +2,7 @@ const { OK, CREATED, BAD_REQUEST } =
 require("../../config/statusCode").statusCode;
 require("dotenv").config();
 const roomServices = require("../../services/room");
+const chatServices = require("../../services/chat");
 
 function getTime() {
   var today = new Date();
@@ -14,12 +15,10 @@ function getTime() {
 
 //방 생성 API
 exports.createRoom = async (req, res, next) => {
-  console.log("방 만들기!");
   try {
     var roomId = Math.random().toString(36).slice(-8);
     publisher = "A"; //임의
     const isVaild = await roomServices.validateRoomId(roomId); // 같은 이름의 방이 있는지 검증하는 로직
-    console.log("isVaild!!!", isVaild);
     timeString = getTime();
     if (isVaild == true) {
       await roomServices.createRoom({ roomId, publisher, timeString });
@@ -30,7 +29,6 @@ exports.createRoom = async (req, res, next) => {
         createdAt: timeString,
       });
     } else {
-      console.log("방이름이 중복됩니다.");
       res.status(CREATED).json({
         message: "방생성 실패",
       });
@@ -44,7 +42,6 @@ exports.createRoom = async (req, res, next) => {
 
 //방 입장 API
 exports.joinRoom = async (req, res, next) => {
-  // try {
     const { roomId } = req.params;
     const foundRoom = await roomServices.findByRoomId(roomId);
     if(!foundRoom) {
@@ -54,17 +51,13 @@ exports.joinRoom = async (req, res, next) => {
       });
     }
     else {
-      console.log("방찾음!!", foundRoom)
-      console.log(foundRoom.isEnd);
       if(foundRoom.isEnd) {
-        console.log("종료된 회의!!");
         res.status(CREATED).json({
           message: "종료된 회의 입니다.",
           isValidRoom: true,
           isEnd: true
         });
       } else {
-        console.log("안종료된 회의!!");
         // 같은 방이 있으면
         //방 시작시간을 알려주는 로직이 들어가야 함
         const createTime = await roomServices.findRoomResponseTime(roomId);
@@ -81,12 +74,11 @@ exports.joinRoom = async (req, res, next) => {
     } 
 };
 
+/* 이전 openvidu 채팅 사용하던 버전 */
 exports.getEditingRoom = async (req, res, next) => {
   const roomId = req.params.roomId;
   const editingRoom = await roomServices.toEditingRoom(roomId);
-  console.log("방 정보 == ", editingRoom);
   if (!editingRoom) {
-    console.log("nono room");
     res.status(BAD_REQUEST).json({
       message: "잘못된 접근입니다",
     });
@@ -99,7 +91,6 @@ exports.getEditingRoom = async (req, res, next) => {
 
 exports.createChat = async (req, res, next) => {
   const roomId = req.params.roomId;
-
   const room = await roomServices.createChat(
     roomId,
     req.body.chatList,
@@ -116,3 +107,71 @@ exports.createChat = async (req, res, next) => {
     message: "방 정보가 저장되었습니다",
   });
 };
+
+/* 새로 만든 채팅 서버 버전 아래 */
+exports.createChat = async (req, res, next) => {
+  const roomId = req.params.roomId;
+  try {
+    const chat = await chatServices.createChat(
+      roomId,
+      req.body.id,
+      req.body.nickname,
+      req.body.message,
+      req.body.startTime,
+      req.body.time
+    );
+    if (!chat) {
+      res.status(BAD_REQUEST).json({
+        message: "잘못된 접근입니다",
+      });
+      return;
+    }
+    res.status(CREATED).json({
+      message: "새로운 채팅이 저장되었습니다",
+    });
+  } catch (err) {
+    throw new Error("올바른 채팅 정보가 아닙니다");
+  }
+};
+
+exports.markChat = async (req, res, next) => {
+  const roomId = req.params.roomId;
+  const chatId = req.params.chatId;
+  chatServices.mark(roomId, chatId);
+}
+
+
+exports.createMuteTime = async (req, res, next) => {
+  const roomId = req.params.roomId;
+  const muteTime = await chatServices.createMuteTime(
+    roomId,
+    req.body.start,
+    req.body.end,
+  );
+  if (!muteTime) {
+    res.status(BAD_REQUEST).json({
+      message: "잘못된 접근입니다",
+    });
+    return;
+  }
+  res.status(CREATED).json({
+    message: "MUTE TIME이 저장되었습니다",
+  });
+};
+
+exports.getEditingRoom = async (req, res, next) => {
+  const roomId = req.params.roomId;
+  const editingRoom = await chatServices.toEditingRoom(roomId);
+  if (!editingRoom) {
+    res.status(BAD_REQUEST).json({
+      message: "잘못된 접근입니다",
+    });
+    return;
+  }
+  res.status(OK).json({
+    editingRoom,
+  });
+};
+
+
+

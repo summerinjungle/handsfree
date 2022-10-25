@@ -1,12 +1,28 @@
+@font-face {
+    font-family: 'Cafe24Ssurround';
+	src: url("./font/Cafe24Ssurround.woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cafe24SsurroundAir';
+	src: url("./font/Cafe24SsurroundAir.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
 .App {
     width: 100vw;
     height: 100vh;
-    background-color: #eeeee4;
-
+    /* background-color: #eeeee4; */
+    background-color: #fffcf8;
     color: #212121;
     font-family: "Open Sans", sans-serif;
     display: grid;
     /* place-items: center; */
+    /* cursor: url("./assets/images/cursor.png") 20 30, auto; */
+    /* cursor: url("https://blog.kakaocdn.net/dn/BQXpN/btq3qNR67Lg/8tx8tGzkOcr5BuX5dyIaKk/img.png"), auto; */
 }
 
 body {

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "./edit.css";
+import "./wave.css";
 import mainLogo from "../../assets/images/mainLogo.png";
-import ChatItem from "../edit/chat/ChatItem";
+import ChatItem from "../edit/chat/ChatItem.jsx";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
-import VolumeUp from "@material-ui/icons/VolumeUp";
-import VolumeOff from "@material-ui/icons/VolumeOff";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Stop from "@material-ui/icons/Stop";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
@@ -16,8 +16,13 @@ import { connect, useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import saveButton from "./docx";
 import { useNavigate } from "react-router-dom";
+import { Button } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
+import Voicechat from "./chat/Voicechat";
 import { getUserNameInCookie } from "../../main/cookie";
-import VoiceRoom from "../VoiceRoom/VoiceRoom"
+import VoiceRoom from "../voiceroom/VoiceRoom";
+import Spinner from "./Spinner";
+import swal from "sweetalert";
 
 const EditingRoom = ({ sessionId }) => {
   let reduxCheck = useSelector((state) => {
@@ -25,45 +30,97 @@ const EditingRoom = ({ sessionId }) => {
   });
   let newSessionId = "edit" + sessionId;
   // let gap = parseFloat(localStorage.getItem("createAt") - reduxCheck.user.createdAt) / 1000 -1;
-  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1100;
-  console.log(localStorage.getItem("createAt"));
-  console.log(reduxCheck.user.createdAt);
-  // console.log("@@@@@@@@", gap);
+  const sessionStartTime = parseFloat(localStorage.getItem("createAt")) + 1000;
 
   const wavesurfer = useRef(null);
   const [isPlay, setIsPlay] = useState(false);
-  const [volume, setVolume] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [prevId, setPrevId] = useState(-1);
+  const [recordId, setRecordId] = useState(-1);
+  const [playItem, setPlayItem] = useState(false);
   const navigate = useNavigate();
+  const [chatList, setChatList] = useState([]); // 음성 기록들
 
   const playButton = () => {
     wavesurfer.current.playPause();
-    if (wavesurfer.current.isPlaying()) {
-      setIsPlay(true);
+    if (wavesurfer.current.isPlaying() || playItem === true) {
+      if (playItem) {
+        setChatList((chatList) =>
+          chatList.map((list) =>
+            list.id == recordId ? { ...list, play: !list.play } : list
+          )
+        );
+        setPlayItem(false);
+        setIsPlay(false);
+      } else {
+        setIsPlay(true);
+      }
     } else {
       setIsPlay(false);
     }
   };
+
+  const PlayingRecord = (startTime, id) => {
+    if (id === prevId) {
+      wavesurfer.current.playPause();
+      setChatList((chatList) =>
+        chatList.map((list) =>
+          list.id == id ? { ...list, play: !list.play } : list
+        )
+      );
+      setPlayItem(false);
+      setIsPlay(false);
+    } else {
+      setChatList((chatList) =>
+        chatList.map((list) =>
+          list.id == prevId ? { ...list, play: !list.play } : list
+        )
+      );
+
+      setChatList((chatList) =>
+        chatList.map((list) =>
+          list.id == id ? { ...list, play: !list.play } : list
+        )
+      );
+      wavesurfer.current.play(parseFloat(startTime - sessionStartTime) / 1000);
+      setPlayItem(true);
+      setIsPlay(true);
+    }
+  };
+
+  const playButtonFromWaveSurfer = (startTime, id) => {
+    if (wavesurfer.current.isPlaying()) {
+      PlayingRecord(startTime, id);
+    } else {
+      wavesurfer.current.playPause();
+      setChatList((chatList) =>
+        chatList.map((list) =>
+          list.id == id ? { ...list, play: !list.play } : list
+        )
+      );
+      setPlayItem(true);
+      setIsPlay(true);
+      wavesurfer.current.play(parseFloat(startTime - sessionStartTime) / 1000);
+    }
+
+    setRecordId(id);
+    setPrevId(id);
+  };
+
   const stopButton = () => {
     wavesurfer.current.stop();
     setIsPlay(false);
   };
 
-  const changeVolume = (event) => {
-    setVolume(event.target.valueAsNumber);
-    wavesurfer.current.setVolume(volume);
-  };
-
-  const [chatList, setChatList] = useState([]); // 음성 기록들
-
   useEffect(() => {
-    console.log("sessionId 입니다", sessionId);
     loadAllRecord(); // 회의에서 저장된 기록들 가져오기
 
     wavesurfer.current = WaveSurfer.create({
       container: ".audio",
-      waveColor: "#FFFFFF",
-      progressColor: "#FF7833",
+      waveColor: "#F7F2EC",
+      progressColor: "#ffd6cd",
       barWidth: 3,
+      height: 65,
       plugins: [
         RegionsPlugin.create({}),
         MarkersPlugin.create({}),
@@ -71,8 +128,8 @@ const EditingRoom = ({ sessionId }) => {
           showTime: true,
           opacity: 0.9,
           customShowTimeStyle: {
-            "background-color": "#FF7833",
-            color: "#fff",
+            "background-color": "#6A573D",
+            color: "#E3DDD5",
             padding: "6px",
             "font-size": "12px",
           },
@@ -83,63 +140,57 @@ const EditingRoom = ({ sessionId }) => {
 
   useEffect(() => {
     if (wavesurfer) {
-      console.log("WaveSurfer 녹음 파일 =====> ", mapStateToProps);
-      //   wavesurfer.current.load(recordFile.url);
-      // wavesurfer.current.load(testMp3File)
       wavesurfer.current.load(
-        "https://eehnoeg.shop/openvidu/recordings/" +
+        //"https://eehnoeg.shop/openvidu/recordings/"+
+        "https://hyunseokmemo.shop/openvidu/recordings/" +
           sessionId +
           "/ownweapon.webm"
+        // "https://onxmoreplz.shop/openvidu/recordings/" +
+        // sessionId +
+        // "/ownweapon.webm"
       ); // OPEN_VIDU 주소 전달해주면 됨
+      wavesurfer.current.on("loading", (data) => {
+        if (data >= 100) {
+          setIsLoading(false);
+        }
+      });
     }
   }, []);
 
-  /**
-   * [GET] http://{BASE_URL}/api/rooms/{roomId}/editingroom
-   *
-   * 잡담구간, 별표표시, 음성기록에 필요한 정보들 받아와
-   * WaveSurfer에 뿌려줌
-   *
-   * TODO: 아래 for 반복문 2개 함수로 분리
-   */
   async function loadAllRecord() {
     await axios
       .get("/api/rooms/" + sessionId + "/editingroom") // this.state.roomId 맞나요?
       .then(function (response) {
+        console.log("EditingRoom", response.data.editingRoom);
         const { chatList, starList, recordMuteList } =
           response.data.editingRoom;
         setChatList(chatList);
-        console.log("editingroom response : ", response);
-
-        // [잡담 구간] 표시
-        console.log("RecordMuteList", recordMuteList);
         for (let i = 0; i < recordMuteList.length; i++) {
-          console.log(
-            "left!!!!!!",
-            (recordMuteList[i].left - sessionStartTime) / 1000
-          );
-          console.log(
-            "right!!!!!!",
-            (recordMuteList[i].right - sessionStartTime) / 1000
-          );
+          let currLeft;
+          if (recordMuteList[i].start == 0) {
+            currLeft = 0;
+          } else {
+            currLeft =
+              parseFloat(recordMuteList[i].start - sessionStartTime) / 1000;
+          }
 
           wavesurfer.current.regions.add({
-            start: parseFloat(recordMuteList[i].left - sessionStartTime) / 1000,
-            end: parseFloat(recordMuteList[i].right - sessionStartTime) / 1000,
+            start: currLeft,
+            end: parseFloat(recordMuteList[i].end - sessionStartTime) / 1000,
             // color: "#CEBFAC",
-            color: "rgba(228, 209, 185, 0.7)",
+            color: "rgba(216, 207, 182, 0.85)",
             drag: false,
             resize: false,
           });
         }
 
         // [막둥아 별표] 표시
-        console.log("starList", starList);
         for (let i = 0; i < starList.length; i++) {
           wavesurfer.current.addMarker({
             time: parseFloat(starList[i].startTime - sessionStartTime) / 1000,
             label: "",
-            color: "#FF7715",
+            size: 100,
+            color: "red",
             position: "top",
           });
         }
@@ -150,14 +201,14 @@ const EditingRoom = ({ sessionId }) => {
   }
 
   /* 음성기록 Item에서 [재생]버튼 클릭 시 실행 */
-  function playTimeWaveSurfer(startTime) {
-    if (startTime) {
-      console.log(parseFloat(startTime - sessionStartTime) / 1000);
-      wavesurfer.current.play(parseFloat(startTime - sessionStartTime) / 1000);
-    } else {
-      console.log("timeWaveSurfer 값이 존재하지 않습니다.");
-    }
-  }
+  // function playTimeWaveSurfer(startTime) {
+  //   if (startTime) {
+  //     console.log(parseFloat(startTime - sessionStartTime) / 1000);
+  //     wavesurfer.current.play(parseFloat(startTime - sessionStartTime) / 1000);
+  //   } else {
+  //     console.log("timeWaveSurfer 값이 존재하지 않습니다.");
+  //   }
+  // }
 
   /**
    * 음성기록 리스트 내 아이템 삭제 함수
@@ -179,111 +230,126 @@ const EditingRoom = ({ sessionId }) => {
     let ns = new XMLSerializer();
     let korean = `<meta charset="utf-8" />`;
     let targetString = ns.serializeToString(
-      // document.querySelector(".ql-editor")
       document.querySelector(".contents-right")
     );
     targetString = targetString.replace("음성 기록", "<h2>음성 기록</h2>");
     targetString = targetString.replace(/▶︎/g, "");
     targetString = targetString.replace(/수정/g, "");
+    targetString = targetString.replace(/다운로드/g, "");
     targetString = targetString.replace(/삭제/g, "");
     targetString = targetString.replace(/메모장에 추가/g, "");
-    console.log(targetString);
     return korean + targetString;
   }
-
   return (
-    <div id='editingroom-container'>
-      {/* <Voice sessionId={sessionId} /> */}
-      {/* <VoiceRoom /> */}
-      <div className='header'>
-        <div className='header-contents'>
-          <img className='header-logo' src={mainLogo} />
+    <>
+      <div
+        id='editingroom-container'
+        style={
+          // isLoading ? { backgroundColor: "rgba(112,125,233,0.2)" } : null
+          isLoading ? { backgroundColor: "#73746033" } : null
+          // isLoading ? { opacity: 0.2 } : null
+        }
+      >
+        <div className='header'>
+          <span className='header-contents vertical-align-middle'>
+            <img className='header-logo' src={mainLogo} />
+            {/* <div>현재 참여자 :</div> */}
+          </span>
+          <div className='header-contents text-right'>
+            <Button
+              className='exit'
+              icon={<ExitToAppIcon />}
+              onClick={() => {
+                swal({
+                  title: "나가기",
+                  text: "편집을 종료하시겠습니까?",
+                  icon: "warning",
+                  buttons: true,
+                  // dangerMode: true,
+                }).then((willDelete) => {
+                  if (willDelete) {
+                    navigate("/");
+                    window.location.reload();
+                  }
+                });
+              }}
+            >
+              나가기
+            </Button>
+          </div>
         </div>
-        <div className='header-contents text-right'>
-          <button
-            className='download'
-            onClick={() => saveButton(saveMemo(), "메모")}
-          >
-            메모 다운로드
-          </button>
-          <button
-            className='download2'
-            onClick={() => saveButton(saveSoundMemo(), "음성 기록")}
-          >
-            음성기록 다운로드
-          </button>
-          <button
-            className='exit'
-            onClick={() => {
-              navigate("/");
-              window.location.reload();
-            }}
-          >
-            나가기
-          </button>
+        <hr className='my-0'></hr>
+        <div className='contents'>
+          <div className='contents-left'>
+            <Voicechat userName={getUserNameInCookie()} roomId={sessionId} />
+          </div>
+          <div className='contents-middle'>
+            <div className='contents-middle-wrap'>
+              <div className='contents-label'>메모장&nbsp;</div>
+              <Button
+                type='primary'
+                className='ant1'
+                shape='round'
+                icon={<DownloadOutlined />}
+                onClick={() => {
+                  saveButton(saveMemo(), "메모");
+                }}
+              >
+                다운로드
+              </Button>
+            </div>
+            <div className='textedit'>
+              <TextEditor sessionId={sessionId} />
+            </div>
+          </div>
+          <div className='contents-right'>
+            <div className='contents-right-wrap'>
+              <div className='contents-label'>
+                &nbsp;&nbsp;&nbsp;음성 기록&nbsp;
+              </div>
+              <Button
+                type='primary'
+                className='antsound'
+                shape='round'
+                icon={<DownloadOutlined />}
+                onClick={() => {
+                  saveButton(saveSoundMemo(), "음성 기록");
+                }}
+              >
+                다운로드
+              </Button>
+            </div>
+            <div className='recorditems'>
+              {chatList &&
+                chatList.map((recordItem) => (
+                  <ChatItem
+                    recordItem={recordItem}
+                    playTimeWaveSurfer={playButtonFromWaveSurfer}
+                    prevId={prevId}
+                    deleteChatItem={deleteChatItem}
+                  />
+                ))}
+            </div>
+          </div>
+          {isLoading && <Spinner />}
         </div>
-      </div>
-      <hr className='my-0'></hr>
-      <div className='contents'>
-        <div className='contents-left'>
-          <div className='contents-label'>메모장</div>
-          <TextEditor sessionId={sessionId} />
-        </div>
-        <div className='contents-right'>
-          <div className='contents-label'>음성 기록</div>
-          <div className='recorditems'>
-            {chatList &&
-              chatList.map((recordItem) => (
-                <ChatItem
-                  key={recordItem.id}
-                  id={recordItem.id}
-                  userName={recordItem.nickname}
-                  time={recordItem.time}
-                  startTime={recordItem.startTime}
-                  isMarker={recordItem.marker}
-                  message={recordItem.message}
-                  playTimeWaveSurfer={playTimeWaveSurfer}
-                  deleteChatItem={deleteChatItem}
-                />
-              ))}
+        <div className='audio-container'>
+          <div className='audio'></div>
+          <div className='buttons'>
+            <span
+              className={"play-btn btn" + (isPlay === true ? " playing" : "")}
+              onClick={playButton}
+            >
+              <PlayArrowIcon className='fas fa-play' />
+              <PauseIcon className='fas fa-pause' />
+            </span>
+            <span className='stop-btn btn' onClick={stopButton}>
+              <Stop className='fas fa-stop' />
+            </span>
           </div>
         </div>
       </div>
-      <div className='audio-container'>
-        {/* <div className='track-name'>The name of the track</div> */}
-        <div className='audio'></div>
-        <div className='buttons'>
-          <span
-            className={"play-btn btn" + (isPlay === true ? " playing" : "")}
-            onClick={playButton}
-          >
-            <PlayArrowIcon className='fas fa-play' />
-            <PauseIcon className='fas fa-pause' />
-          </span>
-
-          <span className='stop-btn btn' onClick={stopButton}>
-            <Stop className='fas fa-stop' />
-          </span>
-
-          <span className={"mute-btn btn" + (!volume ? " muted" : "")}>
-            <VolumeUp className='fas fa-volume-up' />
-            <VolumeOff className='fas fa-volume-mute' />
-          </span>
-
-          <input
-            type='range'
-            min={0}
-            max={20}
-            step={1}
-            value={volume}
-            className='volume-slider'
-            onChange={changeVolume}
-            readOnly
-          />
-        </div>
-      </div>
-      <VoiceRoom sessionId={newSessionId} />
-    </div>
+    </>
   );
 };
 

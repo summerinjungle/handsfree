@@ -7,7 +7,7 @@
 [![][OpenViduLogo]](http://openvidu.io)
 
 openvidu-call-react
-===
+===++
 You can see the documentation [here](https://docs.openvidu.io/en/stable/demos/openvidu-call-react/)
 
 
